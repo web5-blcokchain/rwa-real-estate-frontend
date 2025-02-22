@@ -1,4 +1,5 @@
 import type { PresetOrFactoryAwaitable } from 'unocss'
+import defu from 'defu'
 
 import { unoColors } from 'uno-colors'
 import {
@@ -11,17 +12,7 @@ import {
   transformerVariantGroup
 } from 'unocss'
 
-import presetTheme from 'unocss-preset-theme'
 import { presetUseful } from 'unocss-preset-useful'
-
-const themeColors = {
-  light: {
-    primary: '#4764cf'
-  },
-  dark: {
-    primary: '#4764cf'
-  }
-}
 
 const breakpoints = {
   'xs': '320px', // Extra small devices (e.g. phones)
@@ -35,7 +26,16 @@ const breakpoints = {
 
 export default defineConfig({
   theme: {
-    colors: unoColors(themeColors.light),
+    colors: defu(
+      unoColors({
+        primary: '#f0b90b'
+      }),
+      {
+        'background': '#181a1e',
+        'text': '#ffffff',
+        'text-secondary': '#8d909a'
+      }
+    ),
     breakpoints
   },
   shortcuts: [
@@ -48,14 +48,7 @@ export default defineConfig({
     presetIcons({
       scale: 1.2
     }),
-    presetTypography(),
-    presetTheme({
-      theme: {
-        dark: {
-          colors: unoColors(themeColors.dark)
-        }
-      }
-    }) as PresetOrFactoryAwaitable<object>
+    presetTypography()
   ],
   transformers: [
     transformerDirectives(),
