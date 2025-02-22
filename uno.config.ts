@@ -32,6 +32,7 @@ export default defineConfig({
       }),
       {
         'background': '#181a1e',
+        'background-secondary': '#242933',
         'text': '#ffffff',
         'text-secondary': '#8d909a'
       }

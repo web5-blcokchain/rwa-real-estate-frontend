@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { cn } from '@/utils/style'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import './uno.css'
@@ -25,7 +26,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={cn(
+        `${geistSans.variable} ${geistMono.variable}`,
+        'bg-background text-text size-screen'
+      )}
+      >
         {children}
       </body>
     </html>
