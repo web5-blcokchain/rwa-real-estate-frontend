@@ -62,7 +62,7 @@ export default function Home() {
         )}
         >
           <div className="text-11 text-white">Tokenize Real Estate Investment</div>
-          <div className="text-5 text-white">
+          <div className="max-w-2xl text-5 text-white">
             Global property investment made accessible through blockchain technology. Start investing in premium real estate with minimal capital.
           </div>
           <div className="space-x-6">
