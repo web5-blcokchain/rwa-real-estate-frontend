@@ -75,7 +75,7 @@ export default function Home() {
 
   return (
     <div className="mx-a size-full max-w-7xl">
-      <div className="px-8 pb-12">
+      <div className="px-8">
         <header className="h-32 fbc px-8 text-text">
           <div className="fyc gap-8">
             <div className="text-5 text-primary">Real Estate RWA</div>
@@ -193,6 +193,57 @@ export default function Home() {
             <div className="rounded-xl bg-[#242933] py-6 text-center space-y-4">
               <div className="text-4 text-[#efefef]">Average Annual Return</div>
               <div className="text-7.5 text-[#f9f9f9]">8.2%</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-32 text-center space-y-8">
+          <div className="text-7.5 text-[#d2d2d2]">Ready to Start Investing?</div>
+          <div className="text-5 text-[#d2d2d2]">
+            Join thousands of investors already earning passive income through tokenized real estate.
+          </div>
+          <div className="space-x-6">
+            <button className="rounded-md bg-text px-8 py-3 text-background">Start Investing</button>
+            <button className="rounded-md bg-background-secondary px-8 py-3 text-text">Learn More</button>
+          </div>
+        </div>
+
+        <div className="mt-32 bg-[#1e2024] px-8 py-14">
+          <div className="grid grid-cols-4">
+            <div>
+              <div className="text-4.5 text-[#898989]">About</div>
+              <ul className="mt-4 text-4 text-[#b5b5b5] space-y-2">
+                <li>Company</li>
+                <li>Careers</li>
+                <li>News</li>
+              </ul>
+            </div>
+
+            <div>
+              <div className="text-4.5 text-[#898989]">Products</div>
+              <ul className="mt-4 text-4 text-[#b5b5b5] space-y-2">
+                <li>Properties</li>
+                <li>Token Market</li>
+                <li>DeFi Services</li>
+              </ul>
+            </div>
+
+            <div>
+              <div className="text-4.5 text-[#898989]">Support</div>
+              <ul className="mt-4 text-4 text-[#b5b5b5] space-y-2">
+                <li>Help Center</li>
+                <li>Contact Us</li>
+                <li>Legal</li>
+              </ul>
+            </div>
+
+            <div>
+              <div className="text-4.5 text-[#898989]">Follow Us</div>
+              <div className="mt-4 fyc gap-2 text-text">
+                <div className="i-mdi-twitter size-5"></div>
+                <div className="i-mdi-linkedin size-5"></div>
+                <div className="i-ic-baseline-telegram size-5"></div>
+              </div>
             </div>
           </div>
         </div>
