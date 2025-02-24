@@ -124,7 +124,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 mt-8 gap-7">
+        <div className="grid grid-cols-3 mt-8 gap-7 px-8">
           {
             cards.map((card, i) => (
               <Card
@@ -138,7 +138,7 @@ export default function Home() {
           }
         </div>
 
-        <div className="mt-32">
+        <div className="mt-32 px-8">
           <div className="text-center text-7.5">Featured Properties</div>
 
           <div className="grid grid-cols-3 mt-8 gap-7">
