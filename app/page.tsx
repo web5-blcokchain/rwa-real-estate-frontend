@@ -50,6 +50,29 @@ export default function Home() {
     }
   ]
 
+  const howItWorks = [
+    {
+      icon: 'create-account',
+      title: '1. Create Account',
+      content: 'Sign up and complete KYC verification to start investing'
+    },
+    {
+      icon: 'building',
+      title: '2. Choose Property',
+      content: 'Browse and select from our curated property offerings'
+    },
+    {
+      icon: 'currency',
+      title: '3. Purchase Tokens',
+      content: 'Buy property tokens with your preferred payment method'
+    },
+    {
+      icon: 'create-account',
+      title: '4. Earn Returns',
+      content: 'Receive regular rental income and capital appreciation'
+    }
+  ]
+
   return (
     <div className="mx-a size-full max-w-7xl">
       <div className="px-8 pb-12">
@@ -125,6 +148,24 @@ export default function Home() {
                   key={i}
                   {...card}
                 />
+              ))
+            }
+          </div>
+        </div>
+
+        <div className="mt-32 bg-[#242933] px-8 py-14">
+          <div className="text-center text-7.5 font-bold">How It Works</div>
+
+          <div className="mt-16 fyc gap-8">
+            {
+              howItWorks.map((item, index) => (
+                <div key={index} className="text-center space-y-4">
+                  <div className="mx-a size-16 fcc rounded-full bg-primary-6">
+                    <img src={`/assets/icons/${item.icon}.svg`} className="size-7" />
+                  </div>
+                  <div className="text-5">{item.title}</div>
+                  <div className="text-3.5">{item.content}</div>
+                </div>
               ))
             }
           </div>
