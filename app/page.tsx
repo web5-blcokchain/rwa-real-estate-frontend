@@ -170,6 +170,32 @@ export default function Home() {
             }
           </div>
         </div>
+
+        <div className="mt-32 px-8 py-14">
+          <div className="text-center text-7.5 font-medium">Market Statistics</div>
+
+          <div className="grid grid-cols-4 mt-16 gap-8">
+            <div className="rounded-xl bg-[#242933] py-6 text-center space-y-4">
+              <div className="text-4 text-[#efefef]">Total Property Value</div>
+              <div className="text-7.5 text-[#f9f9f9]">¥4.25B</div>
+            </div>
+
+            <div className="rounded-xl bg-[#242933] py-6 text-center space-y-4">
+              <div className="text-4 text-[#efefef]">Active Investors</div>
+              <div className="text-7.5 text-[#f9f9f9]">12,450+</div>
+            </div>
+
+            <div className="rounded-xl bg-[#242933] py-6 text-center space-y-4">
+              <div className="text-4 text-[#efefef]">Tokenized Properties</div>
+              <div className="text-7.5 text-[#f9f9f9]">85</div>
+            </div>
+
+            <div className="rounded-xl bg-[#242933] py-6 text-center space-y-4">
+              <div className="text-4 text-[#efefef]">Average Annual Return</div>
+              <div className="text-7.5 text-[#f9f9f9]">8.2%</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )
