@@ -51,7 +51,7 @@ export default function Home() {
   ]
 
   return (
-    <div className="size-full">
+    <div className="mx-a size-full max-w-7xl">
       <div className="px-8 pb-12">
         <header className="h-32 fbc px-8 text-text">
           <div className="fyc gap-8">
