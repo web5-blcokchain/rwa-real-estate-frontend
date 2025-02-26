@@ -5,6 +5,8 @@ import { createContext, useContext, useState } from 'react'
 interface StepsContextType {
   currentStep: number
   setCurrentStep: (step: number) => void
+  next: () => void
+  prev: () => void
 }
 
 const StepsContext = createContext<StepsContextType | undefined>(undefined)
@@ -28,8 +30,16 @@ export function useSteps() {
 export const StepsProvider: FC = ({ children }) => {
   const [currentStep, setCurrentStep] = useState(CreateAccountStep.BaseInfo)
 
+  const next = () => {
+    setCurrentStep((prev) => prev + 1)
+  }
+
+  const prev = () => {
+    setCurrentStep((prev) => prev - 1)
+  }
+
   return (
-    <StepsContext value={{ currentStep, setCurrentStep }}>
+    <StepsContext value={{ currentStep, setCurrentStep, next, prev }}>
       {children}
     </StepsContext>
   )
