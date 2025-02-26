@@ -1,6 +1,9 @@
+'use client'
+
 import type { Metadata } from 'next'
 import { cn } from '@/utils/style'
 import { Geist, Geist_Mono } from 'next/font/google'
+import { usePathname } from 'next/navigation'
 import MainFooter from './footer'
 import MainHeader from './header'
 
@@ -25,6 +28,9 @@ export const metadata: Metadata = {
 const MainLayout: FC = ({
   children
 }) => {
+  const pathname = usePathname()
+  const isIndex = pathname === '/'
+
   return (
     <html lang="en">
       <body className={cn(
@@ -32,11 +38,11 @@ const MainLayout: FC = ({
         'bg-background text-text size-screen'
       )}
       >
-        <MainHeader />
+        { !isIndex && <MainHeader /> }
         <main className="mx-a max-w-7xl">
           {children}
         </main>
-        <MainFooter />
+        { !isIndex && <MainFooter /> }
       </body>
     </html>
   )
