@@ -13,7 +13,7 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="size-full fcc">
+    <div className="h-128 fcc">
       <div className="i-eos-icons-loading size-10"></div>
     </div>
   )
