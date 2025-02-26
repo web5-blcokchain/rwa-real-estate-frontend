@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 import { cn } from '@/utils/style'
 import { Geist, Geist_Mono } from 'next/font/google'
+import MainFooter from './footer'
+import MainHeader from './header'
+
 import '@/layouts/common/globals.css'
 import '@/layouts/common/uno.css'
 
@@ -29,7 +32,11 @@ const MainLayout: FC = ({
         'bg-background text-text size-screen'
       )}
       >
-        {children}
+        <MainHeader />
+        <main className="mx-a max-w-7xl">
+          {children}
+        </main>
+        <MainFooter />
       </body>
     </html>
   )

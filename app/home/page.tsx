@@ -1,23 +1,10 @@
-'use client'
-
 import Card from '@/components/home/card'
 import FeatureCard from '@/components/home/feature-card'
 import { cn } from '@/utils/style'
 import Image from 'next/image'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import styles from './page.module.scss'
 
 export default function Home() {
-  const pathname = usePathname()
-
-  const links = [
-    { title: 'Home', href: '/home' },
-    { title: 'Properties', href: '/properties' },
-    { title: 'Investment', href: '/investment' },
-    { title: 'About', href: '/about' }
-  ]
-
   const cards = [
     {
       icon: 'pie-chart',
@@ -87,190 +74,105 @@ export default function Home() {
   ]
 
   return (
-    <div className="mx-a size-full max-w-7xl">
-      <div className="px-8">
-        <header className="h-32 fbc px-8 text-text">
-          <div className="fyc gap-8">
-            <div className="text-5 text-primary">Real Estate RWA</div>
-
-            <nav className="fyc gap-8 text-4 text-[#8d909a]">
-              {
-                links.map((link, i) => (
-                  <Link
-                    key={i}
-                    href={link.href}
-                    className={
-                      cn(
-                        'cursor-pointer',
-                        pathname === link.href ? 'text-text' : ''
-                      )
-                    }
-                  >
-                    {link.title}
-                  </Link>
-                ))
-              }
-            </nav>
+    <div className="px-8">
+      <div>
+        <div className={cn(
+          styles.homeBanner,
+          'h-100 flex flex-col justify-center gap-6 px-10'
+        )}
+        >
+          <div className="text-11 text-white">Tokenize Real Estate Investment</div>
+          <div className="max-w-2xl text-5 text-white">
+            Global property investment made accessible through blockchain technology. Start investing in premium real estate with minimal capital.
           </div>
-
-          <div className="fyc gap-4">
-            <div className="fyc gap-1">
-              <div className="i-majesticons-globe-line size-5 bg-white"></div>
-              <div className="text-4">English</div>
-              <div className="i-ic-round-keyboard-arrow-down size-5 bg-white"></div>
-            </div>
-
-            <div className="i-material-symbols-help-outline size-5 bg-white"></div>
-            <div className="i-material-symbols-notifications-outline size-5 bg-white"></div>
-            <div className="i-material-symbols-favorite-outline-rounded size-5 bg-white"></div>
-
-            <div className="fyc gap-1">
-              <div className="i-material-symbols-account-circle-outline size-5 bg-white"></div>
-              <div className="text-4">chloe</div>
-              <div className="i-ic-round-keyboard-arrow-down size-5 bg-white"></div>
-            </div>
-          </div>
-        </header>
-
-        <div>
-          <div className={cn(
-            styles.homeBanner,
-            'h-100 flex flex-col justify-center gap-6 px-10'
-          )}
-          >
-            <div className="text-11 text-white">Tokenize Real Estate Investment</div>
-            <div className="max-w-2xl text-5 text-white">
-              Global property investment made accessible through blockchain technology. Start investing in premium real estate with minimal capital.
-            </div>
-            <div className="space-x-6">
-              <button className="rounded-md bg-background px-8 py-3 text-text">Start Investing</button>
-              <button className="rounded-md bg-text px-8 py-3 text-background">Learn More</button>
-            </div>
+          <div className="space-x-6">
+            <button className="rounded-md bg-background px-8 py-3 text-text">Start Investing</button>
+            <button className="rounded-md bg-text px-8 py-3 text-background">Learn More</button>
           </div>
         </div>
+      </div>
 
-        <div className="grid grid-cols-3 mt-8 gap-7 px-8">
+      <div className="grid grid-cols-3 mt-8 gap-7 px-8">
+        {
+          cards.map((card, i) => (
+            <Card
+              key={i}
+              title={card.title}
+              content={card.content}
+            >
+              <Image src={`/assets/icons/${card.icon}.svg`} width={20} height={20} alt="icon" />
+            </Card>
+          ))
+        }
+      </div>
+
+      <div className="mt-32 px-8">
+        <div className="text-center text-7.5">Featured Properties</div>
+
+        <div className="grid grid-cols-3 mt-8 gap-7">
           {
-            cards.map((card, i) => (
-              <Card
+            featureCards.map((card, i) => (
+              <FeatureCard
                 key={i}
-                title={card.title}
-                content={card.content}
-              >
-                <Image src={`/assets/icons/${card.icon}.svg`} width={20} height={20} alt="icon" />
-              </Card>
+                {...card}
+              />
             ))
           }
         </div>
+      </div>
 
-        <div className="mt-32 px-8">
-          <div className="text-center text-7.5">Featured Properties</div>
+      <div className="mt-32 bg-[#242933] px-8 py-14">
+        <div className="text-center text-7.5 font-bold">How It Works</div>
 
-          <div className="grid grid-cols-3 mt-8 gap-7">
-            {
-              featureCards.map((card, i) => (
-                <FeatureCard
-                  key={i}
-                  {...card}
-                />
-              ))
-            }
-          </div>
-        </div>
-
-        <div className="mt-32 bg-[#242933] px-8 py-14">
-          <div className="text-center text-7.5 font-bold">How It Works</div>
-
-          <div className="mt-16 fyc gap-8">
-            {
-              howItWorks.map((item, index) => (
-                <div key={index} className="text-center space-y-4">
-                  <div className="mx-a size-16 fcc rounded-full bg-primary-6">
-                    <img src={`/assets/icons/${item.icon}.svg`} className="size-7" />
-                  </div>
-                  <div className="text-5">{item.title}</div>
-                  <div className="text-3.5">{item.content}</div>
+        <div className="mt-16 fyc gap-8">
+          {
+            howItWorks.map((item, index) => (
+              <div key={index} className="text-center space-y-4">
+                <div className="mx-a size-16 fcc rounded-full bg-primary-6">
+                  <img src={`/assets/icons/${item.icon}.svg`} className="size-7" />
                 </div>
-              ))
-            }
-          </div>
-        </div>
-
-        <div className="mt-32 px-8 py-14">
-          <div className="text-center text-7.5 font-medium">Market Statistics</div>
-
-          <div className="grid grid-cols-4 mt-16 gap-8">
-            <div className="rounded-xl bg-[#242933] py-6 text-center space-y-4">
-              <div className="text-4 text-[#efefef]">Total Property Value</div>
-              <div className="text-7.5 text-[#f9f9f9]">¥4.25B</div>
-            </div>
-
-            <div className="rounded-xl bg-[#242933] py-6 text-center space-y-4">
-              <div className="text-4 text-[#efefef]">Active Investors</div>
-              <div className="text-7.5 text-[#f9f9f9]">12,450+</div>
-            </div>
-
-            <div className="rounded-xl bg-[#242933] py-6 text-center space-y-4">
-              <div className="text-4 text-[#efefef]">Tokenized Properties</div>
-              <div className="text-7.5 text-[#f9f9f9]">85</div>
-            </div>
-
-            <div className="rounded-xl bg-[#242933] py-6 text-center space-y-4">
-              <div className="text-4 text-[#efefef]">Average Annual Return</div>
-              <div className="text-7.5 text-[#f9f9f9]">8.2%</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-32 text-center space-y-8">
-          <div className="text-7.5 text-[#d2d2d2]">Ready to Start Investing?</div>
-          <div className="text-5 text-[#d2d2d2]">
-            Join thousands of investors already earning passive income through tokenized real estate.
-          </div>
-          <div className="space-x-6">
-            <button className="rounded-md bg-text px-8 py-3 text-background">Start Investing</button>
-            <button className="rounded-md bg-background-secondary px-8 py-3 text-text">Learn More</button>
-          </div>
-        </div>
-
-        <div className="mt-32 bg-[#1e2024] px-8 py-14">
-          <div className="grid grid-cols-4">
-            <div>
-              <div className="text-4.5 text-[#898989]">About</div>
-              <ul className="mt-4 text-4 text-[#b5b5b5] space-y-2">
-                <li>Company</li>
-                <li>Careers</li>
-                <li>News</li>
-              </ul>
-            </div>
-
-            <div>
-              <div className="text-4.5 text-[#898989]">Products</div>
-              <ul className="mt-4 text-4 text-[#b5b5b5] space-y-2">
-                <li>Properties</li>
-                <li>Token Market</li>
-                <li>DeFi Services</li>
-              </ul>
-            </div>
-
-            <div>
-              <div className="text-4.5 text-[#898989]">Support</div>
-              <ul className="mt-4 text-4 text-[#b5b5b5] space-y-2">
-                <li>Help Center</li>
-                <li>Contact Us</li>
-                <li>Legal</li>
-              </ul>
-            </div>
-
-            <div>
-              <div className="text-4.5 text-[#898989]">Follow Us</div>
-              <div className="mt-4 fyc gap-2 text-text">
-                <div className="i-mdi-twitter size-5"></div>
-                <div className="i-mdi-linkedin size-5"></div>
-                <div className="i-ic-baseline-telegram size-5"></div>
+                <div className="text-5">{item.title}</div>
+                <div className="text-3.5">{item.content}</div>
               </div>
-            </div>
+            ))
+          }
+        </div>
+      </div>
+
+      <div className="mt-32 px-8 py-14">
+        <div className="text-center text-7.5 font-medium">Market Statistics</div>
+
+        <div className="grid grid-cols-4 mt-16 gap-8">
+          <div className="rounded-xl bg-[#242933] py-6 text-center space-y-4">
+            <div className="text-4 text-[#efefef]">Total Property Value</div>
+            <div className="text-7.5 text-[#f9f9f9]">¥4.25B</div>
           </div>
+
+          <div className="rounded-xl bg-[#242933] py-6 text-center space-y-4">
+            <div className="text-4 text-[#efefef]">Active Investors</div>
+            <div className="text-7.5 text-[#f9f9f9]">12,450+</div>
+          </div>
+
+          <div className="rounded-xl bg-[#242933] py-6 text-center space-y-4">
+            <div className="text-4 text-[#efefef]">Tokenized Properties</div>
+            <div className="text-7.5 text-[#f9f9f9]">85</div>
+          </div>
+
+          <div className="rounded-xl bg-[#242933] py-6 text-center space-y-4">
+            <div className="text-4 text-[#efefef]">Average Annual Return</div>
+            <div className="text-7.5 text-[#f9f9f9]">8.2%</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-32 text-center space-y-8">
+        <div className="text-7.5 text-[#d2d2d2]">Ready to Start Investing?</div>
+        <div className="text-5 text-[#d2d2d2]">
+          Join thousands of investors already earning passive income through tokenized real estate.
+        </div>
+        <div className="space-x-6">
+          <button className="rounded-md bg-text px-8 py-3 text-background">Start Investing</button>
+          <button className="rounded-md bg-background-secondary px-8 py-3 text-text">Learn More</button>
         </div>
       </div>
     </div>
