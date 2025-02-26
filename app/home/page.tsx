@@ -1,10 +1,23 @@
+'use client'
+
 import Card from '@/components/home/card'
 import FeatureCard from '@/components/home/feature-card'
 import { cn } from '@/utils/style'
 import Image from 'next/image'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import styles from './page.module.scss'
 
 export default function Home() {
+  const pathname = usePathname()
+
+  const links = [
+    { title: 'Home', href: '/home' },
+    { title: 'Properties', href: '/properties' },
+    { title: 'Investment', href: '/investment' },
+    { title: 'About', href: '/about' }
+  ]
+
   const cards = [
     {
       icon: 'pie-chart',
@@ -80,11 +93,23 @@ export default function Home() {
           <div className="fyc gap-8">
             <div className="text-5 text-primary">Real Estate RWA</div>
 
-            <nav className="fyc gap-8 text-4 font-extralight">
-              <div>Home</div>
-              <div>Properties</div>
-              <div>Investment</div>
-              <div>About</div>
+            <nav className="fyc gap-8 text-4 text-[#8d909a]">
+              {
+                links.map((link, i) => (
+                  <Link
+                    key={i}
+                    href={link.href}
+                    className={
+                      cn(
+                        'cursor-pointer',
+                        pathname === link.href ? 'text-text' : ''
+                      )
+                    }
+                  >
+                    {link.title}
+                  </Link>
+                ))
+              }
             </nav>
           </div>
 
