@@ -1,13 +1,13 @@
-import MainLayout from '@/layouts/main'
+import RootLayout from '@/layouts/root'
 
-export default function RootLayout({
+export default function Root({
   children
 }: Readonly<{
   children: React.ReactNode
 }>) {
   return (
-    <MainLayout>
+    <RootLayout>
       {children}
-    </MainLayout>
+    </RootLayout>
   )
 }
