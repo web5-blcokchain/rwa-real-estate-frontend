@@ -1,4 +1,6 @@
 import RootLayout from '@/layouts/root'
+import { AntdRegistry } from '@ant-design/nextjs-registry'
+import { ConfigProvider } from 'antd'
 
 export default function Root({
   children
@@ -7,7 +9,16 @@ export default function Root({
 }>) {
   return (
     <RootLayout>
-      {children}
+      <AntdRegistry>
+        <ConfigProvider theme={{
+          token: {
+            colorPrimary: '#f5d930'
+          }
+        }}
+        >
+          {children}
+        </ConfigProvider>
+      </AntdRegistry>
     </RootLayout>
   )
 }
