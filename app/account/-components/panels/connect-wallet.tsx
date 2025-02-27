@@ -1,25 +1,39 @@
+import { useSteps } from '../steps-provider'
+
 interface Wallet {
   name: string
   icon: string
   description: string
+  onClick: () => void
 }
 
 export default function ConnectWalletPanel() {
+  const { next } = useSteps()
+
   const wallets: Wallet[] = [
     {
       name: 'MetaMask',
       icon: '/assets/icons/meta-mask.svg',
-      description: 'Connect to your MetaMask wallet'
+      description: 'Connect to your MetaMask wallet',
+      onClick() {
+        next()
+      }
     },
     {
       name: 'WalletConnect',
       icon: '/assets/icons/wallet.svg',
-      description: 'Connect using WalletConnect'
+      description: 'Connect using WalletConnect',
+      onClick() {
+        next()
+      }
     },
     {
       name: 'Coinbase Wallet',
       icon: '/assets/icons/coinbase.svg',
-      description: 'Connect to your Coinbase wallet'
+      description: 'Connect to your Coinbase wallet',
+      onClick() {
+        next()
+      }
     }
   ]
 
@@ -39,9 +53,9 @@ export default function ConnectWalletPanel() {
   )
 }
 
-function WalletCard({ name, icon, description }: Wallet) {
+function WalletCard({ name, icon, description, onClick }: Wallet) {
   return (
-    <div className="fbc select-none gap-4 b b-border rounded-xl px-6 py-3 clickable-99">
+    <div className="fbc select-none gap-4 b b-border rounded-xl px-6 py-3 clickable-99" onClick={onClick}>
       <div className="size-13.5 fcc rounded-xl bg-[#242933]">
         <img src={icon} alt="icon" />
       </div>
