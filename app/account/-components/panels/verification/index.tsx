@@ -1,3 +1,9 @@
+import { useState } from 'react'
+import { useSteps } from '../../steps-provider'
+
+import IndividualVerification from './individual'
+import InstitutionalVerification from './institutional'
+
 interface Verification {
   name: string
   icon: string
@@ -5,14 +11,45 @@ interface Verification {
   onClick: () => void
 }
 
+enum VisibleType {
+  Select,
+  Individual,
+  Institutional
+}
+
+interface VerificationPanelProps {
+  setCurrentVisible: (visible: VisibleType) => void
+}
+
 export default function VerificationPanel() {
+  const [currentVisible, setCurrentVisible] = useState<VisibleType>(VisibleType.Select)
+
+  switch (currentVisible) {
+    case VisibleType.Select:
+      return <SelectVerification setCurrentVisible={setCurrentVisible} />
+    case VisibleType.Individual:
+      return <IndividualVerification />
+    case VisibleType.Institutional:
+      return <InstitutionalVerification />
+  }
+}
+
+function SelectVerification({ setCurrentVisible }: VerificationPanelProps) {
+  const { setHandler } = useSteps()
+
   const list: Verification[] = [
     {
       name: 'Individual Investor',
       icon: '/assets/icons/user.svg',
       description: 'For personal investment accounts',
       onClick() {
+        setCurrentVisible(VisibleType.Individual)
 
+        setHandler({
+          onReturn() {
+            setCurrentVisible(VisibleType.Select)
+          }
+        })
       }
     },
     {
@@ -20,7 +57,13 @@ export default function VerificationPanel() {
       icon: '/assets/icons/institutional.svg',
       description: 'For companies and organizations',
       onClick() {
+        setCurrentVisible(VisibleType.Institutional)
 
+        setHandler({
+          onReturn() {
+            setCurrentVisible(VisibleType.Select)
+          }
+        })
       }
     }
   ]
