@@ -31,10 +31,18 @@ export const StepsProvider: FC = ({ children }) => {
   const [currentStep, setCurrentStep] = useState(CreateAccountStep.BaseInfo)
 
   const next = () => {
+    if (currentStep === CreateAccountStep.Verification) {
+      return
+    }
+
     setCurrentStep(prev => prev + 1)
   }
 
   const prev = () => {
+    if (currentStep === CreateAccountStep.BaseInfo) {
+      return
+    }
+
     setCurrentStep(prev => prev - 1)
   }
 
