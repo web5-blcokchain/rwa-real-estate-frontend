@@ -1,8 +1,8 @@
-import { CreateAccountStep, useSteps } from "../steps-provider"
+import { CreateAccountStep, useSteps } from '../steps-provider'
 
-import CreateAccountPanel from "./create-account"
-import ConnectWalletPanel from "./connect-wallet"
-import VerificationPanel from "./verification"
+import ConnectWalletPanel from './connect-wallet'
+import CreateAccountPanel from './create-account'
+import VerificationPanel from './verification'
 
 export function AccountPanel() {
   const { currentStep } = useSteps()
