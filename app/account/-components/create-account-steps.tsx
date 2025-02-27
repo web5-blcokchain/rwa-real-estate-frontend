@@ -26,7 +26,7 @@ export default function CreateAccountSteps() {
           <div key={i} className="w-full">
             <div className={cn(
               'b b-text-secondary b-solid h-2',
-              currentStep >= item.step ? 'bg-primary' : ''
+              currentStep === item.step ? 'bg-primary' : ''
             )}
             >
             </div>
