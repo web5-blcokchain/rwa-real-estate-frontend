@@ -28,10 +28,20 @@ export default function AccountLayout({
 }
 
 function ReturnButton() {
-  const { prev } = useSteps()
+  const { prev, handler, setHandler } = useSteps()
+
+  function onReturnClick() {
+    if (handler.onReturn) {
+      handler.onReturn()
+      setHandler({})
+      return
+    }
+
+    prev()
+  }
 
   return (
-    <button className="fyc select-none gap-1 text-[#898989] clickable" onClick={prev}>
+    <button className="fyc select-none gap-1 text-[#898989] clickable" onClick={onReturnClick}>
       <span className="i-material-symbols-light-arrow-back-rounded size-6"></span>
       <span className="text-4">
         Return

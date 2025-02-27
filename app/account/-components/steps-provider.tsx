@@ -7,6 +7,10 @@ interface StepsContextType {
   setCurrentStep: (step: number) => void
   next: () => void
   prev: () => void
+  handler: {
+    onReturn?: () => void
+  }
+  setHandler: (handler: { onReturn?: () => void }) => void
 }
 
 const StepsContext = createContext<StepsContextType | undefined>(undefined)
@@ -29,6 +33,7 @@ export function useSteps() {
 
 export const StepsProvider: FC = ({ children }) => {
   const [currentStep, setCurrentStep] = useState(CreateAccountStep.BaseInfo)
+  const [handler, setHandler] = useState<{ onReturn?: () => void }>({})
 
   const next = () => {
     if (currentStep === CreateAccountStep.Verification) {
@@ -47,7 +52,15 @@ export const StepsProvider: FC = ({ children }) => {
   }
 
   return (
-    <StepsContext value={{ currentStep, setCurrentStep, next, prev }}>
+    <StepsContext value={{
+      currentStep,
+      setCurrentStep,
+      next,
+      prev,
+      handler,
+      setHandler
+    }}
+    >
       {children}
     </StepsContext>
   )
