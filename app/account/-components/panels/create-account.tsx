@@ -1,8 +1,10 @@
 import IFormItem from '@/components/common/i-form-item'
 import IInput from '@/components/common/i-input'
 import ISeparator from '@/components/common/i-separator'
+import { useSteps } from '../steps-provider'
 
 export default function CreateAccountPanel() {
+  const { next } = useSteps()
   return (
     <div className="fccc gap-2">
       <div className="text-8 font-medium">Create Your Account</div>
@@ -21,7 +23,7 @@ export default function CreateAccountPanel() {
           <IInput placeholder="Enter password" className="w-full" />
         </IFormItem>
 
-        <button className="h-12.5 w-full rounded bg-primary-2 text-background clickable-99">Create Account</button>
+        <button className="h-12.5 w-full rounded bg-primary-2 text-background clickable-99" onClick={next}>Create Account</button>
 
         <ISeparator text="or" />
 
