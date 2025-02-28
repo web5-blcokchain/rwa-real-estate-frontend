@@ -1,5 +1,5 @@
-import { cn } from "@/utils/style"
-import { DetailedHTMLProps, HTMLAttributes } from "react"
+import type { DetailedHTMLProps, HTMLAttributes } from 'react'
+import { cn } from '@/utils/style'
 
 interface Props {
   label?: string
@@ -15,30 +15,33 @@ const IFormItem: FC<
   children,
   ...props
 }) => {
-    return (
-      <div {...props} className={
+  return (
+    <div
+      {...props}
+      className={
         cn(
           className,
           'space-y-2'
         )
-      }>
-        {
-          label &&
-          (
-            <div className="text-4 text-text">{label}</div>
-          )
-        }
+      }
+    >
+      {
+        label
+        && (
+          <div className="text-4 text-text">{label}</div>
+        )
+      }
 
-        <div>{children}</div>
+      <div>{children}</div>
 
-        {
-          description &&
-          (
-            <div className="text-3.5 text-[#b5b5b5]">{description}</div>
-          )
-        }
-      </div>
-    )
-  }
+      {
+        description
+        && (
+          <div className="text-3.5 text-[#b5b5b5]">{description}</div>
+        )
+      }
+    </div>
+  )
+}
 
 export default IFormItem

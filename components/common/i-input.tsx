@@ -1,12 +1,14 @@
-import { cn } from "@/utils/style"
-import { DetailedHTMLProps, InputHTMLAttributes } from "react"
+import type { DetailedHTMLProps, InputHTMLAttributes } from 'react'
+import { cn } from '@/utils/style'
 
 const IInput: FC<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>> = ({
   className,
   ...props
 }) => {
   return (
-    <input type="text" {...props}
+    <input
+      type="text"
+      {...props}
       className={
         cn(
           className,
