@@ -2,6 +2,8 @@ import RootLayout from '@/layouts/root'
 import { AntdRegistry } from '@ant-design/nextjs-registry'
 import { ConfigProvider } from 'antd'
 
+export const runtime = 'nodejs'
+
 export default function Root({
   children
 }: Readonly<{
