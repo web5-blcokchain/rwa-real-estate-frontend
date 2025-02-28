@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.3.0",
+    "@cloudflare/next-on-pages": "^1.13.8",
     "@iconify/json": "^2.2.311",
     "@next/eslint-plugin-next": "^15.2.0",
     "@types/node": "^22.13.5",
@@ -38,13 +39,15 @@
     "typescript": "^5.7.3",
     "uno-colors": "^0.0.2",
     "unocss": "^66.0.0",
-    "unocss-preset-useful": "^0.9.2"
+    "unocss-preset-useful": "^0.9.2",
+    "wrangler": "^3.111.0"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
       "@parcel/watcher",
       "esbuild",
-      "sharp"
+      "sharp",
+      "workerd"
     ]
   }
 }
