@@ -11,7 +11,7 @@ const UploadCard: FC<{
   children
 }) => {
   return (
-    <div className="rounded bg-background-secondary p-6 space-y-4">
+    <div className="rounded-xl bg-background-secondary p-6 space-y-4">
       <div className="text-4">{label}</div>
 
       <div className="fccc select-none gap-4 b b-white rounded b-dashed py-6 clickable-99">
