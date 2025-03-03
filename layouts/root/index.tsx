@@ -4,9 +4,10 @@ import type { Metadata } from 'next'
 import { cn } from '@/utils/style'
 import { Geist, Geist_Mono } from 'next/font/google'
 import '@ant-design/v5-patch-for-react-19'
+
+import '@unocss/reset/tailwind.css'
 import '@/layouts/common/globals.css'
 import '@/layouts/common/uno.css'
-import '@unocss/reset/tailwind-compat.css'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
