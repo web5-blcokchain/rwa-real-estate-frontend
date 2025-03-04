@@ -19,7 +19,7 @@ export default function AccountLayout({
             <div className="i-ic-round-keyboard-arrow-down size-5 bg-white"></div>
           </div>
         </div>
-        <div className="w-full flex-1">
+        <div className="w-full flex-1 of-y-auto">
           {children}
         </div>
       </div>
