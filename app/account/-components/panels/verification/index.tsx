@@ -1,6 +1,7 @@
+import INotice from '@/components/common/i-notice'
 import { useState } from 'react'
-import { useSteps } from '../../steps-provider'
 
+import { useSteps } from '../../steps-provider'
 import IndividualVerification from './individual'
 import InstitutionalVerification from './institutional'
 
@@ -79,14 +80,11 @@ function SelectVerification({ setCurrentVisible }: VerificationPanelProps) {
             <VerificationCard key={i} {...item} />
           ))
         }
-        <div className="flex gap-4 b b-border rounded-xl px-6 py-8">
-          <div className="pr top-1 size-4 fcc shrink-0 rounded-full bg-primary-1"></div>
 
-          <div className="text-[#d2d2d2]">
-            Different verification requirements apply to individual and institutional investors.
-            Please select the appropriate type to proceed with the verification process.
-          </div>
-        </div>
+        <INotice>
+          Different verification requirements apply to individual and institutional investors.
+          Please select the appropriate type to proceed with the verification process.
+        </INotice>
       </div>
     </div>
   )
