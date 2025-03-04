@@ -1,5 +1,6 @@
 'use client'
 
+import CreateAccountSteps from './-components/create-account-steps'
 import { StepsProvider, useSteps } from './-components/steps-provider'
 
 export default function AccountLayout({
@@ -9,8 +10,8 @@ export default function AccountLayout({
 }>) {
   return (
     <StepsProvider>
-      <div className="size-full fccc px-8">
-        <div className="h-18 w-full fbc">
+      <div className="grid grid-rows-[4.5rem_4.5rem_1fr] size-full px-8">
+        <div className="w-full fbc">
           <ReturnButton />
 
           <div className="fyc gap-1">
@@ -19,8 +20,11 @@ export default function AccountLayout({
             <div className="i-ic-round-keyboard-arrow-down size-5 bg-white"></div>
           </div>
         </div>
-        <div className="w-full flex-1 of-y-auto">
-          {children}
+        <CreateAccountSteps />
+        <div className="of-y-auto">
+          <div className="mb-8 mt-4">
+            {children}
+          </div>
         </div>
       </div>
     </StepsProvider>

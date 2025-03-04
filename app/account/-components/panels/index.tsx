@@ -8,10 +8,10 @@ export function AccountPanel() {
   const { currentStep } = useSteps()
 
   return (
-    <div className="py-8">
+    <>
       { currentStep === CreateAccountStep.BaseInfo && (<CreateAccountPanel />) }
       { currentStep === CreateAccountStep.Wallet && (<ConnectWalletPanel />) }
       { currentStep === CreateAccountStep.Verification && (<VerificationPanel />) }
-    </div>
+    </>
   )
 }
