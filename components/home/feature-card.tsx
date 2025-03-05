@@ -13,7 +13,7 @@ const FeatureCard: FC<Props> = ({ title, picture, location, price, tokenPrice, a
       <div>
         <img src={picture} />
       </div>
-      <div className="px-6 py-2 space-y-2">
+      <div className="px-6 py-8 space-y-2">
         <div className="text-5">{title}</div>
         <div className="fbc text-4">
           <div className="text-[#b5b5b5]">{location}</div>
