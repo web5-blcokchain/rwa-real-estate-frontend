@@ -1,7 +1,7 @@
 export default function MainFooter() {
   return (
     <footer className="mt-32 bg-[#1e2024] px-8 py-14">
-      <div className="grid grid-cols-4">
+      <div className="grid grid-cols-2 gap-y-12 md:grid-cols-4">
         <div>
           <div className="text-4.5 text-[#898989]">About</div>
           <ul className="mt-4 text-4 text-[#b5b5b5] space-y-2">
