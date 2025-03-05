@@ -1,61 +1,122 @@
 'use client'
 
 import { cn } from '@/utils/style'
+import { Drawer } from 'antd'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useState } from 'react'
+
+const links = [
+  { title: 'Home', href: '/home' },
+  { title: 'Properties', href: '/properties' },
+  { title: 'Investment', href: '/investment' },
+  { title: 'About', href: '/about' }
+]
 
 export default function MainHeader() {
-  const pathname = usePathname()
+  const [open, setOpen] = useState(false)
 
-  const links = [
-    { title: 'Home', href: '/home' },
-    { title: 'Properties', href: '/properties' },
-    { title: 'Investment', href: '/investment' },
-    { title: 'About', href: '/about' }
-  ]
+  const showDrawer = () => {
+    setOpen(true)
+  }
+
+  const onClose = () => {
+    setOpen(false)
+  }
 
   return (
     <header className="sticky left-0 top-0 h-32 fbc bg-background px-8 text-text">
       <div className="fyc gap-8">
         <div className="text-5 text-primary">Real Estate RWA</div>
-
-        <nav className="fyc gap-8 text-4 text-[#8d909a]">
-          {
-            links.map((link, i) => (
-              <Link
-                key={i}
-                href={link.href}
-                className={
-                  cn(
-                    'cursor-pointer',
-                    pathname === link.href ? 'text-text' : ''
-                  )
-                }
-              >
-                {link.title}
-              </Link>
-            ))
-          }
-        </nav>
+        <NavMenu className="fyc gap-8 lt-md:hidden" />
       </div>
 
-      <div className="fyc gap-4">
-        <div className="fyc gap-1">
-          <div className="i-majesticons-globe-line size-5 bg-white"></div>
-          <div className="text-4">English</div>
-          <div className="i-ic-round-keyboard-arrow-down size-5 bg-white"></div>
-        </div>
-
-        <div className="i-material-symbols-help-outline size-5 bg-white"></div>
-        <div className="i-material-symbols-notifications-outline size-5 bg-white"></div>
-        <div className="i-material-symbols-favorite-outline-rounded size-5 bg-white"></div>
-
-        <div className="fyc gap-1">
-          <div className="i-material-symbols-account-circle-outline size-5 bg-white"></div>
-          <div className="text-4">chloe</div>
-          <div className="i-ic-round-keyboard-arrow-down size-5 bg-white"></div>
-        </div>
+      <div className="fyc gap-4 lt-lg:hidden">
+        <RightMenu />
       </div>
+
+      <div className="hidden lt-lg:flex">
+        <div className="i-material-symbols-menu-rounded size-10" onClick={showDrawer}></div>
+      </div>
+
+      <Drawer
+        className="bg-background! bg-opacity-75! backdrop-blur-md!"
+        closeIcon={false}
+        width="100%"
+        onClose={onClose}
+        open={open}
+      >
+        <div className="space-y-6">
+          <div className="fec">
+            <div
+              className="i-material-symbols-light-close-rounded size-10 bg-white"
+              onClick={onClose}
+            >
+            </div>
+          </div>
+          <div className="fec gap-4">
+            <RightMenu />
+          </div>
+
+          <NavMenu
+            className={cn(
+              'flex flex-col items-end justify-center gap-6',
+              'text-6'
+            )}
+          />
+        </div>
+      </Drawer>
     </header>
+  )
+}
+
+function NavMenu({ className }: { className?: string }) {
+  const pathname = usePathname()
+
+  return (
+    <nav className={cn(
+      'text-4',
+      className
+    )}
+    >
+      {
+        links.map((link, i) => (
+          <Link
+            key={i}
+            href={link.href}
+            className={
+              cn(
+                'cursor-pointer active:text-primary hover:text-primary',
+                pathname === link.href ? 'text-text' : 'text-[#8d909a]'
+              )
+            }
+          >
+            {link.title}
+          </Link>
+        ))
+      }
+    </nav>
+  )
+}
+
+function RightMenu() {
+  return (
+    <>
+      <div className="fyc gap-1">
+        <div className="i-majesticons-globe-line size-5 bg-white"></div>
+        <div className="text-4 text-white">English</div>
+        <div className="i-ic-round-keyboard-arrow-down size-5 bg-white"></div>
+      </div>
+
+      <div className="i-material-symbols-help-outline size-5 bg-white"></div>
+      <div className="i-material-symbols-notifications-outline size-5 bg-white"></div>
+      <div className="i-material-symbols-favorite-outline-rounded size-5 bg-white"></div>
+
+      <div className="fyc gap-1">
+        <div className="i-material-symbols-account-circle-outline size-5 bg-white"></div>
+        <div className="text-4 text-white">chloe</div>
+        <div className="i-ic-round-keyboard-arrow-down size-5 bg-white"></div>
+      </div>
+    </>
   )
 }
