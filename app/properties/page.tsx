@@ -1,4 +1,5 @@
 import RealEstateCard from '@/components/properties/real-estate-card'
+import { Button } from 'antd'
 
 export default function Properties() {
   return (
@@ -38,6 +39,16 @@ export default function Properties() {
             />
           ))
         }
+      </div>
+
+      <div className="mt-8 text-center">
+        <Button
+          type="primary"
+          size="large"
+          className="rounded-full! text-black!"
+        >
+          Load More
+        </Button>
       </div>
     </div>
   )
