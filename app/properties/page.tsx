@@ -1,3 +1,5 @@
+import RealEstateCard from '@/components/properties/real-estate-card'
+
 export default function Properties() {
   return (
     <div className="p-8">
@@ -18,6 +20,24 @@ export default function Properties() {
             className="w-128 b-none bg-transparent outline-none"
           />
         </div>
+      </div>
+
+      <div className="grid grid-cols-1 mt-8 gap-8 md:grid-cols-3">
+        {
+          Array.from({ length: 6 }).map((_, i) => (
+            <RealEstateCard
+              key={i}
+              picture={`https://picsum.photos/500/300?random=${i}`}
+              title="Park Avenue Tower"
+              location="Upper East Side, Manhattan, New York"
+              size="813 sq ft"
+              beds={2}
+              price={850000}
+              tokenPrice={850000}
+              status={0}
+            />
+          ))
+        }
       </div>
     </div>
   )
