@@ -1,5 +1,6 @@
 'use client'
 
+import { cn } from '@/utils/style'
 import numeral from 'numeral'
 import { useState } from 'react'
 import { Waiting } from '../common/waiting'
@@ -27,7 +28,7 @@ const RealEstateCard: FC<{
 
   return (
     <div className="overflow-hidden rounded-xl bg-background-secondary">
-      <div className="h-56">
+      <div className="relative h-56">
         {
           loading
             ? (
@@ -46,6 +47,19 @@ const RealEstateCard: FC<{
             setLoading(false)
           }}
         />
+
+        <div
+          className={cn(
+            'absolute right-4 top-4 size-8 rounded-full bg-text',
+            'flex items-center justify-center',
+            'clickable'
+          )}
+        >
+          <div
+            className="i-ic-round-favorite-border size-5 bg-gray-4"
+          >
+          </div>
+        </div>
       </div>
       <div className="px-6 py-8 space-y-2">
         <div className="fbc text-5">
