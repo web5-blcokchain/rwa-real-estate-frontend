@@ -15,6 +15,7 @@
     "clsx": "^2.1.1",
     "lodash-es": "^4.17.21",
     "next": "^15.2.0",
+    "numeral": "^2.0.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwind-merge": "^3.0.2"
@@ -26,6 +27,7 @@
     "@next/eslint-plugin-next": "^15.2.0",
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^22.13.5",
+    "@types/numeral": "^2.0.5",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@unocss/eslint-plugin": "^66.0.0",

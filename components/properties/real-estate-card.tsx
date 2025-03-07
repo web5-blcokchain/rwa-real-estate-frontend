@@ -1,5 +1,6 @@
 'use client'
 
+import numeral from 'numeral'
 import { useState } from 'react'
 import { Waiting } from '../common/waiting'
 
@@ -50,8 +51,7 @@ const RealEstateCard: FC<{
         <div className="fbc text-5">
           <div>
             $
-            {price}
-            M
+            {numeral(price).format('0,0')}
           </div>
 
           <div className="rounded bg-[#8465bb] bg-opacity-50 px-2 py-1 text-3 text-purple">
@@ -62,7 +62,7 @@ const RealEstateCard: FC<{
 
         <div className="fbc">
           <div className="text-4">
-            {`Token Price: ${tokenPrice}`}
+            {`Token Price: $${numeral(tokenPrice).format('0,0')}`}
           </div>
         </div>
 
