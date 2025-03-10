@@ -1,4 +1,3 @@
-import type { PresetOrFactoryAwaitable } from 'unocss'
 import defu from 'defu'
 
 import { unoColors } from 'uno-colors'
@@ -79,10 +78,5 @@ export default defineConfig({
   transformers: [
     transformerDirectives(),
     transformerVariantGroup()
-  ],
-  content: {
-    filesystem: [
-      './{app,layouts,components}/**/*.{html,js,ts,jsx,tsx,vue,svelte,astro}'
-    ]
-  }
+  ]
 })
