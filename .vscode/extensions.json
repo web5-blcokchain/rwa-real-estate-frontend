@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "usernamehw.errorlens",
+    "johnsoncodehk.vscode-tsconfig-helper",
+    "antfu.iconify",
+    "antfu.goto-alias",
+    "dsznajder.es7-react-js-snippets"
+  ]
+}
