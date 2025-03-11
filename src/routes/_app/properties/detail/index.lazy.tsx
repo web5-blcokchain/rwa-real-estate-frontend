@@ -1,6 +1,8 @@
 import { ImageSwiper } from '@/components/common/image-swiper'
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { Button, Input } from 'antd'
+import { LocationCard } from './-cards/-location'
+import { PropertyDescriptionCard } from './-cards/-property-description'
 
 export const Route = createLazyFileRoute('/_app/properties/detail/')({
   component: RouteComponent
@@ -10,12 +12,13 @@ function RouteComponent() {
   const list = Array.from({ length: 10 }, (_, i) => `https://swiperjs.com/demos/images/nature-${i + 1}.jpg`)
 
   return (
-    <div className="px-8">
-      <div className="w-full flex flex-col gap-8 md:flex-row">
-        <div className="w-full md:w-1/2">
+    <div className="px-8 space-y-8">
+      <div className="grid grid-cols-1 w-full gap-8 md:grid-cols-2">
+        <div>
           <ImageSwiper list={list} />
         </div>
-        <div className="w-full md:w-1/2">
+
+        <div>
           <div className="fb gap-4 px-6">
             <div className="space-y-4">
               <div className="text-6">23 Berwick Street</div>
@@ -71,6 +74,19 @@ function RouteComponent() {
               <Button type="primary" size="large" className="w-full text-black!">Invest Now</Button>
             </div>
           </div>
+        </div>
+
+        <PropertyDescriptionCard />
+
+        <LocationCard />
+      </div>
+
+      <div className="space-y-4">
+        <div className="text-5">Market Analysis</div>
+
+        <div className="grid grid-cols-1 w-full gap-8 md:grid-cols-2">
+          <div>left</div>
+          <div>right</div>
         </div>
       </div>
     </div>
