@@ -1,5 +1,4 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
-import { useTranslation } from 'react-i18next'
 
 import 'swiper/css'
 import 'swiper/css/free-mode'

@@ -94,6 +94,22 @@ function NavMenu({ className }: { className?: string }) {
 }
 
 function RightMenu() {
+  const [, setLanguage] = useState(i18n.language)
+
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      setLanguage(i18n.language)
+    }
+
+    // 监听语言变化事件
+    i18n.on('languageChanged', handleLanguageChange)
+
+    // 清理事件监听
+    return () => {
+      i18n.off('languageChanged', handleLanguageChange)
+    }
+  }, [])
+
   return (
     <>
       <div className="fyc gap-1">

@@ -2,6 +2,7 @@ import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 
 import en from './lang/en.json'
+import jp from './lang/jp.json'
 import zh from './lang/zh.json'
 
 // the translations
@@ -10,6 +11,9 @@ import zh from './lang/zh.json'
 const resources = {
   en: {
     translation: en
+  },
+  jp: {
+    translation: jp
   },
   zh: {
     translation: zh
