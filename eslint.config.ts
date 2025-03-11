@@ -12,7 +12,7 @@ export default antfu({
   astro: false,
   solid: false,
   svelte: false,
-  unocss: false
+  unocss: true
 }, {
   ignores: [
     'dist',
