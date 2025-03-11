@@ -1,5 +1,4 @@
 import defu from 'defu'
-
 import { unoColors } from 'uno-colors'
 import {
   defineConfig,
