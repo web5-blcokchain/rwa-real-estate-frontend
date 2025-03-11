@@ -2,7 +2,7 @@ import Card from '@/components/home/card'
 
 import FeatureCard from '@/components/home/feature-card'
 import { createLazyFileRoute } from '@tanstack/react-router'
-import styles from './page.module.scss'
+import styles from './style.module.scss'
 
 export const Route = createLazyFileRoute('/_app/home/')({
   component: RouteComponent
@@ -128,7 +128,7 @@ function RouteComponent() {
       <div className="mt-32 bg-[#242933] px-8 py-14">
         <div className="text-center text-7.5 font-bold">How It Works</div>
 
-        <div className="mt-16 flex lt-md:flex-col gap-12 items-start md:gap-8">
+        <div className="mt-16 flex items-start gap-12 lt-md:flex-col md:gap-8">
           {
             howItWorks.map((item, index) => (
               <div key={index} className="lt-md:flex lt-md:gap-4 md:text-center">
