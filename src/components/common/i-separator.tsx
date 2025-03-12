@@ -16,8 +16,8 @@ const ISeparator: FC<
       <div
         {...props}
         className={cn(
-          className,
-          'w-full h-0.25 bg-border'
+          'w-full h-0.25 bg-border',
+          className
         )}
       >
       </div>
