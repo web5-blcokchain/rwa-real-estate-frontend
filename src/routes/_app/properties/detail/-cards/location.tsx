@@ -1,4 +1,4 @@
-import { DetailCard } from './-card'
+import { DetailCard } from './card'
 
 export const LocationCard: FC = () => {
   const [loading, setLoading] = useState(true)

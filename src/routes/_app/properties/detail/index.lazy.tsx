@@ -1,8 +1,8 @@
 import { ImageSwiper } from '@/components/common/image-swiper'
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { Button, Input } from 'antd'
-import { LocationCard } from './-cards/-location'
-import { PropertyDescriptionCard } from './-cards/-property-description'
+import { LocationCard } from './-cards/location'
+import { PropertyDescriptionCard } from './-cards/property-description'
 
 export const Route = createLazyFileRoute('/_app/properties/detail/')({
   component: RouteComponent

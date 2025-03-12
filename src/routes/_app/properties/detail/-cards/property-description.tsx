@@ -1,4 +1,4 @@
-import { DetailCard } from './-card'
+import { DetailCard } from './card'
 
 export const PropertyDescriptionCard: FC = () => {
   return (
