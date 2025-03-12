@@ -22,6 +22,9 @@ const AppPropertiesIndexLazyImport = createFileRoute('/_app/properties/')()
 const AppInvestmentIndexLazyImport = createFileRoute('/_app/investment/')()
 const AppHomeIndexLazyImport = createFileRoute('/_app/home/')()
 const AppAboutIndexLazyImport = createFileRoute('/_app/about/')()
+const AppPropertiesPaymentIndexLazyImport = createFileRoute(
+  '/_app/properties/payment/',
+)()
 const AppPropertiesDetailIndexLazyImport = createFileRoute(
   '/_app/properties/detail/',
 )()
@@ -73,6 +76,15 @@ const AppAboutIndexLazyRoute = AppAboutIndexLazyImport.update({
 } as any).lazy(() =>
   import('./routes/_app/about/index.lazy').then((d) => d.Route),
 )
+
+const AppPropertiesPaymentIndexLazyRoute =
+  AppPropertiesPaymentIndexLazyImport.update({
+    id: '/properties/payment/',
+    path: '/properties/payment/',
+    getParentRoute: () => AppRoute,
+  } as any).lazy(() =>
+    import('./routes/_app/properties/payment/index.lazy').then((d) => d.Route),
+  )
 
 const AppPropertiesDetailIndexLazyRoute =
   AppPropertiesDetailIndexLazyImport.update({
@@ -151,6 +163,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppPropertiesDetailIndexLazyImport
       parentRoute: typeof AppImport
     }
+    '/_app/properties/payment/': {
+      id: '/_app/properties/payment/'
+      path: '/properties/payment'
+      fullPath: '/properties/payment'
+      preLoaderRoute: typeof AppPropertiesPaymentIndexLazyImport
+      parentRoute: typeof AppImport
+    }
   }
 }
 
@@ -164,6 +183,7 @@ interface AppRouteChildren {
   AppPropertiesIndexLazyRoute: typeof AppPropertiesIndexLazyRoute
   AppAccountCreateIndexLazyRoute: typeof AppAccountCreateIndexLazyRoute
   AppPropertiesDetailIndexLazyRoute: typeof AppPropertiesDetailIndexLazyRoute
+  AppPropertiesPaymentIndexLazyRoute: typeof AppPropertiesPaymentIndexLazyRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
@@ -174,6 +194,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppPropertiesIndexLazyRoute: AppPropertiesIndexLazyRoute,
   AppAccountCreateIndexLazyRoute: AppAccountCreateIndexLazyRoute,
   AppPropertiesDetailIndexLazyRoute: AppPropertiesDetailIndexLazyRoute,
+  AppPropertiesPaymentIndexLazyRoute: AppPropertiesPaymentIndexLazyRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
@@ -187,6 +208,7 @@ export interface FileRoutesByFullPath {
   '/properties': typeof AppPropertiesIndexLazyRoute
   '/account/create': typeof AppAccountCreateIndexLazyRoute
   '/properties/detail': typeof AppPropertiesDetailIndexLazyRoute
+  '/properties/payment': typeof AppPropertiesPaymentIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
@@ -197,6 +219,7 @@ export interface FileRoutesByTo {
   '/properties': typeof AppPropertiesIndexLazyRoute
   '/account/create': typeof AppAccountCreateIndexLazyRoute
   '/properties/detail': typeof AppPropertiesDetailIndexLazyRoute
+  '/properties/payment': typeof AppPropertiesPaymentIndexLazyRoute
 }
 
 export interface FileRoutesById {
@@ -209,6 +232,7 @@ export interface FileRoutesById {
   '/_app/properties/': typeof AppPropertiesIndexLazyRoute
   '/_app/account/create/': typeof AppAccountCreateIndexLazyRoute
   '/_app/properties/detail/': typeof AppPropertiesDetailIndexLazyRoute
+  '/_app/properties/payment/': typeof AppPropertiesPaymentIndexLazyRoute
 }
 
 export interface FileRouteTypes {
@@ -222,6 +246,7 @@ export interface FileRouteTypes {
     | '/properties'
     | '/account/create'
     | '/properties/detail'
+    | '/properties/payment'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -231,6 +256,7 @@ export interface FileRouteTypes {
     | '/properties'
     | '/account/create'
     | '/properties/detail'
+    | '/properties/payment'
   id:
     | '__root__'
     | '/_app'
@@ -241,6 +267,7 @@ export interface FileRouteTypes {
     | '/_app/properties/'
     | '/_app/account/create/'
     | '/_app/properties/detail/'
+    | '/_app/properties/payment/'
   fileRoutesById: FileRoutesById
 }
 
@@ -274,7 +301,8 @@ export const routeTree = rootRoute
         "/_app/investment/",
         "/_app/properties/",
         "/_app/account/create/",
-        "/_app/properties/detail/"
+        "/_app/properties/detail/",
+        "/_app/properties/payment/"
       ]
     },
     "/_app/": {
@@ -303,6 +331,10 @@ export const routeTree = rootRoute
     },
     "/_app/properties/detail/": {
       "filePath": "_app/properties/detail/index.lazy.tsx",
+      "parent": "/_app"
+    },
+    "/_app/properties/payment/": {
+      "filePath": "_app/properties/payment/index.lazy.tsx",
       "parent": "/_app"
     }
   }
