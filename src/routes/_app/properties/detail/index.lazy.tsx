@@ -1,3 +1,4 @@
+import { IInfoField } from '@/components/common/i-info-field'
 import { ImageSwiper } from '@/components/common/image-swiper'
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { Button, Input } from 'antd'
@@ -32,10 +33,10 @@ function RouteComponent() {
           </div>
 
           <div className="grid grid-cols-2 my-4 px-6">
-            <BaseInfoField label="Property Type" value="Detached House" />
-            <BaseInfoField label="Bedrooms" value="2" />
-            <BaseInfoField label="Market Value" value="£1.24M" valueClass="text-primary" />
-            <BaseInfoField label="Monthly Rent" value="£1,000" />
+            <IInfoField label="Property Type" value="Detached House" />
+            <IInfoField label="Bedrooms" value="2" />
+            <IInfoField label="Market Value" value="£1.24M" valueClass="text-primary" />
+            <IInfoField label="Monthly Rent" value="£1,000" />
           </div>
 
           <div className="rounded-lg bg-background-secondary p-6 space-y-2">
@@ -58,13 +59,13 @@ function RouteComponent() {
             </div>
 
             <div className="fbc">
-              <BaseInfoField
+              <IInfoField
                 className="space-y-2"
                 labelClass="text-[#898989]"
                 label="Expected Annual Return"
                 value="£0"
               />
-              <BaseInfoField
+              <IInfoField
                 className="space-y-2"
                 labelClass="text-[#898989]"
                 label="Investment Ratio"
@@ -94,42 +95,6 @@ function RouteComponent() {
             <RentalIncomeAnalysisCard />
           </div>
         </div>
-      </div>
-    </div>
-  )
-}
-
-const BaseInfoField: FC<{
-  label: string
-  value: string
-  labelClass?: string
-  valueClass?: string
-}> = ({
-  label,
-  value,
-  className,
-  labelClass,
-  valueClass
-}) => {
-  return (
-    <div className={cn(
-      'py-4 space-y-4',
-      className
-    )}
-    >
-      <div className={cn(
-        'text-3.5 text-[#d9d9d9]',
-        labelClass
-      )}
-      >
-        {label}
-      </div>
-      <div className={cn(
-        'text-4',
-        valueClass
-      )}
-      >
-        {value}
       </div>
     </div>
   )
