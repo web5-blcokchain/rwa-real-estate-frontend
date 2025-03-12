@@ -4,6 +4,7 @@ import { Button, Input } from 'antd'
 import { LocationCard } from './-cards/location'
 import { PropertyDescriptionCard } from './-cards/property-description'
 import { RegionalPriceTrendsCard } from './-cards/regional-price-trends'
+import { RentalIncomeAnalysisCard } from './-cards/rental-income-analysis'
 
 export const Route = createLazyFileRoute('/_app/properties/detail/')({
   component: RouteComponent
@@ -89,7 +90,9 @@ function RouteComponent() {
           <div>
             <RegionalPriceTrendsCard />
           </div>
-          <div>right</div>
+          <div>
+            <RentalIncomeAnalysisCard />
+          </div>
         </div>
       </div>
     </div>
