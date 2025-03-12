@@ -1,3 +1,4 @@
+import { usePrivy } from '@privy-io/react-auth'
 import { Link, useLocation } from '@tanstack/react-router'
 import { Drawer } from 'antd'
 
@@ -96,6 +97,12 @@ function NavMenu({ className }: { className?: string }) {
 function RightMenu() {
   const [, setLanguage] = useState(i18n.language)
 
+  const { login, user } = usePrivy()
+
+  useEffect(() => {
+    console.log(user)
+  }, [])
+
   useEffect(() => {
     const handleLanguageChange = () => {
       setLanguage(i18n.language)
@@ -122,7 +129,7 @@ function RightMenu() {
       <div className="i-material-symbols-notifications-outline size-5 bg-white"></div>
       <div className="i-material-symbols-favorite-outline-rounded size-5 bg-white"></div>
 
-      <div className="fyc gap-1">
+      <div className="fyc gap-1" onClick={login}>
         <div className="i-material-symbols-account-circle-outline size-5 bg-white"></div>
         <div className="text-4 text-white">chloe</div>
         <div className="i-ic-round-keyboard-arrow-down size-5 bg-white"></div>

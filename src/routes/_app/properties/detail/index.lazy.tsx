@@ -3,6 +3,7 @@ import { createLazyFileRoute } from '@tanstack/react-router'
 import { Button, Input } from 'antd'
 import { LocationCard } from './-cards/location'
 import { PropertyDescriptionCard } from './-cards/property-description'
+import { RegionalPriceTrendsCard } from './-cards/regional-price-trends'
 
 export const Route = createLazyFileRoute('/_app/properties/detail/')({
   component: RouteComponent
@@ -85,7 +86,9 @@ function RouteComponent() {
         <div className="text-5">Market Analysis</div>
 
         <div className="grid grid-cols-1 w-full gap-8 md:grid-cols-2">
-          <div>left</div>
+          <div>
+            <RegionalPriceTrendsCard />
+          </div>
           <div>right</div>
         </div>
       </div>

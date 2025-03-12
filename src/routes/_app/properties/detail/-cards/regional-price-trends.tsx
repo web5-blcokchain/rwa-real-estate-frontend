@@ -9,7 +9,7 @@ export const RegionalPriceTrendsCard: FC = () => {
     },
     {
       name: '09-02',
-      price: 21
+      price: 38
     },
     {
       name: '09-03',
@@ -21,15 +21,15 @@ export const RegionalPriceTrendsCard: FC = () => {
     },
     {
       name: '09-05',
-      price: 20
+      price: 36
     },
     {
       name: '09-06',
-      price: 24
+      price: 48
     },
     {
       name: '09-07',
-      price: 50
+      price: 100
     }
   ]
 
@@ -45,7 +45,7 @@ export const RegionalPriceTrendsCard: FC = () => {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Line type="monotone" dataKey="price" stroke="#8884d8" />
+            <Line type="linear" dataKey="price" stroke="#f0b90b" />
           </LineChart>
         </ResponsiveContainer>
       </div>
