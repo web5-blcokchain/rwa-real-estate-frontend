@@ -8,6 +8,11 @@ export const AppPrivyProvider: FC = ({ children }) => {
       config={{
         appearance: {
           walletList: ['phantom']
+        },
+        embeddedWallets: {
+          ethereum: {
+            createOnLogin: 'all-users'
+          }
         }
       }}
     >
