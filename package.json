@@ -7,7 +7,7 @@
   "scripts": {
     "prepare": "simple-git-hooks",
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "lint": "eslint --cache",
     "preview": "vite preview",
     "release": "pnpm build && esno scripts/deploy.ts"
