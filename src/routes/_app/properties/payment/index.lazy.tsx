@@ -9,6 +9,8 @@ export const Route = createLazyFileRoute('/_app/properties/payment/')({
 })
 
 function RouteComponent() {
+  const { t } = useTranslation()
+
   const [tokens, setTokens] = useState(1)
 
   const plus = () => setTokens(tokens + 1)
@@ -58,7 +60,7 @@ function RouteComponent() {
         </div>
       </div>
 
-      <div className="rounded-xl bg-[#202329] p-6 space-y-6">
+      <div className="rounded-xl bg-[#202329] p-6 space-y-4">
         <div className="text-4.5">Payment Details</div>
 
         <div className="flex items-center justify-between text-4">
@@ -85,6 +87,55 @@ function RouteComponent() {
         <div className="fbc">
           <div>Total Amount</div>
           <div className="text-primary">$510</div>
+        </div>
+      </div>
+
+      <div className="rounded-xl bg-[#202329] p-6 space-y-4">
+        <div className="text-4.5">Payment Method</div>
+        <div className="grid grid-cols-2 gap-6">
+          <div className="fcc select-none b b-background rounded-xl b-solid bg-[#212936] py-6 clickable-99">
+            <div className="fccc">
+              <SvgIcon name="credit-card" className="size-8" />
+              <div>
+                Credit Card
+              </div>
+            </div>
+          </div>
+
+          <div className="fcc select-none b b-background rounded-xl b-solid bg-[#212936] py-6 clickable-99">
+            <div className="fccc">
+              <SvgIcon name="cryptocurrency" className="size-8" />
+              <div>
+                Cryptocurrency
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="rounded-xl bg-[#202329] p-6 text-4 text-[#898989] space-y-2">
+        <p>Dear User,</p>
+        <p>
+          To ensure the security of OTC transactions,
+          you must meet the following requirements and complete the necessary verification process:
+        </p>
+        <p>Your account must be fully verified with a valid government-issued ID or passport.</p>
+      </div>
+
+      <div>
+        <div className="text-center text-3.5 text-[#898989]">
+          Payment will expire in 14:59
+        </div>
+        <div className="grid grid-cols-3 mt-2">
+          <div>
+            <Button className="text-white bg-transparent!" size="large">{t('system.cancel')}</Button>
+          </div>
+          <div className="fcc">
+            <Button type="primary" size="large" className="text-black!">
+              Confirm Payment
+            </Button>
+          </div>
+          <div></div>
         </div>
       </div>
     </div>
