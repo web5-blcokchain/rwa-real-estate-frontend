@@ -9,7 +9,7 @@ export const Route = createLazyFileRoute('/_app/properties/distribution/')({
 function RouteComponent() {
   return (
     <div className="mx-a max-w-3xl p-8 space-y-8">
-      <div className="text-7 font-medium">Token Distribution</div>
+      <div className="text-center text-7 font-medium">Token Distribution</div>
 
       <div className="rounded-xl bg-[#212328] p-6 space-y-4">
         <div className="fbc">
