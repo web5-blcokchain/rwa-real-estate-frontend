@@ -34,7 +34,8 @@ export default defineConfig({
           '@/utils/style': ['cn'],
           '@/components/utils/svg-icon': ['SvgIcon'],
           '@/components/utils/waiting': ['Waiting'],
-          '@/i18n': [['default', 'i18n']]
+          '@/i18n': [['default', 'i18n']],
+          '@/utils/copy': ['copy']
         },
         lodashImports()
       ],
