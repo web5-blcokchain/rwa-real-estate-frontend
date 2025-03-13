@@ -1,18 +1,21 @@
 export const IInfoField: FC<{
   label: string
   value: string
+  horizontal?: boolean
   labelClass?: string
   valueClass?: string
 }> = ({
   label,
   value,
+  horizontal = false,
   className,
   labelClass,
   valueClass
 }) => {
   return (
     <div className={cn(
-      'py-4 space-y-4',
+      'space-y-4',
+      horizontal ? 'flex items-center justify-between' : 'py-4',
       className
     )}
     >
