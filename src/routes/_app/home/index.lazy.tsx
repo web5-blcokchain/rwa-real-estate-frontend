@@ -1,8 +1,8 @@
+import { Banner } from '@/components/common/banner'
 import Card from '@/components/home/card'
 
 import FeatureCard from '@/components/home/feature-card'
 import { createLazyFileRoute } from '@tanstack/react-router'
-import styles from './style.module.scss'
 
 export const Route = createLazyFileRoute('/_app/home/')({
   component: RouteComponent
@@ -79,22 +79,11 @@ function RouteComponent() {
 
   return (
     <div className="md:px-8">
-      <div>
-        <div className={cn(
-          styles.homeBanner,
-          'h-100 flex flex-col justify-center gap-6 px-10'
-        )}
-        >
-          <div className="text-white lt-md:text-8 md:text-11">Tokenize Real Estate Investment</div>
-          <div className="max-w-2xl text-white lt-md:text-4 md:text-5">
-            Global property investment made accessible through blockchain technology. Start investing in premium real estate with minimal capital.
-          </div>
-          <div className="space-x-3 md:space-x-6">
-            <button className="rounded-md bg-background px-4 py-2 text-text md:px-8 md:py-3">Start Investing</button>
-            <button className="rounded-md bg-text px-4 py-2 text-background md:px-8 md:py-3">Learn More</button>
-          </div>
-        </div>
-      </div>
+      <Banner
+        picture={new URL('@/assets/images/home-banner.png', import.meta.url).href}
+        title="Tokenize Real Estate Investment"
+        subTitle="Global property investment made accessible through blockchain technology. Start investing in premium real estate with minimal capital."
+      />
 
       <div className="grid grid-cols-1 mt-8 gap-7 px-8 md:grid-cols-3">
         {
