@@ -1,7 +1,10 @@
 import { Banner } from '@/components/common/banner'
 
 import { createLazyFileRoute } from '@tanstack/react-router'
+import { Button } from 'antd'
 import { MemberCard } from './-components/member-card'
+import { PartnerCard } from './-components/partner-card'
+import { TimelineCard } from './-components/timeline-card'
 
 export const Route = createLazyFileRoute('/_app/about/')({
   component: RouteComponent
@@ -27,6 +30,20 @@ function RouteComponent() {
       title: 'Chief Operating Officer',
       desc: 'Real estate investment expert with 15 years of international market experience'
     }
+  ]
+
+  const timeline = [
+    { year: '2020', title: 'Company founded, raised $5M in seed funding' },
+    { year: '2021', title: 'Completed first property tokenization project, reached 1,000+ users' },
+    { year: '2022', title: 'Obtained FSA license in Japan, expanded to Asian markets' },
+    { year: '2023', title: 'AUM exceeded $400M, user base grew to 12,000+' }
+  ]
+
+  const partners = [
+    new URL('@/assets/images/about-partner-1.png', import.meta.url).href,
+    new URL('@/assets/images/about-partner-2.png', import.meta.url).href,
+    new URL('@/assets/images/about-partner-3.png', import.meta.url).href,
+    new URL('@/assets/images/about-partner-4.png', import.meta.url).href
   ]
 
   return (
@@ -65,7 +82,7 @@ function RouteComponent() {
       </div>
 
       <div className="bg-[#111827] py-12 space-y-8">
-        <div className="text-center text-7.5">Core Team</div>
+        <div className="text-center text-7.5 font-medium">Core Team</div>
 
         <div
           className="flex flex-col justify-between gap-12 lg:flex-row md:gap-8"
@@ -77,6 +94,54 @@ function RouteComponent() {
               )
             )
           }
+        </div>
+      </div>
+
+      <div className="py-12 space-y-8">
+        <div className="text-center text-7.5 font-medium">Company Timeline</div>
+
+        <div
+          className="grid grid-cols-1 gap-8 px-8 lg:grid-cols-2"
+        >
+          {
+            timeline.map(
+              card => (
+                <TimelineCard key={card.year} {...card} />
+              )
+            )
+          }
+        </div>
+      </div>
+
+      <div className="py-12 space-y-8">
+        <div className="text-center text-7.5 font-medium">Global Partners</div>
+
+        <div className="grid grid-cols-1 gap-8 px-8 lg:grid-cols-4 xs:grid-cols-2">
+          {
+            partners.map(
+              (picture, index) => (
+                <PartnerCard key={index} picture={picture} />
+              )
+            )
+          }
+        </div>
+      </div>
+
+      <div className="mx-auto max-w-3xl py-12 space-y-8">
+        <div className="text-center text-7.5 font-medium">Join Our Team</div>
+
+        <div className="text-center text-5 text-[#b5b5b5]">
+          We're looking for passionate talents to join our team and help revolutionize real estate investment together.
+        </div>
+
+        <div className="text-center">
+          <Button
+            type="primary"
+            size="large"
+            className="text-black!"
+          >
+            View Open Positions
+          </Button>
         </div>
       </div>
     </div>
