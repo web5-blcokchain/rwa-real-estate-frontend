@@ -2,7 +2,7 @@
 
 import numeral from 'numeral'
 
-const RealEstateCard: FC<{
+export const RealEstateCard: FC<{
   picture: string
   title: string
   location: string
@@ -100,5 +100,3 @@ const RealEstateCard: FC<{
     </div>
   )
 }
-
-export default RealEstateCard

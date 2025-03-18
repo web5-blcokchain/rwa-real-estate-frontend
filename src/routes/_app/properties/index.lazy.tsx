@@ -1,4 +1,4 @@
-import RealEstateCard from '@/components/common/real-estate-card'
+import { RealEstateCard } from '@/components/common/real-estate-card'
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { Button } from 'antd'
 
