@@ -2,6 +2,7 @@ import { Banner } from '@/components/common/banner'
 
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { Button } from 'antd'
+import { ContactCard } from './-components/contact-card'
 import { MemberCard } from './-components/member-card'
 import { PartnerCard } from './-components/partner-card'
 import { TimelineCard } from './-components/timeline-card'
@@ -44,6 +45,33 @@ function RouteComponent() {
     new URL('@/assets/images/about-partner-2.png', import.meta.url).href,
     new URL('@/assets/images/about-partner-3.png', import.meta.url).href,
     new URL('@/assets/images/about-partner-4.png', import.meta.url).href
+  ]
+
+  const contacts = [
+    {
+      icon: 'address',
+      title: 'Office Address',
+      desc: [
+        '1-2-3 Akasaka, Minato-ku',
+        'Akasaka Building 15F, Tokyo'
+      ]
+    },
+    {
+      icon: 'email',
+      title: 'Email',
+      desc: [
+        'contact@realtoken.com',
+        'support@realtoken.com'
+      ]
+    },
+    {
+      icon: 'phone',
+      title: 'Phone',
+      desc: [
+        '+81 3-1234-5678',
+        'Mon-Fri 9:00-18:00'
+      ]
+    }
   ]
 
   return (
@@ -142,6 +170,22 @@ function RouteComponent() {
           >
             View Open Positions
           </Button>
+        </div>
+      </div>
+
+      <div className="mx-auto max-w-3xl py-12 space-y-12">
+        <div className="text-center text-7.5 font-medium">Contact information</div>
+
+        <div
+          className="flex flex-col justify-between gap-12 lg:flex-row md:gap-14"
+        >
+          {
+            contacts.map(
+              (contact, index) => (
+                <ContactCard key={index} {...contact} />
+              )
+            )
+          }
         </div>
       </div>
     </div>
