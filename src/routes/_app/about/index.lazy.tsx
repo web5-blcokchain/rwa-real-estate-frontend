@@ -54,7 +54,7 @@ function RouteComponent() {
         subTitle="RealToken is committed to making real estate investment simpler, more transparent, and more inclusive through blockchain technology."
       />
 
-      <div className="grid grid-cols-1 gap-8 px-8 lg:grid-cols-2 lg:gap-25">
+      <div className="grid grid-cols-1 gap-8 px-8 py-12 lg:grid-cols-2 lg:gap-25">
         <div className="space-y-4">
           <div className="text-5">Our Mission</div>
           <div className="pl-10 space-y-4">
