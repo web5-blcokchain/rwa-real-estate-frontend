@@ -113,7 +113,7 @@ function RouteComponent() {
         <div className="text-center text-7.5 font-medium">Core Team</div>
 
         <div
-          className="flex flex-col justify-between gap-12 lg:flex-row md:gap-8"
+          className="flex flex-col justify-between gap-12 px-8 lg:flex-row md:gap-8"
         >
           {
             coreTeam.map(
@@ -155,7 +155,7 @@ function RouteComponent() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-3xl py-12 space-y-8">
+      <div className="mx-auto max-w-3xl px-8 py-12 space-y-8">
         <div className="text-center text-7.5 font-medium">Join Our Team</div>
 
         <div className="text-center text-5 text-[#b5b5b5]">
