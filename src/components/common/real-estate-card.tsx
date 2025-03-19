@@ -1,6 +1,5 @@
-'use client'
-
 import numeral from 'numeral'
+import { IImage } from './i-image'
 
 export const RealEstateCard: FC<{
   picture: string
@@ -23,8 +22,6 @@ export const RealEstateCard: FC<{
   className,
   ...props
 }) => {
-  const [loading, setLoading] = useState(true)
-
   return (
     <div
       className={cn(
@@ -34,24 +31,7 @@ export const RealEstateCard: FC<{
       {...props}
     >
       <div className="relative h-56">
-        {
-          loading
-            ? (
-                <div className="size-full flex items-center justify-center">
-                  <Waiting iconClass="size-8" />
-                </div>
-              )
-            : (
-                null
-              )
-        }
-        <img
-          src={picture}
-          className="size-full object-cover"
-          onLoad={() => {
-            setLoading(false)
-          }}
-        />
+        <IImage src={picture} className="size-full" />
 
         <div
           className={cn(
