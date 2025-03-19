@@ -1,6 +1,8 @@
 import { RealEstateCard } from '@/components/common/real-estate-card'
 import { createLazyFileRoute } from '@tanstack/react-router'
+import { AssetValueTrends } from './-components/asset-value-trends'
 import { FilterCard } from './-components/filter-card'
+import { YieldDistribution } from './-components/yield-distribution'
 
 export const Route = createLazyFileRoute('/_app/properties/institutional/')({
   component: RouteComponent
@@ -33,6 +35,11 @@ function RouteComponent() {
             />
           ))
         }
+      </div>
+
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+        <AssetValueTrends />
+        <YieldDistribution />
       </div>
     </div>
   )
