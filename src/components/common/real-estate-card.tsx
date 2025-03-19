@@ -11,7 +11,7 @@ export const RealEstateCard: FC<{
   size: string
   beds: number
   status: number
-}> = ({
+} & React.HTMLAttributes<HTMLDivElement>> = ({
   picture,
   title,
   location,
@@ -19,12 +19,20 @@ export const RealEstateCard: FC<{
   tokenPrice,
   size,
   beds,
-  status
+  status,
+  className,
+  ...props
 }) => {
   const [loading, setLoading] = useState(true)
 
   return (
-    <div className="overflow-hidden rounded-xl bg-background-secondary">
+    <div
+      className={cn(
+        'overflow-hidden rounded-xl bg-background-secondary',
+        className
+      )}
+      {...props}
+    >
       <div className="relative h-56">
         {
           loading
