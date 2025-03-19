@@ -1,7 +1,7 @@
 import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
-import { createLazyFileRoute } from '@tanstack/react-router'
+import { createLazyFileRoute, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
 
 export const Route = createLazyFileRoute('/_app/properties/payment/')({
@@ -10,6 +10,7 @@ export const Route = createLazyFileRoute('/_app/properties/payment/')({
 
 function RouteComponent() {
   const { t } = useTranslation()
+  const router = useRouter()
 
   const [tokens, setTokens] = useState(1)
 
@@ -128,10 +129,21 @@ function RouteComponent() {
         </div>
         <div className="grid grid-cols-3 mt-2">
           <div>
-            <Button className="text-white bg-transparent!" size="large">{t('system.cancel')}</Button>
+            <Button
+              className="text-white bg-transparent!"
+              size="large"
+              onClick={() => router.history.back()}
+            >
+              {t('system.cancel')}
+            </Button>
           </div>
           <div className="fcc">
-            <Button type="primary" size="large" className="text-black!">
+            <Button
+              type="primary"
+              size="large"
+              className="text-black!"
+              onClick={() => router.navigate({ to: '/properties/distribution' })}
+            >
               Confirm Payment
             </Button>
           </div>

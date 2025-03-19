@@ -1,6 +1,6 @@
 import { IInfoField } from '@/components/common/i-info-field'
 import { ImageSwiper } from '@/components/common/image-swiper'
-import { createLazyFileRoute } from '@tanstack/react-router'
+import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
 import { Button, Input } from 'antd'
 import { LocationCard } from './-cards/location'
 import { PropertyDescriptionCard } from './-cards/property-description'
@@ -12,6 +12,8 @@ export const Route = createLazyFileRoute('/_app/properties/detail/')({
 })
 
 function RouteComponent() {
+  const navigate = useNavigate()
+
   const list = Array.from({ length: 10 }, (_, i) => `https://swiperjs.com/demos/images/nature-${i + 1}.jpg`)
 
   return (
@@ -74,7 +76,14 @@ function RouteComponent() {
             </div>
 
             <div>
-              <Button type="primary" size="large" className="w-full text-black!">Invest Now</Button>
+              <Button
+                type="primary"
+                size="large"
+                className="w-full text-black!"
+                onClick={() => navigate({ to: '/properties/payment' })}
+              >
+                Invest Now
+              </Button>
             </div>
           </div>
         </div>

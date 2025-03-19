@@ -1,5 +1,5 @@
 import { RealEstateCard } from '@/components/common/real-estate-card'
-import { createLazyFileRoute } from '@tanstack/react-router'
+import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
 import { Button } from 'antd'
 
 export const Route = createLazyFileRoute('/_app/properties/')({
@@ -7,6 +7,8 @@ export const Route = createLazyFileRoute('/_app/properties/')({
 })
 
 function RouteComponent() {
+  const navigate = useNavigate()
+
   return (
     <div className="p-8">
       <div className="text-8 font-medium">
@@ -41,6 +43,7 @@ function RouteComponent() {
               price={850000}
               tokenPrice={850000}
               status={0}
+              onClick={() => navigate({ to: '/properties/detail' })}
             />
           ))
         }
