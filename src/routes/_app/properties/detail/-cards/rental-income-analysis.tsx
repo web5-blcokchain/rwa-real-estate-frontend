@@ -1,5 +1,5 @@
+import { TitleCard } from '@/components/common/title-card'
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
-import { DetailCard } from './card'
 
 export const RentalIncomeAnalysisCard: FC = () => {
   const data = [
@@ -14,7 +14,7 @@ export const RentalIncomeAnalysisCard: FC = () => {
   ]
 
   return (
-    <DetailCard title="Rental Income Analysis">
+    <TitleCard title="Rental Income Analysis">
       <div className="h-32">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
@@ -33,6 +33,6 @@ export const RentalIncomeAnalysisCard: FC = () => {
           </BarChart>
         </ResponsiveContainer>
       </div>
-    </DetailCard>
+    </TitleCard>
   )
 }

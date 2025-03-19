@@ -1,5 +1,5 @@
+import { TitleCard } from '@/components/common/title-card'
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
-import { DetailCard } from './card'
 
 export const RegionalPriceTrendsCard: FC = () => {
   const data = [
@@ -34,7 +34,7 @@ export const RegionalPriceTrendsCard: FC = () => {
   ]
 
   return (
-    <DetailCard title="Regional Price Trends">
+    <TitleCard title="Regional Price Trends">
       <div className="h-32">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart
@@ -49,6 +49,6 @@ export const RegionalPriceTrendsCard: FC = () => {
           </LineChart>
         </ResponsiveContainer>
       </div>
-    </DetailCard>
+    </TitleCard>
   )
 }

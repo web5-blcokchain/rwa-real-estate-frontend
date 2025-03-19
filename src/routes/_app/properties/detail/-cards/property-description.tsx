@@ -1,8 +1,8 @@
-import { DetailCard } from './card'
+import { TitleCard } from '@/components/common/title-card'
 
 export const PropertyDescriptionCard: FC = () => {
   return (
-    <DetailCard title="Property Description">
+    <TitleCard title="Property Description">
       <div className="text-4 space-y-4">
         <div className="text-[#d9d9d9]">
           This Victorian detached house on Berwick Street maintains a classic British architectural style.
@@ -21,6 +21,6 @@ export const PropertyDescriptionCard: FC = () => {
           <li>Well-maintained back garden</li>
         </ul>
       </div>
-    </DetailCard>
+    </TitleCard>
   )
 }
