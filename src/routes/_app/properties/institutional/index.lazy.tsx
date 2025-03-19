@@ -2,6 +2,7 @@ import { RealEstateCard } from '@/components/common/real-estate-card'
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { AssetValueTrends } from './-components/asset-value-trends'
 import { FilterCard } from './-components/filter-card'
+import { FunctionCard } from './-components/function-card'
 import { YieldDistribution } from './-components/yield-distribution'
 
 export const Route = createLazyFileRoute('/_app/properties/institutional/')({
@@ -9,6 +10,30 @@ export const Route = createLazyFileRoute('/_app/properties/institutional/')({
 })
 
 function RouteComponent() {
+  const functionCards = [
+    {
+      icon: 'download-file',
+      title: 'Investment Report Download',
+      description: 'Get detailed investment analysis reports and market research data',
+      buttonText: 'Download Report',
+      buttonClick: () => console.log('Download Report')
+    },
+    {
+      icon: 'calendar',
+      title: 'Book Consultation',
+      description: 'One-on-one consultation with our investment advisors',
+      buttonText: 'Book Now',
+      buttonClick: () => console.log('Book Now')
+    },
+    {
+      icon: 'analysis',
+      title: 'Custom Analysis',
+      description: 'Create personalized investment portfolio analysis reports',
+      buttonText: 'Start Analysis',
+      buttonClick: () => console.log('Start Analysis')
+    }
+  ]
+
   return (
     <div className="p-8 space-y-8">
       <div className="text-8">Institutional Real Estate Investment</div>
@@ -40,6 +65,16 @@ function RouteComponent() {
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
         <AssetValueTrends />
         <YieldDistribution />
+      </div>
+
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 md:grid-cols-2">
+        {
+          functionCards.map(
+            (card, index) => (
+              <FunctionCard key={index} {...card} />
+            )
+          )
+        }
       </div>
     </div>
   )
