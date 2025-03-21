@@ -1,10 +1,10 @@
-import { DetailCard } from './card'
+import { TitleCard } from '@/components/common/title-card'
 
 export const LocationCard: FC = () => {
   const [loading, setLoading] = useState(true)
 
   return (
-    <DetailCard title="Location">
+    <TitleCard title="Location">
       <div className="text-4 space-y-4">
         <div className="h-48 fcc of-hidden rounded-xl bg-background">
           {
@@ -35,6 +35,6 @@ export const LocationCard: FC = () => {
           <li>General hospital within 1km</li>
         </ul>
       </div>
-    </DetailCard>
+    </TitleCard>
   )
 }
