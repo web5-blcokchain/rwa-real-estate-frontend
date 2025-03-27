@@ -1,0 +1,34 @@
+.tableComponent-wrap {
+  color: #fff;
+  background: #202329;
+  border-radius: 12px;
+
+}
+
+.custom-table {
+  .ant-table {
+    color: #fff;
+    background-color: #202329;
+
+    .ant-table-cell {
+      border-bottom: 1px solid #293346;
+    }
+
+    .ant-table-cell-row-hover {
+      background-color: transparent!important; // 你可以将 #f0f0f0 替换为你想要的颜色
+    }
+
+    .ant-table-thead {
+      background-color: #202329; // Set the background color for the header
+  
+      .ant-table-cell {
+        color: #898989;
+        background: #202329;
+      }
+  
+      .ant-table-cell::before {
+        display: none;
+      }
+    }
+  }
+}
