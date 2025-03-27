@@ -1,0 +1,27 @@
+.aboutMe {
+  min-height: '100vh';
+
+  .sider {
+    width: 256px;
+    border-top: 1px solid #202329;
+    border-right: 1px solid #202329;
+    background-color: #181a1e;
+
+    .img-wrap {
+      border-radius: 50%;
+      overflow: hidden;
+    }
+
+    li {
+      border-radius: 0;
+    }
+    .ant-menu-item-selected {
+      background-color: #202329;
+    }
+  }
+
+  .page-layout-wrap {
+    padding: 24px;
+    border-top: 1px solid #202329;
+  }
+}
