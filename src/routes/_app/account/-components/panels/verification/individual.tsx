@@ -13,7 +13,7 @@ export default function IndividualVerification() {
           label="Identity Document"
           title="Upload Identity Card / Passport"
           subTitle="Front and back sides required, JPG/PNG/PDF up to 5MB"
-          icon="/assets/icons/id-card.svg"
+          icon={new URL('@/assets/icons/id-card.svg', import.meta.url).href}
         >
           <div className="grid grid-cols-2 gap-4">
             <Button type="primary" size="large">
@@ -35,7 +35,7 @@ export default function IndividualVerification() {
           label="Proof of Address"
           title="Upload Utility Bill / Bank Statement"
           subTitle="Must be issued within last 3 months"
-          icon="/assets/icons/document.svg"
+          icon={new URL('@/assets/icons/document.svg', import.meta.url).href}
         >
         </UploadCard>
 
@@ -43,7 +43,7 @@ export default function IndividualVerification() {
           label="Facial Verification"
           title="Take a Selfie"
           subTitle="Clear facial photo in good lighting"
-          icon="/assets/icons/user-circular.svg"
+          icon={new URL('@/assets/icons/user-circular.svg', import.meta.url).href}
         >
         </UploadCard>
 

@@ -13,7 +13,7 @@ export default function InstitutionalVerification() {
           label="Business Registration"
           title="Upload Utility Bill / Bank Statement"
           subTitle="Valid business registration document"
-          icon="/assets/icons/upload-cloud.svg"
+          icon={new URL('@/assets/icons/upload-cloud.svg', import.meta.url).href}
         >
         </UploadCard>
 
@@ -21,7 +21,7 @@ export default function InstitutionalVerification() {
           label="Company Structure"
           title="Shareholder Structure / Organization Chart"
           subTitle="Documents showing ownership structure"
-          icon="/assets/icons/node-tree.svg"
+          icon={new URL('@/assets/icons/node-tree.svg', import.meta.url).href}
         >
         </UploadCard>
 
@@ -29,7 +29,7 @@ export default function InstitutionalVerification() {
           label="Legal Representative"
           title="Directors and Executives Documents"
           subTitle="Identity documents of key personnel"
-          icon="/assets/icons/legal-representative.svg"
+          icon={new URL('@/assets/icons/legal-representative.svg', import.meta.url).href}
         >
         </UploadCard>
 
@@ -37,7 +37,7 @@ export default function InstitutionalVerification() {
           label="Financial Documents"
           title="Bank Statements / Financial Reports"
           subTitle="Financial records for the last 6 months"
-          icon="/assets/icons/financial-documents.svg"
+          icon={new URL('@/assets/icons/financial-documents.svg', import.meta.url).href}
         >
         </UploadCard>
 

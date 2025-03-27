@@ -13,7 +13,7 @@ export default function ConnectWalletPanel() {
   const wallets: Wallet[] = [
     {
       name: 'MetaMask',
-      icon: '/assets/icons/meta-mask.svg',
+      icon: new URL('@/assets/icons/meta-mask.svg', import.meta.url).href,
       description: 'Connect to your MetaMask wallet',
       onClick() {
         next()
@@ -21,7 +21,7 @@ export default function ConnectWalletPanel() {
     },
     {
       name: 'WalletConnect',
-      icon: '/assets/icons/wallet.svg',
+      icon: new URL('@/assets/icons/wallet.svg', import.meta.url).href,
       description: 'Connect using WalletConnect',
       onClick() {
         next()
@@ -29,7 +29,7 @@ export default function ConnectWalletPanel() {
     },
     {
       name: 'Coinbase Wallet',
-      icon: '/assets/icons/coinbase.svg',
+      icon: new URL('@/assets/icons/coinbase.svg', import.meta.url).href,
       description: 'Connect to your Coinbase wallet',
       onClick() {
         next()
