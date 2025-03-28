@@ -58,4 +58,10 @@
   "i18n-ally.localesPaths": [
     "src/i18n/lang"
   ],
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
 }
