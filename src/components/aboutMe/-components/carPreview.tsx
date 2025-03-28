@@ -2,7 +2,7 @@ import { IImage } from '@/components/common/i-image'
 import { Button } from 'antd'
 import numeral from 'numeral'
 
-const CarProperty: FC<{
+const CarPreview: FC<{
   picture: string
   title: string
   location: string
@@ -96,4 +96,4 @@ const CarProperty: FC<{
   )
 }
 
-export default CarProperty
+export default CarPreview

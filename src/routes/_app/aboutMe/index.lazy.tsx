@@ -75,9 +75,9 @@ function RouteComponent() {
           <div className="img-wrap h-16 w-16">
             <img src={maskGroup} alt="" className="bg-[#797b80]" style={{ width: '100%', height: '100%' }} />
           </div>
-          <div className="justify-space-between ml-3 flex flex-col">
-            <div className="font-size-4 text-[#b5b5b5]">Welcome Back</div>
-            <div className="mt-4 font-size-4 font-bold">chloe</div>
+          <div className="justify-space-between ml-3 mt-1 flex flex-col">
+            <div className="text-[#b5b5b5]">Welcome Back</div>
+            <div className="mt-2 text-4 font-bold">chloe</div>
           </div>
         </div>
         <Menu

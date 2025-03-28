@@ -5,8 +5,8 @@ import frame115 from '@/assets/icons/Frame115.png'
 import group272Icon from '@/assets/icons/group272.png'
 import { Space } from 'antd'
 
-import CarComponent from '../-components/carComponent'
-import TableComponent from '../-components/tableComponent'
+import CarCount from '../-components/carCount'
+import TableComponent from '../-components/tableComponent/tableComponent'
 
 interface DataType {
   key: string
@@ -172,19 +172,19 @@ const dataTwo: DataTypeTwo[] = [
 function Earnings() {
   return (
     <div>
-      <CarComponent />
+      <CarCount />
       <TableComponent
         columns={columns}
         data={data}
       >
-        <div className="mb-2">Income Composition</div>
+        <div className="mb-2 text-5">Income Composition</div>
       </TableComponent>
 
       <TableComponent
         columns={columnsTwo}
         data={dataTwo}
       >
-        <div className="mb-2">Historical Income Records</div>
+        <div className="mb-2 text-5">Historical Income Records</div>
       </TableComponent>
     </div>
   )

@@ -23,13 +23,13 @@ function HistoryDecmber() {
         list.map(item => (
           <div key={item.title} className="mb-6 flex flex-col">
             <div className="flex justify-between text-[#8d909a]">
-              <div>Income</div>
-              <div>¥0 Received</div>
+              <div>{item.title}</div>
+              <div>{item.amount}</div>
             </div>
             <div>
               <Progress percent={item.percent} status="active" showInfo={false} strokeColor="#b5b5b5" trailColor="#fff" />
             </div>
-            <div className="text-right text-[#8d909a]">Budget ¥170</div>
+            <div className="text-right text-[#8d909a]">{item.total}</div>
           </div>
         ))
       }
