@@ -11,22 +11,13 @@ import { PropertyDescriptionCard } from './-cards/property-description'
 import { RegionalPriceTrendsCard } from './-cards/regional-price-trends'
 import { RentalIncomeAnalysisCard } from './-cards/rental-income-analysis'
 
-interface SearchParams {
-  id: string
-}
-
 export const Route = createLazyFileRoute('/_app/properties/detail/')({
-  component: RouteComponent,
-  validateSearch: (search: Record<string, unknown>) => {
-    return {
-      id: String(search.id || '')
-    }
-  }
+  component: RouteComponent
 })
 
 function RouteComponent() {
   const navigate = useNavigate()
-  const search = useSearch<SearchParams>()
+  const search = useSearch<any>({ strict: true })
   const [investmentPrice, setInvestmentPrice] = useState<number>(0)
   const [annualReturn, setAnnualReturn] = useState<number>(0)
   const [ratioNum, setRatioNum] = useState<number>(0)
@@ -56,7 +47,7 @@ function RouteComponent() {
     setRatioNum(Number(((investmentPrice * 12) / (rentalNum + capitalNum)) * 100))
   }, [investmentPrice, detailObj])
 
-  const imageList = detailObj?.image_urls || []
+  const imageList = detailObj?.image_urls?.split(',') || []
 
   return (
     <div className="px-8 space-y-8">
@@ -136,7 +127,7 @@ function RouteComponent() {
                 className="w-full text-black!"
                 onClick={() => navigate({
                   to: '/properties/payment',
-                  search: { propertyId: search.id }
+                  search: { detailObj: JSON.stringify(detailObj) }
                 })}
               >
                 Invest Now

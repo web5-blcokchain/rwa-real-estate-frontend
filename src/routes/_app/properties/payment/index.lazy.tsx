@@ -1,7 +1,7 @@
 import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
-import { createLazyFileRoute, useLocation, useRouter } from '@tanstack/react-router'
+import { createLazyFileRoute, useRouter, useSearch } from '@tanstack/react-router'
 import { Button } from 'antd'
 
 export const Route = createLazyFileRoute('/_app/properties/payment/')({
@@ -11,8 +11,8 @@ export const Route = createLazyFileRoute('/_app/properties/payment/')({
 function RouteComponent() {
   const { t } = useTranslation()
   const router = useRouter()
-  const { state } = useLocation()
-  const detailObj = JSON.parse(state?.detailObj)
+  const search = useSearch<any>({ strict: true })
+  const detailObj = JSON.parse(search?.detailObj)
 
   const [tokens, setTokens] = useState(1)
 
