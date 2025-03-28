@@ -1,8 +1,7 @@
 import { useState } from 'react'
-import './css/carComponent.scss'
 
 // 卡片组件
-function CarComponent() {
+function CarCount() {
   const [carList] = useState([
     {
       title: 'Toyota Camry',
@@ -38,12 +37,12 @@ function CarComponent() {
   ])
 
   return (
-    <div className="carComponent-wrap">
+    <div className="grid grid-cols-4 gap-4">
       { carList.map(item => (
-        <div key={item.title} className="box-wrap">
-          <div className="box-item text-[#8d909a]">{item.title}</div>
-          <div className="box-item font-size-4 font-bold">{item.field}</div>
-          <div className="box-item flex items-center justify-start">
+        <div key={item.title} className="flex flex-col rounded-xl bg-[#202329] p-5">
+          <div className="text-[#8d909a]">{item.title}</div>
+          <div className="text-5 text-white" style={{ fontWeight: 400 }}>{item.field}</div>
+          <div className="flex items-center justify-start">
             {item.picture && (
               <img src={item.picture} alt="" className="h-3 w-3" />
             )}
@@ -55,4 +54,4 @@ function CarComponent() {
   )
 }
 
-export default CarComponent
+export default CarCount

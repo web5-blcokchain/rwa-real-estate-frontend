@@ -1,13 +1,13 @@
 import { useNavigate } from '@tanstack/react-router'
 import { Button } from 'antd'
-import CarComponent from '../-components/carComponent'
-import CarProperty from '../-components/carProperty'
+import CarCount from '../-components/carCount'
+import CarPreview from '../-components/carPreview'
 
 function PropertyTokens() {
   const navigate = useNavigate()
   return (
     <div>
-      <CarComponent />
+      <CarCount />
 
       <div className="p-8 text-white">
         <div className="flex items-center justify-between">
@@ -30,7 +30,7 @@ function PropertyTokens() {
         <div className="grid grid-cols-1 mt-8 gap-8 md:grid-cols-3">
           {
             Array.from({ length: 6 }).map((_, i) => (
-              <CarProperty
+              <CarPreview
                 key={i}
                 picture={`https://picsum.photos/500/300?random=${i}`}
                 title="Park Avenue Tower"

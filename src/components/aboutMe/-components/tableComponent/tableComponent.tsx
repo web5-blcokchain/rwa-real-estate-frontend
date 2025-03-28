@@ -2,7 +2,7 @@ import type { TableProps } from 'antd'
 import { Table } from 'antd'
 import React from 'react'
 
-import './css/tableComponent.scss'
+import './tableComponent.scss'
 
 interface TableComponentProps<T> {
   children?: React.ReactNode
@@ -13,7 +13,7 @@ interface TableComponentProps<T> {
 
 function TableComponent<T extends object>({ children, titleSlot, columns, data }: TableComponentProps<T>) {
   return (
-    <div className="tableComponent-wrap mt-8 p-6">
+    <div className="mt-8 rounded-xl bg-[#202329;] p-5 text-white">
       {children}
       {titleSlot}
       <Table<T>

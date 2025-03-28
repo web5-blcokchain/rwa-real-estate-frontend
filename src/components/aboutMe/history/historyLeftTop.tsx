@@ -35,23 +35,23 @@ function HistoryLeftTop() {
 
   return (
     <div>
-      <div className="mt-4 flex flex-wrap">
+      <div className="grid grid-cols-2 mt-4 gap-3">
         {
           carList.map(item => (
-            <div key={item.title} className="w-[calc(50%-1rem)] rounded-2 bg-[#242933] p-4">
-              <div className="font-size-3 text-[#8d909a]">{item.title}</div>
-              <div className="font-size-4">{item.field}</div>
+            <div key={item.title} className="rounded-2 bg-[#242933] p-4">
+              <div className="text-[#8d909a]">{item.title}</div>
+              <div>{item.field}</div>
               <div className="box-item flex items-center justify-start">
                 {item.picture && (
                   <img src={item.picture} alt="" className="h-3 w-3" />
                 )}
-                <span className="font-size-3" style={{ color: item.color }}>{item.fieldTwo}</span>
+                <span style={{ color: item.color }}>{item.fieldTwo}</span>
               </div>
             </div>
           ))
         }
       </div>
-      <div className="mt-4 font-size-3 text-[#8d909a]">View Detailed Analysis Report</div>
+      <div className="mt-4 text-[#8d909a]">View Detailed Analysis Report</div>
     </div>
   )
 }
