@@ -39,20 +39,3 @@ const apiClient = {
 }
 
 export default apiClient
-
-export interface PageParams {
-  pageCount: number
-  pageId: number
-}
-
-export interface PageResponse {
-  pageCount: number
-  pageId: number
-  platformId: number
-  serverTime: number
-  totalCount: number
-}
-
-export type ListResponse<T> = {
-  list: Array<T>
-} & PageResponse
