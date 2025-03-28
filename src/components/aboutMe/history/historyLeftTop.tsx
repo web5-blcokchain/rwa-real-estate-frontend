@@ -40,7 +40,7 @@ function HistoryLeftTop() {
           carList.map(item => (
             <div key={item.title} className="rounded-2 bg-[#242933] p-4">
               <div className="text-[#8d909a]">{item.title}</div>
-              <div>{item.field}</div>
+              <div className="text-4">{item.field}</div>
               <div className="box-item flex items-center justify-start">
                 {item.picture && (
                   <img src={item.picture} alt="" className="h-3 w-3" />

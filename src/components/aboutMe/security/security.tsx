@@ -49,9 +49,16 @@ function Security() {
     <div className="flex justify-start text-white">
       <div className="mr-3 w-1/2">
         <TitleCard title="Security Score">
-          <div className="flex justify-between pt-6">
-            <div className="w-1/2">
-              <Progress type="dashboard" percent={93} strokeColor={conicColors} />
+          <div className="flex justify-between">
+            <div className="mt-6 w-1/2 flex justify-center">
+              <Progress
+                type="dashboard"
+                percent={100}
+                strokeColor={conicColors}
+                gapPosition="bottom"
+                gapDegree={180}
+                showInfo={false}
+              />
             </div>
             <div className="w-1/2 flex flex-col items-start justify-start">
               <div className="text-4">Security Suggestions</div>
@@ -133,7 +140,7 @@ function Security() {
                     <div>¥0 Received</div>
                   </div>
                   <div>
-                    <Progress percent={item.percent} status="active" showInfo={false} strokeColor="#b5b5b5" trailColor="#fff" />
+                    <Progress percent={item.percent} status="active" showInfo={false} strokeColor="#2bb480" trailColor="#fff" />
                   </div>
                   <div className="text-right text-[#8d909a]">Budget ¥170</div>
                 </div>
