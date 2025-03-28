@@ -2,7 +2,7 @@ import apiGroup from '@/api/basckApi'
 import { RealEstateCard } from '@/components/common/real-estate-card'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
-import { Button } from 'antd'
+import { Button, Spin } from 'antd'
 import { useState } from 'react'
 
 export const Route = createLazyFileRoute('/_app/properties/')({
@@ -27,6 +27,14 @@ function RouteComponent() {
   const handleSearch = (value: string) => {
     setKeyword(value)
     setPage(1)
+  }
+
+  if (isLoading) {
+    return (
+      <div className="w-full p-8 h-dvh">
+        <Spin />
+      </div>
+    )
   }
 
   return (

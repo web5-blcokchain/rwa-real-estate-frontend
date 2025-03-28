@@ -4,7 +4,7 @@ import { IInfoField } from '@/components/common/i-info-field'
 import { ImageSwiper } from '@/components/common/image-swiper'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useNavigate, useSearch } from '@tanstack/react-router'
-import { Button, Input } from 'antd'
+import { Button, Input, Spin } from 'antd'
 import { useEffect, useState } from 'react'
 import { LocationCard } from './-cards/location'
 import { PropertyDescriptionCard } from './-cards/property-description'
@@ -22,7 +22,7 @@ function RouteComponent() {
   const [annualReturn, setAnnualReturn] = useState<number>(0)
   const [ratioNum, setRatioNum] = useState<number>(0)
 
-  const { data: detailObj } = useQuery<DetailResponse>({
+  const { data: detailObj, isLoading } = useQuery<DetailResponse>({
     queryKey: ['property-detail', search.id],
     queryFn: async () => {
       const response = await apiGroup.getDataListDetail({ id: Number(search.id) })
@@ -44,10 +44,19 @@ function RouteComponent() {
     const annualReturnValue = (rentalNum + capitalNum) * 12
 
     setAnnualReturn(annualReturnValue)
-    setRatioNum(Number(((investmentPrice * 12) / (rentalNum + capitalNum)) * 100))
+    setRatioNum(20)
+    // setRatioNum(Number(((investmentPrice * 12) / (rentalNum + capitalNum)) * 100))
   }, [investmentPrice, detailObj])
 
   const imageList = detailObj?.image_urls?.split(',') || []
+
+  if (isLoading) {
+    return (
+      <div className="w-full p-8 h-dvh">
+        <Spin />
+      </div>
+    )
+  }
 
   return (
     <div className="px-8 space-y-8">
