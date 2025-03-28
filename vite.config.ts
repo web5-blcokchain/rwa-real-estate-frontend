@@ -47,5 +47,19 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src')
     }
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://adm.usdable.com/api/', // dev
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/api/, '')
+      },
+      '/images': {
+        target: 'https://adm.usdable.com/', // dev
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/images/, '')
+      }
+    }
   }
 })

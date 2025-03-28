@@ -2,7 +2,10 @@ import { TanStackQueryDevtools, TanStackRouterDevtools } from '@/components/prov
 import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
 
 interface RootRouteContext {
-
+  search: {
+    id?: string
+    propertyId?: string
+  }
 }
 
 export const Route = createRootRouteWithContext<RootRouteContext>()({

@@ -101,8 +101,8 @@ function RightMenu() {
   const { ready, authenticated, user, login, logout } = usePrivy()
 
   useEffect(() => {
-    console.log('user', user)
-  }, [])
+    console.log('=-=-', user)
+  }, [authenticated])
 
   useEffect(() => {
     const handleLanguageChange = () => {

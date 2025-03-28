@@ -54,7 +54,6 @@ export const RealEstateCard: FC<{
           </div>
 
           <div className="rounded bg-[#8465bb] bg-opacity-50 px-2 py-1 text-3 text-purple">
-            status
             {status}
           </div>
         </div>

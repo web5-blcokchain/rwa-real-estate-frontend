@@ -1,7 +1,7 @@
 import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
-import { createLazyFileRoute, useRouter } from '@tanstack/react-router'
+import { createLazyFileRoute, useLocation, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
 
 export const Route = createLazyFileRoute('/_app/properties/payment/')({
@@ -11,6 +11,8 @@ export const Route = createLazyFileRoute('/_app/properties/payment/')({
 function RouteComponent() {
   const { t } = useTranslation()
   const router = useRouter()
+  const { state } = useLocation()
+  const detailObj = JSON.parse(state?.detailObj)
 
   const [tokens, setTokens] = useState(1)
 
@@ -30,30 +32,30 @@ function RouteComponent() {
           <IImage src="https://picsum.photos/400/240" className="size-full rounded" />
         </div>
         <div>
-          <div className="text-6 font-medium">23 Berwick Street</div>
+          <div className="text-6 font-medium">{detailObj?.name}</div>
 
           <div className="grid grid-cols-2 mt-4 gap-x-4">
             <IInfoField
               label="Location"
-              value="innan 1-chome, Shibuya-ku"
+              value={detailObj?.address}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
               label="Property Type"
-              value="Luxury Apartment"
+              value={detailObj?.property_type}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
               label="Token Price"
-              value="$500 / token"
+              value={detailObj?.price}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
               label="Total Valuation"
-              value="$5,000,000"
+              value={Number(detailObj?.number) * Number(detailObj?.price)}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
@@ -78,8 +80,14 @@ function RouteComponent() {
               <Button className="b-none text-white bg-[#374151]!" onClick={plus}>+</Button>
             </div>
 
-            <div className="text-right">$500</div>
-            <div className="text-right">$10</div>
+            <div className="text-right">
+              $
+              {tokens * 500}
+            </div>
+            <div className="text-right">
+              $
+              {tokens * 10}
+            </div>
           </div>
         </div>
 
