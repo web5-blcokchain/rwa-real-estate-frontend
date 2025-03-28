@@ -1,9 +1,13 @@
+import React from 'react'
+
 export const TitleCard: FC<{
   title: string
+  selectSlot?: React.ReactNode
 }> = ({
   children,
   className,
-  title
+  title,
+  selectSlot
 }) => {
   return (
     <div className={cn(
@@ -11,7 +15,10 @@ export const TitleCard: FC<{
       className
     )}
     >
-      <div className="text-5">{title}</div>
+      <div className="flex items-center justify-between text-5">
+        <div>{title}</div>
+        {selectSlot}
+      </div>
       <div className="mt-4">
         {children}
       </div>
