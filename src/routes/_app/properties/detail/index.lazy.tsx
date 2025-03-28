@@ -12,17 +12,8 @@ import { PropertyDescriptionCard } from './-cards/property-description'
 import { RegionalPriceTrendsCard } from './-cards/regional-price-trends'
 import { RentalIncomeAnalysisCard } from './-cards/rental-income-analysis'
 
-interface SearchParams {
-  id: string
-}
-
 export const Route = createLazyFileRoute('/_app/properties/detail/')({
-  component: RouteComponent,
-  validateSearch: (search: Record<string, unknown>) => {
-    return {
-      id: String(search.id || '')
-    }
-  }
+  component: RouteComponent
 })
 
 function RouteComponent() {
