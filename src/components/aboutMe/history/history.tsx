@@ -3,6 +3,7 @@ import { TitleCard } from '../-components/titleCard'
 import HistoryDecmber from './historyDecmber'
 import { HistoryEchart } from './historyEchart'
 import HistoryLeftTop from './historyLeftTop'
+
 import HistoryRightTop from './historyRightTop'
 
 function History() {
