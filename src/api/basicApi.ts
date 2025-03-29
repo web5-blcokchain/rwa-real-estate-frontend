@@ -38,14 +38,7 @@ export interface DataListResponse {
   pageSize: number
 }
 function getDataList(data: DataListParams) {
-  return apiClient.post<DataListResponse>('/api/assets/index', data
-    // {
-    //     headers: {
-    //         "server": true,
-    //         "type": type
-    //     }
-    // }
-  )
+  return apiClient.post<DataListResponse>('/api/assets/index', data)
 }
 
 interface DataListDetailParams {
@@ -83,14 +76,7 @@ export interface DetailResponse {
 }
 
 function getDataListDetail(data: DataListDetailParams) {
-  return apiClient.post<DetailResponse>('/api/assets/details', data
-    // {
-    //     headers: {
-    //         "server": true,
-    //         "type": type
-    //     }
-    // }
-  )
+  return apiClient.post<DetailResponse>('/api/assets/details', data)
 }
 
 interface PurchaseBuyParams {
@@ -100,34 +86,14 @@ interface PurchaseBuyParams {
 export interface PurchaseBuyResponse { }
 
 function purchaseBuy(data: PurchaseBuyParams) {
-  return apiClient.post<PurchaseBuyResponse>('/api/assets/buy', data
-    // {
-    //     headers: {
-    //         "server": true,
-    //         "type": type
-    //     }
-    // }
-  )
-}
-
-export interface AboutMeParams {
-  page: number
-  pageSize: number
-  keyword: string
-}
-export interface AboutMeResponse {
-
-}
-function getMeInfo(data: AboutMeParams) {
-  return apiClient.post<PurchaseBuyResponse>('/api/assets/myProperties', data)
+  return apiClient.post<PurchaseBuyResponse>('/api/assets/buy', data)
 }
 
 const apiGroup = {
   logins,
   getDataList,
   getDataListDetail,
-  purchaseBuy,
-  getMeInfo
+  purchaseBuy
 }
 
 export default apiGroup
