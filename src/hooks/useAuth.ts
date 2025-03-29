@@ -1,4 +1,4 @@
-import apiGroup from '@/api/basckApi'
+import apiGroup from '@/api/basicApi'
 import { useMutation } from '@tanstack/react-query'
 
 interface LoginParams {

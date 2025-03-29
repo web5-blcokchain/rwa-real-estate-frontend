@@ -1,8 +1,10 @@
+import type { DetailResponse } from '@/api/basicApi'
 import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
-import { createLazyFileRoute, useRouter, useSearch } from '@tanstack/react-router'
+import { createLazyFileRoute, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
+import { useStore } from '../basicStore'
 
 export const Route = createLazyFileRoute('/_app/properties/payment/')({
   component: RouteComponent
@@ -11,8 +13,7 @@ export const Route = createLazyFileRoute('/_app/properties/payment/')({
 function RouteComponent() {
   const { t } = useTranslation()
   const router = useRouter()
-  const search = useSearch<any>({ strict: true })
-  const detailObj = JSON.parse(search?.detailObj)
+  const assetObj = useStore(state => state.assetObj) as DetailResponse
 
   const [tokens, setTokens] = useState(1)
 
@@ -32,30 +33,30 @@ function RouteComponent() {
           <IImage src="https://picsum.photos/400/240" className="size-full rounded" />
         </div>
         <div>
-          <div className="text-6 font-medium">{detailObj?.name}</div>
+          <div className="text-6 font-medium">{assetObj?.name}</div>
 
           <div className="grid grid-cols-2 mt-4 gap-x-4">
             <IInfoField
               label="Location"
-              value={detailObj?.address}
+              value={assetObj?.address}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
               label="Property Type"
-              value={detailObj?.property_type}
+              value={assetObj?.property_type}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
               label="Token Price"
-              value={detailObj?.price}
+              value={assetObj?.price}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
               label="Total Valuation"
-              value={Number(detailObj?.number) * Number(detailObj?.price)}
+              value={Number(assetObj?.number) * Number(assetObj?.price)}
               labelClass="text-[#898989]"
               className="space-y-2"
             />

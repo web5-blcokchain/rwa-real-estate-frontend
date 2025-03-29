@@ -65,7 +65,7 @@ export interface DetailResponse {
   expected_annual_return: string
   house_life: string
   id: number
-  image_urls: string[]
+  image_urls: string
   latitude: string
   location: string
   longitude: string

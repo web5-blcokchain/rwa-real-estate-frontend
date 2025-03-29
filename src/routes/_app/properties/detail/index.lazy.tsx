@@ -1,11 +1,12 @@
-import type { DetailResponse } from '@/api/basckApi'
-import apiGroup from '@/api/basckApi'
+import type { DetailResponse } from '@/api/basicApi'
+import apiGroup from '@/api/basicApi'
 import { IInfoField } from '@/components/common/i-info-field'
 import { ImageSwiper } from '@/components/common/image-swiper'
 import { useQuery } from '@tanstack/react-query'
-import { createLazyFileRoute, useNavigate, useSearch } from '@tanstack/react-router'
+import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
 import { Button, Input, Spin } from 'antd'
 import { useEffect, useState } from 'react'
+import { useStore } from '../basicStore'
 import { LocationCard } from './-cards/location'
 import { PropertyDescriptionCard } from './-cards/property-description'
 import { RegionalPriceTrendsCard } from './-cards/regional-price-trends'
@@ -17,15 +18,16 @@ export const Route = createLazyFileRoute('/_app/properties/detail/')({
 
 function RouteComponent() {
   const navigate = useNavigate()
-  const search = useSearch<any>({ strict: true })
+  const assetId = useStore(state => state.assetId)
+  const setAssetObj = useStore(state => state.setAssetObj)
   const [investmentPrice, setInvestmentPrice] = useState<number>(0)
   const [annualReturn, setAnnualReturn] = useState<number>(0)
   const [ratioNum, setRatioNum] = useState<number>(0)
 
   const { data: detailObj, isLoading } = useQuery<DetailResponse>({
-    queryKey: ['property-detail', search.id],
+    queryKey: ['property-detail', assetId],
     queryFn: async () => {
-      const response = await apiGroup.getDataListDetail({ id: Number(search.id) })
+      const response = await apiGroup.getDataListDetail({ id: assetId })
       return response.data
     }
   })
@@ -134,10 +136,12 @@ function RouteComponent() {
                 type="primary"
                 size="large"
                 className="w-full text-black!"
-                onClick={() => navigate({
-                  to: '/properties/payment',
-                  search: { detailObj: JSON.stringify(detailObj) }
-                })}
+                onClick={() => {
+                  setAssetObj(detailObj || {})
+                  navigate({
+                    to: '/properties/payment'
+                  })
+                }}
               >
                 Invest Now
               </Button>
