@@ -6,7 +6,8 @@ const links = [
   { title: 'Home', href: '/home' },
   { title: 'Properties', href: '/properties' },
   { title: 'Investment', href: '/investment' },
-  { title: 'About', href: '/about' }
+  { title: 'About', href: '/about' },
+  { title: 'AboutMe', href: '/aboutMe' }
 ]
 
 export default function MainHeader() {

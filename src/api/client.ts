@@ -1,8 +1,8 @@
 import { TokenHeaderName } from '@/constants/setting'
+import { Env } from '@/lib/global'
 import axios from 'axios'
-// const apiHost = import.meta.env.VITE_API_HOST;
 
-// axios.defaults.baseURL = apiHost;
+axios.defaults.baseURL = Env.apiUrl
 
 interface responseDataParams {
   code?: number

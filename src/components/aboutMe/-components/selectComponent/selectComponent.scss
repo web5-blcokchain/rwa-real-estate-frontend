@@ -1,0 +1,26 @@
+.custom-select {
+  .ant-select-selector {
+    color: #fff;
+    border: transparent !important;
+    background-color: #242933!important;
+  }
+  .ant-select-arrow {
+    color: #fff;
+  }
+  .ant-select-item {
+    color: #fff!important;
+  }
+  .ant-select-selection-item {
+    color: #fff!important;
+  }
+  .ant-select-item-option-content {
+    color: #fff!important;
+  }
+}
+
+.ant-select-item-option-content {
+  color: #fff;
+}
+.ant-select-item-option-selected .ant-select-item-option-content {
+  color: #000;
+}

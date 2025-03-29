@@ -21,6 +21,7 @@ const AppIndexLazyImport = createFileRoute('/_app/')()
 const AppPropertiesIndexLazyImport = createFileRoute('/_app/properties/')()
 const AppInvestmentIndexLazyImport = createFileRoute('/_app/investment/')()
 const AppHomeIndexLazyImport = createFileRoute('/_app/home/')()
+const AppAboutMeIndexLazyImport = createFileRoute('/_app/aboutMe/')()
 const AppAboutIndexLazyImport = createFileRoute('/_app/about/')()
 const AppPropertiesPaymentIndexLazyImport = createFileRoute(
   '/_app/properties/payment/',
@@ -76,6 +77,14 @@ const AppHomeIndexLazyRoute = AppHomeIndexLazyImport.update({
   getParentRoute: () => AppRoute,
 } as any).lazy(() =>
   import('./routes/_app/home/index.lazy').then((d) => d.Route),
+)
+
+const AppAboutMeIndexLazyRoute = AppAboutMeIndexLazyImport.update({
+  id: '/aboutMe/',
+  path: '/aboutMe/',
+  getParentRoute: () => AppRoute,
+} as any).lazy(() =>
+  import('./routes/_app/aboutMe/index.lazy').then((d) => d.Route),
 )
 
 const AppAboutIndexLazyRoute = AppAboutIndexLazyImport.update({
@@ -170,6 +179,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAboutIndexLazyImport
       parentRoute: typeof AppImport
     }
+    '/_app/aboutMe/': {
+      id: '/_app/aboutMe/'
+      path: '/aboutMe'
+      fullPath: '/aboutMe'
+      preLoaderRoute: typeof AppAboutMeIndexLazyImport
+      parentRoute: typeof AppImport
+    }
     '/_app/home/': {
       id: '/_app/home/'
       path: '/home'
@@ -241,6 +257,7 @@ declare module '@tanstack/react-router' {
 interface AppRouteChildren {
   AppIndexLazyRoute: typeof AppIndexLazyRoute
   AppAboutIndexLazyRoute: typeof AppAboutIndexLazyRoute
+  AppAboutMeIndexLazyRoute: typeof AppAboutMeIndexLazyRoute
   AppHomeIndexLazyRoute: typeof AppHomeIndexLazyRoute
   AppInvestmentIndexLazyRoute: typeof AppInvestmentIndexLazyRoute
   AppPropertiesIndexLazyRoute: typeof AppPropertiesIndexLazyRoute
@@ -255,6 +272,7 @@ interface AppRouteChildren {
 const AppRouteChildren: AppRouteChildren = {
   AppIndexLazyRoute: AppIndexLazyRoute,
   AppAboutIndexLazyRoute: AppAboutIndexLazyRoute,
+  AppAboutMeIndexLazyRoute: AppAboutMeIndexLazyRoute,
   AppHomeIndexLazyRoute: AppHomeIndexLazyRoute,
   AppInvestmentIndexLazyRoute: AppInvestmentIndexLazyRoute,
   AppPropertiesIndexLazyRoute: AppPropertiesIndexLazyRoute,
@@ -275,6 +293,7 @@ export interface FileRoutesByFullPath {
   '': typeof AppRouteWithChildren
   '/': typeof AppIndexLazyRoute
   '/about': typeof AppAboutIndexLazyRoute
+  '/aboutMe': typeof AppAboutMeIndexLazyRoute
   '/home': typeof AppHomeIndexLazyRoute
   '/investment': typeof AppInvestmentIndexLazyRoute
   '/properties': typeof AppPropertiesIndexLazyRoute
@@ -289,6 +308,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof AppIndexLazyRoute
   '/about': typeof AppAboutIndexLazyRoute
+  '/aboutMe': typeof AppAboutMeIndexLazyRoute
   '/home': typeof AppHomeIndexLazyRoute
   '/investment': typeof AppInvestmentIndexLazyRoute
   '/properties': typeof AppPropertiesIndexLazyRoute
@@ -305,6 +325,7 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteWithChildren
   '/_app/': typeof AppIndexLazyRoute
   '/_app/about/': typeof AppAboutIndexLazyRoute
+  '/_app/aboutMe/': typeof AppAboutMeIndexLazyRoute
   '/_app/home/': typeof AppHomeIndexLazyRoute
   '/_app/investment/': typeof AppInvestmentIndexLazyRoute
   '/_app/properties/': typeof AppPropertiesIndexLazyRoute
@@ -322,6 +343,7 @@ export interface FileRouteTypes {
     | ''
     | '/'
     | '/about'
+    | '/aboutMe'
     | '/home'
     | '/investment'
     | '/properties'
@@ -335,6 +357,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/aboutMe'
     | '/home'
     | '/investment'
     | '/properties'
@@ -349,6 +372,7 @@ export interface FileRouteTypes {
     | '/_app'
     | '/_app/'
     | '/_app/about/'
+    | '/_app/aboutMe/'
     | '/_app/home/'
     | '/_app/investment/'
     | '/_app/properties/'
@@ -387,6 +411,7 @@ export const routeTree = rootRoute
       "children": [
         "/_app/",
         "/_app/about/",
+        "/_app/aboutMe/",
         "/_app/home/",
         "/_app/investment/",
         "/_app/properties/",
@@ -404,6 +429,10 @@ export const routeTree = rootRoute
     },
     "/_app/about/": {
       "filePath": "_app/about/index.lazy.tsx",
+      "parent": "/_app"
+    },
+    "/_app/aboutMe/": {
+      "filePath": "_app/aboutMe/index.lazy.tsx",
       "parent": "/_app"
     },
     "/_app/home/": {
