@@ -4,7 +4,7 @@ import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
 import { createLazyFileRoute, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
-import { useStore } from '../basicStore'
+import { _useStore as useStore } from '../../store/basicStore'
 
 export const Route = createLazyFileRoute('/_app/properties/payment/')({
   component: RouteComponent

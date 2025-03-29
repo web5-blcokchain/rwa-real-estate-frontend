@@ -110,11 +110,24 @@ function purchaseBuy(data: PurchaseBuyParams) {
   )
 }
 
+export interface AboutMeParams {
+  page: number
+  pageSize: number
+  keyword: string
+}
+export interface AboutMeResponse {
+
+}
+function getMeInfo(data: AboutMeParams) {
+  return apiClient.post<PurchaseBuyResponse>('/api/assets/myProperties', data)
+}
+
 const apiGroup = {
   logins,
   getDataList,
   getDataListDetail,
-  purchaseBuy
+  purchaseBuy,
+  getMeInfo
 }
 
 export default apiGroup
