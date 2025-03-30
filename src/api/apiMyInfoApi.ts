@@ -66,9 +66,27 @@ function getHistory() {
   return apiClient.post<ResponseData<historyResponse>>('/api/info/earningsHistory')
 }
 
+export interface EarningsResponse {
+  id: number
+  user_id: number
+  type: number
+  properties_id: number
+  income_amount: number
+  number: number
+  status: number
+  income_id: number
+  income_date: number
+  address: string
+}
+
+function getEarningsHistory() {
+  return apiClient.post<ResponseData<EarningsResponse>>('/api/info/earningsHistory')
+}
+
 const apiMyInfoApi = {
   getMeInfo,
-  getHistory
+  getHistory,
+  getEarningsHistory
 }
 
 export default apiMyInfoApi

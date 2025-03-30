@@ -1,10 +1,11 @@
 import type { TableProps } from 'antd'
+import apiMyInfo from '@/api/apiMyInfoApi'
 import button2 from '@/assets/icons/BUTTON2-2.png'
 import button3 from '@/assets/icons/BUTTON3.png'
 import frame115 from '@/assets/icons/Frame115.png'
 import group272Icon from '@/assets/icons/group272.png'
+import { useQuery } from '@tanstack/react-query'
 import { Space } from 'antd'
-
 import CarCount from '../-components/carCount'
 import TableComponent from '../-components/tableComponent/tableComponent'
 
@@ -170,6 +171,15 @@ const dataTwo: DataTypeTwo[] = [
 ]
 
 function Earnings() {
+  const { data: EarningsData, isLoading } = useQuery({
+    queryKey: ['overview'],
+    queryFn: async () => {
+      const res = await apiMyInfo.getEarningsHistory()
+      return res.data?.list
+    }
+  })
+  console.log('=-=-=-', EarningsData, isLoading)
+
   return (
     <div>
       <CarCount />
