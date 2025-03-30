@@ -1,4 +1,7 @@
+import apiMyInfoApi from '@/api/apiMyInfoApi'
+import { _useStore as useStore } from '@/routes/_app/aboutMe/store/userStore'
 import { usePrivy } from '@privy-io/react-auth'
+import { useQuery } from '@tanstack/react-query'
 import { Link, useLocation } from '@tanstack/react-router'
 import { Button, Drawer } from 'antd'
 
@@ -97,12 +100,22 @@ function NavMenu({ className }: { className?: string }) {
 
 function RightMenu() {
   const [, setLanguage] = useState(i18n.language)
+  const setUserData = useStore(state => state.setUserData)
 
   const { ready, authenticated, user, login, logout } = usePrivy()
 
+  const { data: userData } = useQuery({
+    queryKey: ['aboutMe'],
+    queryFn: async () => {
+      const res = await apiMyInfoApi.getUserInfo()
+      setUserData(res.data)
+      return res.data || {}
+    }
+  })
+
   useEffect(() => {
-    console.log('=-=-', user)
-  }, [authenticated])
+    console.log('user', user)
+  }, [authenticated, user])
 
   useEffect(() => {
     const handleLanguageChange = () => {
@@ -136,7 +149,7 @@ function RightMenu() {
             ? (
                 <div className="fyc gap-1" onClick={logout}>
                   <div className="i-material-symbols-account-circle-outline size-5 bg-white"></div>
-                  <div className="text-4 text-white">chloe</div>
+                  <div className="text-4 text-white">{userData?.nickname || ''}</div>
                   <div className="i-ic-round-keyboard-arrow-down size-5 bg-white"></div>
                 </div>
               )

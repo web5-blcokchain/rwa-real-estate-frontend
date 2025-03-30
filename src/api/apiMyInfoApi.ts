@@ -1,7 +1,7 @@
 import apiClient from './client'
 
 interface ResponseData<T> {
-  list: any
+  list?: any
   code: number
   msg: string
   data: T
@@ -16,27 +16,25 @@ export interface AboutMeParams {
 
 export interface listProps {
   id: number
+  user_id: number
+  properties_id: number
+  purchase_price: number
+  current_price: number
+  number: number
+  total_purchase: number
+  total_current: number
+  create_date: number
+  update_date: number
+  status: number
   address: string
   property_type: string
   bedrooms: number
-  price: number
-  monthly_rent: number
   expected_annual_return: number
-  rental_yield: number
-  capital_appreciation: number
   property_description: string
   location: string
   image_urls: string
-  longitude: number | null
-  latitude: number | null
-  created_date: number
-  updated_date: number
-  number: number
-  area: number
-  house_life: number
-  postcode: number
-  is_collect: number
-  total_money: number
+  longitude: string | null
+  latitude: string | null
 }
 export interface AboutMeResponse {
   list: listProps[]
@@ -44,7 +42,7 @@ export interface AboutMeResponse {
   page: number
   pageSize: number
 }
-
+// 获取我的资产列表
 function getMeInfo(data: AboutMeParams) {
   return apiClient.post<ResponseData<AboutMeResponse>>('/api/assets/myProperties', data)
 }
@@ -61,7 +59,7 @@ export interface historyResponse {
   income_date: number
   address: string
 }
-
+// 收益记录
 function getHistory() {
   return apiClient.post<ResponseData<historyResponse>>('/api/info/earningsHistory')
 }
@@ -78,15 +76,35 @@ export interface EarningsResponse {
   income_date: number
   address: string
 }
-
+// 收益记录
 function getEarningsHistory() {
   return apiClient.post<ResponseData<EarningsResponse>>('/api/info/earningsHistory')
+}
+
+export interface userResponse {
+  id: number
+  nickname: string
+  email: string
+  mobile: string
+  avatar: string
+  gender: number
+  address: string
+  audit_status: number
+  audit_date: number
+  type: number
+  last_login_time: number
+  last_login_ip: number
+}
+// 用户信息
+function getUserInfo() {
+  return apiClient.post<userResponse>('/api/info/userInfo')
 }
 
 const apiMyInfoApi = {
   getMeInfo,
   getHistory,
-  getEarningsHistory
+  getEarningsHistory,
+  getUserInfo
 }
 
 export default apiMyInfoApi

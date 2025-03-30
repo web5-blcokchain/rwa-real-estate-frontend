@@ -26,7 +26,7 @@ const CarPreview: FC<{
   return (
     <div
       className={cn(
-        'overflow-hidden rounded-xl bg-background-secondary',
+        'overflow-hidden rounded-xl bg-background-secondary cursor-pointer',
         className
       )}
       {...props}
@@ -40,7 +40,6 @@ const CarPreview: FC<{
           <div className="text-4 font-medium">{title}</div>
 
           <div className="rounded bg-[#8465bb] bg-opacity-50 px-2 py-1 text-3 text-purple">
-            Residential
             {status}
           </div>
         </div>
