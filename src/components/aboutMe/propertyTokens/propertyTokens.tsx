@@ -14,7 +14,7 @@ function PropertyTokens() {
   const setAssetId = useStore((state: { setAssetId: (id: number) => void }) => state.setAssetId)
 
   const { data: tokenData, isLoading } = useQuery({
-    queryKey: ['overview', page, keyword],
+    queryKey: ['PropertyTokens', page, keyword],
     queryFn: async () => {
       const res = await apiMyInfo.getMeInfo({ page, pageSize: 20, keyword })
       return res.data?.list

@@ -172,7 +172,7 @@ const dataTwo: DataTypeTwo[] = [
 
 function Earnings() {
   const { data: EarningsData, isLoading } = useQuery({
-    queryKey: ['overview'],
+    queryKey: ['Earnings'],
     queryFn: async () => {
       const res = await apiMyInfo.getEarningsHistory()
       return res.data?.list
