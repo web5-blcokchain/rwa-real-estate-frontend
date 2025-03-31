@@ -1,10 +1,10 @@
+import { _useStore as useStore } from '@/_store/_userStore'
 import apiGroup from '@/api/basicApi'
 import { RealEstateCard } from '@/components/common/real-estate-card'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
 import { Button, Spin } from 'antd'
 import { useState } from 'react'
-import { _useStore as useStore } from './store/basicStore'
 
 export const Route = createLazyFileRoute('/_app/properties/')({
   component: RouteComponent
@@ -67,6 +67,7 @@ function RouteComponent() {
           {data.list.map((item: any, _i: number) => (
             <RealEstateCard
               key={item.id}
+              id={item.id}
               picture={`${baseUrl}${item.image_urls}`}
               title="Park Avenue Tower"
               location="Upper East Side, Manhattan, New York"

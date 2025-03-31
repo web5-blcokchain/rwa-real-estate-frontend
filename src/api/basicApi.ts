@@ -88,12 +88,24 @@ export interface PurchaseBuyResponse { }
 function purchaseBuy(data: PurchaseBuyParams) {
   return apiClient.post<PurchaseBuyResponse>('/api/assets/buy', data)
 }
+interface CollectParams {
+  id: number
+}
+
+function setCollect(data: CollectParams) {
+  return apiClient.post<PurchaseBuyResponse>('/api/assets/collect', data)
+}
+function setUnCollect(data: CollectParams) {
+  return apiClient.post<PurchaseBuyResponse>('/api/assets/uncollect', data)
+}
 
 const apiGroup = {
   logins,
   getDataList,
   getDataListDetail,
-  purchaseBuy
+  purchaseBuy,
+  setCollect,
+  setUnCollect
 }
 
 export default apiGroup

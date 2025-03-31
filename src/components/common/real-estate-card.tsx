@@ -1,3 +1,5 @@
+import basicApi from '@/api/basicApi'
+import { useQuery } from '@tanstack/react-query'
 import numeral from 'numeral'
 import { IImage } from './i-image'
 
@@ -10,6 +12,7 @@ export const RealEstateCard: FC<{
   size: string
   beds: number
   status: number
+  id: number
 } & React.HTMLAttributes<HTMLDivElement>> = ({
   picture,
   title,
@@ -19,9 +22,27 @@ export const RealEstateCard: FC<{
   size,
   beds,
   status,
+  id,
   className,
   ...props
 }) => {
+  const { data: collectData, isLoading: collectLoading } = useQuery({
+    queryKey: ['collect', id],
+    queryFn: async () => {
+      const res = await basicApi.setCollect(id)
+      return res.data
+    }
+  })
+  const { data: uncollectData, isLoading: uncollectLoading } = useQuery({
+    queryKey: ['uncollect', id],
+    queryFn: async () => {
+      const res = await basicApi.setUnCollect(id)
+      return res.data
+    }
+  })
+
+  console.log('=-=-=-', collectData, uncollectData, collectLoading, uncollectLoading)
+
   return (
     <div
       className={cn(
@@ -42,6 +63,9 @@ export const RealEstateCard: FC<{
         >
           <div
             className="i-ic-round-favorite-border size-5 bg-gray-4"
+            onClick={(e) => {
+              e.stopPropagation()
+            }}
           >
           </div>
         </div>
