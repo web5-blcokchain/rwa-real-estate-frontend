@@ -68,6 +68,7 @@ function RouteComponent() {
             <RealEstateCard
               key={item.id}
               id={item.id}
+              collect={item.is_collect}
               picture={`${baseUrl}${item.image_urls}`}
               title="Park Avenue Tower"
               location="Upper East Side, Manhattan, New York"

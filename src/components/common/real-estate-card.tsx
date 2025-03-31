@@ -1,5 +1,5 @@
 import basicApi from '@/api/basicApi'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import numeral from 'numeral'
 import { IImage } from './i-image'
 
@@ -13,6 +13,7 @@ export const RealEstateCard: FC<{
   beds: number
   status: number
   id: number
+  collect: number
 } & React.HTMLAttributes<HTMLDivElement>> = ({
   picture,
   title,
@@ -23,25 +24,27 @@ export const RealEstateCard: FC<{
   beds,
   status,
   id,
+  collect,
   className,
   ...props
 }) => {
-  const { data: collectData, isLoading: collectLoading } = useQuery({
-    queryKey: ['collect', id],
-    queryFn: async () => {
-      const res = await basicApi.setCollect(id)
-      return res.data
-    }
-  })
-  const { data: uncollectData, isLoading: uncollectLoading } = useQuery({
-    queryKey: ['uncollect', id],
-    queryFn: async () => {
-      const res = await basicApi.setUnCollect(id)
-      return res.data
-    }
-  })
+  const queryClient = useQueryClient()
+  const [cardId, setCardId] = useState<number>(0)
 
-  console.log('=-=-=-', collectData, uncollectData, collectLoading, uncollectLoading)
+  const { mutate: collectMutate } = useMutation({
+    mutationFn: async () => {
+      const res = await basicApi.setCollect({ id: cardId })
+      queryClient.invalidateQueries({ queryKey: ['properties'] })
+      return res.data
+    }
+  })
+  const { mutate: uncollectMutate } = useMutation({
+    mutationFn: async () => {
+      const res = await basicApi.setUnCollect({ id: cardId })
+      queryClient.invalidateQueries({ queryKey: ['properties'] })
+      return res.data
+    }
+  })
 
   return (
     <div
@@ -65,6 +68,13 @@ export const RealEstateCard: FC<{
             className="i-ic-round-favorite-border size-5 bg-gray-4"
             onClick={(e) => {
               e.stopPropagation()
+              setCardId(id)
+              if (collect) {
+                uncollectMutate()
+              }
+              else {
+                collectMutate()
+              }
             }}
           >
           </div>
