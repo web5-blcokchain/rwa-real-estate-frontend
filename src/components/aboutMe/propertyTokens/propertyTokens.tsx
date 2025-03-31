@@ -1,6 +1,6 @@
 import type { listProps } from '@/api/apiMyInfoApi'
+import { _useStore as useStore } from '@/_store/_userStore'
 import apiMyInfo from '@/api/apiMyInfoApi'
-import { _useStore as useStore } from '@/routes/_app/properties/store/basicStore'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { Button, Spin } from 'antd'

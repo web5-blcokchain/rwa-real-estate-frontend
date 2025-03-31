@@ -1,10 +1,10 @@
+import { _useStore as useStore } from '@/_store/_userStore'
 import apiGroup from '@/api/basicApi'
 import { RealEstateCard } from '@/components/common/real-estate-card'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
 import { Button, Spin } from 'antd'
 import { useState } from 'react'
-import { _useStore as useStore } from './store/basicStore'
 
 export const Route = createLazyFileRoute('/_app/properties/')({
   component: RouteComponent

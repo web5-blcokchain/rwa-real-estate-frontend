@@ -1,5 +1,5 @@
+import { _useStore as useStore } from '@/_store/_userStore'
 import apiMyInfoApi from '@/api/apiMyInfoApi'
-import { _useStore as useStore } from '@/routes/_app/aboutMe/store/userStore'
 import { usePrivy } from '@privy-io/react-auth'
 import { useQuery } from '@tanstack/react-query'
 import { Link, useLocation } from '@tanstack/react-router'
