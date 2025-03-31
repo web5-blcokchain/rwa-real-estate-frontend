@@ -1,11 +1,11 @@
 import type { MenuProps } from 'antd'
+import { _useStore as useStore } from '@/_store/_userStore'
 import maskGroup from '@/assets/images/mask-group.png'
 import Earnings from '@/components/aboutMe/earnings/earnings'
 import History from '@/components/aboutMe/history/history'
 import Overview from '@/components/aboutMe/overview/overview'
 import PropertyTokens from '@/components/aboutMe/propertyTokens/propertyTokens'
 import Security from '@/components/aboutMe/security/security'
-import { _useStore as useStore } from '@/routes/_app/aboutMe/store/userStore'
 
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { Layout, Menu } from 'antd'
