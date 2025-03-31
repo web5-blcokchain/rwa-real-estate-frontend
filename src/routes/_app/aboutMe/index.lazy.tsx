@@ -82,7 +82,7 @@ function RouteComponent() {
           </div>
           <div className="justify-space-between ml-3 mt-1 flex flex-col">
             <div className="text-[#b5b5b5]">Welcome Back</div>
-            <div className="mt-2 text-4 font-bold">{userData.nickname || ''}</div>
+            <div className="mt-2 text-4 font-bold">{userData?.nickname || ''}</div>
           </div>
         </div>
         <Menu
