@@ -89,6 +89,7 @@ export interface listProps {
   purchase_price: number
   current_price: number
   number: number
+  name: string
   total_purchase: number
   total_current: number
   create_date: number
