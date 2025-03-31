@@ -58,7 +58,7 @@ function PropertyTokens() {
               <CarPreview
                 key={_.id}
                 picture={_.image_urls || `https://picsum.photos/500/300?random=${i}`}
-                title={_.address}
+                title={_.name}
                 location={_.location}
                 size="813 sq ft"
                 beds={_.bedrooms}
