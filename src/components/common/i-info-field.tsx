@@ -1,6 +1,6 @@
 export const IInfoField: FC<{
   label: string
-  value: string
+  value: string | number
   horizontal?: boolean
   labelClass?: string
   valueClass?: string

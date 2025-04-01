@@ -1,24 +1,35 @@
+import type { analysisResponse } from '@/api/basicApi'
+import apiBasic from '@/api/basicApi'
 import { TitleCard } from '@/components/common/title-card'
+import { useQuery } from '@tanstack/react-query'
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
+interface BarDataResponse {
+  name: string
+  value: number
+}
+
 export const RentalIncomeAnalysisCard: FC = () => {
-  const data = [
-    { name: 'Q1', value: 40 },
-    { name: 'Q2', value: 60 },
-    { name: 'Q3', value: 90 },
-    { name: 'Q4', value: 120 },
-    { name: 'Q5', value: 100 },
-    { name: 'Q6', value: 70 },
-    { name: 'Q7', value: 160 },
-    { name: 'Q8', value: 130 }
-  ]
+  const { data: BarData = [] } = useQuery<BarDataResponse[]>({
+    queryKey: ['Analysis'],
+    queryFn: async () => {
+      const response = await apiBasic.getCostAnalysis()
+      const arrData = response.data?.map((item: analysisResponse) => {
+        return {
+          name: item.quarter,
+          value: Number(item.cost)
+        }
+      })
+      return arrData || []
+    }
+  })
 
   return (
     <TitleCard title="Rental Income Analysis">
       <div className="h-32">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
-            data={data}
+            data={BarData}
             margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
           >
             <CartesianGrid stroke="#444" vertical={false} />

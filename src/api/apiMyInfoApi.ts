@@ -1,0 +1,110 @@
+import apiClient from './client'
+
+interface ResponseData<T> {
+  list?: any
+  code: number
+  msg: string
+  data: T
+  time: number
+}
+
+export interface AboutMeParams {
+  page?: number
+  pageSize?: number
+  keyword?: string
+}
+
+export interface listProps {
+  id: number
+  user_id: number
+  properties_id: number
+  purchase_price: number
+  current_price: number
+  number: number
+  total_purchase: number
+  total_current: number
+  create_date: number
+  update_date: number
+  status: number
+  address: string
+  property_type: string
+  bedrooms: number
+  expected_annual_return: number
+  property_description: string
+  location: string
+  image_urls: string
+  longitude: string | null
+  latitude: string | null
+}
+export interface AboutMeResponse {
+  list: listProps[]
+  count: number
+  page: number
+  pageSize: number
+}
+// 获取我的资产列表
+function getMeInfo(data: AboutMeParams) {
+  return apiClient.post<ResponseData<AboutMeResponse>>('/api/assets/myProperties', data)
+}
+
+export interface historyResponse {
+  id: number
+  user_id: number
+  type: number
+  properties_id: number
+  income_amount: number
+  number: number
+  status: number
+  income_id: number
+  income_date: number
+  address: string
+}
+// 收益记录
+function getHistory() {
+  return apiClient.post<ResponseData<historyResponse>>('/api/info/earningsHistory')
+}
+
+export interface EarningsResponse {
+  id: number
+  user_id: number
+  type: number
+  properties_id: number
+  income_amount: number
+  number: number
+  status: number
+  income_id: number
+  income_date: number
+  address: string
+}
+// 收益记录
+function getEarningsHistory() {
+  return apiClient.post<ResponseData<EarningsResponse>>('/api/info/earningsHistory')
+}
+
+export interface userResponse {
+  id: number
+  nickname: string
+  email: string
+  mobile: string
+  avatar: string
+  gender: number
+  address: string
+  audit_status: number
+  audit_date: number
+  type: number
+  last_login_time: number
+  last_login_ip: number
+}
+// 用户信息
+function getUserInfo() {
+  return apiClient.post<userResponse>('/api/info/userInfo')
+}
+
+const apiMyInfoApi = {
+  getMeInfo,
+  getHistory,
+  getEarningsHistory,
+  getUserInfo
+}
+
+export default apiMyInfoApi

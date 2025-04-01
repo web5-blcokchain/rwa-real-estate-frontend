@@ -1,23 +1,23 @@
 export const MemberCard: FC<{
-  picture: string
+  photograph: string
   name: string
-  title: string
-  desc: string
+  position: string
+  introduce: string
 }> = ({
-  picture,
+  photograph,
   name,
-  title,
-  desc
+  position,
+  introduce
 }) => {
   return (
     <div className="fccc gap-2">
       <div className="mb-4">
-        <img src={picture} className="size-50 rounded-full" />
+        <img src={photograph} className="size-50 rounded-full" />
       </div>
 
       <div className="text-center text-5">{name}</div>
-      <div className="text-center text-3.5 text-primary">{title}</div>
-      <div className="text-center text-3.5 text-[#b5b5b5]">{desc}</div>
+      <div className="text-center text-3.5 text-primary">{position}</div>
+      <div className="text-center text-3.5 text-[#b5b5b5]">{introduce}</div>
     </div>
   )
 }

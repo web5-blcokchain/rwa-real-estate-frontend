@@ -1,6 +1,10 @@
+import type { DetailResponse } from '@/api/basicApi'
+import { _useStore as useStore } from '@/_store/_userStore'
+import apiBasic from '@/api/basicApi'
 import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
+import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
 
@@ -11,6 +15,7 @@ export const Route = createLazyFileRoute('/_app/properties/payment/')({
 function RouteComponent() {
   const { t } = useTranslation()
   const router = useRouter()
+  const assetObj = useStore(state => state.assetObj) as DetailResponse
 
   const [tokens, setTokens] = useState(1)
 
@@ -20,6 +25,13 @@ function RouteComponent() {
       setTokens(tokens - 1)
     }
   }
+  const { mutate } = useMutation({
+    mutationFn: async () => {
+      const res = await apiBasic.purchaseBuy({ id: assetObj.id, number: tokens })
+      // router.navigate({ to: '/properties/distribution' })
+      return res.data
+    }
+  })
 
   return (
     <div className="max-w-7xl p-8 space-y-8">
@@ -30,30 +42,30 @@ function RouteComponent() {
           <IImage src="https://picsum.photos/400/240" className="size-full rounded" />
         </div>
         <div>
-          <div className="text-6 font-medium">23 Berwick Street</div>
+          <div className="text-6 font-medium">{assetObj?.name}</div>
 
           <div className="grid grid-cols-2 mt-4 gap-x-4">
             <IInfoField
               label="Location"
-              value="innan 1-chome, Shibuya-ku"
+              value={assetObj?.address}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
               label="Property Type"
-              value="Luxury Apartment"
+              value={assetObj?.property_type}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
               label="Token Price"
-              value="$500 / token"
+              value={assetObj?.price}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
               label="Total Valuation"
-              value="$5,000,000"
+              value={Number(assetObj?.number) * Number(assetObj?.price)}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
@@ -78,8 +90,14 @@ function RouteComponent() {
               <Button className="b-none text-white bg-[#374151]!" onClick={plus}>+</Button>
             </div>
 
-            <div className="text-right">$500</div>
-            <div className="text-right">$10</div>
+            <div className="text-right">
+              $
+              {tokens * 500}
+            </div>
+            <div className="text-right">
+              $
+              {tokens * 10}
+            </div>
           </div>
         </div>
 
@@ -142,7 +160,8 @@ function RouteComponent() {
               type="primary"
               size="large"
               className="text-black!"
-              onClick={() => router.navigate({ to: '/properties/distribution' })}
+              onClick={() => mutate()}
+              loading={false}
             >
               Confirm Payment
             </Button>

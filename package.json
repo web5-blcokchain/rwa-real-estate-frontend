@@ -9,8 +9,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint --cache",
-    "preview": "vite preview",
-    "release": "pnpm build && esno scripts/deploy.ts"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@ant-design/v5-patch-for-react-19": "^1.0.3",

@@ -2,6 +2,7 @@ import { IImage } from '@/components/common/i-image'
 import { Button } from 'antd'
 import numeral from 'numeral'
 
+const baseUrl = import.meta.env.VITE_PUBLIC_API_URL
 const CarPreview: FC<{
   picture: string
   title: string
@@ -11,6 +12,8 @@ const CarPreview: FC<{
   size: string
   beds: number
   status: number
+  annual_return?: number
+  number?: number
 } & React.HTMLAttributes<HTMLDivElement>> = ({
   picture,
   title,
@@ -21,18 +24,20 @@ const CarPreview: FC<{
   beds,
   status,
   className,
+  annual_return,
+  number,
   ...props
 }) => {
   return (
     <div
       className={cn(
-        'overflow-hidden rounded-xl bg-background-secondary',
+        'overflow-hidden rounded-xl bg-background-secondary cursor-pointer',
         className
       )}
       {...props}
     >
       <div className="relative h-56">
-        <IImage src={picture} className="size-full" />
+        <IImage src={`${baseUrl}${picture}`} className="size-full" />
       </div>
 
       <div className="px-6 py-8 space-y-2">
@@ -40,7 +45,6 @@ const CarPreview: FC<{
           <div className="text-4 font-medium">{title}</div>
 
           <div className="rounded bg-[#8465bb] bg-opacity-50 px-2 py-1 text-3 text-purple">
-            Residential
             {status}
           </div>
         </div>
@@ -56,14 +60,16 @@ const CarPreview: FC<{
           <div className="w-1/2 flex flex-col justify-start py-3">
             <div className="text-sm text-[#b5b5b5]">Tokens Held</div>
             <div className="text-4">
-              100/1000
+              {number}
+              /1000
             </div>
           </div>
 
           <div className="w-1/2 flex flex-col justify-start py-3">
             <div className="text-sm text-[#b5b5b5]">Annual Yield</div>
             <div className="text-4">
-              7.8%
+              {annual_return}
+              %
             </div>
           </div>
 

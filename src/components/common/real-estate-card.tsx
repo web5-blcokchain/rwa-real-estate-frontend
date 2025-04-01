@@ -1,3 +1,5 @@
+import basicApi from '@/api/basicApi'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import numeral from 'numeral'
 import { IImage } from './i-image'
 
@@ -10,6 +12,8 @@ export const RealEstateCard: FC<{
   size: string
   beds: number
   status: number
+  cardId: number
+  collect: number
 } & React.HTMLAttributes<HTMLDivElement>> = ({
   picture,
   title,
@@ -19,9 +23,29 @@ export const RealEstateCard: FC<{
   size,
   beds,
   status,
+  cardId,
+  collect,
   className,
   ...props
 }) => {
+  const queryClient = useQueryClient()
+  const [Id, setId] = useState<number>(0)
+
+  const { mutate: collectMutate } = useMutation({
+    mutationFn: async () => {
+      const res = await basicApi.setCollect({ id: Id })
+      queryClient.invalidateQueries({ queryKey: ['properties'] })
+      return res.data
+    }
+  })
+  const { mutate: unCollectMutate } = useMutation({
+    mutationFn: async () => {
+      const res = await basicApi.setUnCollect({ id: Id })
+      queryClient.invalidateQueries({ queryKey: ['properties'] })
+      return res.data
+    }
+  })
+
   return (
     <div
       className={cn(
@@ -42,6 +66,16 @@ export const RealEstateCard: FC<{
         >
           <div
             className="i-ic-round-favorite-border size-5 bg-gray-4"
+            onClick={(e) => {
+              e.stopPropagation()
+              setId(cardId)
+              if (collect) {
+                unCollectMutate()
+              }
+              else {
+                collectMutate()
+              }
+            }}
           >
           </div>
         </div>
@@ -54,7 +88,6 @@ export const RealEstateCard: FC<{
           </div>
 
           <div className="rounded bg-[#8465bb] bg-opacity-50 px-2 py-1 text-3 text-purple">
-            status
             {status}
           </div>
         </div>

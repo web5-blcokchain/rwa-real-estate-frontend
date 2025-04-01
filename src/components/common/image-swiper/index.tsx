@@ -7,6 +7,8 @@ import 'swiper/css/free-mode'
 import 'swiper/css/navigation'
 import 'swiper/css/thumbs'
 
+const baseUrl = import.meta.env.VITE_PUBLIC_API_URL
+
 export const ImageSwiper: FC<{
   list: string[]
 }> = ({
@@ -30,7 +32,7 @@ export const ImageSwiper: FC<{
         {
           list.map(url => (
             <SwiperSlide key={url}>
-              <img src={url} />
+              <img src={`${baseUrl}${url}`} />
             </SwiperSlide>
           ))
         }
@@ -47,7 +49,7 @@ export const ImageSwiper: FC<{
         {
           list.map(url => (
             <SwiperSlide key={url}>
-              <img src={url} />
+              <img src={`${baseUrl}${url}`} />
             </SwiperSlide>
           ))
         }

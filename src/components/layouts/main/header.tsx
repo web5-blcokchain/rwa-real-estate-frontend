@@ -1,5 +1,8 @@
+import { _useStore as useStore } from '@/_store/_userStore'
+import apiMyInfoApi from '@/api/apiMyInfoApi'
 import { usePrivy } from '@privy-io/react-auth'
-import { Link, useLocation } from '@tanstack/react-router'
+import { useMutation } from '@tanstack/react-query'
+import { Link, useLocation, useNavigate } from '@tanstack/react-router'
 import { Button, Drawer } from 'antd'
 
 const links = [
@@ -96,13 +99,28 @@ function NavMenu({ className }: { className?: string }) {
 }
 
 function RightMenu() {
+  const navigate = useNavigate()
   const [, setLanguage] = useState(i18n.language)
+  const [userObj, setUserObj] = useState<Record<string, any>>()
+  const setUserData = useStore(state => state.setUserData)
 
-  const { ready, authenticated, user, login, logout } = usePrivy()
+  const { ready, authenticated, user, logout } = usePrivy()
+
+  const { mutate } = useMutation({
+    mutationFn: async () => {
+      const res = await apiMyInfoApi.getUserInfo()
+      setUserData(res.data)
+      setUserObj(res.data)
+      return res.data
+    }
+  })
 
   useEffect(() => {
     console.log('user', user)
-  }, [])
+    if (authenticated) {
+      mutate()
+    }
+  }, [authenticated, user, mutate])
 
   useEffect(() => {
     const handleLanguageChange = () => {
@@ -117,6 +135,12 @@ function RightMenu() {
       i18n.off('languageChanged', handleLanguageChange)
     }
   }, [])
+
+  const login = () => {
+    navigate({
+      to: '/account/create'
+    })
+  }
 
   return (
     <>
@@ -136,12 +160,12 @@ function RightMenu() {
             ? (
                 <div className="fyc gap-1" onClick={logout}>
                   <div className="i-material-symbols-account-circle-outline size-5 bg-white"></div>
-                  <div className="text-4 text-white">chloe</div>
+                  <div className="text-4 text-white">{userObj?.nickname || ''}</div>
                   <div className="i-ic-round-keyboard-arrow-down size-5 bg-white"></div>
                 </div>
               )
             : (
-                <div>
+                <div className="space-x-4">
                   <Button
                     className="text-white bg-transparent!"
                     onClick={login}
