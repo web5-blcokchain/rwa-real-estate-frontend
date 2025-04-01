@@ -1,12 +1,13 @@
 import { TitleCard } from '@/components/common/title-card'
 
-export const PropertyDescriptionCard: FC = () => {
+export const PropertyDescriptionCard: FC<{
+  location: string
+} & React.HTMLAttributes<HTMLDivElement>> = ({ location, ...props }) => {
   return (
     <TitleCard title="Property Description">
-      <div className="text-4 space-y-4">
+      <div className="text-4 space-y-4" {...props}>
         <div className="text-[#d9d9d9]">
-          This Victorian detached house on Berwick Street maintains a classic British architectural style.
-          The property has been carefully maintained and modernized, perfectly blending historical features with contemporary comfort.
+          {location}
         </div>
 
         <div>

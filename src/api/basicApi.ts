@@ -86,7 +86,16 @@ export interface PriceTrendResponse {
 }
 // 价格趋势图
 function getPriceTrend() {
-  return apiClient.post<PriceTrendResponse>('/api/chart/price_trend')
+  return apiClient.post<Array<PriceTrendResponse>>('/api/chart/price_trend')
+}
+export interface analysisResponse {
+  cost: string
+  id: number
+  quarter: string
+}
+/// 运行成本分析
+function getCostAnalysis() {
+  return apiClient.post<Array<analysisResponse>>('/api/chart/operating_cost_analysis')
 }
 
 interface PurchaseBuyParams {
@@ -106,6 +115,7 @@ interface CollectParams {
 function setCollect(data: CollectParams) {
   return apiClient.post<PurchaseBuyResponse>('/api/assets/collect', data)
 }
+
 function setUnCollect(data: CollectParams) {
   return apiClient.post<PurchaseBuyResponse>('/api/assets/uncollect', data)
 }
@@ -130,6 +140,7 @@ const apiBasic = {
   getDataList,
   getDataListDetail,
   getPriceTrend,
+  getCostAnalysis,
   purchaseBuy,
   setCollect,
   setUnCollect,

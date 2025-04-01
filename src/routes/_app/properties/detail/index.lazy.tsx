@@ -1,4 +1,4 @@
-import type { DetailResponse, PriceTrendResponse } from '@/api/basicApi'
+import type { DetailResponse } from '@/api/basicApi'
 import { _useStore as useStore } from '@/_store/_userStore'
 import apiBasic from '@/api/basicApi'
 import { IInfoField } from '@/components/common/i-info-field'
@@ -28,13 +28,6 @@ function RouteComponent() {
     queryKey: ['property-detail', assetId],
     queryFn: async () => {
       const response = await apiBasic.getDataListDetail({ id: assetId })
-      return response.data
-    }
-  })
-  const { data: trendData } = useQuery<PriceTrendResponse>({
-    queryKey: ['detail', assetId],
-    queryFn: async () => {
-      const response = await apiBasic.getPriceTrend()
       return response.data
     }
   })
@@ -156,7 +149,7 @@ function RouteComponent() {
           </div>
         </div>
 
-        <PropertyDescriptionCard />
+        <PropertyDescriptionCard location={detailObj?.location || ''} />
 
         <LocationCard />
       </div>
@@ -166,7 +159,7 @@ function RouteComponent() {
 
         <div className="grid grid-cols-1 w-full gap-8 md:grid-cols-2">
           <div>
-            <RegionalPriceTrendsCard data={Array.isArray(trendData) ? trendData : []} />
+            <RegionalPriceTrendsCard />
           </div>
           <div>
             <RentalIncomeAnalysisCard />
