@@ -62,9 +62,11 @@ function PropertyTokens() {
                 location={_.location}
                 size="813 sq ft"
                 beds={_.bedrooms}
-                price={_.total_purchase}
-                tokenPrice={_.purchase_price}
+                price={_.current_price}
+                tokenPrice={_.total_purchase}
                 status={_.status}
+                annual_return={_.expected_annual_return}
+                number={_.number}
                 onClick={() => {
                   setAssetId(_.id)
                   navigate({ to: '/properties/detail' })
@@ -73,19 +75,21 @@ function PropertyTokens() {
             ))
           }
         </div>
-
-        <div className="mt-8 text-center">
-          <Button
-            type="primary"
-            size="large"
-            className="rounded-full! text-black!"
-            onClick={() =>
-              setPage(page + 1)}
-          >
-            Load More
-          </Button>
-        </div>
+        {!isLoading && tokenData?.list && tokenData.list.length > 20 && (
+          <div className="mt-8 text-center">
+            <Button
+              type="primary"
+              size="large"
+              className="rounded-full! text-black!"
+              onClick={() =>
+                setPage(page + 1)}
+            >
+              Load More
+            </Button>
+          </div>
+        )}
       </div>
+
     </div>
   )
 }

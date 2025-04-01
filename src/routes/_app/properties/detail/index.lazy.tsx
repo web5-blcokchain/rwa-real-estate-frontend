@@ -166,7 +166,7 @@ function RouteComponent() {
 
         <div className="grid grid-cols-1 w-full gap-8 md:grid-cols-2">
           <div>
-            <RegionalPriceTrendsCard data={trendData} />
+            <RegionalPriceTrendsCard data={Array.isArray(trendData) ? trendData : []} />
           </div>
           <div>
             <RentalIncomeAnalysisCard />

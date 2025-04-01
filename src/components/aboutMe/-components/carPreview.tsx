@@ -11,6 +11,8 @@ const CarPreview: FC<{
   size: string
   beds: number
   status: number
+  annual_return?: number
+  number?: number
 } & React.HTMLAttributes<HTMLDivElement>> = ({
   picture,
   title,
@@ -21,6 +23,8 @@ const CarPreview: FC<{
   beds,
   status,
   className,
+  annual_return,
+  number,
   ...props
 }) => {
   return (
@@ -55,14 +59,16 @@ const CarPreview: FC<{
           <div className="w-1/2 flex flex-col justify-start py-3">
             <div className="text-sm text-[#b5b5b5]">Tokens Held</div>
             <div className="text-4">
-              100/1000
+              {number}
+              /1000
             </div>
           </div>
 
           <div className="w-1/2 flex flex-col justify-start py-3">
             <div className="text-sm text-[#b5b5b5]">Annual Yield</div>
             <div className="text-4">
-              7.8%
+              {annual_return}
+              %
             </div>
           </div>
 
