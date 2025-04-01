@@ -171,11 +171,11 @@ const dataTwo: DataTypeTwo[] = [
 ]
 
 function Earnings() {
-  const { data: EarningsData, isLoading } = useQuery({
+  const { data: EarningsData = [], isLoading } = useQuery({
     queryKey: ['Earnings'],
     queryFn: async () => {
       const res = await apiMyInfo.getEarningsHistory()
-      return res.data?.list
+      return res.data?.list || []
     }
   })
   console.log('=-=-=-', EarningsData, isLoading)
@@ -192,7 +192,7 @@ function Earnings() {
 
       <TableComponent
         columns={columnsTwo}
-        data={dataTwo}
+        data={dataTwo || []}
       >
         <div className="mb-2 text-5">Historical Income Records</div>
       </TableComponent>

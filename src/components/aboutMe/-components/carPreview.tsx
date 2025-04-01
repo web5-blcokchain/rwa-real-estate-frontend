@@ -2,6 +2,7 @@ import { IImage } from '@/components/common/i-image'
 import { Button } from 'antd'
 import numeral from 'numeral'
 
+const baseUrl = import.meta.env.VITE_PUBLIC_API_URL
 const CarPreview: FC<{
   picture: string
   title: string
@@ -36,7 +37,7 @@ const CarPreview: FC<{
       {...props}
     >
       <div className="relative h-56">
-        <IImage src={picture} className="size-full" />
+        <IImage src={`${baseUrl}${picture}`} className="size-full" />
       </div>
 
       <div className="px-6 py-8 space-y-2">

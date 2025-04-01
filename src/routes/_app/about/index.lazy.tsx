@@ -114,11 +114,9 @@ function RouteComponent() {
           className="flex flex-col justify-between gap-12 px-8 lg:flex-row md:gap-8"
         >
           {
-            listData.map(
-              (member, index) => (
-                <MemberCard key={index} {...member} />
-              )
-            )
+            listData.map(member => (
+              <MemberCard key={member.id} {...member} />
+            ))
           }
         </div>
       </div>
