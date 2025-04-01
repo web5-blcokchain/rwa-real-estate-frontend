@@ -2,7 +2,7 @@ import { _useStore as useStore } from '@/_store/_userStore'
 import apiMyInfoApi from '@/api/apiMyInfoApi'
 import { usePrivy } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
-import { Link, useLocation } from '@tanstack/react-router'
+import { Link, useLocation, useNavigate } from '@tanstack/react-router'
 import { Button, Drawer } from 'antd'
 
 const links = [
@@ -99,11 +99,12 @@ function NavMenu({ className }: { className?: string }) {
 }
 
 function RightMenu() {
+  const navigate = useNavigate()
   const [, setLanguage] = useState(i18n.language)
   const [userObj, setUserObj] = useState<Record<string, any>>()
   const setUserData = useStore(state => state.setUserData)
 
-  const { ready, authenticated, user, login, logout } = usePrivy()
+  const { ready, authenticated, user, logout } = usePrivy()
 
   const { mutate } = useMutation({
     mutationFn: async () => {
@@ -135,6 +136,12 @@ function RightMenu() {
     }
   }, [])
 
+  const login = () => {
+    navigate({
+      to: '/account/create'
+    })
+  }
+
   return (
     <>
       <div className="fyc gap-1">
@@ -158,7 +165,7 @@ function RightMenu() {
                 </div>
               )
             : (
-                <div>
+                <div className="space-x-4">
                   <Button
                     className="text-white bg-transparent!"
                     onClick={login}
