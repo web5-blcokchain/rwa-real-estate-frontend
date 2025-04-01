@@ -100,7 +100,7 @@ function NavMenu({ className }: { className?: string }) {
 
 function RightMenu() {
   const [, setLanguage] = useState(i18n.language)
-  const [userObj, setUserObj] = useState<object>()
+  const [userObj, setUserObj] = useState<Record<string, any>>()
   const setUserData = useStore(state => state.setUserData)
 
   const { ready, authenticated, user, login, logout } = usePrivy()
