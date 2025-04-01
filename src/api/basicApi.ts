@@ -79,6 +79,15 @@ export interface DetailResponse {
 function getDataListDetail(data: DataListDetailParams) {
   return apiClient.post<DetailResponse>('/api/assets/details', data)
 }
+export interface PriceTrendResponse {
+  id: number
+  date: string
+  price: string
+}
+// 价格趋势图
+function getPriceTrend() {
+  return apiClient.post<PriceTrendResponse>('/api/chart/price_trend')
+}
 
 interface PurchaseBuyParams {
   id: number
@@ -101,13 +110,30 @@ function setUnCollect(data: CollectParams) {
   return apiClient.post<PurchaseBuyResponse>('/api/assets/uncollect', data)
 }
 
+export interface CoreTeamResponse {
+  id: number
+  name: string
+  photograph: string
+  position: string
+  introduce: string
+  create_date: number
+  update_date: number
+}
+
+// 核心团队接口参数
+function getCoreTeam() {
+  return apiClient.post<CoreTeamResponse>('/api/User/coreTeam')
+}
+
 const apiBasic = {
   logins,
   getDataList,
   getDataListDetail,
+  getPriceTrend,
   purchaseBuy,
   setCollect,
-  setUnCollect
+  setUnCollect,
+  getCoreTeam
 }
 
 export default apiBasic

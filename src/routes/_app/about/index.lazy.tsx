@@ -1,7 +1,10 @@
-import { Banner } from '@/components/common/banner'
+import type { CoreTeamResponse } from '@/api/basicApi'
+import apiBasic from '@/api/basicApi'
 
+import { Banner } from '@/components/common/banner'
+import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute } from '@tanstack/react-router'
-import { Button } from 'antd'
+import { Button, Spin } from 'antd'
 import { ContactCard } from './-components/contact-card'
 import { MemberCard } from './-components/member-card'
 import { PartnerCard } from './-components/partner-card'
@@ -12,26 +15,13 @@ export const Route = createLazyFileRoute('/_app/about/')({
 })
 
 function RouteComponent() {
-  const coreTeam = [
-    {
-      picture: new URL('@/assets/images/about-core-team-1.png', import.meta.url).href,
-      name: 'Kenichi Yamada',
-      title: 'Chief Executive Officer',
-      desc: 'Former Head of Real Estate Investment at Mizuho Bank, with 20 years of fintech experience'
-    },
-    {
-      picture: new URL('@/assets/images/about-core-team-2.png', import.meta.url).href,
-      name: 'Sarah Chen',
-      title: 'Chief Technology Officer',
-      desc: 'Blockchain expert, led multiple major fintech project developments'
-    },
-    {
-      picture: new URL('@/assets/images/about-core-team-3.png', import.meta.url).href,
-      name: 'Michael Thompson',
-      title: 'Chief Operating Officer',
-      desc: 'Real estate investment expert with 15 years of international market experience'
+  const { data: listData = [], isLoading } = useQuery<Array<CoreTeamResponse>>({
+    queryKey: ['about'],
+    queryFn: async () => {
+      const res = await apiBasic.getCoreTeam()
+      return Array.isArray(res.data) ? res.data : []
     }
-  ]
+  })
 
   const timeline = [
     { year: '2020', title: 'Company founded, raised $5M in seed funding' },
@@ -73,6 +63,14 @@ function RouteComponent() {
       ]
     }
   ]
+
+  if (isLoading) {
+    return (
+      <div className="w-full p-8 h-dvh">
+        <Spin />
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-8 md:px-8">
@@ -116,7 +114,7 @@ function RouteComponent() {
           className="flex flex-col justify-between gap-12 px-8 lg:flex-row md:gap-8"
         >
           {
-            coreTeam.map(
+            listData.map(
               (member, index) => (
                 <MemberCard key={index} {...member} />
               )
