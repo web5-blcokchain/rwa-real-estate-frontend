@@ -1,4 +1,4 @@
-import apiGroup from '@/api/basicApi'
+import apiBasic from '@/api/basicApi'
 import { useMutation } from '@tanstack/react-query'
 
 interface LoginParams {
@@ -9,7 +9,7 @@ interface LoginParams {
 export function useLogin() {
   return useMutation({
     mutationFn: async (params: LoginParams) => {
-      const response = await apiGroup.logins(params, 1)
+      const response = await apiBasic.logins(params, 1)
       return response
     }
     // onSuccess: (data) => {

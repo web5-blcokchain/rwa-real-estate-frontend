@@ -14,7 +14,7 @@ export interface LoginResponse {
   msg?: string
   time: number
 }
-
+// 登录接口参数
 function logins(data: LoginParams, type: number) {
   return apiClient.post<LoginResponse>('/api/user/login', data, {
     headers: {
@@ -37,6 +37,7 @@ export interface DataListResponse {
   page: number
   pageSize: number
 }
+// 列表接口参数
 function getDataList(data: DataListParams) {
   return apiClient.post<DataListResponse>('/api/assets/index', data)
 }
@@ -74,7 +75,7 @@ export interface DetailResponse {
   updated_date: string
   valuation_report: string
 }
-
+// 详情接口参数
 function getDataListDetail(data: DataListDetailParams) {
   return apiClient.post<DetailResponse>('/api/assets/details', data)
 }
@@ -85,13 +86,14 @@ interface PurchaseBuyParams {
 }
 export interface PurchaseBuyResponse { }
 
+/// 购买接口参数
 function purchaseBuy(data: PurchaseBuyParams) {
   return apiClient.post<PurchaseBuyResponse>('/api/assets/buy', data)
 }
 interface CollectParams {
   id: number
 }
-
+/// 收藏和取消收藏接口参数
 function setCollect(data: CollectParams) {
   return apiClient.post<PurchaseBuyResponse>('/api/assets/collect', data)
 }
@@ -99,7 +101,7 @@ function setUnCollect(data: CollectParams) {
   return apiClient.post<PurchaseBuyResponse>('/api/assets/uncollect', data)
 }
 
-const apiGroup = {
+const apiBasic = {
   logins,
   getDataList,
   getDataListDetail,
@@ -108,4 +110,4 @@ const apiGroup = {
   setUnCollect
 }
 
-export default apiGroup
+export default apiBasic

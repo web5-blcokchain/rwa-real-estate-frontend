@@ -1,6 +1,6 @@
 import type { DetailResponse } from '@/api/basicApi'
 import { _useStore as useStore } from '@/_store/_userStore'
-import apiGroup from '@/api/basicApi'
+import apiBasic from '@/api/basicApi'
 import { IInfoField } from '@/components/common/i-info-field'
 import { ImageSwiper } from '@/components/common/image-swiper'
 import { useQuery } from '@tanstack/react-query'
@@ -27,7 +27,7 @@ function RouteComponent() {
   const { data: detailObj, isLoading } = useQuery<DetailResponse>({
     queryKey: ['property-detail', assetId],
     queryFn: async () => {
-      const response = await apiGroup.getDataListDetail({ id: assetId })
+      const response = await apiBasic.getDataListDetail({ id: assetId })
       return response.data
     }
   })

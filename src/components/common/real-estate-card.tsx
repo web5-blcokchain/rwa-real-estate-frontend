@@ -12,7 +12,7 @@ export const RealEstateCard: FC<{
   size: string
   beds: number
   status: number
-  id: number
+  cardId: number
   collect: number
 } & React.HTMLAttributes<HTMLDivElement>> = ({
   picture,
@@ -23,24 +23,24 @@ export const RealEstateCard: FC<{
   size,
   beds,
   status,
-  id,
+  cardId,
   collect,
   className,
   ...props
 }) => {
   const queryClient = useQueryClient()
-  const [cardId, setCardId] = useState<number>(0)
+  const [Id, setId] = useState<number>(0)
 
   const { mutate: collectMutate } = useMutation({
     mutationFn: async () => {
-      const res = await basicApi.setCollect({ id: cardId })
+      const res = await basicApi.setCollect({ id: Id })
       queryClient.invalidateQueries({ queryKey: ['properties'] })
       return res.data
     }
   })
-  const { mutate: uncollectMutate } = useMutation({
+  const { mutate: unCollectMutate } = useMutation({
     mutationFn: async () => {
-      const res = await basicApi.setUnCollect({ id: cardId })
+      const res = await basicApi.setUnCollect({ id: Id })
       queryClient.invalidateQueries({ queryKey: ['properties'] })
       return res.data
     }
@@ -68,9 +68,9 @@ export const RealEstateCard: FC<{
             className="i-ic-round-favorite-border size-5 bg-gray-4"
             onClick={(e) => {
               e.stopPropagation()
-              setCardId(id)
+              setId(cardId)
               if (collect) {
-                uncollectMutate()
+                unCollectMutate()
               }
               else {
                 collectMutate()

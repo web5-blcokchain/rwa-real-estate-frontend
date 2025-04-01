@@ -1,5 +1,5 @@
 import { _useStore as useStore } from '@/_store/_userStore'
-import apiGroup from '@/api/basicApi'
+import apiBasic from '@/api/basicApi'
 import { RealEstateCard } from '@/components/common/real-estate-card'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
@@ -21,7 +21,7 @@ function RouteComponent() {
   const { data, isLoading } = useQuery({
     queryKey: ['properties', page, keyword],
     queryFn: async () => {
-      const res = await apiGroup.getDataList({ page, keyword })
+      const res = await apiBasic.getDataList({ page, keyword })
       return res.data
     }
   })
@@ -67,7 +67,7 @@ function RouteComponent() {
           {data.list.map((item: any, _i: number) => (
             <RealEstateCard
               key={item.id}
-              id={item.id}
+              cardId={item.id}
               collect={item.is_collect}
               picture={`${baseUrl}${item.image_urls}`}
               title="Park Avenue Tower"
