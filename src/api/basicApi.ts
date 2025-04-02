@@ -1,30 +1,5 @@
 import apiClient from './client'
 
-export interface LoginParams {
-  username: string
-  password?: string
-}
-
-export interface LoginResponse {
-  code: number
-  data: {
-    token: string
-    [key: string]: any
-  }
-  msg?: string
-  time: number
-}
-// 登录接口参数
-function logins(data: LoginParams, type: number) {
-  return apiClient.post<LoginResponse>('/api/user/login', data, {
-    headers: {
-      'Content-Type': 'application/json',
-      'server': true,
-      type
-    }
-  })
-}
-
 export interface DataListParams {
   page?: number
   pageSize?: number
@@ -75,25 +50,30 @@ export interface DetailResponse {
   updated_date: string
   valuation_report: string
 }
+
 // 详情接口参数
 function getDataListDetail(data: DataListDetailParams) {
   return apiClient.post<DetailResponse>('/api/assets/details', data)
 }
+
 export interface PriceTrendResponse {
   id: number
   date: string
   price: string
 }
+
 // 价格趋势图
 function getPriceTrend() {
   return apiClient.post<Array<PriceTrendResponse>>('/api/chart/price_trend')
 }
+
 export interface analysisResponse {
   cost: string
   id: number
   quarter: string
 }
-/// 运行成本分析
+
+// 运行成本分析
 function getCostAnalysis() {
   return apiClient.post<Array<analysisResponse>>('/api/chart/operating_cost_analysis')
 }
@@ -102,16 +82,19 @@ interface PurchaseBuyParams {
   id: number
   number: number
 }
+
 export interface PurchaseBuyResponse { }
 
-/// 购买接口参数
+// 购买接口参数
 function purchaseBuy(data: PurchaseBuyParams) {
   return apiClient.post<PurchaseBuyResponse>('/api/assets/buy', data)
 }
+
 interface CollectParams {
   id: number
 }
-/// 收藏和取消收藏接口参数
+
+// 收藏和取消收藏接口参数
 function setCollect(data: CollectParams) {
   return apiClient.post<PurchaseBuyResponse>('/api/assets/collect', data)
 }
@@ -136,7 +119,6 @@ function getCoreTeam() {
 }
 
 const apiBasic = {
-  logins,
   getDataList,
   getDataListDetail,
   getPriceTrend,

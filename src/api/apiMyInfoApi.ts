@@ -6,6 +6,74 @@ interface ResponseData<T> {
   msg: string
   data: T
   time: number
+  photoUrls: string
+}
+
+export interface LoginParams {
+  username: string
+  password?: string
+}
+
+export interface LoginResponse {
+  code: number
+  data: {
+    token: string
+    [key: string]: any
+  }
+  msg?: string
+  time: number
+}
+// 上传文件
+function uploadFile(data: FormData) {
+  return apiClient.post<ResponseData<any>>('/api/user/upload', data)
+}
+
+export interface LoginParams {
+  username: string
+  password?: string
+}
+
+export interface LoginResponse {
+  code: number
+  data: {
+    token: string
+    [key: string]: any
+  }
+  msg?: string
+  time: number
+}
+// 登录接口参数
+function logins(data: LoginParams) {
+  return apiClient.post<LoginResponse>('/api/user/login', data)
+}
+
+export interface RegisterParams {
+  mobile?: number
+  email?: string
+  password?: string
+  wallet_address?: string
+  type?: string
+  id_card_front_url?: string
+  id_card_back_url?: string
+  address_url?: string
+  photo_url?: string
+  business_registration_document?: string
+  shareholder_structure_url?: string
+  legal_representative_documents_url?: string
+  financial_documents_url?: string
+  token?: string
+}
+interface RegisterResponse {
+  code: number
+  data: {
+    token: string
+    [key: string]: any
+  }
+}
+
+// 登录接口参数
+function register(data: RegisterParams) {
+  return apiClient.post<RegisterResponse>('/api/user/register', data)
 }
 
 export interface AboutMeParams {
@@ -101,6 +169,9 @@ function getUserInfo() {
 }
 
 const apiMyInfoApi = {
+  uploadFile,
+  logins,
+  register,
   getMeInfo,
   getHistory,
   getEarningsHistory,
