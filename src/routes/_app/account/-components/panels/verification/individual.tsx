@@ -1,8 +1,57 @@
+import type { UploadProps } from 'antd'
+import { _useStore as useStore } from '@/_store/_userStore'
+import apiMyInfo from '@/api/apiMyInfoApi'
 import INotice from '@/components/common/i-notice'
-import { Button } from 'antd'
+import { useMutation } from '@tanstack/react-query'
+import { Button, Upload } from 'antd'
 import UploadCard from '../../upload-card'
 
+import './individual.scss'
+
 export default function IndividualVerification() {
+  const setRegisterData = useStore(state => state.setRegisterData)
+  const RegisterData = useStore(state => state.registerData)
+
+  const { mutate: updateFile } = useMutation({
+    mutationFn: async (data: { file: File, key: string }) => {
+      const formData = new FormData()
+      formData.append('file', data.file)
+      const res = await apiMyInfo.uploadFile(formData)
+      setRegisterData({
+        ...RegisterData,
+        [data.key]: res?.data?.photoUrls || ''
+      })
+      return res?.data
+    },
+    onSuccess: (res) => {
+      console.log('=-=-=-=onSuccess', res)
+    },
+    onError: (error) => {
+      console.log('=-=-=-=onError', error)
+    }
+  })
+
+  const { mutate: createMutate } = useMutation({
+    mutationFn: async () => {
+      const res = await apiMyInfo.register({ ...RegisterData })
+      return res?.data
+    },
+    onSuccess: (res) => {
+      console.log('=-=-=-=onSuccess', res)
+    },
+    onError: (error) => {
+      console.log('=-=-=-=onError', error)
+    }
+  })
+
+  const props: UploadProps = {
+    showUploadList: false
+  }
+
+  const beforeUpload = (file: File, key: string) => {
+    updateFile({ file, key })
+  }
+
   return (
     <div className="fccc gap-2">
       <div className="max-w-md text-center text-8 font-medium">Personal Identity Verification</div>
@@ -22,12 +71,14 @@ export default function IndividualVerification() {
                 <span className="text-black">Take Photo</span>
               </div>
             </Button>
-            <Button type="primary" size="large">
-              <div className="fyc gap-2">
-                <span className="i-mdi-folder-open bg-black text-5"></span>
-                <span className="text-black">Browse Files</span>
-              </div>
-            </Button>
+            <Upload {...props} beforeUpload={file => beforeUpload(file, 'id_card_front_url')}>
+              <Button type="primary" size="large">
+                <div className="fyc gap-2">
+                  <span className="i-mdi-folder-open bg-black text-5"></span>
+                  <span className="text-black">Browse Files</span>
+                </div>
+              </Button>
+            </Upload>
           </div>
         </UploadCard>
 
@@ -36,6 +87,9 @@ export default function IndividualVerification() {
           title="Upload Utility Bill / Bank Statement"
           subTitle="Must be issued within last 3 months"
           icon={new URL('@/assets/icons/document.svg', import.meta.url).href}
+          beforeUpload={(file) => {
+            beforeUpload(file, 'address_url')
+          }}
         >
         </UploadCard>
 
@@ -44,6 +98,9 @@ export default function IndividualVerification() {
           title="Take a Selfie"
           subTitle="Clear facial photo in good lighting"
           icon={new URL('@/assets/icons/user-circular.svg', import.meta.url).href}
+          beforeUpload={(file) => {
+            beforeUpload(file, 'photo_url')
+          }}
         >
         </UploadCard>
 
@@ -55,7 +112,7 @@ export default function IndividualVerification() {
         </INotice>
 
         <div className="fec">
-          <Button size="large" className="bg-transparent! text-white! hover:text-primary-1!">
+          <Button size="large" className="bg-transparent! text-white! hover:text-primary-1!" onClick={() => createMutate()}>
             Continue
           </Button>
         </div>

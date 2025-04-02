@@ -54,7 +54,7 @@ function PropertyTokens() {
 
         <div className="grid grid-cols-1 mt-8 gap-8 md:grid-cols-3">
           {
-            tokenData.map((_: listProps, i: number) => (
+            tokenData?.map((_: listProps, i: number) => (
               <CarPreview
                 key={_.id}
                 picture={_.image_urls || `https://picsum.photos/500/300?random=${i}`}
