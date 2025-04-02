@@ -48,6 +48,12 @@ export const StepsProvider: FC = ({ children }) => {
       return
     }
 
+    if (handler.onReturn) {
+      handler.onReturn()
+      handler.onReturn = undefined
+      return
+    }
+
     setCurrentStep(prev => prev - 1)
   }
 
