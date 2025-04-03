@@ -1,10 +1,11 @@
 import { TitleCard } from '@/components/common/title-card'
 
 export const LocationCard: FC = () => {
+  const { t } = useTranslation()
   const [loading, setLoading] = useState(true)
 
   return (
-    <TitleCard title="Location">
+    <TitleCard title={t('about.detail.location')}>
       <div className="text-4 space-y-4">
         <div className="h-48 fcc of-hidden rounded-xl bg-background">
           {

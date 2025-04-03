@@ -126,6 +126,50 @@
       "button2": "学習の詳細"
     }
   },
+  "about": {
+    "title": "米国の不動産資産",
+    "subTitle": "ブロックチェーン技術を通じて良質なニューヨーク不動産投資の機会を提供",
+    "search": "ニューヨークの場所、不動産タイプで検索",
+    "detail": {
+      "property_type": "不動産タイプ",
+      "bedrooms": "ベッドルーム",
+      "market_value": "市場価値",
+      "monthly_rent": "家賃",
+      "return": "予想される年間収益率",
+      "including": "を含む",
+      "rental": "賃貸料収益率と",
+      "capital": "の資本増値",
+      "calculator": "投資計算機",
+      "average": "平均30日",
+      "amount_placeholder": "投資金額の入力",
+      "ratio": "投資比",
+      "invest": "即時投資",
+      "property_title": "住宅源の説明",
+      "property_includes": "この不動産には次のものが含まれます。",
+      "location": "位置",
+      "market_analysis": "市場分析",
+      "trends": "地域別価格トレンド",
+      "analysis": "賃料収入分析"
+    },
+    "payment": {
+      "payment_title": "支払確認書",
+      "token_price": "トークン価格",
+      "total": "総評価",
+      "payment_details": "支払資料",
+      "number": "トークン数",
+      "subtotal": "小計",
+      "platform_fee": "プラットフォーム料金",
+      "total_amount": "合計金額",
+      "payment_method": "支払い方法",
+      "credit_card": "クレジットカード",
+      "cryptocurrency": "デジタル暗号化通貨",
+      "dear_user": "尊敬するユーザー,",
+      "please_verify": "場外取引を安全にするためには、次の要件を満たし、必要な検証プロセスを完了する必要があります。",
+      "please_verify_1": "アカウントは、有効な政府発行の身分証明書またはパスポートを使用して完全に検証する必要があります。",
+      "expire": "支払は期限切れになります",
+      "confirm_payment": "支払いの確認"
+    }
+  },
   "system": {
     "confirm": "確認",
     "cancel": "キャンセル"

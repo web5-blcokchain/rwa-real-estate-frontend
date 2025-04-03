@@ -3,15 +3,17 @@ import { TitleCard } from '@/components/common/title-card'
 export const PropertyDescriptionCard: FC<{
   location: string
 } & React.HTMLAttributes<HTMLDivElement>> = ({ location, ...props }) => {
+  const { t } = useTranslation()
+
   return (
-    <TitleCard title="Property Description">
+    <TitleCard title={t('about.detail.property_title')}>
       <div className="text-4 space-y-4" {...props}>
         <div className="text-[#d9d9d9]">
           {location}
         </div>
 
         <div>
-          The property includes:
+          {t('about.detail.property_includes')}
         </div>
 
         <ul className="list-disc list-inside text-[#d9d9d9] space-y-2 [&>li]:marker:text-yellow-500">

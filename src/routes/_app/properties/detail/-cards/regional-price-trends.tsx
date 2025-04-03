@@ -10,6 +10,8 @@ interface trendDataResponse {
 }
 
 export const RegionalPriceTrendsCard: FC = () => {
+  const { t } = useTranslation()
+
   const { data: trendData = [] } = useQuery<trendDataResponse[]>({
     queryKey: ['PriceTrend'],
     queryFn: async () => {
@@ -25,7 +27,7 @@ export const RegionalPriceTrendsCard: FC = () => {
   })
 
   return (
-    <TitleCard title="Regional Price Trends">
+    <TitleCard title={t('about.detail.trends')}>
       <div className="h-32">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart

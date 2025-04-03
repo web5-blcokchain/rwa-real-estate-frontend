@@ -13,6 +13,7 @@ export const Route = createLazyFileRoute('/_app/properties/')({
 const baseUrl = import.meta.env.VITE_PUBLIC_API_URL
 
 function RouteComponent() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const [keyword, setKeyword] = useState('')
   const [page, setPage] = useState(1)
@@ -42,11 +43,11 @@ function RouteComponent() {
   return (
     <div className="p-8">
       <div className="text-8 font-medium">
-        US Real Estate Assets
+        {t('about.title')}
       </div>
 
       <div className="mt-4 text-4 text-[#898989]">
-        Premium New York real estate investment opportunities through blockchain technology
+        {t('about.subTitle')}
       </div>
 
       <div className="mt-8">
@@ -54,7 +55,7 @@ function RouteComponent() {
           <div className="i-iconamoon-search size-5 bg-[#b5b5b5]"></div>
           <input
             type="text"
-            placeholder="Search by New York location, property type"
+            placeholder={t('about.search')}
             className="w-128 b-none bg-transparent outline-none"
             value={keyword}
             onChange={e => handleSearch(e.target.value)}
@@ -70,8 +71,8 @@ function RouteComponent() {
               cardId={item.id}
               collect={item.is_collect}
               picture={`${baseUrl}${item.image_urls}`}
-              title="Park Avenue Tower"
-              location="Upper East Side, Manhattan, New York"
+              title={item.name}
+              location={item.location}
               size="813 sq ft"
               beds={item.beds}
               price={item.price}
@@ -94,7 +95,7 @@ function RouteComponent() {
             className="rounded-full! text-black!"
             onClick={() => setPage(page + 1)}
           >
-            Load More
+            {t('system.loadMore')}
           </Button>
         </div>
       )}

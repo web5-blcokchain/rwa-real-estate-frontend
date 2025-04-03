@@ -10,6 +10,7 @@ interface BarDataResponse {
 }
 
 export const RentalIncomeAnalysisCard: FC = () => {
+  const { t } = useTranslation()
   const { data: BarData = [] } = useQuery<BarDataResponse[]>({
     queryKey: ['Analysis'],
     queryFn: async () => {
@@ -25,7 +26,7 @@ export const RentalIncomeAnalysisCard: FC = () => {
   })
 
   return (
-    <TitleCard title="Rental Income Analysis">
+    <TitleCard title={t('about.detail.analysis')}>
       <div className="h-32">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart

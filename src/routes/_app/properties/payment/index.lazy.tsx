@@ -35,7 +35,7 @@ function RouteComponent() {
 
   return (
     <div className="max-w-7xl p-8 space-y-8">
-      <div className="text-center text-6 font-medium">Payment Confirmation</div>
+      <div className="text-center text-6 font-medium">{t('about.payment.payment_title')}</div>
 
       <div className="flex gap-6 rounded-xl bg-[#202329] p-6">
         <div className="h-60 w-100">
@@ -46,25 +46,25 @@ function RouteComponent() {
 
           <div className="grid grid-cols-2 mt-4 gap-x-4">
             <IInfoField
-              label="Location"
+              label={t('about.detail.location')}
               value={assetObj?.address}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
-              label="Property Type"
+              label={t('about.detail.property_type')}
               value={assetObj?.property_type}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
-              label="Token Price"
+              label={t('about.payment.token_price')}
               value={assetObj?.price}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
-              label="Total Valuation"
+              label={t('about.payment.total')}
               value={Number(assetObj?.number) * Number(assetObj?.price)}
               labelClass="text-[#898989]"
               className="space-y-2"
@@ -74,13 +74,17 @@ function RouteComponent() {
       </div>
 
       <div className="rounded-xl bg-[#202329] p-6 space-y-4">
-        <div className="text-4.5">Payment Details</div>
+        <div className="text-4.5">{t('about.payment.payment_details')}</div>
 
         <div className="flex items-center justify-between text-4">
           <div className="text-[#898989] space-y-4">
-            <div>Number of Tokens</div>
-            <div>Subtotal</div>
-            <div>Platform Fee (2%)</div>
+            <div>{t('about.payment.number')}</div>
+            <div>{t('about.payment.subtotal')}</div>
+            <div>
+              {t('about.payment.platform_fee')}
+              {' '}
+              (2%)
+            </div>
           </div>
 
           <div className="space-y-4">
@@ -104,19 +108,19 @@ function RouteComponent() {
         <ISeparator className="bg-white" />
 
         <div className="fbc">
-          <div>Total Amount</div>
+          <div>{t('about.payment.total_amount')}</div>
           <div className="text-primary">$510</div>
         </div>
       </div>
 
       <div className="rounded-xl bg-[#202329] p-6 space-y-4">
-        <div className="text-4.5">Payment Method</div>
+        <div className="text-4.5">{t('about.payment.payment_method')}</div>
         <div className="grid grid-cols-2 gap-6">
           <div className="fcc select-none b b-background rounded-xl b-solid bg-[#212936] py-6 clickable-99">
             <div className="fccc">
               <SvgIcon name="credit-card" className="size-8" />
               <div>
-                Credit Card
+                {t('about.payment.credit_card')}
               </div>
             </div>
           </div>
@@ -125,7 +129,7 @@ function RouteComponent() {
             <div className="fccc">
               <SvgIcon name="cryptocurrency" className="size-8" />
               <div>
-                Cryptocurrency
+                {t('about.payment.cryptocurrency')}
               </div>
             </div>
           </div>
@@ -133,17 +137,22 @@ function RouteComponent() {
       </div>
 
       <div className="rounded-xl bg-[#202329] p-6 text-4 text-[#898989] space-y-2">
-        <p>Dear User,</p>
+        <p>{t('about.payment.dear_user')}</p>
         <p>
-          To ensure the security of OTC transactions,
-          you must meet the following requirements and complete the necessary verification process:
+          {t('about.payment.please_verify')}
+
         </p>
-        <p>Your account must be fully verified with a valid government-issued ID or passport.</p>
+        <p>
+          {t('about.payment.please_verify_1')}
+
+          Your account must be fully verified with a valid government-issued ID or passport.
+        </p>
       </div>
 
       <div>
         <div className="text-center text-3.5 text-[#898989]">
-          Payment will expire in 14:59
+          {t('about.payment.expire')}
+          14:59
         </div>
         <div className="grid grid-cols-3 mt-2">
           <div>
@@ -163,7 +172,7 @@ function RouteComponent() {
               onClick={() => mutate()}
               loading={false}
             >
-              Confirm Payment
+              {t('about.payment.confirm_payment')}
             </Button>
           </div>
           <div></div>

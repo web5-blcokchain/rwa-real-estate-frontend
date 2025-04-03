@@ -126,8 +126,53 @@
       "button2": "了解更多"
     }
   },
+  "about": {
+    "title": "美国房地产资产",
+    "subTitle": "利用区块链技术投资纽约优质房地产机会",
+    "search": "按纽约地点和物业类型搜索",
+    "detail": {
+      "property_type": "物业类型",
+      "bedrooms": "卧室",
+      "market_value": "市场价值",
+      "monthly_rent": "月租金",
+      "return": "预期年回报率",
+      "including": "包括",
+      "rental": "租金收益率和",
+      "capital": "资本增值",
+      "calculator": "投资的计算器",
+      "average": "平均30天",
+      "amount_placeholder": "输入投资金额",
+      "ratio": "投资比例",
+      "invest": "立刻投资",
+      "property_title": "物业描述",
+      "property_includes": "该物业包括:",
+      "location": "位置",
+      "market_analysis": "市场分析",
+      "trends": "区域价格趋势",
+      "analysis": "租金收入分析"
+    },
+    "payment": {
+      "payment_title": "付款确认",
+      "token_price": "代币价格",
+      "total": "总估值",
+      "payment_details": "付款详情",
+      "number": "代币数量",
+      "subtotal": "小计",
+      "platform_fee": "平台费用",
+      "total_amount": "总金额",
+      "payment_method": "支付方式",
+      "credit_card": "信用卡",
+      "cryptocurrency": "加密货币",
+      "dear_user": "亲爱的用户,",
+      "please_verify": "为确保场外交易的安全性，您必须满足以下要求并完成必要的验证流程：",
+      "please_verify_1": "您的帐户必须用政府签发的有效身份证件或护照进行全面核实。",
+      "expire": "付款到账时间为",
+      "confirm_payment": "确认付款"
+    }
+  },
   "system": {
     "confirm": "确认",
-    "cancel": "取消"
+    "cancel": "取消",
+    "loadMore": "加载更多"
   }
 }

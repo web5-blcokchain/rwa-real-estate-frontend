@@ -17,6 +17,7 @@ export const Route = createLazyFileRoute('/_app/properties/detail/')({
 })
 
 function RouteComponent() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const assetId = useStore(state => state.assetId)
   const setAssetObj = useStore(state => state.setAssetObj)
@@ -81,36 +82,43 @@ function RouteComponent() {
           </div>
 
           <div className="grid grid-cols-2 my-4 px-6">
-            <IInfoField label="Property Type" value={detailObj?.property_type || ''} />
-            <IInfoField label="Bedrooms" value={detailObj?.bedrooms || ''} />
-            <IInfoField label="Market Value" value={detailObj?.price || ''} valueClass="text-primary" />
-            <IInfoField label="Monthly Rent" value={detailObj?.monthly_rent || ''} />
+            <IInfoField label={t('about.detail.property_type')} value={detailObj?.property_type || ''} />
+            <IInfoField label={t('about.detail.bedrooms')} value={detailObj?.bedrooms || ''} />
+            <IInfoField label={t('about.detail.market_value')} value={detailObj?.price || ''} valueClass="text-primary" />
+            <IInfoField label={t('about.detail.monthly_rent')} value={detailObj?.monthly_rent || ''} />
           </div>
 
           <div className="rounded-lg bg-background-secondary p-6 space-y-2">
-            <div className="text-4.5">Expected Annual Return</div>
+            <div className="text-4.5">{t('about.detail.return')}</div>
             <div className="text-7.5 text-primary">
               {detailObj?.expected_annual_return}
               %
             </div>
             <div className="text-4 text-[#898989]">
-              Including
+              {t('about.detail.including')}
               {detailObj?.expected_annual_return}
-              % rental yield and
+              %
+              {' '}
+              {t('about.detail.rental')}
               {detailObj?.capital_appreciation}
-              % capital appreciation
+              %
+              {' '}
+              {t('about.detail.capital')}
             </div>
 
             <div className="fbc pt-4">
-              <div className="text-4.5">Investment Calculator</div>
-              <div className="text-4 text-[#898989]">Average 30-day</div>
+              <div className="text-4.5">
+                {t('about.detail.calculator')}
+                {' '}
+              </div>
+              <div className="text-4 text-[#898989]">{t('about.detail.average')}</div>
             </div>
 
             <div>
               <Input
                 className="bg-background! text-text! [&>input]:(placeholder-text-[#898989])"
                 size="large"
-                placeholder="Enter investment amount"
+                placeholder={t('about.detail.amount_placeholder')}
                 suffix="GBP"
                 onChange={e => setInvestmentPrice(Number(e.target.value))}
               />
@@ -120,13 +128,13 @@ function RouteComponent() {
               <IInfoField
                 className="space-y-2"
                 labelClass="text-[#898989]"
-                label="Expected Annual Return"
+                label={t('about.detail.return')}
                 value={annualReturn}
               />
               <IInfoField
                 className="space-y-2"
                 labelClass="text-[#898989]"
-                label="Investment Ratio"
+                label={t('about.detail.ratio')}
                 value={`${ratioNum.toFixed(2)}%`}
               />
             </div>
@@ -143,7 +151,7 @@ function RouteComponent() {
                   })
                 }}
               >
-                Invest Now
+                {t('about.detail.invest')}
               </Button>
             </div>
           </div>
@@ -155,7 +163,7 @@ function RouteComponent() {
       </div>
 
       <div className="space-y-4">
-        <div className="text-5">Market Analysis</div>
+        <div className="text-5">{t('about.detail.market_analysis')}</div>
 
         <div className="grid grid-cols-1 w-full gap-8 md:grid-cols-2">
           <div>

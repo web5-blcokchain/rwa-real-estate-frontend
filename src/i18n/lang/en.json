@@ -126,6 +126,51 @@
       "button2": "Learn More"
     }
   },
+  "about": {
+    "title": "US Real Estate Assets",
+    "subTitle": "Premium New York real estate investment opportunities through blockchain technology",
+    "search": "Search by New York location, property type",
+    "loadMore": "Load More",
+    "detail": {
+      "property_type": "Property Type",
+      "bedrooms": "Bedrooms",
+      "market_value": "Market Value",
+      "monthly_rent": "Monthly Rent",
+      "return": "Expected Annual Return",
+      "including": "Including",
+      "rental": "rental yield and",
+      "capital": "capital appreciation",
+      "calculator": "Investment Calculator",
+      "average": "Average 30-day",
+      "amount_placeholder": "Enter investment amount",
+      "ratio": "Investment Ratio",
+      "invest": "Invest Now",
+      "property_title": "Property Description",
+      "property_includes": "The property includes:",
+      "location": "Location",
+      "market_analysis": "Market Analysis",
+      "trends": "Regional Price Trends",
+      "analysis": "Rental Income Analysis"
+    },
+    "payment": {
+      "payment_title": "Payment Confirmation",
+      "token_price": "Token Price",
+      "total": "Total Valuation",
+      "payment_details": "Payment Details",
+      "number": "Number of Tokens",
+      "subtotal": "Subtotal",
+      "platform_fee": "Platform Fee",
+      "total_amount": "Total Amount",
+      "payment_method": "Payment Method",
+      "credit_card": "Credit Card",
+      "cryptocurrency": "Cryptocurrency",
+      "dear_user": "Dear User,",
+      "please_verify": "To ensure the security of OTC transactions, you must meet the following requirements and complete the necessary verification process:",
+      "please_verify_1": " Your account must be fully verified with a valid government-issued ID or passport.",
+      "expire": "Payment will expire in",
+      "confirm_payment": "Confirm Payment"
+    }
+  },
   "system": {
     "confirm": "Confirm",
     "cancel": "Cancel"
