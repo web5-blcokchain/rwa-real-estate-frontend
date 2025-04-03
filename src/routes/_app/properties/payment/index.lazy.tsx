@@ -1,9 +1,9 @@
 import type { DetailResponse } from '@/api/basicApi'
-import { _useStore as useStore } from '@/_store/_userStore'
 import apiBasic from '@/api/basicApi'
 import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
+import { useUserStore } from '@/stores/user'
 import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
@@ -15,7 +15,7 @@ export const Route = createLazyFileRoute('/_app/properties/payment/')({
 function RouteComponent() {
   const { t } = useTranslation()
   const router = useRouter()
-  const assetObj = useStore(state => state.assetObj) as DetailResponse
+  const assetObj = useUserStore(state => state.assetObj) as DetailResponse
 
   const [tokens, setTokens] = useState(1)
 

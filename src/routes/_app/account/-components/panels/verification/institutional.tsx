@@ -1,6 +1,6 @@
-import { _useStore as useStore } from '@/_store/_userStore'
 import apiMyInfo from '@/api/apiMyInfoApi'
 import INotice from '@/components/common/i-notice'
+import { useUserStore } from '@/stores/user'
 import { useMutation } from '@tanstack/react-query'
 import { Button } from 'antd'
 import UploadCard from '../../upload-card'
@@ -8,8 +8,8 @@ import './individual.scss'
 
 export default function InstitutionalVerification() {
   const { t } = useTranslation()
-  const setRegisterData = useStore(state => state.setRegisterData)
-  const RegisterData = useStore(state => state.registerData)
+  const setRegisterData = useUserStore(state => state.setRegisterData)
+  const RegisterData = useUserStore(state => state.registerData)
 
   const { mutate: updateFile } = useMutation({
     mutationFn: async (data: { file: File, key: string }) => {

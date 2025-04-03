@@ -1,11 +1,11 @@
 import type { MenuProps } from 'antd'
-import { _useStore as useStore } from '@/_store/_userStore'
 import maskGroup from '@/assets/images/mask-group.png'
 import Earnings from '@/components/aboutMe/earnings/earnings'
 import History from '@/components/aboutMe/history/history'
 import Overview from '@/components/aboutMe/overview/overview'
 import PropertyTokens from '@/components/aboutMe/propertyTokens/propertyTokens'
 import Security from '@/components/aboutMe/security/security'
+import { useUserStore } from '@/stores/user'
 
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { Layout, Menu } from 'antd'
@@ -39,7 +39,7 @@ function getItem(
 function RouteComponent() {
   const { t } = useTranslation()
   const [selectedKey, setSelectedKey] = useState<string>('1') // 默认选中第一个菜单项
-  const userData = useStore(state => state.userData)
+  const userData = useUserStore(state => state.userData)
 
   const items: MenuItem[] = [
     getItem(`${t('aboutMe.menu_overview')}`, '1'),

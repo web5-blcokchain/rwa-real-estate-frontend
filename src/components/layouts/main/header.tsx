@@ -1,6 +1,6 @@
 import type { MenuProps } from 'antd'
-import { _useStore as useStore } from '@/_store/_userStore'
 import apiMyInfoApi from '@/api/apiMyInfoApi'
+import { useUserStore } from '@/stores/user'
 import { usePrivy } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
 import { Link, useLocation, useNavigate } from '@tanstack/react-router'
@@ -83,9 +83,9 @@ function NavMenu({ className }: { className?: string }) {
     )}
     >
       {
-        links.map((link, i) => (
+        links.map(link => (
           <Link
-            key={i}
+            key={link.href}
             href={link.href}
             className={cn(
               'cursor-pointer active:text-primary hover:text-primary',
@@ -105,7 +105,7 @@ function RightMenu() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [userObj, setUserObj] = useState<Record<string, any>>()
-  const setUserData = useStore(state => state.setUserData)
+  const setUserData = useUserStore(state => state.setUserData)
 
   const { ready, authenticated, user, logout } = usePrivy()
 
@@ -165,8 +165,8 @@ function RightMenu() {
 }
 
 function LanguageSelect() {
-  const lang = useStore(state => state.language)
-  const setLang = useStore(state => state.setLanguage)
+  const lang = useUserStore(state => state.language)
+  const setLang = useUserStore(state => state.setLanguage)
 
   useEffect(() => {
     const handleLanguageChange = () => {
@@ -180,7 +180,7 @@ function LanguageSelect() {
     return () => {
       i18n.off('languageChanged', handleLanguageChange)
     }
-  }, [])
+  }, [setLang])
 
   const items: MenuProps['items'] = [
     {

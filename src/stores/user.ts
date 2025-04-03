@@ -29,17 +29,17 @@ const store: StateCreator<StoreState, [], [['zustand/persist', StoreState]]> = p
     setUserData: (obj: object) => {
       set({ userData: obj })
     },
+    setRegisterData: (obj: object) => {
+      set(state => ({ registerData: { ...state.registerData, ...obj } }))
+    },
     setAssetId: (id: number) => {
       set({ assetId: id })
     },
     setAssetObj: (obj: object) => {
       set({ assetObj: obj })
-    },
-    setRegisterData: (obj: object) => {
-      set({ registerData: obj })
     }
   }),
   { name: 'userInfo' }
 )
 
-export const _useStore = create(store)
+export const useUserStore = create(store)

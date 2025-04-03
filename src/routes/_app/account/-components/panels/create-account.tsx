@@ -1,9 +1,9 @@
 import type { RegisterParams } from '@/api/apiMyInfoApi'
-import { _useStore as useStore } from '@/_store/_userStore'
 import apiMyInfo from '@/api/apiMyInfoApi'
 import IFormItem from '@/components/common/i-form-item'
 import IInput from '@/components/common/i-input'
 import ISeparator from '@/components/common/i-separator'
+import { useUserStore } from '@/stores/user'
 import { usePrivy } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
@@ -13,7 +13,7 @@ export default function CreateAccountPanel() {
   const { t } = useTranslation()
   const { next } = useSteps()
   const navigate = useNavigate()
-  const setRegisterData = useStore(state => state.setRegisterData)
+  const setRegisterData = useUserStore(state => state.setRegisterData)
 
   const { authenticated, user, login } = usePrivy()
 
@@ -48,19 +48,19 @@ export default function CreateAccountPanel() {
       <div className="text-4 text-[#898989]">{t('create.baseInfo.subTitle')}</div>
 
       <div className="max-w-xl w-full space-y-6">
-        <IFormItem label={t('create.baseInfo.email')}>
-          <IInput placeholder={t('create.baseInfo.emailPlaceholder')} className="w-full" onChange={e => setRegisterData({ email: e.target.value })} />
+        <IFormItem label="Email">
+          <IInput placeholder="Enter your email" className="w-full" onChange={e => setRegisterData({ email: e.target.value })} />
         </IFormItem>
 
-        <IFormItem label={t('create.baseInfo.phone')} description={t('create.baseInfo.phoneDescription')}>
-          <IInput placeholder={t('create.baseInfo.phonePlaceholder')} className="w-full" onChange={e => setRegisterData({ mobile: e.target.value })} />
+        <IFormItem label="Phone Number">
+          <IInput placeholder="Enter your phone number" className="w-full" onChange={e => setRegisterData({ mobile: e.target.value })} />
         </IFormItem>
 
-        <IFormItem label={t('create.baseInfo.password')} description={t('create.baseInfo.passwordDescription')}>
-          <IInput placeholder={t('create.baseInfo.passwordPlaceholder')} className="w-full" onChange={e => setRegisterData({ password: e.target.value })} />
+        <IFormItem label="Password" description="Minimum 8 characters with upper, lower case and numbers">
+          <IInput placeholder="Enter password" className="w-full" onChange={e => setRegisterData({ password: e.target.value })} />
         </IFormItem>
 
-        <button type="button" className="h-12.5 w-full rounded bg-primary-2 text-background clickable-99" onClick={next}>{t('create.baseInfo.account')}</button>
+        <button type="button" className="h-12.5 w-full rounded bg-primary-2 text-background clickable-99" onClick={next}>Create Account</button>
 
         <ISeparator text="or" />
 
