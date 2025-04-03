@@ -1,6 +1,6 @@
-import { _useStore as useStore } from '@/_store/_userStore'
 import apiBasic from '@/api/basicApi'
 import { RealEstateCard } from '@/components/common/real-estate-card'
+import { useUserStore } from '@/stores/user'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
 import { Button, Spin } from 'antd'
@@ -16,7 +16,7 @@ function RouteComponent() {
   const navigate = useNavigate()
   const [keyword, setKeyword] = useState('')
   const [page, setPage] = useState(1)
-  const setAssetId = useStore((state: { setAssetId: (id: number) => void }) => state.setAssetId)
+  const setAssetId = useUserStore((state: { setAssetId: (id: number) => void }) => state.setAssetId)
 
   const { data, isLoading } = useQuery({
     queryKey: ['properties', page, keyword],

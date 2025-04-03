@@ -1,6 +1,6 @@
 import type { listProps } from '@/api/apiMyInfoApi'
-import { _useStore as useStore } from '@/_store/_userStore'
 import apiMyInfo from '@/api/apiMyInfoApi'
+import { useUserStore } from '@/stores/user'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { Button, Spin } from 'antd'
@@ -11,7 +11,7 @@ function PropertyTokens() {
   const navigate = useNavigate()
   const [page, setPage] = useState(1)
   const [keyword, setKeyword] = useState('')
-  const setAssetId = useStore((state: { setAssetId: (id: number) => void }) => state.setAssetId)
+  const setAssetId = useUserStore((state: { setAssetId: (id: number) => void }) => state.setAssetId)
 
   const { data: tokenData, isLoading } = useQuery({
     queryKey: ['PropertyTokens', page, keyword],

@@ -1,9 +1,9 @@
 import type { RegisterParams } from '@/api/apiMyInfoApi'
-import { _useStore as useStore } from '@/_store/_userStore'
 import apiMyInfo from '@/api/apiMyInfoApi'
 import IFormItem from '@/components/common/i-form-item'
 import IInput from '@/components/common/i-input'
 import ISeparator from '@/components/common/i-separator'
+import { useUserStore } from '@/stores/user'
 import { usePrivy } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
@@ -12,7 +12,7 @@ import { useSteps } from '../steps-provider'
 export default function CreateAccountPanel() {
   const { next } = useSteps()
   const navigate = useNavigate()
-  const setRegisterData = useStore(state => state.setRegisterData)
+  const setRegisterData = useUserStore(state => state.setRegisterData)
 
   const { authenticated, user, login } = usePrivy()
 

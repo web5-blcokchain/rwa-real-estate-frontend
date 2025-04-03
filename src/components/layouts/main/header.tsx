@@ -1,5 +1,5 @@
-import { _useStore as useStore } from '@/_store/_userStore'
 import apiMyInfoApi from '@/api/apiMyInfoApi'
+import { useUserStore } from '@/stores/user'
 import { usePrivy } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
 import { Link, useLocation, useNavigate } from '@tanstack/react-router'
@@ -102,7 +102,7 @@ function RightMenu() {
   const navigate = useNavigate()
   const [, setLanguage] = useState(i18n.language)
   const [userObj, setUserObj] = useState<Record<string, any>>()
-  const setUserData = useStore(state => state.setUserData)
+  const setUserData = useUserStore(state => state.setUserData)
 
   const { ready, authenticated, user, logout } = usePrivy()
 

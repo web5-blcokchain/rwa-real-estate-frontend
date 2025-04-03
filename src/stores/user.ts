@@ -36,4 +36,4 @@ const store: StateCreator<StoreState, [], [['zustand/persist', StoreState]]> = p
   { name: 'userInfo' }
 )
 
-export const _useStore = create(store)
+export const useUserStore = create(store)

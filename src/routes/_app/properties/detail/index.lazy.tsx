@@ -1,8 +1,8 @@
 import type { DetailResponse } from '@/api/basicApi'
-import { _useStore as useStore } from '@/_store/_userStore'
 import apiBasic from '@/api/basicApi'
 import { IInfoField } from '@/components/common/i-info-field'
 import { ImageSwiper } from '@/components/common/image-swiper'
+import { useUserStore } from '@/stores/user'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
 import { Button, Input, Spin } from 'antd'
@@ -18,8 +18,8 @@ export const Route = createLazyFileRoute('/_app/properties/detail/')({
 
 function RouteComponent() {
   const navigate = useNavigate()
-  const assetId = useStore(state => state.assetId)
-  const setAssetObj = useStore(state => state.setAssetObj)
+  const assetId = useUserStore(state => state.assetId)
+  const setAssetObj = useUserStore(state => state.setAssetObj)
   const [investmentPrice, setInvestmentPrice] = useState<number>(0)
   const [annualReturn, setAnnualReturn] = useState<number>(0)
   const [ratioNum, setRatioNum] = useState<number>(0)
