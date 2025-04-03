@@ -36,17 +36,18 @@ function getItem(
   } as MenuItem
 }
 
-const items: MenuItem[] = [
-  getItem('Overview', '1'),
-  getItem('Property Tokens', '2'),
-  getItem('Earnings', '3'),
-  getItem('History', '4'),
-  getItem('Security', '5')
-]
-
 function RouteComponent() {
+  const { t } = useTranslation()
   const [selectedKey, setSelectedKey] = useState<string>('1') // 默认选中第一个菜单项
   const userData = useStore(state => state.userData)
+
+  const items: MenuItem[] = [
+    getItem(`${t('aboutMe.menu_overview')}`, '1'),
+    getItem(`${t('aboutMe.menu_property_tokens')}`, '2'),
+    getItem(`${t('aboutMe.menu_earnings')}`, '3'),
+    getItem(`${t('aboutMe.menu_history')}`, '4'),
+    getItem(`${t('aboutMe.menu_security')}`, '5')
+  ]
 
   const handleMenuClick: MenuProps['onClick'] = (e) => {
     setSelectedKey(e.key)
@@ -81,7 +82,7 @@ function RouteComponent() {
             <img src={`${baseUrl}${userData?.avatar}` || maskGroup} alt="" className="bg-[#797b80]" style={{ width: '100%', height: '100%' }} />
           </div>
           <div className="justify-space-between ml-3 mt-1 flex flex-col">
-            <div className="text-[#b5b5b5]">Welcome Back</div>
+            <div className="text-[#b5b5b5]">{t('aboutMe.welcome')}</div>
             <div className="mt-2 text-4 font-bold">{userData?.nickname || ''}</div>
           </div>
         </div>
