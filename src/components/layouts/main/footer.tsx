@@ -1,36 +1,37 @@
 export default function MainFooter() {
+  const { t } = useTranslation()
   return (
     <footer className="mt-32 bg-[#1e2024] px-8 py-14">
       <div className="grid grid-cols-2 gap-y-12 md:grid-cols-4">
         <div>
-          <div className="text-4.5 text-[#898989]">About</div>
+          <div className="text-4.5 text-[#898989]">{t('footer.about')}</div>
           <ul className="mt-4 text-4 text-[#b5b5b5] space-y-2">
-            <li>Company</li>
-            <li>Careers</li>
-            <li>News</li>
+            <li>{t('footer.company')}</li>
+            <li>{t('footer.careers')}</li>
+            <li>{t('footer.news')}</li>
           </ul>
         </div>
 
         <div>
-          <div className="text-4.5 text-[#898989]">Products</div>
+          <div className="text-4.5 text-[#898989]">{t('footer.products')}</div>
           <ul className="mt-4 text-4 text-[#b5b5b5] space-y-2">
-            <li>Properties</li>
-            <li>Token Market</li>
-            <li>DeFi Services</li>
+            <li>{t('footer.properties')}</li>
+            <li>{t('footer.token_market')}</li>
+            <li>{t('footer.deFi_services')}</li>
           </ul>
         </div>
 
         <div>
-          <div className="text-4.5 text-[#898989]">Support</div>
+          <div className="text-4.5 text-[#898989]">{t('footer.support')}</div>
           <ul className="mt-4 text-4 text-[#b5b5b5] space-y-2">
-            <li>Help Center</li>
-            <li>Contact Us</li>
-            <li>Legal</li>
+            <li>{t('footer.help_center')}</li>
+            <li>{t('footer.contact_us')}</li>
+            <li>{t('footer.legal')}</li>
           </ul>
         </div>
 
         <div>
-          <div className="text-4.5 text-[#898989]">Follow Us</div>
+          <div className="text-4.5 text-[#898989]">{t('footer.follow_us')}</div>
           <div className="mt-4 fyc gap-2 text-text">
             <div className="i-mdi-twitter size-5"></div>
             <div className="i-mdi-linkedin size-5"></div>

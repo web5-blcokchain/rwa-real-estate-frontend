@@ -197,6 +197,21 @@
     "email": "Email",
     "phone": "Phone"
   },
+  "footer": {
+    "about": "About",
+    "company": "Company",
+    "careers": "Careers",
+    "news": "News",
+    "products": "Products",
+    "properties": "Properties",
+    "token_market": "Token Market",
+    "deFi_services": "DeFi Services",
+    "support": "Support",
+    "help_center": "Help Center",
+    "contact_us": "Contact Us",
+    "legal": "Legal",
+    "follow_us": "Follow Us"
+  },
   "system": {
     "confirm": "Confirm",
     "cancel": "Cancel",
