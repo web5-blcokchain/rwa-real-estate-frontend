@@ -170,7 +170,33 @@
       "confirm_payment": "Confirm Payment"
     }
   },
-  "help": {},
+  "help": {
+    "banner": {
+      "title": "Redefining the Future of Real Estate Investment",
+      "subTitle": "RealToken is committed to making real estate investment simpler, more transparent, and more inclusive through blockchain technology."
+    },
+    "mission_title": "Our Mission",
+    "mission_content": "Our mission is to create a more equitable and sustainable future for all by leveraging blockchain technology to transform real estate investment into a more transparent, accessible, and inclusive process.",
+    "platform_title": "Through our platform, investors can:",
+    "list_li1": "Participate in global premium real estate investment with low barriers",
+    "list_li2": "Enjoy fully transparent property management and profit distribution",
+    "list_li3": "Tede asscts feabhy at any timc",
+    "list_li4": "Receive professional investment advice and support",
+    "core_team": "Core Team",
+    "timeline": "Company Timeline",
+    "title_2020": "Company founded, raised $5M in seed funding",
+    "title_2021": "Completed first property tokenization project, reached 1,000+ users",
+    "title_2022": "Obtained FSA license in Japan, expanded to Asian markets",
+    "title_2023": "AUM exceeded $400M, user base grew to 12,000+",
+    "global_partners": "Global Partners",
+    "join_team": "Join Our Team",
+    "join_team_subTitle": "We're looking for passionate talents to join our team and help revolutionize real estate investment together.",
+    "positions": "View Open Positions",
+    "contact": "Contact information",
+    "address": "Office Address",
+    "email": "Email",
+    "phone": "Phone"
+  },
   "system": {
     "confirm": "Confirm",
     "cancel": "Cancel",

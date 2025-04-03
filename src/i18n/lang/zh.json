@@ -170,6 +170,12 @@
       "confirm_payment": "确认付款"
     }
   },
+  "help": {
+    "banner": {
+      "title": "重新定义房地产投资的未来",
+      "subTitle": "RealToken致力于通过区块链技术使房地产投资变得更简单、更透明和更具包容性。"
+    }
+  },
   "system": {
     "confirm": "确认",
     "cancel": "取消",

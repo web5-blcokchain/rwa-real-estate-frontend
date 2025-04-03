@@ -170,6 +170,12 @@
       "confirm_payment": "支払いの確認"
     }
   },
+  "help": {
+    "banner": {
+      "title": "不動産投資の未来を再定義する",
+      "subTitle": "RealTokenはブロックチェーン技術を通じて不動産投資をより簡単に、より透明に、より包括的にすることに力を入れている。"
+    }
+  },
   "system": {
     "confirm": "確認",
     "cancel": "キャンセル"

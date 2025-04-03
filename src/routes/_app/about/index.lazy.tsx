@@ -15,6 +15,7 @@ export const Route = createLazyFileRoute('/_app/about/')({
 })
 
 function RouteComponent() {
+  const { t } = useTranslation()
   const { data: listData = [], isLoading } = useQuery<Array<CoreTeamResponse>>({
     queryKey: ['about'],
     queryFn: async () => {
@@ -24,10 +25,10 @@ function RouteComponent() {
   })
 
   const timeline = [
-    { year: '2020', title: 'Company founded, raised $5M in seed funding' },
-    { year: '2021', title: 'Completed first property tokenization project, reached 1,000+ users' },
-    { year: '2022', title: 'Obtained FSA license in Japan, expanded to Asian markets' },
-    { year: '2023', title: 'AUM exceeded $400M, user base grew to 12,000+' }
+    { year: '2020', title: `${t('help.title_2020')}` },
+    { year: '2021', title: `${t('help.title_2021')}` },
+    { year: '2022', title: `${t('help.title_2022')}` },
+    { year: '2023', title: `${t('help.title_2023')}` }
   ]
 
   const partners = [
@@ -40,7 +41,7 @@ function RouteComponent() {
   const contacts = [
     {
       icon: 'address',
-      title: 'Office Address',
+      title: `${t('help.address')}`,
       desc: [
         '1-2-3 Akasaka, Minato-ku',
         'Akasaka Building 15F, Tokyo'
@@ -48,7 +49,7 @@ function RouteComponent() {
     },
     {
       icon: 'email',
-      title: 'Email',
+      title: `${t('help.email')}`,
       desc: [
         'contact@realtoken.com',
         'support@realtoken.com'
@@ -56,7 +57,7 @@ function RouteComponent() {
     },
     {
       icon: 'phone',
-      title: 'Phone',
+      title: `${t('help.phone')}`,
       desc: [
         '+81 3-1234-5678',
         'Mon-Fri 9:00-18:00'
@@ -76,28 +77,27 @@ function RouteComponent() {
     <div className="space-y-8 md:px-8">
       <Banner
         picture={new URL('@/assets/images/about-banner.png', import.meta.url).href}
-        title="Redefining the Future of Real Estate Investment"
-        subTitle="RealToken is committed to making real estate investment simpler, more transparent, and more inclusive through blockchain technology."
+        title={t('help.banner.title')}
+        subTitle={t('help.banner.subTitle')}
       />
 
       <div className="grid grid-cols-1 gap-8 px-8 py-12 lg:grid-cols-2 lg:gap-25">
         <div className="space-y-4">
-          <div className="text-5">Our Mission</div>
+          <div className="text-5">{t('help.mission_title')}</div>
           <div className="pl-10 space-y-4">
             <div className="text-4">
-              Founded in 2020, RealToken aims to revolutionize traditional real estate investment through blockchain technology.
-              We believe everyone should have the opportunity to participate in quality real estate investment, regardless of their budget.
+              {t('help.mission_content')}
             </div>
 
             <div className="text-4 text-[#b5b5b5]">
-              Through our platform, investors can:
+              {t('help.platform_title')}
             </div>
 
             <ul className="list-disc pl-10 text-4 text-[#b5b5b5] space-y-2">
-              <li>Participate in global premium real estate investment with low barriers</li>
-              <li>Enjoy fully transparent property management and profit distribution</li>
-              <li>Tede asscts feabhy at any timc</li>
-              <li>Receive professional investment advice and support</li>
+              <li>{t('help.list_li1')}</li>
+              <li>{t('help.list_li2')}</li>
+              <li>{t('help.list_li3')}</li>
+              <li>{t('help.list_li4')}</li>
             </ul>
           </div>
         </div>
@@ -108,7 +108,7 @@ function RouteComponent() {
       </div>
 
       <div className="bg-[#111827] py-12 space-y-8">
-        <div className="text-center text-7.5 font-medium">Core Team</div>
+        <div className="text-center text-7.5 font-medium">{t('help.core_team')}</div>
 
         <div
           className="flex flex-col justify-between gap-12 px-8 lg:flex-row md:gap-8"
@@ -122,7 +122,7 @@ function RouteComponent() {
       </div>
 
       <div className="py-12 space-y-8">
-        <div className="text-center text-7.5 font-medium">Company Timeline</div>
+        <div className="text-center text-7.5 font-medium">{t('help.timeline')}</div>
 
         <div
           className="grid grid-cols-1 gap-8 px-8 lg:grid-cols-2"
@@ -138,7 +138,10 @@ function RouteComponent() {
       </div>
 
       <div className="py-12 space-y-8">
-        <div className="text-center text-7.5 font-medium">Global Partners</div>
+        <div className="text-center text-7.5 font-medium">
+          {t('help.global_partners')}
+          {' '}
+        </div>
 
         <div className="grid grid-cols-1 gap-8 px-8 lg:grid-cols-4 xs:grid-cols-2">
           {
@@ -152,10 +155,10 @@ function RouteComponent() {
       </div>
 
       <div className="mx-auto max-w-3xl px-8 py-12 space-y-8">
-        <div className="text-center text-7.5 font-medium">Join Our Team</div>
+        <div className="text-center text-7.5 font-medium">{t('help.join_team')}</div>
 
         <div className="text-center text-5 text-[#b5b5b5]">
-          We're looking for passionate talents to join our team and help revolutionize real estate investment together.
+          {t('help.join_team_subTitle')}
         </div>
 
         <div className="text-center">
@@ -164,13 +167,16 @@ function RouteComponent() {
             size="large"
             className="text-black!"
           >
-            View Open Positions
+            {t('help.positions')}
           </Button>
         </div>
       </div>
 
       <div className="mx-auto max-w-3xl py-12 space-y-12">
-        <div className="text-center text-7.5 font-medium">Contact information</div>
+        <div className="text-center text-7.5 font-medium">
+          {' '}
+          {t('help.contact')}
+        </div>
 
         <div
           className="flex flex-col justify-between gap-12 lg:flex-row md:gap-14"
