@@ -2,20 +2,21 @@ import { cn } from '@/utils/style'
 import { CreateAccountStep, useSteps } from './steps-provider'
 
 export default function CreateAccountSteps() {
+  const { t } = useTranslation()
   const { currentStep } = useSteps()
 
   const steps = [
     {
       step: CreateAccountStep.BaseInfo,
-      title: 'Create Your Account'
+      title: `${t('create.step1')}`
     },
     {
       step: CreateAccountStep.Wallet,
-      title: 'Connect Wallet'
+      title: `${t('create.step2')}`
     },
     {
       step: CreateAccountStep.Verification,
-      title: 'Identity Verification'
+      title: `${t('create.step3')}`
     }
   ]
 

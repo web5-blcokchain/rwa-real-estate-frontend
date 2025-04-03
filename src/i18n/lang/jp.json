@@ -1,4 +1,58 @@
 {
+  "header": {
+    "title": "不動産RW a",
+    "home": "フロントページ",
+    "properties": "財産",
+    "investment": "投資する",
+    "about": "について",
+    "aboutMe": "個人情報",
+    "login": "ログイン",
+    "register": "登録する",
+    "logout": "やめる",
+    "language": "言語",
+    "en": "English",
+    "zh": "Chinese",
+    "jp": "日本語"
+  },
+  "create": {
+    "step1": "アカウントを作成します",
+    "step2": "ウォレットを接続します",
+    "step3": "ID検証",
+    "baseInfo": {
+      "title": "アカウントを作成します",
+      "subTitle": "誰かのデジタル資産の旅を始めましょう",
+      "email": "メール",
+      "emailPlaceholder": "誰かにメールを入力してください",
+      "phone": "電話番号",
+      "phonePlaceholder": "誰かの電話番号を入力してください",
+      "phoneDescription": "電話番号はintおよびフォーマット+1234567890でなければなりません",
+      "password": "パスワード",
+      "passwordPlaceholder": "誰かのパスワードを入力してください",
+      "passwordDescription": "上部、小文字、数字を持つ最低8文字",
+      "account": "アカウントを作成する",
+      "google": "Googleにサインインします",
+      "apple": "Appleでサインインします"
+    },
+    "wallet": {
+      "title": "ウォレットを接続します",
+      "subTitle": "継続するために優先ウォレットを選択してください",
+      "metamask": "MetaMask",
+      "metaContent": "誰かのメタマスクウォレットに接続します",
+      "walletConnect": "WalletConnect",
+      "walletContent": "ウォレット接続を使用して接続します",
+      "coinbase": "Coinbase Wallet",
+      "coinbaseContent": "誰かのコインベースウォレットに接続します"
+    },
+    "verification": {
+      "title": "アイデンティティタイプを選択してください",
+      "subTitle": "プレス個人または機関の投資家がいるかどうかを選択します",
+      "individual": "個々の投資家",
+      "individual_account": "個人投資口座のため",
+      "institutional": "機関投資家",
+      "organizations": "企業や組織向け",
+      "notice": "個人および機関の投資家には、さまざまな検証要件が適用されます.検証プロセスを進めるには、適切なタイプを選択してください."
+    }
+  },
   "system": {
     "confirm": "確認",
     "cancel": "キャンセル"

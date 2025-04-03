@@ -1,4 +1,66 @@
 {
+  "header": {
+    "title": "Real Estate RWA",
+    "home": "Home",
+    "properties": "About",
+    "investment": "Contact",
+    "about": "Help",
+    "aboutMe": "AboutMe",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "language": "Language",
+    "en": "English",
+    "zh": "Chinese",
+    "jp": "日本語"
+  },
+  "create": {
+    "step1": "Create Your Account",
+    "step2": "Connect Wallet",
+    "step3": "Identity Verification",
+    "baseInfo": {
+      "title": "Create Your Account",
+      "subTitle": "Start your digital asset journey",
+      "email": "Email",
+      "emailPlaceholder": "Please enter your email",
+      "phone": "Phone Number",
+      "phonePlaceholder": "Please enter your phone number",
+      "phoneDescription": "Phone number must be in the format +1234567890",
+      "password": "Password",
+      "passwordPlaceholder": "Please enter your password",
+      "passwordDescription": "Minimum 8 characters with upper, lower case and numbers",
+      "account": "Create Account",
+      "google": "Sign in with Google",
+      "apple": "Sign in with Apple"
+    },
+    "wallet": {
+      "title": "Connect Your Wallet",
+      "subTitle": "Choose your preferred wallet to continue",
+      "metamask": "MetaMask",
+      "metaContent": "Connect to your MetaMask wallet",
+      "walletConnect": "WalletConnect",
+      "walletContent": "Connect using WalletConnect",
+      "coinbase": "Coinbase Wallet",
+      "coinbaseContent": "Connect to your Coinbase wallet"
+    },
+    "verification": {
+      "title": "Choose Your Identity Type",
+      "subTitle": "Select whether you are an individual or institutional investor",
+      "individual": "Individual Investor",
+      "individual_account": "For personal investment accounts",
+      "institutional": "Institutional Investor",
+      "organizations": "For companies and organizations",
+      "notice": " Different verification requirements apply to individual and institutional investors.Please select the appropriate type to proceed with the verification process.",
+      "personal": {
+        "title": "Personal Identity Verification",
+        "subTitle": "Please upload your personal identity documents for KYC verification"
+      },
+      "business": {
+        "title": "Business Verification",
+        "subTitle": "Please upload your business documents for KYB verification"
+      }
+    }
+  },
   "system": {
     "confirm": "Confirm",
     "cancel": "Cancel"

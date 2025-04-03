@@ -10,6 +10,7 @@ import { useNavigate } from '@tanstack/react-router'
 import { useSteps } from '../steps-provider'
 
 export default function CreateAccountPanel() {
+  const { t } = useTranslation()
   const { next } = useSteps()
   const navigate = useNavigate()
   const setRegisterData = useStore(state => state.setRegisterData)
@@ -43,35 +44,35 @@ export default function CreateAccountPanel() {
 
   return (
     <div className="fccc gap-2">
-      <div className="text-8 font-medium">Create Your Account</div>
-      <div className="text-4 text-[#898989]">Start your digital asset journey</div>
+      <div className="text-8 font-medium">{t('create.step1')}</div>
+      <div className="text-4 text-[#898989]">{t('create.baseInfo.subTitle')}</div>
 
       <div className="max-w-xl w-full space-y-6">
-        <IFormItem label="Email">
-          <IInput placeholder="Enter your email" className="w-full" onChange={e => setRegisterData({ email: e.target.value })} />
+        <IFormItem label={t('create.baseInfo.email')}>
+          <IInput placeholder={t('create.baseInfo.emailPlaceholder')} className="w-full" onChange={e => setRegisterData({ email: e.target.value })} />
         </IFormItem>
 
-        <IFormItem label="Phone Number">
-          <IInput placeholder="Enter your phone number" className="w-full" onChange={e => setRegisterData({ mobile: e.target.value })} />
+        <IFormItem label={t('create.baseInfo.phone')} description={t('create.baseInfo.phoneDescription')}>
+          <IInput placeholder={t('create.baseInfo.phonePlaceholder')} className="w-full" onChange={e => setRegisterData({ mobile: e.target.value })} />
         </IFormItem>
 
-        <IFormItem label="Password" description="Minimum 8 characters with upper, lower case and numbers">
-          <IInput placeholder="Enter password" className="w-full" onChange={e => setRegisterData({ password: e.target.value })} />
+        <IFormItem label={t('create.baseInfo.password')} description={t('create.baseInfo.passwordDescription')}>
+          <IInput placeholder={t('create.baseInfo.passwordPlaceholder')} className="w-full" onChange={e => setRegisterData({ password: e.target.value })} />
         </IFormItem>
 
-        <button type="button" className="h-12.5 w-full rounded bg-primary-2 text-background clickable-99" onClick={next}>Create Account</button>
+        <button type="button" className="h-12.5 w-full rounded bg-primary-2 text-background clickable-99" onClick={next}>{t('create.baseInfo.account')}</button>
 
         <ISeparator text="or" />
 
         <div className="grid grid-cols-2 gap-4">
           <button type="button" className="fyc justify-center gap-3 b b-border rounded py-3 clickable-99" onClick={login}>
             <span className="i-ion-logo-google size-5"></span>
-            <span>Sign in with Google</span>
+            <span>{t('create.baseInfo.google')}</span>
           </button>
 
           <button type="button" className="fyc justify-center gap-3 b b-border rounded py-3 clickable-99">
             <span className="i-ion-logo-apple size-5"></span>
-            <span>Sign in with Apple</span>
+            <span>{t('create.baseInfo.apple')}</span>
           </button>
         </div>
       </div>

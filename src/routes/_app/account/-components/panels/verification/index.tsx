@@ -37,12 +37,13 @@ export default function VerificationPanel() {
 
 function SelectVerification({ setCurrentVisible }: VerificationPanelProps) {
   const { setHandler } = useSteps()
+  const { t } = useTranslation()
 
   const list: Verification[] = [
     {
-      name: 'Individual Investor',
+      name: `${t('create.verification.individual')}`,
       icon: 'user',
-      description: 'For personal investment accounts',
+      description: `${t('create.verification.individual_account')}`,
       onClick() {
         setCurrentVisible(VisibleType.Individual)
 
@@ -54,9 +55,9 @@ function SelectVerification({ setCurrentVisible }: VerificationPanelProps) {
       }
     },
     {
-      name: 'Institutional Investor',
+      name: `${t('create.verification.institutional')}`,
       icon: 'institutional',
-      description: 'For companies and organizations',
+      description: `${t('create.verification.organizations')}`,
       onClick() {
         setCurrentVisible(VisibleType.Institutional)
 
@@ -71,8 +72,8 @@ function SelectVerification({ setCurrentVisible }: VerificationPanelProps) {
 
   return (
     <div className="fccc gap-2">
-      <div className="text-8 font-medium">Choose Your Identity Type</div>
-      <div className="text-4 text-[#898989]">Select whether you are an individual or institutional investor</div>
+      <div className="text-8 font-medium">{t('create.verification.title')}</div>
+      <div className="text-4 text-[#898989]">{t('create.verification.subTitle')}</div>
 
       <div className="mt-10 max-w-xl w-full space-y-6">
         {
@@ -82,8 +83,7 @@ function SelectVerification({ setCurrentVisible }: VerificationPanelProps) {
         }
 
         <INotice>
-          Different verification requirements apply to individual and institutional investors.
-          Please select the appropriate type to proceed with the verification process.
+          {t('create.verification.notice')}
         </INotice>
       </div>
     </div>

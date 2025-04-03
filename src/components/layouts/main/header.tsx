@@ -1,20 +1,14 @@
+import type { MenuProps } from 'antd'
 import { _useStore as useStore } from '@/_store/_userStore'
 import apiMyInfoApi from '@/api/apiMyInfoApi'
 import { usePrivy } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
 import { Link, useLocation, useNavigate } from '@tanstack/react-router'
-import { Button, Drawer } from 'antd'
-
-const links = [
-  { title: 'Home', href: '/home' },
-  { title: 'Properties', href: '/properties' },
-  { title: 'Investment', href: '/investment' },
-  { title: 'About', href: '/about' },
-  { title: 'AboutMe', href: '/aboutMe' }
-]
+import { Button, Drawer, Dropdown } from 'antd'
 
 export default function MainHeader() {
   const [open, setOpen] = useState(false)
+  const { t } = useTranslation()
 
   const showDrawer = () => {
     setOpen(true)
@@ -27,7 +21,7 @@ export default function MainHeader() {
   return (
     <header className="sticky left-0 top-0 z-10 h-32 fbc bg-background px-8 text-text">
       <div className="fyc gap-8">
-        <div className="text-5 text-primary">Real Estate RWA</div>
+        <div className="text-5 text-primary">{t('header.title')}</div>
         <NavMenu className="fyc gap-8 lt-md:hidden" />
       </div>
 
@@ -72,6 +66,15 @@ export default function MainHeader() {
 
 function NavMenu({ className }: { className?: string }) {
   const { pathname } = useLocation()
+  const { t } = useTranslation()
+
+  const links = [
+    { title: `${t('header.home')}`, href: '/home' },
+    { title: `${t('header.properties')}`, href: '/properties' },
+    { title: `${t('header.investment')}`, href: '/investment' },
+    { title: `${t('header.about')}`, href: '/about' },
+    { title: `${t('header.aboutMe')}`, href: '/aboutMe' }
+  ]
 
   return (
     <nav className={cn(
@@ -99,8 +102,8 @@ function NavMenu({ className }: { className?: string }) {
 }
 
 function RightMenu() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
-  const [, setLanguage] = useState(i18n.language)
   const [userObj, setUserObj] = useState<Record<string, any>>()
   const setUserData = useStore(state => state.setUserData)
 
@@ -122,20 +125,6 @@ function RightMenu() {
     }
   }, [authenticated, user, mutate])
 
-  useEffect(() => {
-    const handleLanguageChange = () => {
-      setLanguage(i18n.language)
-    }
-
-    // 监听语言变化事件
-    i18n.on('languageChanged', handleLanguageChange)
-
-    // 清理事件监听
-    return () => {
-      i18n.off('languageChanged', handleLanguageChange)
-    }
-  }, [])
-
   const login = () => {
     navigate({
       to: '/account/create'
@@ -144,12 +133,7 @@ function RightMenu() {
 
   return (
     <>
-      <div className="fyc gap-1">
-        <div className="i-majesticons-globe-line size-5 bg-white"></div>
-        <div className="text-4 text-white">English</div>
-        <div className="i-ic-round-keyboard-arrow-down size-5 bg-white"></div>
-      </div>
-
+      <LanguageSelect />
       <div className="i-material-symbols-help-outline size-5 bg-white"></div>
       <div className="i-material-symbols-notifications-outline size-5 bg-white"></div>
       <div className="i-material-symbols-favorite-outline-rounded size-5 bg-white"></div>
@@ -170,12 +154,94 @@ function RightMenu() {
                     className="text-white bg-transparent!"
                     onClick={login}
                   >
-                    登录
+                    {t('header.login')}
                   </Button>
+                  {/* <Button
+                    className="text-white bg-transparent!"
+                    onClick={login}
+                  >
+                    {t('header.register')}
+                  </Button> */}
                 </div>
               )
         }
       </Waiting>
     </>
+  )
+}
+
+function LanguageSelect() {
+  const lang = useStore(state => state.language)
+  const setLang = useStore(state => state.setLanguage)
+
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      setLang(i18n.language)
+    }
+
+    // 监听语言变化事件
+    i18n.on('languageChanged', handleLanguageChange)
+
+    // 清理事件监听
+    return () => {
+      i18n.off('languageChanged', handleLanguageChange)
+    }
+  }, [])
+
+  const items: MenuProps['items'] = [
+    {
+      label: (
+        <Button
+          type="text"
+          onClick={() => {
+            setLang('zh')
+            i18n.changeLanguage('zh')
+          }}
+        >
+          中文
+        </Button>
+      ),
+      key: 'zh'
+    },
+    {
+      label: (
+        <Button
+          type="text"
+          onClick={() => {
+            setLang('en')
+            i18n.changeLanguage('en')
+          }}
+        >
+          English
+        </Button>
+      ),
+      key: 'en'
+    },
+    {
+      label: (
+        <Button
+          type="text"
+          onClick={() => {
+            setLang('jp')
+            i18n.changeLanguage('jp')
+          }}
+        >
+          日本語
+        </Button>
+      ),
+      key: 'jp'
+    }
+  ]
+
+  return (
+    <Dropdown menu={{ items }} placement="bottomRight">
+      <div className="fyc gap-1">
+        <div className="i-majesticons-globe-line size-5 bg-white"></div>
+        <div className="w-[50px] cursor-pointer text-4 text-white">
+          {lang === 'zh' ? '中文' : lang === 'en' ? 'English' : '日本語'}
+        </div>
+        <div className="i-ic-round-keyboard-arrow-down size-5 bg-white"></div>
+      </div>
+    </Dropdown>
   )
 }

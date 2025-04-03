@@ -9,28 +9,29 @@ interface Wallet {
 
 export default function ConnectWalletPanel() {
   const { next } = useSteps()
+  const { t } = useTranslation()
 
   const wallets: Wallet[] = [
     {
-      name: 'MetaMask',
+      name: `${t('create.wallet.metamask')}`,
       icon: new URL('@/assets/icons/meta-mask.svg', import.meta.url).href,
-      description: 'Connect to your MetaMask wallet',
+      description: `${t('create.wallet.metaContent')}`,
       onClick() {
         next()
       }
     },
     {
-      name: 'WalletConnect',
+      name: `${t('create.wallet.walletConnect')}`,
       icon: new URL('@/assets/icons/wallet.svg', import.meta.url).href,
-      description: 'Connect using WalletConnect',
+      description: `${t('create.wallet.walletContent')}`,
       onClick() {
         next()
       }
     },
     {
-      name: 'Coinbase Wallet',
+      name: `${t('create.wallet.coinbase')}`,
       icon: new URL('@/assets/icons/coinbase.svg', import.meta.url).href,
-      description: 'Connect to your Coinbase wallet',
+      description: `${t('create.wallet.coinbaseContent')}`,
       onClick() {
         next()
       }
@@ -39,8 +40,8 @@ export default function ConnectWalletPanel() {
 
   return (
     <div className="fccc gap-2">
-      <div className="text-8 font-medium">Connect Your Wallet</div>
-      <div className="text-4 text-[#898989]">Choose your preferred wallet to continue</div>
+      <div className="text-8 font-medium">{t('create.wallet.title')}</div>
+      <div className="text-4 text-[#898989]">{t('create.wallet.subTitle')}</div>
 
       <div className="mt-10 max-w-xl w-full space-y-6">
         {

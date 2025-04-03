@@ -1,4 +1,58 @@
 {
+  "header": {
+    "title": "房地产风险加权资产",
+    "home": "首页",
+    "properties": "属性",
+    "investment": "投资",
+    "about": "关于",
+    "aboutMe": "个人信息",
+    "login": "登录",
+    "register": "注册",
+    "logout": "退出",
+    "language": "语言",
+    "en": "English",
+    "zh": "中文",
+    "jp": "日本語"
+  },
+  "create": {
+    "step1": "创建您的账户",
+    "step2": "连接钱包",
+    "step3": "身份验证",
+    "baseInfo": {
+      "title": "创建您的账户",
+      "subTitle": "开启您的数字资产之旅",
+      "email": "电子邮件",
+      "emailPlaceholder": "请输入您的邮箱",
+      "phone": "电话号码",
+      "phonePlaceholder": "请输入您的电话号码",
+      "phoneDescription": "电话号码必须以+1234567890的格式输入。",
+      "password": "密码",
+      "passwordPlaceholder": "请输入您的密码",
+      "passwordDescription": "至少8个字符，包括大写、小写和数字",
+      "account": "创建账户",
+      "google": "使用谷歌登录",
+      "apple": "使用Apple登录"
+    },
+    "wallet": {
+      "title": "连接您的钱包",
+      "subTitle": "选择您偏好的钱包以继续",
+      "metamask": "MetaMask",
+      "metaContent": "连接到您的MetaMask钱包",
+      "walletConnect": "WalletConnect",
+      "walletContent": "使用 WalletConnect 连接",
+      "coinbase": "Coinbase Wallet",
+      "coinbaseContent": "连接到您的Coinbase钱包"
+    },
+    "verification": {
+      "title": "选择您的身份类型",
+      "subTitle": "选择您是个人投资者还是机构投资者",
+      "individual": "个人投资者",
+      "individual_account": "个人投资账户",
+      "institutional": "机构投资者",
+      "organizations": "对于公司和组织",
+      "notice": "个人投资者和机构投资者的验证要求不同.请选择适当的类型以继续验证过程."
+    }
+  },
   "system": {
     "confirm": "确认",
     "cancel": "取消"
