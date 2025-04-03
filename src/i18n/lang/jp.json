@@ -50,7 +50,80 @@
       "individual_account": "個人投資口座のため",
       "institutional": "機関投資家",
       "organizations": "企業や組織向け",
-      "notice": "個人および機関の投資家には、さまざまな検証要件が適用されます.検証プロセスを進めるには、適切なタイプを選択してください."
+      "notice": "個人および機関の投資家には、さまざまな検証要件が適用されます.検証プロセスを進めるには、適切なタイプを選択してください.",
+      "personal": {
+        "title": "個人のアイデンティティの検証",
+        "subTitle": "フォークYC検証を誰かにアップロードしてください",
+        "identity": "IDドキュメント",
+        "upload_title": "IDカード /パスポートをアップロードします",
+        "upload_subTitle": "正面と裏側が必要で、JPG/PNG/PDFまで5MBまで",
+        "photo": "写真を撮ります",
+        "files": "ファイルを参照します",
+        "poof": "住所の証明",
+        "proof_title": "ユーティリティ請求書 /銀行声明をアップロードします",
+        "proof_subTitle": "過去3か月以内に発行する必要があります",
+        "facial": "顔の検証",
+        "facial_title": "自己を取る",
+        "facial_subTitle": "良い照明で顔の写真を明確にします",
+        "notice": "提出されたすべてのドキュメントは、本物であり、修正されていない必要があります。画像が明確で完全であることを確認してください。検証プロセスには通常、1〜2営業日かかります。お客様の個人情報は、銀行レベルの暗号化で保護されています。",
+        "continue": "続行します"
+      },
+      "business": {
+        "title": "ビジネス検証",
+        "subTitle": "誰かのビジネスドキュメントフォークYB検証をアップロードしてください",
+        "business_registration": "ビジネス登録",
+        "business_registration_title": "ユーティリティ請求書 /銀行声明をアップロードします",
+        "business_registration_subTitle": "有効なビジネス登録文書",
+        "business_company": "会社の構造",
+        "business_company_title": "株主構造 /組織チャート",
+        "business_company_subTitle": "所有構造を示すドキュメント",
+        "legal_representative": "ほうていだいひょうじん",
+        "legal_representative_title": "取締役と幹部の文書",
+        "legal_representative_subTitle": "担当者の身分文書",
+        "financial_documents": "金融文書",
+        "financial_documents_title": "銀行声明/財務報告",
+        "financial_documents_subTitle": "財務記録砦と過去6か月",
+        "notice": "通常、ビジネス検証には3〜5営業日かかります。すべてのドキュメントは正式に発行され、有効でなければなりません。お客様のビジネスタイプと判断に基づいて、アドリオタルドキュメントが必要になる場合があります。ビジネス情報は、エンタープライズレベルのセキュリティで保護されています。",
+        "continue": "続行します"
+      }
+    }
+  },
+  "home": {
+    "banner": {
+      "title": "不動産投資をトークン化します",
+      "subTitle": "Global Property Investment MAのブロックチェーンテクノロジーを通じてアクセスできます。最小限の資本でプレミアム不動産への投資を開始します。"
+    },
+    "route": {
+      "ownership": "分数所有権",
+      "ownership_content": "わずか100ドルのプレミアム不動産に投資します。世界中の高価値プロパティを所有しています。",
+      "compliance": "規制のコンプライアンス",
+      "compliance_content": "堅牢なKY C/A ML手順を備えた完全に規制されたプラットフォーム。あなたの投資は安全で準拠しています。",
+      "investment": "流動投資",
+      "investment_content": "私たちの流通市場で誰かの不動産トークンを24時間年中無休で取引します。不動産の前例のない流動性。"
+    },
+    "featured": "注目のプロパティ",
+    "works": {
+      "step1_title": "1. アカウントを作成する",
+      "step1_content": "投資を開始するためにKY C検証をサインアップして完了します",
+      "step2_title": "2. プロパティを選択します",
+      "step2_content": "ブラウザとキュレーションされたプロパティの提供から選択します",
+      "step3_title": "3. トークンを購入します",
+      "step3_content": "誰かが優先支払い方法でプロパティトークンを購入します",
+      "step4_title": "4. リターンを獲得します",
+      "step4_content": "定期的な賃貸収入と資本上昇を受けてください"
+    },
+    "market": {
+      "title": "市場統計",
+      "total": "総資産値",
+      "investors": "アクティブな投資家",
+      "properties": "トークン化されたプロパティ",
+      "return": "平均年間収益"
+    },
+    "ready": {
+      "title": "投資を始める準備はできていますか。",
+      "content": "私たちの不動産投資家コミュニティに参加して、あなたの財務自由の旅を始めます。",
+      "button": "投資を開始する",
+      "button2": "学習の詳細"
     }
   },
   "system": {

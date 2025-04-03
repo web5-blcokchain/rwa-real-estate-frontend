@@ -7,6 +7,7 @@ import UploadCard from '../../upload-card'
 import './individual.scss'
 
 export default function InstitutionalVerification() {
+  const { t } = useTranslation()
   const setRegisterData = useStore(state => state.setRegisterData)
   const RegisterData = useStore(state => state.registerData)
 
@@ -48,14 +49,14 @@ export default function InstitutionalVerification() {
 
   return (
     <div className="fccc gap-2">
-      <div className="max-w-md text-center text-8 font-medium">Business Verification</div>
-      <div className="max-w-md text-center text-4 text-[#898989]">Please upload your business documents for KYB verification</div>
+      <div className="max-w-md text-center text-8 font-medium">{t('create.verification.business.title')}</div>
+      <div className="max-w-md text-center text-4 text-[#898989]">{t('create.verification.business.subTitle')}</div>
 
       <div className="mt-8 max-w-lg w-full space-y-6">
         <UploadCard
-          label="Business Registration"
-          title="Upload Utility Bill / Bank Statement"
-          subTitle="Valid business registration document"
+          label={t('create.verification.business.business_registration')}
+          title={t('create.verification.business.business_registration_title')}
+          subTitle={t('create.verification.business.business_registration_subTitle')}
           icon={new URL('@/assets/icons/upload-cloud.svg', import.meta.url).href}
           beforeUpload={(file) => {
             beforeUpload(file, 'business_registration_document')
@@ -64,9 +65,9 @@ export default function InstitutionalVerification() {
         </UploadCard>
 
         <UploadCard
-          label="Company Structure"
-          title="Shareholder Structure / Organization Chart"
-          subTitle="Documents showing ownership structure"
+          label={t('create.verification.business.business_company')}
+          title={t('create.verification.business.business_company_title')}
+          subTitle={t('create.verification.business.business_company_subTitle')}
           icon={new URL('@/assets/icons/node-tree.svg', import.meta.url).href}
           beforeUpload={(file) => {
             beforeUpload(file, 'shareholder_structure_url')
@@ -75,9 +76,9 @@ export default function InstitutionalVerification() {
         </UploadCard>
 
         <UploadCard
-          label="Legal Representative"
-          title="Directors and Executives Documents"
-          subTitle="Identity documents of key personnel"
+          label={t('create.verification.business.legal_representative')}
+          title={t('create.verification.business.legal_representative_title')}
+          subTitle={t('create.verification.business.legal_representative_subTitle')}
           icon={new URL('@/assets/icons/legal-representative.svg', import.meta.url).href}
           beforeUpload={(file) => {
             beforeUpload(file, 'legal_representative_documents_url')
@@ -86,9 +87,9 @@ export default function InstitutionalVerification() {
         </UploadCard>
 
         <UploadCard
-          label="Financial Documents"
-          title="Bank Statements / Financial Reports"
-          subTitle="Financial records for the last 6 months"
+          label={t('create.verification.business.financial_documents')}
+          title={t('create.verification.business.financial_documents_title')}
+          subTitle={t('create.verification.business.financial_documents_subTitle')}
           icon={new URL('@/assets/icons/financial-documents.svg', import.meta.url).href}
           beforeUpload={(file) => {
             beforeUpload(file, 'financial_documents_url')
@@ -97,15 +98,12 @@ export default function InstitutionalVerification() {
         </UploadCard>
 
         <INotice borderClass="b-white" pointClass="bg-white">
-          Business verification typically takes 3-5 business days.
-          All documents must be officially issued and valid.
-          Additional documents may be required based on your business type and jurisdiction.
-          Your business information is protected with enterprise-level security.
+          {t('create.verification.business.notice')}
         </INotice>
 
         <div className="fec">
           <Button size="large" className="bg-transparent! text-white! hover:text-primary-1!" onClick={() => createMutate()}>
-            Continue
+            {t('create.verification.business.continue')}
           </Button>
         </div>
       </div>

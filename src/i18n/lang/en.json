@@ -53,12 +53,77 @@
       "notice": " Different verification requirements apply to individual and institutional investors.Please select the appropriate type to proceed with the verification process.",
       "personal": {
         "title": "Personal Identity Verification",
-        "subTitle": "Please upload your personal identity documents for KYC verification"
+        "subTitle": "Please upload your personal identity documents for KYC verification",
+        "identity": "Identity Document",
+        "upload_title": "Upload Identity Card / Passport",
+        "upload_subTitle": "Front and back sides required, JPG/PNG/PDF up to 5MB",
+        "photo": "Take Photo",
+        "files": "Browse Files",
+        "poof": "Proof of Address",
+        "proof_title": "Upload Utility Bill / Bank Statement",
+        "proof_subTitle": "Must be issued within last 3 months",
+        "facial": "Facial Verification",
+        "facial_title": "Take a Selfie",
+        "facial_subTitle": "Clear facial photo in good lighting",
+        "notice": "All submitted documents must be authentic and unmodified. Please ensure images are clear and complete. The verification process typically takes 1-2 business days. Your personal information is protected with bank-level encryption.",
+        "continue": "Continue"
       },
       "business": {
         "title": "Business Verification",
-        "subTitle": "Please upload your business documents for KYB verification"
+        "subTitle": "Please upload your business documents for KYB verification",
+        "business_registration": "Business Registration",
+        "business_registration_title": "Upload Utility Bill / Bank Statement",
+        "business_registration_subTitle": "Valid business registration document",
+        "business_company": "Company Structure",
+        "business_company_title": "Shareholder Structure / Organization Chart",
+        "business_company_subTitle": "Documents showing ownership structure",
+        "legal_representative": "Legal Representative",
+        "legal_representative_title": "Directors and Executives Documents",
+        "legal_representative_subTitle": "Identity documents of key personnel",
+        "financial_documents": "Financial Documents",
+        "financial_documents_title": "Bank Statements / Financial Reports",
+        "financial_documents_subTitle": "Financial records for the last 6 months",
+        "notice": " Business verification typically takes 3-5 business days. All documents must be officially issued and valid.Additional documents may be required based on your business type and jurisdiction.Your business information is protected with enterprise-level security.",
+        "continue": "Continue"
       }
+    }
+  },
+  "home": {
+    "banner": {
+      "title": "Tokenize Real Estate Investment",
+      "subTitle": "Global property investment made accessible through blockchain technology. Start investing in premium real estate with minimal capital."
+    },
+    "route": {
+      "ownership": "Fractional Ownership",
+      "ownership_content": "Invest in premium real estate with as little as $100. Own a piece of high-value properties worldwide.",
+      "compliance": "Regulatory Compliance",
+      "compliance_content": "Fully regulated platform with robust KYC/AML procedures. Your investments are secure and compliant.",
+      "investment": "Liquid Investment",
+      "investment_content": "Trade your property tokens 24/7 on our secondary market. Unprecedented liquidity for real estate."
+    },
+    "featured": "Featured Properties",
+    "works": {
+      "step1_title": "1. Create Account",
+      "step1_content": "Sign up and complete KYC verification to start investing",
+      "step2_title": "2. Choose Property",
+      "step2_content": "Browse and select from our curated property offerings",
+      "step3_title": "3. Purchase Tokens",
+      "step3_content": "Buy property tokens with your preferred payment method",
+      "step4_title": "4. Earn Returns",
+      "step4_content": "Receive regular rental income and capital appreciation"
+    },
+    "market": {
+      "title": "Market Statistics",
+      "total": "Total Property Value",
+      "investors": "Active Investors",
+      "properties": "Tokenized Properties",
+      "return": "Average Annual Return"
+    },
+    "ready": {
+      "title": "Ready to Start Investing?",
+      "content": "Join our community of property investors and start your journey towards financial freedom.",
+      "button": "Start Investing",
+      "button2": "Learn More"
     }
   },
   "system": {

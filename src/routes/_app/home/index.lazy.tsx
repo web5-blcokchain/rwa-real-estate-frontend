@@ -9,21 +9,22 @@ export const Route = createLazyFileRoute('/_app/home/')({
 })
 
 function RouteComponent() {
+  const { t } = useTranslation()
   const cards = [
     {
       icon: 'pie-chart',
-      title: 'Fractional Ownership',
-      content: 'Invest in premium real estate with as little as $100. Own a piece of high-value properties worldwide.'
+      title: `${t('home.route.ownership')}`,
+      content: `${t('home.route.ownership_content')}`
     },
     {
       icon: 'security',
-      title: 'Regulatory Compliance',
-      content: 'Fully regulated platform with robust KYC/AML procedures. Your investments are secure and compliant.'
+      title: `${t('home.route.compliance')}`,
+      content: `${t('home.route.compliance_content')}`
     },
     {
       icon: 'double-arrow',
-      title: 'Liquid Investment',
-      content: 'Trade your property tokens 24/7 on our secondary market. Unprecedented liquidity for real estate.'
+      title: `${t('home.route.investment')}`,
+      content: `${t('home.route.investment_content')}`
     }
   ]
 
@@ -57,23 +58,23 @@ function RouteComponent() {
   const howItWorks = [
     {
       icon: 'create-account',
-      title: '1. Create Account',
-      content: 'Sign up and complete KYC verification to start investing'
+      title: `${t('home.works.step1_title')}`,
+      content: `${t('home.works.step1_content')}`
     },
     {
       icon: 'building',
-      title: '2. Choose Property',
-      content: 'Browse and select from our curated property offerings'
+      title: `${t('home.works.step2_title')}`,
+      content: `${t('home.works.step2_content')}`
     },
     {
       icon: 'currency',
-      title: '3. Purchase Tokens',
-      content: 'Buy property tokens with your preferred payment method'
+      title: `${t('home.works.step3_title')}`,
+      content: `${t('home.works.step3_content')}`
     },
     {
       icon: 'create-account',
-      title: '4. Earn Returns',
-      content: 'Receive regular rental income and capital appreciation'
+      title: `${t('home.works.step4_title')}`,
+      content: `${t('home.works.step4_content')}`
     }
   ]
 
@@ -81,8 +82,8 @@ function RouteComponent() {
     <div className="md:px-8">
       <Banner
         picture={new URL('@/assets/images/home-banner.png', import.meta.url).href}
-        title="Tokenize Real Estate Investment"
-        subTitle="Global property investment made accessible through blockchain technology. Start investing in premium real estate with minimal capital."
+        title={t('home.banner.title')}
+        subTitle={t('home.banner.subTitle')}
       />
 
       <div className="grid grid-cols-1 mt-8 gap-7 px-8 md:grid-cols-3">
@@ -100,7 +101,7 @@ function RouteComponent() {
       </div>
 
       <div className="mt-32 px-8">
-        <div className="text-center text-7.5">Featured Properties</div>
+        <div className="text-center text-7.5">{t('home.featured')}</div>
 
         <div className="grid grid-cols-1 mt-8 gap-7 md:grid-cols-3">
           {
@@ -117,7 +118,7 @@ function RouteComponent() {
       <div className="mt-32 bg-[#242933] px-8 py-14">
         <div className="text-center text-7.5 font-bold">How It Works</div>
 
-        <div className="mt-16 flex items-start gap-12 lt-md:flex-col md:gap-8">
+        <div className="grid grid-cols-1 mt-16 gap-8 md:grid-cols-4">
           {
             howItWorks.map((item, index) => (
               <div key={index} className="lt-md:flex lt-md:gap-4 md:text-center">
@@ -135,39 +136,42 @@ function RouteComponent() {
       </div>
 
       <div className="mt-32 px-8 py-14">
-        <div className="text-center text-7.5 font-medium">Market Statistics</div>
+        <div className="text-center text-7.5 font-medium">{t('home.market.title')}</div>
 
         <div className="grid grid-cols-1 mt-16 gap-8 md:grid-cols-4">
           <div className="mx-a w-full rounded-xl bg-[#242933] py-6 text-center space-y-4">
-            <div className="text-4 text-[#efefef]">Total Property Value</div>
+            <div className="text-4 text-[#efefef]">{t('home.market.total')}</div>
             <div className="text-7.5 text-[#f9f9f9]">¥4.25B</div>
           </div>
 
           <div className="mx-a w-full rounded-xl bg-[#242933] py-6 text-center space-y-4">
-            <div className="text-4 text-[#efefef]">Active Investors</div>
+            <div className="text-4 text-[#efefef]">{t('home.market.investors')}</div>
             <div className="text-7.5 text-[#f9f9f9]">12,450+</div>
           </div>
 
           <div className="mx-a w-full rounded-xl bg-[#242933] py-6 text-center space-y-4">
-            <div className="text-4 text-[#efefef]">Tokenized Properties</div>
+            <div className="text-4 text-[#efefef]">{t('home.market.properties')}</div>
             <div className="text-7.5 text-[#f9f9f9]">85</div>
           </div>
 
           <div className="mx-a w-full rounded-xl bg-[#242933] py-6 text-center space-y-4">
-            <div className="text-4 text-[#efefef]">Average Annual Return</div>
+            <div className="text-4 text-[#efefef]">{t('home.market.return')}</div>
             <div className="text-7.5 text-[#f9f9f9]">8.2%</div>
           </div>
         </div>
       </div>
 
       <div className="mt-32 px-8 text-center space-y-8">
-        <div className="text-6 text-[#d2d2d2] md:text-7.5">Ready to Start Investing?</div>
+        <div className="text-6 text-[#d2d2d2] md:text-7.5">{t('home.ready.title')}</div>
         <div className="text-4 text-[#d2d2d2] md:text-5">
-          Join thousands of investors already earning passive income through tokenized real estate.
+          {t('home.ready.content')}
         </div>
         <div className="space-x-4 md:space-x-6">
-          <button className="rounded-md bg-text px-6 py-2 text-background md:px-8 md:py-3">Start Investing</button>
-          <button className="rounded-md bg-background-secondary px-6 py-2 text-text md:px-8 md:py-3">Learn More</button>
+          <button className="rounded-md bg-text px-6 py-2 text-background md:px-8 md:py-3">
+            {t('home.ready.button')}
+            {' '}
+          </button>
+          <button className="rounded-md bg-background-secondary px-6 py-2 text-text md:px-8 md:py-3">{t('home.ready.button2')}</button>
         </div>
       </div>
     </div>

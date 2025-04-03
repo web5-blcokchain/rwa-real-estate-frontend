@@ -1,4 +1,4 @@
-import type { userResponse } from '@/api/apiMyInfoApi'
+import type { RegisterParams, userResponse } from '@/api/apiMyInfoApi'
 import type { StateCreator } from 'zustand'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
@@ -6,6 +6,7 @@ import { persist } from 'zustand/middleware'
 interface StoreState {
   language: string
   userData: userResponse | object
+  registerData: RegisterParams | object
   assetId: number
   assetObj: object
   setLanguage: (lang: string) => void
@@ -19,6 +20,7 @@ const store: StateCreator<StoreState, [], [['zustand/persist', StoreState]]> = p
   set => ({
     language: 'en',
     userData: {},
+    registerData: {},
     assetId: 0,
     assetObj: {},
     setLanguage: (language: string) => {
@@ -34,8 +36,7 @@ const store: StateCreator<StoreState, [], [['zustand/persist', StoreState]]> = p
       set({ assetObj: obj })
     },
     setRegisterData: (obj: object) => {
-      // Add logic for setting register data
-      set({ userData: obj })
+      set({ registerData: obj })
     }
   }),
   { name: 'userInfo' }

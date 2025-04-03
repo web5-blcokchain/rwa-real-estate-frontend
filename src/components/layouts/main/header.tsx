@@ -156,12 +156,6 @@ function RightMenu() {
                   >
                     {t('header.login')}
                   </Button>
-                  {/* <Button
-                    className="text-white bg-transparent!"
-                    onClick={login}
-                  >
-                    {t('header.register')}
-                  </Button> */}
                 </div>
               )
         }

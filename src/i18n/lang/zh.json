@@ -50,7 +50,80 @@
       "individual_account": "个人投资账户",
       "institutional": "机构投资者",
       "organizations": "对于公司和组织",
-      "notice": "个人投资者和机构投资者的验证要求不同.请选择适当的类型以继续验证过程."
+      "notice": "个人投资者和机构投资者的验证要求不同.请选择适当的类型以继续验证过程.",
+      "personal": {
+        "title": "个人身份验证",
+        "subTitle": "请上传您的个人身份证明文件以进行KYC验证",
+        "identity": "身份证明文件",
+        "upload_title": "上传身份证/护照",
+        "upload_subTitle": "需要正反两面，JPG/PNG/PDF格式，大小不超过5MB",
+        "photo": "拍照",
+        "files": "浏览文件",
+        "poof": "地址证明",
+        "proof_title": "上传水电账单/银行对账单",
+        "proof_subTitle": "必须在最近三个月内签发",
+        "facial": "面部验证",
+        "facial_title": "自拍",
+        "facial_subTitle": "在良好照明条件下拍摄的清晰面部照片",
+        "notice": "所有提交的文件必须真实且未经修改。请确保图像清晰完整。验证过程通常需要1-2个工作日。您的个人信息受到银行级别加密的保护。",
+        "continue": "继续"
+      },
+      "business": {
+        "title": "业务验证",
+        "subTitle": "请上传您的业务文件以进行KYB验证",
+        "business_registration": "企业注册",
+        "business_registration_title": "上传水电账单/银行对账单",
+        "business_registration_subTitle": "有效的营业执照",
+        "business_company": "公司结构",
+        "business_company_title": "股东结构/组织架构",
+        "business_company_subTitle": "显示所有权结构的文件",
+        "legal_representative": "法定代表人",
+        "legal_representative_title": "董事和高管文件",
+        "legal_representative_subTitle": "关键人员的身份文件",
+        "financial_documents": "财务文件",
+        "financial_documents_title": "银行对账单/财务报告",
+        "financial_documents_subTitle": "最近六个月的财务记录",
+        "notice": "业务验证通常需要3-5个工作日。所有文件必须是正式签发并有效的。根据您的业务类型和管辖范围，可能需要额外的文件。您的业务信息受到企业级安全性的保护。",
+        "continue": "继续"
+      }
+    }
+  },
+  "home": {
+    "banner": {
+      "title": "房地产投资分拆",
+      "subTitle": "通过区块链技术实现全球房地产投资的普及。以最少的资金开始投资优质房地产。"
+    },
+    "route": {
+      "ownership": "部分所有权",
+      "ownership_content": "以最低100美元投资优质房地产，拥有全球高价值物业的一部分",
+      "compliance": "监管合规",
+      "compliance_content": "一个完全受监管的平台，具备强大的KYC/AML程序。您的投资安全且合规。",
+      "investment": "液体投资",
+      "investment_content": "在我们的二级市场上，您可以全天候交易房地产代币。前所未有的流动性为房地产市场提供支持。"
+    },
+    "featured": "精选物业",
+    "works": {
+      "step1_title": "1. 创建账户",
+      "step1_content": "注册并完成KYC验证以开始投资",
+      "step2_title": "2. 选择物业",
+      "step2_content": "浏览并选择我们精心挑选的房产",
+      "step3_title": "3. 购买代币",
+      "step3_content": "使用您偏好的支付方式购买物业代币",
+      "step4_title": "4. 获得回报",
+      "step4_content": "定期收取租金收入和资本增值"
+    },
+    "market": {
+      "title": "市场统计",
+      "total": "总财产价值",
+      "investors": "活跃投资者",
+      "properties": "标记化属性",
+      "return": "平均年收益"
+    },
+    "ready": {
+      "title": "准备好开始投资了吗？",
+      "content": "加入我们的房地产投资者社区，开始您迈向财务自由的旅程。",
+      "button": "开始投资",
+      "button2": "了解更多"
     }
   },
   "system": {
