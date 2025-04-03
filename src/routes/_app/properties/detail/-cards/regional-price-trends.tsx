@@ -27,7 +27,7 @@ export const RegionalPriceTrendsCard: FC = () => {
   })
 
   return (
-    <TitleCard title={t('about.detail.trends')}>
+    <TitleCard title={t('properties.detail.trends')}>
       <div className="h-32">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart

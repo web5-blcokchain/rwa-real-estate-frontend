@@ -126,11 +126,10 @@
       "button2": "Learn More"
     }
   },
-  "about": {
+  "properties": {
     "title": "US Real Estate Assets",
     "subTitle": "Premium New York real estate investment opportunities through blockchain technology",
     "search": "Search by New York location, property type",
-    "loadMore": "Load More",
     "detail": {
       "property_type": "Property Type",
       "bedrooms": "Bedrooms",
@@ -171,8 +170,10 @@
       "confirm_payment": "Confirm Payment"
     }
   },
+  "help": {},
   "system": {
     "confirm": "Confirm",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "loadMore": "加载更多"
   }
 }

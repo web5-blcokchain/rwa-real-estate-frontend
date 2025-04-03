@@ -26,7 +26,7 @@ export const RentalIncomeAnalysisCard: FC = () => {
   })
 
   return (
-    <TitleCard title={t('about.detail.analysis')}>
+    <TitleCard title={t('properties.detail.analysis')}>
       <div className="h-32">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart

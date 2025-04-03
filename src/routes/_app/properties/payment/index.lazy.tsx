@@ -35,7 +35,7 @@ function RouteComponent() {
 
   return (
     <div className="max-w-7xl p-8 space-y-8">
-      <div className="text-center text-6 font-medium">{t('about.payment.payment_title')}</div>
+      <div className="text-center text-6 font-medium">{t('properties.payment.payment_title')}</div>
 
       <div className="flex gap-6 rounded-xl bg-[#202329] p-6">
         <div className="h-60 w-100">
@@ -46,25 +46,25 @@ function RouteComponent() {
 
           <div className="grid grid-cols-2 mt-4 gap-x-4">
             <IInfoField
-              label={t('about.detail.location')}
+              label={t('properties.detail.location')}
               value={assetObj?.address}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
-              label={t('about.detail.property_type')}
+              label={t('properties.detail.property_type')}
               value={assetObj?.property_type}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
-              label={t('about.payment.token_price')}
+              label={t('properties.payment.token_price')}
               value={assetObj?.price}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
-              label={t('about.payment.total')}
+              label={t('properties.payment.total')}
               value={Number(assetObj?.number) * Number(assetObj?.price)}
               labelClass="text-[#898989]"
               className="space-y-2"
@@ -74,14 +74,14 @@ function RouteComponent() {
       </div>
 
       <div className="rounded-xl bg-[#202329] p-6 space-y-4">
-        <div className="text-4.5">{t('about.payment.payment_details')}</div>
+        <div className="text-4.5">{t('properties.payment.payment_details')}</div>
 
         <div className="flex items-center justify-between text-4">
           <div className="text-[#898989] space-y-4">
-            <div>{t('about.payment.number')}</div>
-            <div>{t('about.payment.subtotal')}</div>
+            <div>{t('properties.payment.number')}</div>
+            <div>{t('properties.payment.subtotal')}</div>
             <div>
-              {t('about.payment.platform_fee')}
+              {t('properties.payment.platform_fee')}
               {' '}
               (2%)
             </div>
@@ -108,19 +108,19 @@ function RouteComponent() {
         <ISeparator className="bg-white" />
 
         <div className="fbc">
-          <div>{t('about.payment.total_amount')}</div>
+          <div>{t('properties.payment.total_amount')}</div>
           <div className="text-primary">$510</div>
         </div>
       </div>
 
       <div className="rounded-xl bg-[#202329] p-6 space-y-4">
-        <div className="text-4.5">{t('about.payment.payment_method')}</div>
+        <div className="text-4.5">{t('properties.payment.payment_method')}</div>
         <div className="grid grid-cols-2 gap-6">
           <div className="fcc select-none b b-background rounded-xl b-solid bg-[#212936] py-6 clickable-99">
             <div className="fccc">
               <SvgIcon name="credit-card" className="size-8" />
               <div>
-                {t('about.payment.credit_card')}
+                {t('properties.payment.credit_card')}
               </div>
             </div>
           </div>
@@ -129,7 +129,7 @@ function RouteComponent() {
             <div className="fccc">
               <SvgIcon name="cryptocurrency" className="size-8" />
               <div>
-                {t('about.payment.cryptocurrency')}
+                {t('properties.payment.cryptocurrency')}
               </div>
             </div>
           </div>
@@ -137,13 +137,13 @@ function RouteComponent() {
       </div>
 
       <div className="rounded-xl bg-[#202329] p-6 text-4 text-[#898989] space-y-2">
-        <p>{t('about.payment.dear_user')}</p>
+        <p>{t('properties.payment.dear_user')}</p>
         <p>
-          {t('about.payment.please_verify')}
+          {t('properties.payment.please_verify')}
 
         </p>
         <p>
-          {t('about.payment.please_verify_1')}
+          {t('properties.payment.please_verify_1')}
 
           Your account must be fully verified with a valid government-issued ID or passport.
         </p>
@@ -151,7 +151,7 @@ function RouteComponent() {
 
       <div>
         <div className="text-center text-3.5 text-[#898989]">
-          {t('about.payment.expire')}
+          {t('properties.payment.expire')}
           14:59
         </div>
         <div className="grid grid-cols-3 mt-2">
@@ -172,7 +172,7 @@ function RouteComponent() {
               onClick={() => mutate()}
               loading={false}
             >
-              {t('about.payment.confirm_payment')}
+              {t('properties.payment.confirm_payment')}
             </Button>
           </div>
           <div></div>

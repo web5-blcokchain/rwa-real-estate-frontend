@@ -5,7 +5,7 @@ export const LocationCard: FC = () => {
   const [loading, setLoading] = useState(true)
 
   return (
-    <TitleCard title={t('about.detail.location')}>
+    <TitleCard title={t('properties.detail.location')}>
       <div className="text-4 space-y-4">
         <div className="h-48 fcc of-hidden rounded-xl bg-background">
           {

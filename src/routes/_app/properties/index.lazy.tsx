@@ -43,11 +43,11 @@ function RouteComponent() {
   return (
     <div className="p-8">
       <div className="text-8 font-medium">
-        {t('about.title')}
+        {t('properties.title')}
       </div>
 
       <div className="mt-4 text-4 text-[#898989]">
-        {t('about.subTitle')}
+        {t('properties.subTitle')}
       </div>
 
       <div className="mt-8">
@@ -55,7 +55,7 @@ function RouteComponent() {
           <div className="i-iconamoon-search size-5 bg-[#b5b5b5]"></div>
           <input
             type="text"
-            placeholder={t('about.search')}
+            placeholder={t('properties.search')}
             className="w-128 b-none bg-transparent outline-none"
             value={keyword}
             onChange={e => handleSearch(e.target.value)}

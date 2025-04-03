@@ -82,43 +82,43 @@ function RouteComponent() {
           </div>
 
           <div className="grid grid-cols-2 my-4 px-6">
-            <IInfoField label={t('about.detail.property_type')} value={detailObj?.property_type || ''} />
-            <IInfoField label={t('about.detail.bedrooms')} value={detailObj?.bedrooms || ''} />
-            <IInfoField label={t('about.detail.market_value')} value={detailObj?.price || ''} valueClass="text-primary" />
-            <IInfoField label={t('about.detail.monthly_rent')} value={detailObj?.monthly_rent || ''} />
+            <IInfoField label={t('properties.detail.property_type')} value={detailObj?.property_type || ''} />
+            <IInfoField label={t('properties.detail.bedrooms')} value={detailObj?.bedrooms || ''} />
+            <IInfoField label={t('properties.detail.market_value')} value={detailObj?.price || ''} valueClass="text-primary" />
+            <IInfoField label={t('properties.detail.monthly_rent')} value={detailObj?.monthly_rent || ''} />
           </div>
 
           <div className="rounded-lg bg-background-secondary p-6 space-y-2">
-            <div className="text-4.5">{t('about.detail.return')}</div>
+            <div className="text-4.5">{t('properties.detail.return')}</div>
             <div className="text-7.5 text-primary">
               {detailObj?.expected_annual_return}
               %
             </div>
             <div className="text-4 text-[#898989]">
-              {t('about.detail.including')}
+              {t('properties.detail.including')}
               {detailObj?.expected_annual_return}
               %
               {' '}
-              {t('about.detail.rental')}
+              {t('properties.detail.rental')}
               {detailObj?.capital_appreciation}
               %
               {' '}
-              {t('about.detail.capital')}
+              {t('properties.detail.capital')}
             </div>
 
             <div className="fbc pt-4">
               <div className="text-4.5">
-                {t('about.detail.calculator')}
+                {t('properties.detail.calculator')}
                 {' '}
               </div>
-              <div className="text-4 text-[#898989]">{t('about.detail.average')}</div>
+              <div className="text-4 text-[#898989]">{t('properties.detail.average')}</div>
             </div>
 
             <div>
               <Input
                 className="bg-background! text-text! [&>input]:(placeholder-text-[#898989])"
                 size="large"
-                placeholder={t('about.detail.amount_placeholder')}
+                placeholder={t('properties.detail.amount_placeholder')}
                 suffix="GBP"
                 onChange={e => setInvestmentPrice(Number(e.target.value))}
               />
@@ -128,13 +128,13 @@ function RouteComponent() {
               <IInfoField
                 className="space-y-2"
                 labelClass="text-[#898989]"
-                label={t('about.detail.return')}
+                label={t('properties.detail.return')}
                 value={annualReturn}
               />
               <IInfoField
                 className="space-y-2"
                 labelClass="text-[#898989]"
-                label={t('about.detail.ratio')}
+                label={t('properties.detail.ratio')}
                 value={`${ratioNum.toFixed(2)}%`}
               />
             </div>
@@ -151,7 +151,7 @@ function RouteComponent() {
                   })
                 }}
               >
-                {t('about.detail.invest')}
+                {t('properties.detail.invest')}
               </Button>
             </div>
           </div>
@@ -163,7 +163,7 @@ function RouteComponent() {
       </div>
 
       <div className="space-y-4">
-        <div className="text-5">{t('about.detail.market_analysis')}</div>
+        <div className="text-5">{t('properties.detail.market_analysis')}</div>
 
         <div className="grid grid-cols-1 w-full gap-8 md:grid-cols-2">
           <div>
