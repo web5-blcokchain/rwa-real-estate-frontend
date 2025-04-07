@@ -169,6 +169,7 @@ const UserMenu: FC<{
 }) => {
   const navigate = useNavigate()
   const { logout } = usePrivy()
+  const { t } = useTranslation()
 
   const items: MenuProps['items'] = [
     {
@@ -180,7 +181,7 @@ const UserMenu: FC<{
           })
         }}
         >
-          Profile
+          {t('header.profile')}
         </div>
       )
     },

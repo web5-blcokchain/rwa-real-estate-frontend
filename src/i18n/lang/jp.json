@@ -12,7 +12,8 @@
     "language": "言語",
     "en": "English",
     "zh": "中文",
-    "jp": "日本語"
+    "jp": "日本語",
+    "profile": "プロファイル"
   },
   "create": {
     "step1": "アカウントを作成します",
