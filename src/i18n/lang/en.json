@@ -208,12 +208,7 @@
     "toyota_camry": "Toyota Camry",
     "toyota_balance": "Toyota Balance",
     "monthly_rental_income": "Monthly Rental Income(JPY)",
-    "annual_yield": "Annual Yield",
-    "Overview": {},
-    "Property Tokens": {},
-    "Earnings": {},
-    "History": {},
-    "Security": {}
+    "annual_yield": "Annual Yield"
   },
   "footer": {
     "about": "About",

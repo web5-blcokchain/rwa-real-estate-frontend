@@ -198,6 +198,18 @@
     "email": "电子邮件",
     "phone": "电话"
   },
+  "aboutMe": {
+    "welcome": "欢迎回来",
+    "menu_overview": "概述",
+    "menu_property_tokens": "属性",
+    "menu_earnings": "收益",
+    "menu_history": "历史",
+    "menu_security": "安全",
+    "toyota_camry": "Toyota Camry",
+    "toyota_balance": "Toyota Balance",
+    "monthly_rental_income": "每月租金收入（日元）",
+    "annual_yield": "每年的产量"
+  },
   "footer": {
     "about": "关于",
     "company": "公司",
