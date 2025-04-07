@@ -1,4 +1,3 @@
-import { TokenHeaderName } from '@/constants/setting'
 import { Env } from '@/lib/global'
 import axios from 'axios'
 
@@ -13,13 +12,14 @@ interface responseDataParams {
 
 axios.interceptors.request.use(
   (config: any) => {
-    const token = localStorage.getItem('privy:token')?.replace(/"/g, '') || localStorage.getItem(TokenHeaderName)
-    const type = localStorage.getItem('privy:token') ? 2 : 1
+    const token = localStorage.getItem('token:string')
+    const type = localStorage.getItem('token:type')
+
     if (token) {
       config.headers.Authorization = token
+      config.headers.type = Number.parseInt(type)
     }
 
-    config.headers.type = type
     return config
   },
   (error) => {
