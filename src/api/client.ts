@@ -3,6 +3,7 @@ import { Env } from '@/lib/global'
 import axios from 'axios'
 
 axios.defaults.baseURL = Env.apiUrl
+axios.defaults.headers.common.server = true
 
 interface responseDataParams {
   code?: number
@@ -17,7 +18,7 @@ axios.interceptors.request.use(
     if (token) {
       config.headers.Authorization = token
     }
-    config.headers.server = true
+
     config.headers.type = type
     return config
   },
