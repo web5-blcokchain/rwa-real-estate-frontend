@@ -2,16 +2,16 @@
   "header": {
     "title": "Real Estate RWA",
     "home": "Home",
-    "properties": "About",
-    "investment": "Contact",
-    "about": "Help",
+    "properties": "Properties",
+    "investment": "Investment",
+    "about": "About",
     "aboutMe": "AboutMe",
     "login": "Login",
     "register": "Register",
     "logout": "Logout",
     "language": "Language",
     "en": "English",
-    "zh": "Chinese",
+    "zh": "中文",
     "jp": "日本語"
   },
   "create": {
