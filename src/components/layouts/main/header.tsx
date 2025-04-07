@@ -189,9 +189,7 @@ const UserMenu: FC<{
       label: (
         <div
           className="text-red"
-          onClick={() => {
-            logout()
-          }}
+          onClick={logout}
         >
           {i18n.t('header.logout')}
         </div>
