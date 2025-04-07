@@ -17,7 +17,7 @@ axios.interceptors.request.use(
 
     if (token) {
       config.headers.Authorization = token
-      config.headers.type = Number.parseInt(type)
+      config.headers.type = Number.parseInt(type!)
     }
 
     return config
