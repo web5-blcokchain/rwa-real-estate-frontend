@@ -227,6 +227,12 @@
   "system": {
     "confirm": "确认",
     "cancel": "取消",
-    "loadMore": "加载更多"
+    "loadMore": "加载更多",
+    "yes": "是",
+    "no": "否"
+  },
+  "collection": {
+    "delete_confirm_title": "删除收藏",
+    "delete_confirm_content": "是否删除收藏"
   }
 }

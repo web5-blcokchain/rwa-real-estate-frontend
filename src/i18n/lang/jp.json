@@ -226,6 +226,12 @@
   },
   "system": {
     "confirm": "確認",
-    "cancel": "キャンセル"
+    "cancel": "キャンセル",
+    "yes": "はい",
+    "no": "いいえ"
+  },
+  "collection": {
+    "delete_confirm_title": "削除",
+    "delete_confirm_content": "お気に入りを削除しますか"
   }
 }
