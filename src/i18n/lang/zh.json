@@ -12,7 +12,8 @@
     "language": "语言",
     "en": "English",
     "zh": "中文",
-    "jp": "日本語"
+    "jp": "日本語",
+    "profile": "个人资料"
   },
   "create": {
     "step1": "创建您的账户",
