@@ -11,7 +11,7 @@ const MainLayout: FC = ({
   return (
     <>
       { !isIndex && <MainHeader /> }
-      <div className="mx-a max-w-7xl">
+      <div className="mx-a max-w-7xl min-h-screen">
         {children}
       </div>
       { !isIndex && <MainFooter /> }
