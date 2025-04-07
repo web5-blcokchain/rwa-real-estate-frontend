@@ -1,9 +1,10 @@
 import type { MenuProps } from 'antd'
 import apiMyInfoApi from '@/api/apiMyInfoApi'
 import { useUserStore } from '@/stores/user'
+import { setToken } from '@/utils/user'
 import { usePrivy } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
-import { Link, useLocation, useNavigate } from '@tanstack/react-router'
+import { Link, useLocation } from '@tanstack/react-router'
 import { Button, Drawer, Dropdown } from 'antd'
 
 export default function MainHeader() {
@@ -103,11 +104,10 @@ function NavMenu({ className }: { className?: string }) {
 
 function RightMenu() {
   const { t } = useTranslation()
-  const navigate = useNavigate()
   const [userObj, setUserObj] = useState<Record<string, any>>()
   const setUserData = useUserStore(state => state.setUserData)
 
-  const { ready, authenticated, user, logout } = usePrivy()
+  const { ready, authenticated, user, login, logout, getAccessToken } = usePrivy()
 
   const { mutate } = useMutation({
     mutationFn: async () => {
@@ -120,16 +120,18 @@ function RightMenu() {
 
   useEffect(() => {
     console.log('user', user)
-    if (authenticated) {
-      mutate()
-    }
-  }, [authenticated, user, mutate])
+    if (!authenticated)
+      return
 
-  const login = () => {
-    navigate({
-      to: '/account/create'
+    mutate()
+
+    getAccessToken().then((token) => {
+      if (!token)
+        return
+
+      setToken(token, 2)
     })
-  }
+  }, [authenticated, user, mutate])
 
   return (
     <>
