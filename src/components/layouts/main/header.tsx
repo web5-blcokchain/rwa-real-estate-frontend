@@ -4,7 +4,7 @@ import { useUserStore } from '@/stores/user'
 import { setToken } from '@/utils/user'
 import { usePrivy } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
-import { Link, useLocation } from '@tanstack/react-router'
+import { Link, useLocation, useNavigate } from '@tanstack/react-router'
 import { Button, Drawer, Dropdown } from 'antd'
 
 export default function MainHeader() {
@@ -107,7 +107,7 @@ function RightMenu() {
   const [userObj, setUserObj] = useState<Record<string, any>>()
   const setUserData = useUserStore(state => state.setUserData)
 
-  const { ready, authenticated, user, login, logout, getAccessToken } = usePrivy()
+  const { ready, authenticated, user, login, getAccessToken } = usePrivy()
 
   const { mutate } = useMutation({
     mutationFn: async () => {
@@ -144,11 +144,7 @@ function RightMenu() {
         {
           authenticated
             ? (
-                <div className="fyc gap-1" onClick={logout}>
-                  <div className="i-material-symbols-account-circle-outline size-5 bg-white"></div>
-                  <div className="text-4 text-white">{userObj?.nickname || ''}</div>
-                  <div className="i-ic-round-keyboard-arrow-down size-5 bg-white"></div>
-                </div>
+                <UserMenu nickname={userObj?.nickname} />
               )
             : (
                 <div className="space-x-4">
@@ -163,6 +159,54 @@ function RightMenu() {
         }
       </Waiting>
     </>
+  )
+}
+
+const UserMenu: FC<{
+  nickname: string
+}> = ({
+  nickname
+}) => {
+  const navigate = useNavigate()
+  const { logout } = usePrivy()
+
+  const items: MenuProps['items'] = [
+    {
+      key: 'profile',
+      label: (
+        <div onClick={() => {
+          navigate({
+            to: '/aboutMe'
+          })
+        }}
+        >
+          Profile
+        </div>
+      )
+    },
+    {
+      key: 'logout',
+      label: (
+        <div
+          className="text-red"
+          onClick={() => {
+            logout()
+          }}
+        >
+          {i18n.t('header.logout')}
+        </div>
+      )
+    }
+  ]
+
+  return (
+    <Dropdown menu={{ items }} placement="bottomRight">
+      <div className="fyc gap-1 clickable">
+        <div className="i-material-symbols-account-circle-outline size-5 bg-white"></div>
+        <div className="text-4 text-white">{nickname || ''}</div>
+        <div className="i-ic-round-keyboard-arrow-down size-5 bg-white"></div>
+      </div>
+    </Dropdown>
   )
 }
 
