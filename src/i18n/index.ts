@@ -19,7 +19,7 @@ const resources = {
     translation: zh
   }
 }
-const language = JSON.parse(localStorage.getItem('userInfo') || '{}')?.state?.language || 'zh'
+const language = JSON.parse(localStorage.getItem('userInfo') || '{}')?.state?.language || 'en'
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next

@@ -197,6 +197,18 @@
     "email": "Eメール",
     "phone": "電話番号"
   },
+  "aboutMe": {
+    "welcome": "お帰りなさい",
+    "menu_overview": "概要",
+    "menu_property_tokens": "不動産トークン",
+    "menu_earnings": "収入",
+    "menu_history": "履歴",
+    "menu_security": "セキュリティ",
+    "toyota_camry": "Toyota Camry",
+    "toyota_balance": "Toyota Balance",
+    "monthly_rental_income": "家賃収入（円）",
+    "annual_yield": "年間生産高"
+  },
   "footer": {
     "about": "について",
     "company": "会社",
