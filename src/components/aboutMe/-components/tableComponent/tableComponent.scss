@@ -2,6 +2,18 @@
   .ant-table {
     color: #fff;
     background-color: #202329;
+    
+    .ant-table-placeholder {
+      &,&:hover,
+      .ant-table-cell,
+      .ant-table-cell:hover {
+        background: #202329 !important;
+      }
+    }
+
+    .ant-empty-description {
+      --uno: text-white;
+    }
 
     .ant-table-cell {
       border-bottom: 1px solid #293346;
