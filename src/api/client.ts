@@ -1,3 +1,4 @@
+import { TOKEN_KEY, TOKEN_TYPE_KEY } from '@/constants/user'
 import { Env } from '@/lib/global'
 import axios from 'axios'
 
@@ -12,8 +13,8 @@ interface responseDataParams {
 
 axios.interceptors.request.use(
   (config: any) => {
-    const token = localStorage.getItem('token:string')
-    const type = localStorage.getItem('token:type')
+    const token = localStorage.getItem(TOKEN_KEY)
+    const type = localStorage.getItem(TOKEN_TYPE_KEY)
 
     if (token) {
       config.headers.Authorization = token
