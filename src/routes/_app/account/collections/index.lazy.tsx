@@ -4,7 +4,7 @@ import TableComponent from '@/components/aboutMe/-components/tableComponent/tabl
 import { IImage } from '@/components/common/i-image'
 import { usePrivy } from '@privy-io/react-auth'
 import { createLazyFileRoute } from '@tanstack/react-router'
-import { Button } from 'antd'
+import { Button, Popconfirm } from 'antd'
 
 export const Route = createLazyFileRoute('/_app/account/collections/')({
   component: RouteComponent
@@ -64,17 +64,14 @@ function RouteComponent() {
 
 const Table: FC = () => {
   const { ready, authenticated } = usePrivy()
+  const { t } = useTranslation()
 
   useEffect(() => {
     if (!authenticated) {
       return
     }
 
-    basicApi
-      .getCollectList()
-      .then((res) => {
-        console.log(res)
-      })
+    getList()
   }, [])
 
   if (!ready) {
@@ -83,6 +80,21 @@ const Table: FC = () => {
         <Waiting iconClass="size-10" />
       </div>
     )
+  }
+
+  function getList() {
+    basicApi.getCollectList().then((res) => {
+      console.log(res)
+    })
+  }
+
+  function removeCollectionConfirm(id: number) {
+    basicApi.setUnCollect({
+      id
+    })
+      .then(() => {
+        getList()
+      })
   }
 
   const columns: TableProps['columns'] = [
@@ -132,9 +144,17 @@ const Table: FC = () => {
     {
       title: 'Action',
       align: 'right',
-      render: () => (
+      render: (_, item) => (
         <div className="fcc text-5">
-          <div className="i-material-symbols-delete-forever-rounded bg-primary clickable"></div>
+          <Popconfirm
+            title={t('collection.delete_confirm_title')}
+            description={t('collection.delete_confirm_content')}
+            onConfirm={() => removeCollectionConfirm(item.id)}
+            okText={t('system.yes')}
+            cancelText={t('system.no')}
+          >
+            <div className="i-material-symbols-delete-forever-rounded bg-primary clickable"></div>
+          </Popconfirm>
         </div>
       )
     }
