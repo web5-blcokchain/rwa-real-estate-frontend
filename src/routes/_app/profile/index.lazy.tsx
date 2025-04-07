@@ -1,18 +1,18 @@
 import type { MenuProps } from 'antd'
 import maskGroup from '@/assets/images/mask-group.png'
-import Earnings from '@/components/aboutMe/earnings/earnings'
-import History from '@/components/aboutMe/history/history'
-import Overview from '@/components/aboutMe/overview/overview'
-import PropertyTokens from '@/components/aboutMe/propertyTokens/propertyTokens'
-import Security from '@/components/aboutMe/security/security'
+import Earnings from '@/components/profile/earnings/earnings'
+import History from '@/components/profile/history/history'
+import Overview from '@/components/profile/overview/overview'
+import PropertyTokens from '@/components/profile/propertyTokens/propertyTokens'
+import Security from '@/components/profile/security/security'
 import { useUserStore } from '@/stores/user'
 
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { Layout, Menu } from 'antd'
 import React from 'react'
-import './aboutMe.scss'
+import './styles.scss'
 
-export const Route = createLazyFileRoute('/_app/aboutMe/')({
+export const Route = createLazyFileRoute('/_app/profile/')({
   component: RouteComponent
 })
 

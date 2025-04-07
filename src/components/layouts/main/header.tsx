@@ -177,7 +177,7 @@ const UserMenu: FC<{
       label: (
         <div onClick={() => {
           navigate({
-            to: '/aboutMe'
+            to: '/profile'
           })
         }}
         >
