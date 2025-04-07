@@ -38,6 +38,9 @@ const AppPropertiesDetailIndexLazyImport = createFileRoute(
 const AppAccountCreateIndexLazyImport = createFileRoute(
   '/_app/account/create/',
 )()
+const AppAccountCollectionsIndexLazyImport = createFileRoute(
+  '/_app/account/collections/',
+)()
 const AppPropertiesDistributionResultLazyImport = createFileRoute(
   '/_app/properties/distribution/result',
 )()
@@ -143,6 +146,15 @@ const AppAccountCreateIndexLazyRoute = AppAccountCreateIndexLazyImport.update({
   import('./routes/_app/account/create/index.lazy').then((d) => d.Route),
 )
 
+const AppAccountCollectionsIndexLazyRoute =
+  AppAccountCollectionsIndexLazyImport.update({
+    id: '/account/collections/',
+    path: '/account/collections/',
+    getParentRoute: () => AppRoute,
+  } as any).lazy(() =>
+    import('./routes/_app/account/collections/index.lazy').then((d) => d.Route),
+  )
+
 const AppPropertiesDistributionResultLazyRoute =
   AppPropertiesDistributionResultLazyImport.update({
     id: '/properties/distribution/result',
@@ -214,6 +226,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppPropertiesDistributionResultLazyImport
       parentRoute: typeof AppImport
     }
+    '/_app/account/collections/': {
+      id: '/_app/account/collections/'
+      path: '/account/collections'
+      fullPath: '/account/collections'
+      preLoaderRoute: typeof AppAccountCollectionsIndexLazyImport
+      parentRoute: typeof AppImport
+    }
     '/_app/account/create/': {
       id: '/_app/account/create/'
       path: '/account/create'
@@ -262,6 +281,7 @@ interface AppRouteChildren {
   AppInvestmentIndexLazyRoute: typeof AppInvestmentIndexLazyRoute
   AppPropertiesIndexLazyRoute: typeof AppPropertiesIndexLazyRoute
   AppPropertiesDistributionResultLazyRoute: typeof AppPropertiesDistributionResultLazyRoute
+  AppAccountCollectionsIndexLazyRoute: typeof AppAccountCollectionsIndexLazyRoute
   AppAccountCreateIndexLazyRoute: typeof AppAccountCreateIndexLazyRoute
   AppPropertiesDetailIndexLazyRoute: typeof AppPropertiesDetailIndexLazyRoute
   AppPropertiesDistributionIndexLazyRoute: typeof AppPropertiesDistributionIndexLazyRoute
@@ -278,6 +298,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppPropertiesIndexLazyRoute: AppPropertiesIndexLazyRoute,
   AppPropertiesDistributionResultLazyRoute:
     AppPropertiesDistributionResultLazyRoute,
+  AppAccountCollectionsIndexLazyRoute: AppAccountCollectionsIndexLazyRoute,
   AppAccountCreateIndexLazyRoute: AppAccountCreateIndexLazyRoute,
   AppPropertiesDetailIndexLazyRoute: AppPropertiesDetailIndexLazyRoute,
   AppPropertiesDistributionIndexLazyRoute:
@@ -298,6 +319,7 @@ export interface FileRoutesByFullPath {
   '/investment': typeof AppInvestmentIndexLazyRoute
   '/properties': typeof AppPropertiesIndexLazyRoute
   '/properties/distribution/result': typeof AppPropertiesDistributionResultLazyRoute
+  '/account/collections': typeof AppAccountCollectionsIndexLazyRoute
   '/account/create': typeof AppAccountCreateIndexLazyRoute
   '/properties/detail': typeof AppPropertiesDetailIndexLazyRoute
   '/properties/distribution': typeof AppPropertiesDistributionIndexLazyRoute
@@ -313,6 +335,7 @@ export interface FileRoutesByTo {
   '/investment': typeof AppInvestmentIndexLazyRoute
   '/properties': typeof AppPropertiesIndexLazyRoute
   '/properties/distribution/result': typeof AppPropertiesDistributionResultLazyRoute
+  '/account/collections': typeof AppAccountCollectionsIndexLazyRoute
   '/account/create': typeof AppAccountCreateIndexLazyRoute
   '/properties/detail': typeof AppPropertiesDetailIndexLazyRoute
   '/properties/distribution': typeof AppPropertiesDistributionIndexLazyRoute
@@ -330,6 +353,7 @@ export interface FileRoutesById {
   '/_app/investment/': typeof AppInvestmentIndexLazyRoute
   '/_app/properties/': typeof AppPropertiesIndexLazyRoute
   '/_app/properties/distribution/result': typeof AppPropertiesDistributionResultLazyRoute
+  '/_app/account/collections/': typeof AppAccountCollectionsIndexLazyRoute
   '/_app/account/create/': typeof AppAccountCreateIndexLazyRoute
   '/_app/properties/detail/': typeof AppPropertiesDetailIndexLazyRoute
   '/_app/properties/distribution/': typeof AppPropertiesDistributionIndexLazyRoute
@@ -348,6 +372,7 @@ export interface FileRouteTypes {
     | '/investment'
     | '/properties'
     | '/properties/distribution/result'
+    | '/account/collections'
     | '/account/create'
     | '/properties/detail'
     | '/properties/distribution'
@@ -362,6 +387,7 @@ export interface FileRouteTypes {
     | '/investment'
     | '/properties'
     | '/properties/distribution/result'
+    | '/account/collections'
     | '/account/create'
     | '/properties/detail'
     | '/properties/distribution'
@@ -377,6 +403,7 @@ export interface FileRouteTypes {
     | '/_app/investment/'
     | '/_app/properties/'
     | '/_app/properties/distribution/result'
+    | '/_app/account/collections/'
     | '/_app/account/create/'
     | '/_app/properties/detail/'
     | '/_app/properties/distribution/'
@@ -416,6 +443,7 @@ export const routeTree = rootRoute
         "/_app/investment/",
         "/_app/properties/",
         "/_app/properties/distribution/result",
+        "/_app/account/collections/",
         "/_app/account/create/",
         "/_app/properties/detail/",
         "/_app/properties/distribution/",
@@ -449,6 +477,10 @@ export const routeTree = rootRoute
     },
     "/_app/properties/distribution/result": {
       "filePath": "_app/properties/distribution/result.lazy.tsx",
+      "parent": "/_app"
+    },
+    "/_app/account/collections/": {
+      "filePath": "_app/account/collections/index.lazy.tsx",
       "parent": "/_app"
     },
     "/_app/account/create/": {
