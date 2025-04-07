@@ -39,6 +39,15 @@ export default function MainFooter() {
           </div>
         </div>
       </div>
+
+      <div className="mt-16 fbc text-5 text-[#d2d2d2]">
+        <div>© 2024 RealToken. All rights reserved.</div>
+
+        <div className="fyc gap-6">
+          <div>Privacy Policy</div>
+          <div>Terms of Service</div>
+        </div>
+      </div>
     </footer>
   )
 }
