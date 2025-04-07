@@ -73,8 +73,7 @@ function NavMenu({ className }: { className?: string }) {
     { title: `${t('header.home')}`, href: '/home' },
     { title: `${t('header.properties')}`, href: '/properties' },
     { title: `${t('header.investment')}`, href: '/investment' },
-    { title: `${t('header.about')}`, href: '/about' },
-    { title: `${t('header.aboutMe')}`, href: '/aboutMe' }
+    { title: `${t('header.about')}`, href: '/about' }
   ]
 
   return (
