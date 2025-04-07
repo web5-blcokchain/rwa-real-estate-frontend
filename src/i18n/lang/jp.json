@@ -1,17 +1,17 @@
 {
   "header": {
-    "title": "不動産RW a",
+    "title": "不動産 RWA",
     "home": "フロントページ",
-    "properties": "財産",
-    "investment": "投資する",
-    "about": "について",
-    "aboutMe": "個人情報",
+    "properties": "特性",
+    "investment": "投資",
+    "about": "アバウト",
+    "aboutMe": "個人",
     "login": "ログイン",
-    "register": "登録する",
-    "logout": "やめる",
+    "register": "登録",
+    "logout": "ログアウト",
     "language": "言語",
     "en": "English",
-    "zh": "Chinese",
+    "zh": "中文",
     "jp": "日本語"
   },
   "create": {
