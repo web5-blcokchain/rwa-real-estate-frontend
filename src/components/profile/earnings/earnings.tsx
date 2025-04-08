@@ -6,7 +6,7 @@ import frame115 from '@/assets/icons/Frame115.png'
 import group272Icon from '@/assets/icons/group272.png'
 import { useQuery } from '@tanstack/react-query'
 import { Space } from 'antd'
-import DataCount from '../-components/carCount'
+import DataCount from '../-components/dataCount'
 import TableComponent from '../-components/tableComponent/tableComponent'
 
 interface DataType {

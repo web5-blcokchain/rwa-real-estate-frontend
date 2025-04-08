@@ -4,8 +4,8 @@ import { useUserStore } from '@/stores/user'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { Button, Spin } from 'antd'
-import DataCount from '../-components/carCount'
 import CarPreview from '../-components/carPreview'
+import DataCount from '../-components/dataCount'
 
 function PropertyTokens() {
   const navigate = useNavigate()
