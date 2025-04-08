@@ -6,7 +6,7 @@ import frame115 from '@/assets/icons/Frame115.png'
 import group272Icon from '@/assets/icons/group272.png'
 import { useQuery } from '@tanstack/react-query'
 import { Space } from 'antd'
-import CarCount from '../-components/carCount'
+import DataCount from '../-components/carCount'
 import TableComponent from '../-components/tableComponent/tableComponent'
 
 interface DataType {
@@ -182,7 +182,7 @@ function Earnings() {
 
   return (
     <div>
-      <CarCount />
+      <DataCount />
       <TableComponent
         columns={columns}
         data={data}

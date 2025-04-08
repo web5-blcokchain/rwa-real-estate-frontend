@@ -4,7 +4,7 @@ import { useUserStore } from '@/stores/user'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { Button, Spin } from 'antd'
-import CarCount from '../-components/carCount'
+import DataCount from '../-components/carCount'
 import CarPreview from '../-components/carPreview'
 
 function PropertyTokens() {
@@ -30,7 +30,7 @@ function PropertyTokens() {
 
   return (
     <div>
-      <CarCount />
+      <DataCount />
 
       <div className="p-8 text-white">
         <div className="flex items-center justify-between">

@@ -8,7 +8,7 @@ import group272Icon from '@/assets/icons/group272.png'
 import { useQuery } from '@tanstack/react-query'
 
 import { Space, Spin } from 'antd'
-import CarCount from '../-components/carCount'
+import DataCount from '../-components/dataCount'
 import TableComponent from '../-components/tableComponent/tableComponent'
 
 // 表格1配置
@@ -147,7 +147,7 @@ function Overview() {
 
   return (
     <div>
-      <CarCount />
+      <DataCount />
       <TableComponent
         columns={columns}
         data={overviewData || []}
