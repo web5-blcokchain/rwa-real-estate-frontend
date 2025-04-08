@@ -4,7 +4,7 @@ import { IInfoField } from '@/components/common/i-info-field'
 import { ImageSwiper } from '@/components/common/image-swiper'
 import { useUserStore } from '@/stores/user'
 import { useQuery } from '@tanstack/react-query'
-import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
+import { createLazyFileRoute, useMatch, useNavigate } from '@tanstack/react-router'
 import { Button, Input, Spin } from 'antd'
 import { useEffect, useState } from 'react'
 import { LocationCard } from './-cards/location'
@@ -12,14 +12,19 @@ import { PropertyDescriptionCard } from './-cards/property-description'
 import { RegionalPriceTrendsCard } from './-cards/regional-price-trends'
 import { RentalIncomeAnalysisCard } from './-cards/rental-income-analysis'
 
-export const Route = createLazyFileRoute('/_app/properties/detail/')({
+export const Route = createLazyFileRoute('/_app/properties/detail/$id')({
   component: RouteComponent
 })
 
 function RouteComponent() {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const assetId = useUserStore(state => state.assetId)
+  const { params } = useMatch({
+    from: '/_app/properties/detail/$id'
+  })
+
+  const assetId = Number.parseInt(params.id)
+
   const setAssetObj = useUserStore(state => state.setAssetObj)
   const [investmentPrice, setInvestmentPrice] = useState<number>(0)
   const [annualReturn, setAnnualReturn] = useState<number>(0)
