@@ -1,3 +1,4 @@
+import { ChatButton } from '@/components/common/chat-button'
 import { IInfoField } from '@/components/common/i-info-field'
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { Progress } from 'antd'
@@ -130,6 +131,8 @@ function RouteComponent() {
           valueClass="text-3.5"
         />
       </div>
+
+      <ChatButton />
     </div>
   )
 }

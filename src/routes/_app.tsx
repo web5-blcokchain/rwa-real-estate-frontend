@@ -1,3 +1,4 @@
+import { GlobalDialog } from '@/components/global-dialog'
 import MainLayout from '@/components/layouts/main'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 import ReactDOM from 'react-dom'
@@ -10,6 +11,7 @@ export const Route = createFileRoute('/_app')({
 function AppLayoutComponent() {
   return (
     <div>
+      <GlobalDialog />
       <PortalToast />
       <div className="bg-background text-text">
         <MainLayout>

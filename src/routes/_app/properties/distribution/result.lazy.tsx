@@ -1,3 +1,4 @@
+import { ChatButton } from '@/components/common/chat-button'
 import ISeparator from '@/components/common/i-separator'
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { Button } from 'antd'
@@ -76,6 +77,8 @@ function RouteComponent() {
           Confirm in Wallet
         </Button>
       </div>
+
+      <ChatButton />
     </div>
   )
 }
