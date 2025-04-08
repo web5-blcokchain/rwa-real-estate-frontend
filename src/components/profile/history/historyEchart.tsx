@@ -11,8 +11,6 @@ export const HistoryEchart: FC = () => {
     }
   })
 
-  console.log('data', data, isLoading)
-
   if (isLoading) {
     return (
       <div className="h-32 fcc">
