@@ -1,5 +1,6 @@
 import type { MenuProps } from 'antd'
 import apiMyInfoApi from '@/api/apiMyInfoApi'
+import { useGlobalDialogStore } from '@/stores/global-dialog'
 import { useUserStore } from '@/stores/user'
 import { setToken } from '@/utils/user'
 import { usePrivy } from '@privy-io/react-auth'
@@ -105,6 +106,7 @@ function RightMenu() {
   const { t } = useTranslation()
   const [userObj, setUserObj] = useState<Record<string, any>>()
   const setUserData = useUserStore(state => state.setUserData)
+  const { open } = useGlobalDialogStore()
 
   const { ready, authenticated, user, login, getAccessToken } = usePrivy()
 
@@ -135,7 +137,11 @@ function RightMenu() {
   return (
     <>
       <LanguageSelect />
-      <div className="i-material-symbols-help-outline size-5 bg-white"></div>
+      <div
+        className="i-material-symbols-help-outline size-5 bg-white"
+        onClick={() => open('help')}
+      >
+      </div>
       <div className="i-material-symbols-notifications-outline size-5 bg-white"></div>
       <div className="i-material-symbols-favorite-outline-rounded size-5 bg-white"></div>
 

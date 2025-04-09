@@ -6,6 +6,7 @@ interface GlobalDialogState {
   open: (key?: 'chat' | 'help') => void
   close: () => void
   setKey: (key: 'chat' | 'help') => void
+  setVisible: (visible: boolean) => void
 }
 
 export const useGlobalDialogStore = create<GlobalDialogState>(set => ({
@@ -13,5 +14,6 @@ export const useGlobalDialogStore = create<GlobalDialogState>(set => ({
   key: 'chat',
   open: key => set({ visible: true, key: key || 'chat' }),
   close: () => set({ visible: false }),
-  setKey: key => set({ key })
+  setKey: key => set({ key }),
+  setVisible: visible => set({ visible })
 }))
