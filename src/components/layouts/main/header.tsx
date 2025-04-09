@@ -138,7 +138,7 @@ function RightMenu() {
     <>
       <LanguageSelect />
       <div
-        className="i-material-symbols-help-outline size-5 bg-white"
+        className="i-material-symbols-help-outline size-5 bg-white clickable"
         onClick={() => open('help')}
       >
       </div>
