@@ -10,7 +10,7 @@ export const RealEstateCard: FC<{
   tokenPrice: number
   area: number
   bedrooms: number
-  status: number
+  property_type: string
   houseId: number
   collect: 0 | 1
   house_life: number
@@ -22,7 +22,7 @@ export const RealEstateCard: FC<{
   tokenPrice,
   area,
   bedrooms,
-  status,
+  property_type,
   houseId,
   collect,
   house_life,
@@ -53,7 +53,7 @@ export const RealEstateCard: FC<{
           </div>
 
           <div className="rounded bg-[#8465bb] bg-opacity-50 px-2 py-1 text-3 text-purple">
-            {status}
+            {property_type}
           </div>
         </div>
 

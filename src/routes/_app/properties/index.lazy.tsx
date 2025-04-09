@@ -72,7 +72,7 @@ function RouteComponent() {
               house_life={item.house_life}
               price={item.price}
               tokenPrice={item.tokenPrice}
-              status={item.status}
+              property_type={item.property_type}
               className="clickable-99"
               onClick={() => {
                 navigate({ to: '/properties/detail/$id', params: { id: item.id } })
