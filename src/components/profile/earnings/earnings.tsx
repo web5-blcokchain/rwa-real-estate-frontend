@@ -7,7 +7,7 @@ import group272Icon from '@/assets/icons/group272.png'
 import { useQuery } from '@tanstack/react-query'
 import { Space } from 'antd'
 import DataCount from '../-components/dataCount'
-import TableComponent from '../-components/tableComponent/tableComponent'
+import TableComponent from '../../common/table-component'
 
 interface DataType {
   key: string

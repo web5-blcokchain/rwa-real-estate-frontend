@@ -2,7 +2,7 @@ import type { TableProps } from 'antd'
 import { Table } from 'antd'
 import React from 'react'
 
-import './tableComponent.scss'
+import './styles.scss'
 
 interface TableComponentProps<T> {
   children?: React.ReactNode

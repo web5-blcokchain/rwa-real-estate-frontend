@@ -9,7 +9,7 @@ import { useQuery } from '@tanstack/react-query'
 
 import { Space, Spin } from 'antd'
 import DataCount from '../-components/dataCount'
-import TableComponent from '../-components/tableComponent/tableComponent'
+import TableComponent from '../../common/table-component'
 
 // 表格1配置
 const columns: TableProps<listProps>['columns'] = [

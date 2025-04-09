@@ -1,7 +1,7 @@
 import type { TableProps } from 'antd'
 import basicApi from '@/api/basicApi'
 import { IImage } from '@/components/common/i-image'
-import TableComponent from '@/components/profile/-components/tableComponent/tableComponent'
+import TableComponent from '@/components/common/table-component'
 import { usePrivy } from '@privy-io/react-auth'
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { Button, Popconfirm } from 'antd'
