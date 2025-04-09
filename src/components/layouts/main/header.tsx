@@ -107,6 +107,7 @@ function RightMenu() {
   const [userObj, setUserObj] = useState<Record<string, any>>()
   const setUserData = useUserStore(state => state.setUserData)
   const { open } = useGlobalDialogStore()
+  const navigate = useNavigate()
 
   const { ready, authenticated, user, login, getAccessToken } = usePrivy()
 
@@ -143,7 +144,15 @@ function RightMenu() {
       >
       </div>
       <div className="i-material-symbols-notifications-outline size-5 bg-white"></div>
-      <div className="i-material-symbols-favorite-outline-rounded size-5 bg-white"></div>
+      <div
+        className="i-material-symbols-favorite-outline-rounded size-5 bg-white clickable"
+        onClick={
+          () => navigate({
+            to: '/account/collections'
+          })
+        }
+      >
+      </div>
 
       <Waiting for={ready}>
         {
