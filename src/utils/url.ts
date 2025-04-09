@@ -1,7 +1,7 @@
-export function useImagePath(path: string) {
+export function joinImagePath(path: string) {
   return `${import.meta.env.VITE_PUBLIC_API_URL}${path}`
 }
 
-export function useImagesPath(paths?: string) {
-  return paths?.split(',').map(useImagePath) || []
+export function joinImagesPath(paths?: string) {
+  return paths?.split(',').map(joinImagePath) || []
 }
