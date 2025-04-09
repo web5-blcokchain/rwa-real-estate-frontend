@@ -90,7 +90,7 @@ function NavMenu({ className }: { className?: string }) {
             href={link.href}
             className={cn(
               'cursor-pointer active:text-primary hover:text-primary',
-              pathname === link.href ? 'text-text' : 'text-[#8d909a]'
+              pathname.startsWith(link.href) ? 'text-text' : 'text-[#8d909a]'
             )}
             to="/about"
           >
