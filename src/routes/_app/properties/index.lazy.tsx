@@ -54,12 +54,12 @@ function RouteComponent() {
       </div>
 
       <Waiting
-        for={!isLoading && data && !!data?.list}
+        for={!isLoading}
         className="h-32 fcc"
         iconClass="size-8"
       >
-        <div className="grid grid-cols-1 mt-8 cursor-pointer gap-8 md:grid-cols-3">
-          {data?.list.map((item: Record<string, any>) => (
+        <div className="grid grid-cols-1 mt-8 gap-8 md:grid-cols-3">
+          {data && Array.isArray(data.list) && data.list.map((item: Record<string, any>) => (
             <RealEstateCard
               key={item.id}
               houseId={item.id}
@@ -73,6 +73,7 @@ function RouteComponent() {
               price={item.price}
               tokenPrice={item.tokenPrice}
               status={item.status}
+              className="clickable-99"
               onClick={() => {
                 navigate({ to: '/properties/detail/$id', params: { id: item.id } })
               }}
