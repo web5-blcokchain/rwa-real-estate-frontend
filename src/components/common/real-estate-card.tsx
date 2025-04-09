@@ -1,6 +1,5 @@
-import basicApi from '@/api/basicApi'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import numeral from 'numeral'
+import { CollectButton } from './collect-button'
 import { IImage } from './i-image'
 
 export const RealEstateCard: FC<{
@@ -9,43 +8,27 @@ export const RealEstateCard: FC<{
   location: string
   price: number
   tokenPrice: number
-  size: string
-  beds: number
+  area: number
+  bedrooms: number
   status: number
-  cardId: number
-  collect: number
+  houseId: number
+  collect: 0 | 1
+  house_life: number
 } & React.HTMLAttributes<HTMLDivElement>> = ({
   picture,
   title,
   location,
   price,
   tokenPrice,
-  size,
-  beds,
+  area,
+  bedrooms,
   status,
-  cardId,
+  houseId,
   collect,
+  house_life,
   className,
   ...props
 }) => {
-  const queryClient = useQueryClient()
-  const [Id, setId] = useState<number>(0)
-
-  const { mutate: collectMutate } = useMutation({
-    mutationFn: async () => {
-      const res = await basicApi.setCollect({ id: Id })
-      queryClient.invalidateQueries({ queryKey: ['properties'] })
-      return res.data
-    }
-  })
-  const { mutate: unCollectMutate } = useMutation({
-    mutationFn: async () => {
-      const res = await basicApi.setUnCollect({ id: Id })
-      queryClient.invalidateQueries({ queryKey: ['properties'] })
-      return res.data
-    }
-  })
-
   return (
     <div
       className={cn(
@@ -57,28 +40,10 @@ export const RealEstateCard: FC<{
       <div className="relative h-56">
         <IImage src={picture} className="size-full" />
 
-        <div
-          className={cn(
-            'absolute right-4 top-4 size-8 rounded-full bg-text',
-            'flex items-center justify-center',
-            'clickable'
-          )}
-        >
-          <div
-            className="i-ic-round-favorite-border size-5 bg-gray-4"
-            onClick={(e) => {
-              e.stopPropagation()
-              setId(cardId)
-              if (collect) {
-                unCollectMutate()
-              }
-              else {
-                collectMutate()
-              }
-            }}
-          >
-          </div>
-        </div>
+        <CollectButton
+          houseId={houseId}
+          collect={collect}
+        />
       </div>
       <div className="px-6 py-8 space-y-2">
         <div className="fbc text-5">
@@ -108,13 +73,13 @@ export const RealEstateCard: FC<{
 
         <div className="flex items-center justify-between text-sm">
           <div>
-            {`${beds} Beds`}
+            {`${bedrooms} Beds`}
           </div>
           <div>
-            {size}
+            {`${area} sq ft`}
           </div>
           <div>
-            2 Years Old
+            {`${house_life} Years Old`}
           </div>
         </div>
       </div>

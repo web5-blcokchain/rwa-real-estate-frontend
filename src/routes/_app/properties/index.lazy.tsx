@@ -1,6 +1,5 @@
 import apiBasic from '@/api/basicApi'
 import { RealEstateCard } from '@/components/common/real-estate-card'
-import { useUserStore } from '@/stores/user'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
 import { Button, Spin } from 'antd'
@@ -17,7 +16,6 @@ function RouteComponent() {
   const navigate = useNavigate()
   const [keyword, setKeyword] = useState('')
   const [page, setPage] = useState(1)
-  const setAssetId = useUserStore((state: { setAssetId: (id: number) => void }) => state.setAssetId)
 
   const { data, isLoading } = useQuery({
     queryKey: ['properties', page, keyword],
@@ -65,22 +63,22 @@ function RouteComponent() {
 
       {!isLoading && data?.list && (
         <div className="grid grid-cols-1 mt-8 cursor-pointer gap-8 md:grid-cols-3">
-          {data.list.map((item: any, _i: number) => (
+          {data.list.map((item: Record<string, any>) => (
             <RealEstateCard
               key={item.id}
-              cardId={item.id}
+              houseId={item.id}
               collect={item.is_collect}
               picture={`${baseUrl}${item.image_urls}`}
               title={item.name}
               location={item.location}
-              size="813 sq ft"
-              beds={item.beds}
+              area={item.area}
+              bedrooms={item.bedrooms}
+              house_life={item.house_life}
               price={item.price}
               tokenPrice={item.tokenPrice}
               status={item.status}
               onClick={() => {
-                setAssetId(item.id)
-                navigate({ to: '/properties/detail' })
+                navigate({ to: '/properties/detail/$id', params: { id: item.id } })
               }}
             />
           ))}
