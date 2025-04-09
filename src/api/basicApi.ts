@@ -103,10 +103,6 @@ function setUnCollect(data: CollectParams) {
   return apiClient.post<PurchaseBuyResponse>('/api/assets/uncollect', data)
 }
 
-function getCollectList() {
-  return apiClient.post('/api/assets/collect')
-}
-
 export interface CoreTeamResponse {
   id: number
   name: string
@@ -130,7 +126,6 @@ const apiBasic = {
   purchaseBuy,
   setCollect,
   setUnCollect,
-  getCollectList,
   getCoreTeam
 }
 
