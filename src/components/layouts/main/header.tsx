@@ -229,43 +229,40 @@ function LanguageSelect() {
   const items: MenuProps['items'] = [
     {
       label: (
-        <Button
-          type="text"
+        <div
           onClick={() => {
             setLang('zh')
             i18n.changeLanguage('zh')
           }}
         >
           中文
-        </Button>
+        </div>
       ),
       key: 'zh'
     },
     {
       label: (
-        <Button
-          type="text"
+        <div
           onClick={() => {
             setLang('en')
             i18n.changeLanguage('en')
           }}
         >
           English
-        </Button>
+        </div>
       ),
       key: 'en'
     },
     {
       label: (
-        <Button
-          type="text"
+        <div
           onClick={() => {
             setLang('jp')
             i18n.changeLanguage('jp')
           }}
         >
           日本語
-        </Button>
+        </div>
       ),
       key: 'jp'
     }
