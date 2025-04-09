@@ -52,11 +52,14 @@ function RouteComponent() {
               picture={`https://picsum.photos/500/300?random=${i}`}
               title="Park Avenue Tower"
               location="Upper East Side, Manhattan, New York"
-              size="813 sq ft"
-              beds={2}
+              area={813}
+              bedrooms={2}
               price={850000}
               tokenPrice={850000}
-              status={0}
+              property_type="住宅"
+              houseId={0}
+              collect={0}
+              house_life={0}
             />
           ))
         }
