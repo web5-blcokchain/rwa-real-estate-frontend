@@ -6,7 +6,8 @@ import TableComponent from '@/components/common/table-component'
 import { joinImagesPath } from '@/utils/url'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { createLazyFileRoute } from '@tanstack/react-router'
-import { Button, Popconfirm } from 'antd'
+import { Button, Checkbox, Popconfirm } from 'antd'
+import { useState } from 'react'
 
 export const Route = createLazyFileRoute('/_app/account/collections/')({
   component: RouteComponent
@@ -14,6 +15,7 @@ export const Route = createLazyFileRoute('/_app/account/collections/')({
 
 function RouteComponent() {
   const [keyword, setKeyword] = useState('')
+  const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([]) // 存储选中的行 ID
   const queryClient = useQueryClient()
   const { t } = useTranslation()
 
@@ -21,11 +23,12 @@ function RouteComponent() {
     queryKey: ['collections', keyword],
     queryFn: async () => {
       const res = await getCollectList({ keyword })
+      setSelectedRowKeys([])
       return _get(res.data, 'list', [])
     }
   })
 
-  function removeCollectionConfirm(id: number) {
+  function removeCollectionConfirm(id: string) {
     basicApi.setUnCollect({ id }).then(() => {
       queryClient.invalidateQueries({
         queryKey: ['collections']
@@ -33,7 +36,50 @@ function RouteComponent() {
     })
   }
 
+  function clearFavorites() {
+    const ids = selectedRowKeys.join(',')
+    basicApi.setUnCollect({ id: ids }).then(() => {
+      queryClient.invalidateQueries({
+        queryKey: ['collections']
+      })
+      setSelectedRowKeys([]) // 清空选中状态
+    })
+  }
+
   const columns: TableProps['columns'] = [
+    {
+      title: (
+        <Checkbox
+          indeterminate={selectedRowKeys.length > 0 && selectedRowKeys.length < collectionData?.length}
+          checked={
+            selectedRowKeys.length !== 0
+            && selectedRowKeys.length === collectionData?.length
+          }
+          onChange={(e) => {
+            if (e.target.checked) {
+              setSelectedRowKeys(collectionData.map((item: any) => item.id))
+            }
+            else {
+              setSelectedRowKeys([])
+            }
+          }}
+        />
+      ),
+      dataIndex: 'id',
+      render: (_, item) => (
+        <Checkbox
+          checked={selectedRowKeys.includes(item.id)}
+          onChange={(e) => {
+            if (e.target.checked) {
+              setSelectedRowKeys([...selectedRowKeys, item.id])
+            }
+            else {
+              setSelectedRowKeys(selectedRowKeys.filter(key => key !== item.id))
+            }
+          }}
+        />
+      )
+    },
     {
       title: 'Investment Project',
       render: (_, item) => (
@@ -118,7 +164,12 @@ function RouteComponent() {
       </Waiting>
       <div className="rounded-xl bg-[#1e2024] p-6">
         <div className="fbc">
-          <div className="text-[#898989]">Selected: 0 project</div>
+          <div className="text-[#898989]">
+            Selected:
+            {selectedRowKeys.length}
+            {' '}
+            project(s)
+          </div>
           <div className="fyc gap-2">
             <div className="text-[#898989]">Total Investment:</div>
             <div className="text-6 text-primary">¥0.00</div>
@@ -129,6 +180,8 @@ function RouteComponent() {
           <Button
             size="large"
             className="rounded-xl bg-transparent! text-[#9e9e9e]!"
+            onClick={clearFavorites}
+            disabled={selectedRowKeys.length === 0}
           >
             Clear Favorites
           </Button>
