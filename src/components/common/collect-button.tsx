@@ -41,7 +41,7 @@ export const CollectButton: FC<{
       )}
     >
       <Waiting
-        for={!(queryClient.isFetching() || collectIsPending || unCollectIsPending)}
+        for={!(queryClient.isFetching({ queryKey: ['properties'] }) || collectIsPending || unCollectIsPending)}
         iconClass={cn(
           collect ? 'bg-black' : 'bg-white'
         )}
@@ -57,7 +57,7 @@ export const CollectButton: FC<{
             e.stopPropagation()
             e.preventDefault()
 
-            if (queryClient.isFetching() || collectIsPending || unCollectIsPending) {
+            if (queryClient.isFetching({ queryKey: ['properties'] }) || collectIsPending || unCollectIsPending) {
               return
             }
 
