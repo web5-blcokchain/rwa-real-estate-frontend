@@ -46,7 +46,7 @@ function RouteComponent() {
           />
 
           <div>
-            <div className="text-4">{item.title}</div>
+            <div className="text-4">{item.address}</div>
             <div className="text-3.5 text-[#8d909a]">
               Location:
               {' '}
