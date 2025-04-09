@@ -2,7 +2,7 @@ import apiBasic from '@/api/basicApi'
 import { RealEstateCard } from '@/components/common/real-estate-card'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
-import { Button, Spin } from 'antd'
+import { Button } from 'antd'
 import { useState } from 'react'
 
 export const Route = createLazyFileRoute('/_app/properties/')({
@@ -30,14 +30,6 @@ function RouteComponent() {
     setPage(1)
   }
 
-  if (isLoading) {
-    return (
-      <div className="w-full p-8 h-dvh">
-        <Spin />
-      </div>
-    )
-  }
-
   return (
     <div className="p-8">
       <div className="text-8 font-medium">
@@ -61,9 +53,13 @@ function RouteComponent() {
         </div>
       </div>
 
-      {!isLoading && data?.list && (
+      <Waiting
+        for={!isLoading && data && !!data?.list}
+        className="h-32 fcc"
+        iconClass="size-8"
+      >
         <div className="grid grid-cols-1 mt-8 cursor-pointer gap-8 md:grid-cols-3">
-          {data.list.map((item: Record<string, any>) => (
+          {data?.list.map((item: Record<string, any>) => (
             <RealEstateCard
               key={item.id}
               houseId={item.id}
@@ -83,7 +79,7 @@ function RouteComponent() {
             />
           ))}
         </div>
-      )}
+      </Waiting>
 
       {!isLoading && data?.list && data.list.length > 20 && (
         <div className="mt-8 text-center">
