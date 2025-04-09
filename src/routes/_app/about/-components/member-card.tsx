@@ -1,3 +1,6 @@
+import { IImage } from '@/components/common/i-image'
+import { joinImagePath } from '@/utils/url'
+
 export const MemberCard: FC<{
   photograph: string
   name: string
@@ -12,7 +15,7 @@ export const MemberCard: FC<{
   return (
     <div className="fccc gap-2">
       <div className="mb-4">
-        <img src={photograph} className="size-50 rounded-full" />
+        <IImage src={joinImagePath(photograph)} className="size-50 rounded-full" />
       </div>
 
       <div className="text-center text-5">{name}</div>
