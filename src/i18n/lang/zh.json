@@ -168,7 +168,8 @@
       "please_verify": "为确保场外交易的安全性，您必须满足以下要求并完成必要的验证流程：",
       "please_verify_1": "您的帐户必须用政府签发的有效身份证件或护照进行全面核实。",
       "expire": "付款到账时间为",
-      "confirm_payment": "确认付款"
+      "confirm_payment": "确认付款",
+      "asset_not_found": "资产不存在"
     }
   },
   "help": {

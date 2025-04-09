@@ -1,5 +1,6 @@
 import apiBasic from '@/api/basicApi'
 import { RealEstateCard } from '@/components/common/real-estate-card'
+import { joinImagePath } from '@/utils/url'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
 import { Button } from 'antd'
@@ -8,8 +9,6 @@ import { useState } from 'react'
 export const Route = createLazyFileRoute('/_app/properties/')({
   component: RouteComponent
 })
-
-const baseUrl = import.meta.env.VITE_PUBLIC_API_URL
 
 function RouteComponent() {
   const { t } = useTranslation()
@@ -64,7 +63,7 @@ function RouteComponent() {
               key={item.id}
               houseId={item.id}
               collect={item.is_collect}
-              picture={`${baseUrl}${item.image_urls}`}
+              picture={joinImagePath(item.image_urls)}
               title={item.name}
               location={item.location}
               area={item.area}

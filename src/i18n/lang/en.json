@@ -168,7 +168,8 @@
       "please_verify": "To ensure the security of OTC transactions, you must meet the following requirements and complete the necessary verification process:",
       "please_verify_1": " Your account must be fully verified with a valid government-issued ID or passport.",
       "expire": "Payment will expire in",
-      "confirm_payment": "Confirm Payment"
+      "confirm_payment": "Confirm Payment",
+      "asset_not_found": "The assets do not exist"
     }
   },
   "help": {

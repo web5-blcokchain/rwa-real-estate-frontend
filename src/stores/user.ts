@@ -1,42 +1,30 @@
-import type { RegisterParams, userResponse } from '@/api/apiMyInfoApi'
+import type { RegisterParams, UserResponse } from '@/api/apiMyInfoApi'
 import type { StateCreator } from 'zustand'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 interface StoreState {
   language: string
-  userData: userResponse | object
-  registerData: RegisterParams | object
-  assetId: number
-  assetObj: object
+  userData: UserResponse
+  registerData: RegisterParams
   setLanguage: (lang: string) => void
-  setUserData: (obj: object) => void
-  setRegisterData: (obj: object) => void
-  setAssetObj: (obj: object) => void
-  setAssetId: (id: number) => void
+  setUserData: (obj: Partial<UserResponse>) => void
+  setRegisterData: (obj: Partial<RegisterParams>) => void
 }
 
 const store: StateCreator<StoreState, [], [['zustand/persist', StoreState]]> = persist(
   set => ({
     language: 'en',
-    userData: {},
-    registerData: {},
-    assetId: 0,
-    assetObj: {},
+    userData: {} as UserResponse,
+    registerData: {} as RegisterParams,
     setLanguage: (language: string) => {
       set({ language })
     },
-    setUserData: (obj: object) => {
-      set({ userData: obj })
+    setUserData: (obj: Partial<UserResponse>) => {
+      set(state => ({ userData: { ...state.userData, ...obj } }))
     },
-    setRegisterData: (obj: object) => {
+    setRegisterData: (obj: Partial<RegisterParams>) => {
       set(state => ({ registerData: { ...state.registerData, ...obj } }))
-    },
-    setAssetId: (id: number) => {
-      set({ assetId: id })
-    },
-    setAssetObj: (obj: object) => {
-      set({ assetObj: obj })
     }
   }),
   { name: 'userInfo' }

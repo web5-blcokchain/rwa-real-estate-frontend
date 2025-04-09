@@ -87,7 +87,7 @@ export interface PurchaseBuyResponse { }
 
 // 购买接口参数
 function purchaseBuy(data: PurchaseBuyParams) {
-  return apiClient.post<PurchaseBuyResponse>('/api/assets/buy', data)
+  return apiClient.post<number>('/api/assets/buy', data)
 }
 
 interface CollectParams {

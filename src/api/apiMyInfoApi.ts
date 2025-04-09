@@ -150,7 +150,7 @@ function getEarningsHistory() {
   return apiClient.post<ResponseData<EarningsResponse>>('/api/info/earningsHistory')
 }
 
-export interface userResponse {
+export interface UserResponse {
   id: number
   nickname: string
   email: string
@@ -166,7 +166,7 @@ export interface userResponse {
 }
 // 用户信息
 function getUserInfo() {
-  return apiClient.post<userResponse>('/api/info/userInfo')
+  return apiClient.post<UserResponse>('/api/info/userInfo')
 }
 
 const apiMyInfoApi = {
