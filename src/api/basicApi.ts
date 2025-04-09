@@ -91,7 +91,7 @@ function purchaseBuy(data: PurchaseBuyParams) {
 }
 
 interface CollectParams {
-  id: number
+  id: string
 }
 
 // 收藏和取消收藏接口参数

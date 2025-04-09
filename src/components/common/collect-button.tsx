@@ -15,7 +15,7 @@ export const CollectButton: FC<{
     isPending: collectIsPending
   } = useMutation({
     mutationFn: async () => {
-      const res = await basicApi.setCollect({ id: houseId })
+      const res = await basicApi.setCollect({ id: `${houseId}` })
       queryClient.invalidateQueries({ queryKey: ['properties'] })
       return res.data
     }
@@ -25,7 +25,7 @@ export const CollectButton: FC<{
     isPending: unCollectIsPending
   } = useMutation({
     mutationFn: async () => {
-      const res = await basicApi.setUnCollect({ id: houseId })
+      const res = await basicApi.setUnCollect({ id: `${houseId}` })
       queryClient.invalidateQueries({ queryKey: ['properties'] })
       return res.data
     }
