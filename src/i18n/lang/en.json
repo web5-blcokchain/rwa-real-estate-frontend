@@ -17,8 +17,7 @@
   },
   "create": {
     "step1": "Create Your Account",
-    "step2": "Connect Wallet",
-    "step3": "Identity Verification",
+    "step2": "Identity Verification",
     "baseInfo": {
       "title": "Create Your Account",
       "subTitle": "Start your digital asset journey",

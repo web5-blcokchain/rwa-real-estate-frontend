@@ -12,14 +12,9 @@ export default function CreateAccountSteps() {
       title: `${t('create.step1')}`
     },
     {
-      step: CreateAccountStep.Wallet,
-      key: 'wallet',
-      title: `${t('create.step2')}`
-    },
-    {
       step: CreateAccountStep.Verification,
       key: 'verification',
-      title: `${t('create.step3')}`
+      title: `${t('create.step2')}`
     }
   ]
 

@@ -10,8 +10,7 @@ import './individual.scss'
 
 export default function IndividualVerification() {
   const { t } = useTranslation()
-  const setRegisterData = useUserStore(state => state.setRegisterData)
-  const RegisterData = useUserStore(state => state.registerData)
+  const { registerData, setRegisterData } = useUserStore()
 
   const { mutate: updateFile } = useMutation({
     mutationFn: async (data: { file: File, key: string }) => {
@@ -19,7 +18,7 @@ export default function IndividualVerification() {
       formData.append('file', data.file)
       const res = await apiMyInfo.uploadFile(formData)
       setRegisterData({
-        ...RegisterData,
+        ...registerData,
         [data.key]: res?.data?.photoUrls || ''
       })
       return res?.data
@@ -34,7 +33,7 @@ export default function IndividualVerification() {
 
   const { mutate: createMutate } = useMutation({
     mutationFn: async () => {
-      const res = await apiMyInfo.register({ ...RegisterData })
+      const res = await apiMyInfo.register({ ...registerData })
       return res?.data
     },
     onSuccess: (res) => {

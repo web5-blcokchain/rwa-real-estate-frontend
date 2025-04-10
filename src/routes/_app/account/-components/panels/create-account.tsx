@@ -1,47 +1,17 @@
-import type { RegisterParams } from '@/api/apiMyInfoApi'
-import apiMyInfo from '@/api/apiMyInfoApi'
 import IFormItem from '@/components/common/i-form-item'
 import IInput from '@/components/common/i-input'
 import ISeparator from '@/components/common/i-separator'
 import { LoginButton } from '@/components/common/login-button'
 import { useUserStore } from '@/stores/user'
 import { usePrivy } from '@privy-io/react-auth'
-import { useMutation } from '@tanstack/react-query'
-import { useNavigate } from '@tanstack/react-router'
 import { useSteps } from '../steps-provider'
 
 export default function CreateAccountPanel() {
   const { t } = useTranslation()
   const { next } = useSteps()
-  const navigate = useNavigate()
-  const setRegisterData = useUserStore(state => state.setRegisterData)
+  const { setRegisterData } = useUserStore()
 
-  const { authenticated, user, login } = usePrivy()
-
-  const { mutate: createMutate } = useMutation({
-    mutationFn: async (data: RegisterParams) => {
-      const res = await apiMyInfo.register(data)
-      navigate({ to: '/home' })
-      return res?.data
-    }
-  })
-
-  useEffect(() => {
-    if (authenticated && user) {
-      const data = {
-        mobile: user?.phone?.number,
-        email: user?.email?.address,
-        wallet_address: user?.wallet?.address,
-        business_registration_document: '',
-        shareholder_structure_url: '',
-        legal_representative_documents_url: '',
-        financial_documents_url: '',
-        token: ''
-
-      }
-      createMutate(data)
-    }
-  }, [authenticated, user, createMutate])
+  const { login } = usePrivy()
 
   return (
     <div className="fccc gap-2">

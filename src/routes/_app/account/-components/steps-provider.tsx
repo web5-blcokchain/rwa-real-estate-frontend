@@ -15,7 +15,6 @@ const StepsContext = createContext<StepsContextType | undefined>(undefined)
 
 export enum CreateAccountStep {
   BaseInfo,
-  Wallet,
   Verification
 }
 
