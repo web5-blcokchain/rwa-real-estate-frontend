@@ -3,6 +3,7 @@ import apiMyInfo from '@/api/apiMyInfoApi'
 import IFormItem from '@/components/common/i-form-item'
 import IInput from '@/components/common/i-input'
 import ISeparator from '@/components/common/i-separator'
+import { LoginButton } from '@/components/common/login-button'
 import { useUserStore } from '@/stores/user'
 import { usePrivy } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
@@ -15,7 +16,7 @@ export default function CreateAccountPanel() {
   const navigate = useNavigate()
   const setRegisterData = useUserStore(state => state.setRegisterData)
 
-  const { authenticated, user, login } = usePrivy()
+  const { authenticated, user, linkApple, linkGoogle } = usePrivy()
 
   const { mutate: createMutate } = useMutation({
     mutationFn: async (data: RegisterParams) => {
@@ -65,15 +66,13 @@ export default function CreateAccountPanel() {
         <ISeparator text="or" />
 
         <div className="grid grid-cols-2 gap-4">
-          <button type="button" className="fyc justify-center gap-3 b b-border rounded py-3 clickable-99" onClick={login}>
-            <span className="i-ion-logo-google size-5"></span>
-            <span>{t('create.baseInfo.google')}</span>
-          </button>
+          <LoginButton icon="i-ion-logo-google" onClick={linkGoogle}>
+            {t('create.baseInfo.google')}
+          </LoginButton>
 
-          <button type="button" className="fyc justify-center gap-3 b b-border rounded py-3 clickable-99">
-            <span className="i-ion-logo-apple size-5"></span>
-            <span>{t('create.baseInfo.apple')}</span>
-          </button>
+          <LoginButton icon="i-ion-logo-apple" onClick={linkApple}>
+            {t('create.baseInfo.apple')}
+          </LoginButton>
         </div>
       </div>
     </div>
