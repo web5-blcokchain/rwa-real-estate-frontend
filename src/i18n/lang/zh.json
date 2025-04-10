@@ -236,5 +236,10 @@
   "collection": {
     "delete_confirm_title": "删除收藏",
     "delete_confirm_content": "是否删除收藏"
+  },
+  "login": {
+    "sign_in_with_wallet": "使用钱包注册",
+    "sign_in_with_apple": "使用 Apple 账号",
+    "sign_in_with_google": "使用 Google 账号"
   }
 }

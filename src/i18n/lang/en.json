@@ -236,5 +236,10 @@
   "collection": {
     "delete_confirm_title": "Delete favorites",
     "delete_confirm_content": "Whether to delete favorites"
+  },
+  "login": {
+    "sign_in_with_wallet": "Sign in with your wallet",
+    "sign_in_with_apple": "Sign in with Apple",
+    "sign_in_with_google": "Sign in with Google"
   }
 }

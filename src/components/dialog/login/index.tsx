@@ -85,7 +85,7 @@ export const LoginDialog: FC<{
               loginMethods: ['google']
             })}
           >
-            {t('create.baseInfo.google')}
+            {t('login.sign_in_with_google')}
           </LoginButton>
 
           <LoginButton
@@ -95,7 +95,17 @@ export const LoginDialog: FC<{
               loginMethods: ['apple']
             })}
           >
-            {t('create.baseInfo.apple')}
+            {t('login.sign_in_with_apple')}
+          </LoginButton>
+
+          <LoginButton
+            icon="i-mingcute-wallet-4-fill"
+            className="w-full"
+            onClick={() => login({
+              loginMethods: ['wallet']
+            })}
+          >
+            {t('login.sign_in_with_wallet')}
           </LoginButton>
         </div>
       </div>
