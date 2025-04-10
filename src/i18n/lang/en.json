@@ -13,7 +13,10 @@
     "en": "English",
     "zh": "中文",
     "jp": "日本語",
-    "profile": "Profile"
+    "profile": "Profile",
+    "error": {
+      "user_not_found": "Please improve user information"
+    }
   },
   "create": {
     "baseInfo": {
@@ -86,11 +89,16 @@
       }
     },
     "button": {
-      "next": "Next"
+      "next": "Next",
+      "link_email": "Bind the email"
     },
     "step3": "Identity Verification",
-    "step2": "Create Your Account",
-    "step1": "Log in to Privy"
+    "step2": "Improve account information",
+    "step1": "Log in to Privy",
+    "logged_in_privy": "Logged in Privy",
+    "message": {
+      "link_email": "Please bind your email address"
+    }
   },
   "home": {
     "banner": {

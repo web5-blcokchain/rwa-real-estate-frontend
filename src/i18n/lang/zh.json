@@ -13,7 +13,10 @@
     "en": "English",
     "zh": "中文",
     "jp": "日本語",
-    "profile": "个人资料"
+    "profile": "个人资料",
+    "error": {
+      "user_not_found": "请完善用户信息"
+    }
   },
   "create": {
     "baseInfo": {
@@ -86,11 +89,16 @@
       }
     },
     "button": {
-      "next": "下一步"
+      "next": "下一步",
+      "link_email": "绑定邮箱"
     },
     "step3": "身份验证",
-    "step2": "创建您的账户",
-    "step1": "登陆 Privy"
+    "step2": "完善账号信息",
+    "step1": "登陆 Privy",
+    "logged_in_privy": "已登陆 Privy",
+    "message": {
+      "link_email": "请绑定邮箱"
+    }
   },
   "home": {
     "banner": {

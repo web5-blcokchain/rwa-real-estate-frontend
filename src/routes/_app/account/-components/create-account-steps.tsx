@@ -11,7 +11,7 @@ export default function CreateAccountSteps() {
       title: `${t('create.step1')}`
     },
     {
-      step: CreateAccountStep.BaseInfo,
+      step: CreateAccountStep.ImproveAccount,
       title: `${t('create.step2')}`
     },
     {

@@ -1,17 +1,20 @@
 import { CreateAccountStep, useSteps } from '../steps-provider'
 
-import CreateAccountPanel from './create-account'
+import CreateAccountPanel from './improve-account'
 import LoginPrivyPanel from './login-privy'
 import VerificationPanel from './verification'
 
 export function AccountPanel() {
   const { currentStep } = useSteps()
 
-  return (
-    <>
-      { currentStep === CreateAccountStep.LoginPrivy && (<LoginPrivyPanel />) }
-      { currentStep === CreateAccountStep.BaseInfo && (<CreateAccountPanel />) }
-      { currentStep === CreateAccountStep.Verification && (<VerificationPanel />) }
-    </>
-  )
+  switch (currentStep) {
+    case CreateAccountStep.LoginPrivy:
+      return <LoginPrivyPanel />
+    case CreateAccountStep.ImproveAccount:
+      return <CreateAccountPanel />
+    case CreateAccountStep.Verification:
+      return <VerificationPanel />
+  }
+
+  return null
 }
