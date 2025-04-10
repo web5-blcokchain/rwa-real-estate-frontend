@@ -1,17 +1,17 @@
-import type { DetailedHTMLProps, InputHTMLAttributes } from 'react'
+import type { InputProps } from 'antd'
+import { Input } from 'antd'
 
-const IInput: FC<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>> = ({
+const IInput: FC<InputProps> = ({
   className,
   ...props
 }) => {
   return (
-    <input
-      type="text"
+    <Input
       {...props}
       className={
         cn(
           className,
-          'outline-none bg-transparent',
+          'bg-transparent! text-white! placeholder:text-text-secondary',
           'px-4 py-3 b b-border b-solid rounded'
         )
       }
