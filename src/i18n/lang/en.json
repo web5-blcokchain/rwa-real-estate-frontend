@@ -87,6 +87,9 @@
         "notice": " Business verification typically takes 3-5 business days. All documents must be officially issued and valid.Additional documents may be required based on your business type and jurisdiction.Your business information is protected with enterprise-level security.",
         "continue": "Continue"
       }
+    },
+    "button": {
+      "next": "Next"
     }
   },
   "home": {

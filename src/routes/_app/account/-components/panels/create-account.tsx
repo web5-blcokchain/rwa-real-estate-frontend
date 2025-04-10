@@ -61,7 +61,13 @@ export default function CreateAccountPanel() {
           <IInput placeholder="Enter password" className="w-full" onChange={e => setRegisterData({ password: e.target.value })} />
         </IFormItem>
 
-        <button type="button" className="h-12.5 w-full rounded bg-primary-2 text-background clickable-99" onClick={next}>Create Account</button>
+        <button
+          type="button"
+          className="h-12.5 w-full rounded bg-primary-2 text-background clickable-99"
+          onClick={next}
+        >
+          {t('create.button.next')}
+        </button>
 
         <ISeparator text="or" />
 
