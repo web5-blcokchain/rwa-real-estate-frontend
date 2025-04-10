@@ -15,7 +15,7 @@
     "jp": "日本語",
     "profile": "Profile",
     "error": {
-      "user_not_found": "Please improve user information"
+      "user_not_found": "Please complete user information"
     }
   },
   "create": {
@@ -93,7 +93,7 @@
       "link_email": "Bind the email"
     },
     "step3": "Identity Verification",
-    "step2": "Improve account information",
+    "step2": "Complete account information",
     "step1": "Log in to Privy",
     "logged_in_privy": "Logged in Privy",
     "message": {

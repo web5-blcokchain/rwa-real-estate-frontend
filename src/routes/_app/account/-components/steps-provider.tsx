@@ -15,7 +15,7 @@ const StepsContext = createContext<StepsContextType | undefined>(undefined)
 
 export enum CreateAccountStep {
   LoginPrivy,
-  ImproveAccount,
+  CompleteAccount,
   Verification
 }
 

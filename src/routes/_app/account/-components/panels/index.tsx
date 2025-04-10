@@ -1,6 +1,6 @@
 import { CreateAccountStep, useSteps } from '../steps-provider'
 
-import CreateAccountPanel from './improve-account'
+import CreateAccountPanel from './complete-account'
 import LoginPrivyPanel from './login-privy'
 import VerificationPanel from './verification'
 
@@ -10,7 +10,7 @@ export function AccountPanel() {
   switch (currentStep) {
     case CreateAccountStep.LoginPrivy:
       return <LoginPrivyPanel />
-    case CreateAccountStep.ImproveAccount:
+    case CreateAccountStep.CompleteAccount:
       return <CreateAccountPanel />
     case CreateAccountStep.Verification:
       return <VerificationPanel />
