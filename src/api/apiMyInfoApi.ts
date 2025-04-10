@@ -48,7 +48,7 @@ function logins(data: LoginParams) {
 }
 
 export interface RegisterParams {
-  mobile?: number
+  mobile?: string
   email?: string
   password?: string
   wallet_address?: string

@@ -28,7 +28,7 @@ export default function CreateAccountPanel() {
   useEffect(() => {
     if (authenticated && user) {
       const data = {
-        mobile: user?.phone ? Number(user.phone) : undefined,
+        mobile: user?.phone?.number,
         email: user?.email?.address,
         wallet_address: user?.wallet?.address,
         business_registration_document: '',
