@@ -5,6 +5,7 @@ import IInput from '@/components/common/i-input'
 import ISeparator from '@/components/common/i-separator'
 import { LoginButton } from '@/components/common/login-button'
 import { usePrivy } from '@privy-io/react-auth'
+import { useNavigate } from '@tanstack/react-router'
 import { Button, Checkbox, Modal } from 'antd'
 import './styles.scss'
 
@@ -18,6 +19,7 @@ export const LoginDialog: FC<{
 
   const [open, setOpen] = openState
   const [isLoggingIn, setIsLoggingIn] = useState(false)
+  const navigate = useNavigate()
 
   // 监听认证状态变化，登录成功后关闭对话框
   useEffect(() => {
@@ -52,6 +54,13 @@ export const LoginDialog: FC<{
       setIsLoggingIn(false)
       console.error('Unexpected error during login', error)
     }
+  }
+
+  function createAccount() {
+    setOpen(false)
+    navigate({
+      to: '/account/create'
+    })
   }
 
   return (
@@ -90,8 +99,17 @@ export const LoginDialog: FC<{
             >
               Login
             </Button>
-            <div className="text-primary">
-              <div className="inline-block select-none clickable-98">Forgot Password?</div>
+            <div className="fbc">
+              <Button type="link" className="text-primary!">
+                Forgot Password?
+              </Button>
+              <Button
+                type="link"
+                className="text-primary!"
+                onClick={createAccount}
+              >
+                Create Account
+              </Button>
             </div>
           </div>
         </div>
