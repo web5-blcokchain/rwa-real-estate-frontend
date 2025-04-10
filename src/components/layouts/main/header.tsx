@@ -6,7 +6,7 @@ import { useUserStore } from '@/stores/user'
 import { setToken } from '@/utils/user'
 import { usePrivy } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
-import { Link, useLocation, useNavigate, useRouter } from '@tanstack/react-router'
+import { Link, useLocation, useNavigate } from '@tanstack/react-router'
 import { Button, Drawer, Dropdown } from 'antd'
 
 export default function MainHeader() {
@@ -109,17 +109,22 @@ function RightMenu() {
   const setUserData = useUserStore(state => state.setUserData)
   const { open } = useGlobalDialogStore()
   const navigate = useNavigate()
-  const router = useRouter()
+  const { setExist } = useUserStore()
 
   const [openLoginDialog, setOpenLoginDialog] = useState(false)
 
   const { ready, authenticated, user, getAccessToken } = usePrivy()
 
-  const { mutate, data } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: async () => {
       const res = await apiMyInfoApi.getUserInfo()
       setUserData(res.data)
       setUserObj(res.data)
+
+      if (_get(res, 'code') === 401) {
+        setExist(false)
+      }
+
       return res.data
     }
   })
@@ -137,24 +142,6 @@ function RightMenu() {
       setToken(token, 2)
     })
   }, [authenticated, user, mutate])
-
-  useEffect(() => {
-    if (typeof data === 'undefined')
-      return
-
-    if (!_isNull(data)) {
-      return
-    }
-
-    if (router.latestLocation.pathname === '/account/create') {
-      return
-    }
-
-    toast.error(t('header.error.user_not_found'))
-    navigate({
-      to: '/account/create'
-    })
-  }, [data, mutate])
 
   return (
     <>

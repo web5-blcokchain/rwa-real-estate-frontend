@@ -1,5 +1,6 @@
 import { GlobalDialog } from '@/components/dialog/chat-help'
 import MainLayout from '@/components/layouts/main'
+import { useRouteGuard } from '@/hooks/useRouteGuard'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 import ReactDOM from 'react-dom'
 import { ToastContainer } from 'react-toastify'
@@ -9,6 +10,9 @@ export const Route = createFileRoute('/_app')({
 })
 
 function AppLayoutComponent() {
+  // 使用路由守卫
+  useRouteGuard()
+
   return (
     <div>
       <GlobalDialog />
