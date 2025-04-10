@@ -8,17 +8,14 @@ export default function CreateAccountSteps() {
   const steps = [
     {
       step: CreateAccountStep.LoginPrivy,
-      key: 'baseInfo',
       title: `${t('create.step1')}`
     },
     {
       step: CreateAccountStep.BaseInfo,
-      key: 'baseInfo',
       title: `${t('create.step2')}`
     },
     {
       step: CreateAccountStep.Verification,
-      key: 'verification',
       title: `${t('create.step3')}`
     }
   ]
@@ -32,7 +29,7 @@ export default function CreateAccountSteps() {
         <div className="fbc flex-1 gap-1">
           {
             steps.map(item => (
-              <div key={item.key} className="w-full">
+              <div key={item.step} className="w-full">
                 <div className={cn(
                   'b b-text-secondary b-solid h-2',
                   currentStep === item.step ? 'bg-primary' : ''
