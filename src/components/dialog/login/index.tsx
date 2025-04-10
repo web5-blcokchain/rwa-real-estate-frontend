@@ -1,3 +1,4 @@
+import type { PrivyClientConfig } from '@privy-io/react-auth'
 import type { Dispatch, SetStateAction } from 'react'
 import IFormItem from '@/components/common/i-form-item'
 import IInput from '@/components/common/i-input'
@@ -12,10 +13,19 @@ export const LoginDialog: FC<{
 }> = ({
   openState
 }) => {
-  const { login } = usePrivy()
+  const { login, authenticated } = usePrivy()
   const { t } = useTranslation()
 
   const [open, setOpen] = openState
+  const [isLoggingIn, setIsLoggingIn] = useState(false)
+
+  // 监听认证状态变化，登录成功后关闭对话框
+  useEffect(() => {
+    if (isLoggingIn && authenticated) {
+      setOpen(false)
+      setIsLoggingIn(false)
+    }
+  }, [authenticated, isLoggingIn, setOpen])
 
   const [form, setForm] = useState({
     email: '',
@@ -31,6 +41,17 @@ export const LoginDialog: FC<{
 
   function loginWithEmail() {
     console.log('form', form)
+  }
+
+  function handlePrivyLogin(method: PrivyClientConfig['loginMethods']) {
+    try {
+      setIsLoggingIn(true) // 标记正在登录
+      login({ loginMethods: method })
+    }
+    catch (error) {
+      setIsLoggingIn(false)
+      console.error('Unexpected error during login', error)
+    }
   }
 
   return (
@@ -81,9 +102,7 @@ export const LoginDialog: FC<{
           <LoginButton
             icon="i-ion-logo-google"
             className="w-full"
-            onClick={() => login({
-              loginMethods: ['google']
-            })}
+            onClick={() => handlePrivyLogin(['google'])}
           >
             {t('login.sign_in_with_google')}
           </LoginButton>
@@ -91,9 +110,7 @@ export const LoginDialog: FC<{
           <LoginButton
             icon="i-ion-logo-apple"
             className="w-full"
-            onClick={() => login({
-              loginMethods: ['apple']
-            })}
+            onClick={() => handlePrivyLogin(['apple'])}
           >
             {t('login.sign_in_with_apple')}
           </LoginButton>
@@ -101,9 +118,7 @@ export const LoginDialog: FC<{
           <LoginButton
             icon="i-mingcute-wallet-4-fill"
             className="w-full"
-            onClick={() => login({
-              loginMethods: ['wallet']
-            })}
+            onClick={() => handlePrivyLogin(['wallet'])}
           >
             {t('login.sign_in_with_wallet')}
           </LoginButton>
