@@ -1,4 +1,4 @@
-import { GlobalDialog } from '@/components/global-dialog'
+import { GlobalDialog } from '@/components/dialog/chat-help'
 import MainLayout from '@/components/layouts/main'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 import ReactDOM from 'react-dom'
