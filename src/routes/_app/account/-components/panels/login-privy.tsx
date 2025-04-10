@@ -1,3 +1,4 @@
+import { useUserStore } from '@/stores/user'
 import { usePrivy } from '@privy-io/react-auth'
 import { Button } from 'antd'
 import { useSteps } from '../steps-provider'
@@ -5,8 +6,19 @@ import { useSteps } from '../steps-provider'
 export default function LoginPrivyPanel() {
   const { t } = useTranslation()
   const { login, linkEmail, user, ready, authenticated } = usePrivy()
+  const { setRegisterData } = useUserStore()
 
   const { next } = useSteps()
+
+  useEffect(() => {
+    if (!ready || !authenticated || !user?.wallet) {
+      return
+    }
+
+    setRegisterData({
+      wallet_address: user.wallet.address
+    })
+  }, [user?.wallet?.address])
 
   if (!ready) {
     return (
