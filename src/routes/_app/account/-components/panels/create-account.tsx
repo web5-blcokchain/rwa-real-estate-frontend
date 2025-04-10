@@ -16,7 +16,7 @@ export default function CreateAccountPanel() {
   const navigate = useNavigate()
   const setRegisterData = useUserStore(state => state.setRegisterData)
 
-  const { authenticated, user, linkApple, linkGoogle } = usePrivy()
+  const { authenticated, user, login } = usePrivy()
 
   const { mutate: createMutate } = useMutation({
     mutationFn: async (data: RegisterParams) => {
@@ -66,11 +66,21 @@ export default function CreateAccountPanel() {
         <ISeparator text="or" />
 
         <div className="grid grid-cols-2 gap-4">
-          <LoginButton icon="i-ion-logo-google" onClick={linkGoogle}>
+          <LoginButton
+            icon="i-ion-logo-google"
+            onClick={() => login({
+              loginMethods: ['google']
+            })}
+          >
             {t('create.baseInfo.google')}
           </LoginButton>
 
-          <LoginButton icon="i-ion-logo-apple" onClick={linkApple}>
+          <LoginButton
+            icon="i-ion-logo-apple"
+            onClick={() => login({
+              loginMethods: ['apple']
+            })}
+          >
             {t('create.baseInfo.apple')}
           </LoginButton>
         </div>
