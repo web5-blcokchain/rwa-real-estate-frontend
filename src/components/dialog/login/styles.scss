@@ -1,0 +1,9 @@
+.login-dialog {
+  .ant-modal-content {
+    --uno: bg-background text-text;
+  }
+
+  .ant-modal-close {
+    --uno: text-[#898989] hover:text-text hover:bg-white hover:bg-opacity-10;
+  }
+}

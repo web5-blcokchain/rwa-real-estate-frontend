@@ -1,5 +1,6 @@
 import type { MenuProps } from 'antd'
 import apiMyInfoApi from '@/api/apiMyInfoApi'
+import { LoginDialog } from '@/components/dialog/login'
 import { useGlobalDialogStore } from '@/stores/global-dialog'
 import { useUserStore } from '@/stores/user'
 import { setToken } from '@/utils/user'
@@ -109,7 +110,9 @@ function RightMenu() {
   const { open } = useGlobalDialogStore()
   const navigate = useNavigate()
 
-  const { ready, authenticated, user, login, getAccessToken } = usePrivy()
+  const [openLoginDialog, setOpenLoginDialog] = useState(false)
+
+  const { ready, authenticated, user, getAccessToken } = usePrivy()
 
   const { mutate } = useMutation({
     mutationFn: async () => {
@@ -164,7 +167,7 @@ function RightMenu() {
                 <div className="space-x-4">
                   <Button
                     className="text-white bg-transparent!"
-                    onClick={login}
+                    onClick={() => setOpenLoginDialog(true)}
                   >
                     {t('header.login')}
                   </Button>
@@ -172,6 +175,8 @@ function RightMenu() {
               )
         }
       </Waiting>
+
+      <LoginDialog openState={[openLoginDialog, setOpenLoginDialog]} />
     </>
   )
 }
