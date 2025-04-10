@@ -16,8 +16,6 @@
     "profile": "个人资料"
   },
   "create": {
-    "step1": "创建您的账户",
-    "step2": "身份验证",
     "baseInfo": {
       "title": "创建您的账户",
       "subTitle": "开启您的数字资产之旅",
@@ -89,7 +87,10 @@
     },
     "button": {
       "next": "下一步"
-    }
+    },
+    "step3": "身份验证",
+    "step2": "创建您的账户",
+    "step1": "登陆 Privy"
   },
   "home": {
     "banner": {

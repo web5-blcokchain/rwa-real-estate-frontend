@@ -16,8 +16,6 @@
     "profile": "プロファイル"
   },
   "create": {
-    "step1": "アカウントを作成します",
-    "step2": "ID検証",
     "baseInfo": {
       "title": "アカウントを作成します",
       "subTitle": "誰かのデジタル資産の旅を始めましょう",
@@ -89,7 +87,10 @@
     },
     "button": {
       "next": "つぎ"
-    }
+    },
+    "step3": "ID検証",
+    "step2": "アカウントを作成します",
+    "step1": "Log in to Privy"
   },
   "home": {
     "banner": {

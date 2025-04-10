@@ -15,12 +15,16 @@ export default function CreateAccountPanel() {
 
   return (
     <div className="fccc gap-2">
-      <div className="text-8 font-medium">{t('create.step1')}</div>
+      <div className="text-8 font-medium">{t('create.step2')}</div>
       <div className="text-4 text-[#898989]">{t('create.baseInfo.subTitle')}</div>
 
       <div className="max-w-xl w-full space-y-6">
         <IFormItem label="Email">
-          <IInput placeholder="Enter your email" className="w-full" onChange={e => setRegisterData({ email: e.target.value })} />
+          <IInput
+            placeholder="Email"
+            className="w-full"
+            disabled
+          />
         </IFormItem>
 
         <IFormItem label="Phone Number">

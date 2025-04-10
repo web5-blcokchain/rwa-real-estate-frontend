@@ -16,8 +16,6 @@
     "profile": "Profile"
   },
   "create": {
-    "step1": "Create Your Account",
-    "step2": "Identity Verification",
     "baseInfo": {
       "title": "Create Your Account",
       "subTitle": "Start your digital asset journey",
@@ -89,7 +87,10 @@
     },
     "button": {
       "next": "Next"
-    }
+    },
+    "step3": "Identity Verification",
+    "step2": "Create Your Account",
+    "step1": "Log in to Privy"
   },
   "home": {
     "banner": {

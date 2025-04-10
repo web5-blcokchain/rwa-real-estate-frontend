@@ -14,6 +14,7 @@ interface StepsContextType {
 const StepsContext = createContext<StepsContextType | undefined>(undefined)
 
 export enum CreateAccountStep {
+  LoginPrivy,
   BaseInfo,
   Verification
 }
@@ -29,11 +30,13 @@ export function useSteps() {
 }
 
 export const StepsProvider: FC = ({ children }) => {
-  const [currentStep, setCurrentStep] = useState(CreateAccountStep.BaseInfo)
+  const stepValues = Object.values(CreateAccountStep).filter(value => typeof value === 'number') as number[]
+
+  const [currentStep, setCurrentStep] = useState(stepValues[0])
   const [handler, setHandler] = useState<{ onReturn?: () => void }>({})
 
   const next = () => {
-    if (currentStep === CreateAccountStep.Verification) {
+    if (currentStep === stepValues[stepValues.length - 1]) {
       return
     }
 
@@ -41,7 +44,7 @@ export const StepsProvider: FC = ({ children }) => {
   }
 
   const prev = () => {
-    if (currentStep === CreateAccountStep.BaseInfo) {
+    if (currentStep === stepValues[0]) {
       return
     }
 

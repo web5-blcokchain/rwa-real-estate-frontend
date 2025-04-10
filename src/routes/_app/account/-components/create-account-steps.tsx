@@ -7,14 +7,19 @@ export default function CreateAccountSteps() {
 
   const steps = [
     {
-      step: CreateAccountStep.BaseInfo,
+      step: CreateAccountStep.LoginPrivy,
       key: 'baseInfo',
       title: `${t('create.step1')}`
     },
     {
+      step: CreateAccountStep.BaseInfo,
+      key: 'baseInfo',
+      title: `${t('create.step2')}`
+    },
+    {
       step: CreateAccountStep.Verification,
       key: 'verification',
-      title: `${t('create.step2')}`
+      title: `${t('create.step3')}`
     }
   ]
 
