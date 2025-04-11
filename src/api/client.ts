@@ -29,6 +29,12 @@ axios.interceptors.request.use(
 )
 
 axios.interceptors.response.use((res: responseDataParams) => {
+  if (_get(res.data, 'code', 0) !== 1) {
+    const message = _get(res.data, 'msg', 'Response error')
+    toast.error(message)
+    throw new Error(message)
+  }
+
   return res.data
 })
 
