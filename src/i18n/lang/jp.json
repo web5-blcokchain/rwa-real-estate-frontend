@@ -15,7 +15,8 @@
     "jp": "日本語",
     "profile": "プロファイル",
     "error": {
-      "user_not_found": "Please complete user information"
+      "user_not_found": "Please complete user information",
+      "login_required": "Please log in first"
     }
   },
   "create": {

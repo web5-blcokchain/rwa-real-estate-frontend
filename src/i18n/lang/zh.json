@@ -15,7 +15,8 @@
     "jp": "日本語",
     "profile": "个人资料",
     "error": {
-      "user_not_found": "请完善用户信息"
+      "user_not_found": "请完善用户信息",
+      "login_required": "请先登陆"
     }
   },
   "create": {
