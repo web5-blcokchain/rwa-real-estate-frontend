@@ -262,5 +262,9 @@
   },
   "common": {
     "click_to_change": "点击更换图片"
+  },
+  "action": {
+    "sell": "卖出",
+    "payment": "支付"
   }
 }

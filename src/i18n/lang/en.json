@@ -256,5 +256,9 @@
     "sign_in_with_apple": "Sign in with Apple",
     "sign_in_with_google": "Sign in with Google",
     "login_with_email": "Login with Email"
+  },
+  "action": {
+    "sell": "Sell",
+    "payment": "Pay"
   }
 }
