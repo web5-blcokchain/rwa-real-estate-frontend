@@ -123,10 +123,11 @@ function RightMenu() {
         setExist(false)
       }
 
-      setUserData(res.data)
-      setUserObj(res.data)
+      const data = _get(res, 'data', {})
+      setUserData(data)
+      setUserObj(data)
 
-      return res.data
+      return data
     }
   })
 
