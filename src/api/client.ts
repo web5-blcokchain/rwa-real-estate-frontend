@@ -5,9 +5,9 @@ import axios from 'axios'
 axios.defaults.baseURL = Env.apiUrl
 axios.defaults.headers.common.server = true
 
-interface responseDataParams {
+interface ResponseData<T> {
   code?: number
-  data?: any
+  data?: T
   error?: any
 }
 
@@ -28,7 +28,7 @@ axios.interceptors.request.use(
   }
 )
 
-axios.interceptors.response.use((res: responseDataParams) => {
+axios.interceptors.response.use((res: ResponseData<any>) => {
   const code = _get(res.data, 'code', 0)
 
   // 401 账户不存在不需要提示，因为是强制跳转创建账号页面
@@ -41,7 +41,10 @@ axios.interceptors.response.use((res: responseDataParams) => {
   return res.data
 })
 
-const apiClient = {
+type ApiClientMethod = <T = any>(url: string, params?: any) => Promise<ResponseData<T>>
+type Methods = 'get' | 'put' | 'post' | 'delete' | 'patch'
+
+const apiClient: Record<Methods, ApiClientMethod> = {
   get: axios.get,
   put: axios.put,
   post: axios.post,

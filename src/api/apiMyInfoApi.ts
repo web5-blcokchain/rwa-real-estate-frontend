@@ -1,3 +1,4 @@
+import type { AccountType } from '@/enums/create-account'
 import apiClient from './client'
 
 interface ResponseData<T> {
@@ -6,7 +7,6 @@ interface ResponseData<T> {
   msg: string
   data: T
   time: number
-  photoUrls: string
 }
 
 export interface LoginParams {
@@ -25,7 +25,7 @@ export interface LoginResponse {
 }
 // 上传文件
 function uploadFile(data: FormData) {
-  return apiClient.post<ResponseData<any>>('/api/user/upload', data)
+  return apiClient.post<{ file: { url: string } }>('/api/user/upload', data)
 }
 
 export interface LoginParams {
@@ -52,7 +52,7 @@ export interface RegisterParams {
   email?: string
   password?: string
   wallet_address?: string
-  type?: string
+  type?: AccountType
   id_card_front_url?: string
   id_card_back_url?: string
   address_url?: string
