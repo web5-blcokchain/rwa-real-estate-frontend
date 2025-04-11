@@ -203,7 +203,7 @@ const UserMenu: FC<{
   const { setExist, setUserData } = useUserStore()
 
   async function handleLogout() {
-    await logout()
+    logout()
     clearToken()
     setUserData({})
     setExist(false)
