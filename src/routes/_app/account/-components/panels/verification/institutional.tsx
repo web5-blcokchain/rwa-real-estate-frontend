@@ -1,14 +1,24 @@
 import apiMyInfo from '@/api/apiMyInfoApi'
 import INotice from '@/components/common/i-notice'
 import { useUserStore } from '@/stores/user'
+import { joinImagePath } from '@/utils/url'
 import { useMutation } from '@tanstack/react-query'
+import { useNavigate } from '@tanstack/react-router'
 import { Button } from 'antd'
+import { useTranslation } from 'react-i18next'
 import UploadCard from '../../upload-card'
 import './individual.scss'
 
 export default function InstitutionalVerification() {
   const { t } = useTranslation()
-  const { registerData, setRegisterData } = useUserStore()
+  const { registerData, setRegisterData, setExist, clearRegisterData } = useUserStore()
+  const navigate = useNavigate()
+
+  // 获取各种文档的URL
+  const businessRegistrationUrl = registerData?.business_registration_document || ''
+  const shareholderStructureUrl = registerData?.shareholder_structure_url || ''
+  const legalRepresentativeUrl = registerData?.legal_representative_documents_url || ''
+  const financialDocumentsUrl = registerData?.financial_documents_url || ''
 
   const { mutate: updateFile } = useMutation({
     mutationFn: async (data: { file: File, key: string }) => {
@@ -22,23 +32,29 @@ export default function InstitutionalVerification() {
       return res?.data
     },
     onSuccess: (res) => {
-      console.log('=-=-=-=onSuccess', res)
+      console.log('onSuccess', res)
     },
     onError: (error) => {
-      console.log('=-=-=-=onError', error)
+      console.log('onError', error)
     }
   })
 
-  const { mutate: createMutate } = useMutation({
+  const { mutate: createMutate, isPending } = useMutation({
     mutationFn: async () => {
-      const res = await apiMyInfo.register({ ...registerData })
+      const res = await apiMyInfo.register({
+        ...registerData,
+        email: 'test3@imba97.cn',
+        wallet_address: '0x123412341234abc3'
+      })
       return res?.data
     },
-    onSuccess: (res) => {
-      console.log('=-=-=-=onSuccess', res)
-    },
-    onError: (error) => {
-      console.log('=-=-=-=onError', error)
+    onSuccess: () => {
+      toast.success(t('create.message.create_success'))
+      setExist(true)
+      clearRegisterData()
+      navigate({
+        to: '/profile'
+      })
     }
   })
 
@@ -60,6 +76,7 @@ export default function InstitutionalVerification() {
           beforeUpload={(file) => {
             beforeUpload(file, 'business_registration_document')
           }}
+          src={joinImagePath(businessRegistrationUrl)}
         >
         </UploadCard>
 
@@ -71,6 +88,7 @@ export default function InstitutionalVerification() {
           beforeUpload={(file) => {
             beforeUpload(file, 'shareholder_structure_url')
           }}
+          src={joinImagePath(shareholderStructureUrl)}
         >
         </UploadCard>
 
@@ -82,6 +100,7 @@ export default function InstitutionalVerification() {
           beforeUpload={(file) => {
             beforeUpload(file, 'legal_representative_documents_url')
           }}
+          src={joinImagePath(legalRepresentativeUrl)}
         >
         </UploadCard>
 
@@ -93,6 +112,7 @@ export default function InstitutionalVerification() {
           beforeUpload={(file) => {
             beforeUpload(file, 'financial_documents_url')
           }}
+          src={joinImagePath(financialDocumentsUrl)}
         >
         </UploadCard>
 
@@ -101,7 +121,12 @@ export default function InstitutionalVerification() {
         </INotice>
 
         <div className="fec">
-          <Button size="large" className="bg-transparent! text-white! hover:text-primary-1!" onClick={() => createMutate()}>
+          <Button
+            size="large"
+            className="bg-transparent! text-white! hover:text-primary-1!"
+            loading={isPending}
+            onClick={() => createMutate()}
+          >
             {t('create.verification.business.continue')}
           </Button>
         </div>
