@@ -109,7 +109,7 @@ function RightMenu() {
   const setUserData = useUserStore(state => state.setUserData)
   const { open } = useGlobalDialogStore()
   const navigate = useNavigate()
-  const { setExist } = useUserStore()
+  const { isExist, setExist } = useUserStore()
 
   const [openLoginDialog, setOpenLoginDialog] = useState(false)
 
@@ -132,7 +132,7 @@ function RightMenu() {
   })
 
   useEffect(() => {
-    if (!authenticated)
+    if (!authenticated || !isExist)
       return
 
     mutate()
@@ -147,7 +147,7 @@ function RightMenu() {
     if (openLoginDialog) {
       setOpenLoginDialog(false)
     }
-  }, [authenticated, user, mutate])
+  }, [isExist, authenticated, user, mutate])
 
   return (
     <>
