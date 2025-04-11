@@ -29,7 +29,10 @@ axios.interceptors.request.use(
 )
 
 axios.interceptors.response.use((res: responseDataParams) => {
-  if (_get(res.data, 'code', 0) !== 1) {
+  const code = _get(res.data, 'code', 0)
+
+  // 401 账户不存在不需要提示，因为是强制跳转创建账号页面
+  if (code !== 401 && code !== 1) {
     const message = _get(res.data, 'msg', 'Response error')
     toast.error(message)
     throw new Error(message)
