@@ -58,7 +58,6 @@
         "identity": "Identity Document",
         "upload_title": "Upload Identity Card / Passport",
         "upload_subTitle": "Front and back sides required, JPG/PNG/PDF up to 5MB",
-        "photo": "Take Photo",
         "files": "Browse Files",
         "poof": "Proof of Address",
         "proof_title": "Upload Utility Bill / Bank Statement",
@@ -99,7 +98,9 @@
     "message": {
       "link_email": "Please bind your email address",
       "create_success": "Account created successfully"
-    }
+    },
+    "upload_id_card_front": "Upload ID card front",
+    "upload_id_card_back": "Upload ID card back"
   },
   "home": {
     "banner": {

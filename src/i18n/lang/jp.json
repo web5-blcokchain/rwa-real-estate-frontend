@@ -58,7 +58,6 @@
         "identity": "IDドキュメント",
         "upload_title": "IDカード /パスポートをアップロードします",
         "upload_subTitle": "正面と裏側が必要で、JPG/PNG/PDFまで5MBまで",
-        "photo": "写真を撮ります",
         "files": "ファイルを参照します",
         "poof": "住所の証明",
         "proof_title": "ユーティリティ請求書 /銀行声明をアップロードします",
@@ -99,7 +98,9 @@
     "message": {
       "link_email": "Please bind your email address",
       "create_success": "Account created successfully"
-    }
+    },
+    "upload_id_card_front": "Upload ID card front",
+    "upload_id_card_back": "Upload ID card back"
   },
   "home": {
     "banner": {

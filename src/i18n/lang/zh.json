@@ -58,7 +58,6 @@
         "identity": "身份证明文件",
         "upload_title": "上传身份证/护照",
         "upload_subTitle": "需要正反两面，JPG/PNG/PDF格式，大小不超过5MB",
-        "photo": "拍照",
         "files": "浏览文件",
         "poof": "地址证明",
         "proof_title": "上传水电账单/银行对账单",
@@ -99,7 +98,12 @@
     "message": {
       "link_email": "请绑定邮箱",
       "create_success": "创建账号成功"
-    }
+    },
+    "upload_id_card_front": "上传身份证正面",
+    "upload_id_card_back": "上传身份证反面",
+    "id_card_front": "身份证正面",
+    "id_card_back": "身份证反面",
+    "reupload": "重新上传"
   },
   "home": {
     "banner": {
@@ -253,5 +257,8 @@
     "sign_in_with_wallet": "使用钱包注册",
     "sign_in_with_apple": "使用 Apple 账号",
     "sign_in_with_google": "使用 Google 账号"
+  },
+  "common": {
+    "click_to_change": "点击更换图片"
   }
 }
