@@ -27,8 +27,13 @@ const UploadCard: FC<{
           beforeUpload?.(e)
           return false
         }}
+        disabled={!beforeUpload}
       >
-        <div className="fccc select-none gap-4 b b-white rounded b-dashed py-6 clickable-99">
+        <div className={cn(
+          'fccc select-none gap-4 b b-white rounded b-dashed py-6',
+          beforeUpload ? 'clickable-99' : ''
+        )}
+        >
           <div>
             <img
               src={icon}
