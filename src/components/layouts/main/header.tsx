@@ -143,6 +143,10 @@ function RightMenu() {
 
       setToken(token, 2)
     })
+
+    if (openLoginDialog) {
+      setOpenLoginDialog(false)
+    }
   }, [authenticated, user, mutate])
 
   return (
