@@ -256,7 +256,8 @@
   "login": {
     "sign_in_with_wallet": "使用钱包注册",
     "sign_in_with_apple": "使用 Apple 账号",
-    "sign_in_with_google": "使用 Google 账号"
+    "sign_in_with_google": "使用 Google 账号",
+    "login_with_email": "使用邮箱登陆"
   },
   "common": {
     "click_to_change": "点击更换图片"

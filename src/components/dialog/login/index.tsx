@@ -1,12 +1,9 @@
 import type { PrivyClientConfig } from '@privy-io/react-auth'
 import type { Dispatch, SetStateAction } from 'react'
-import IFormItem from '@/components/common/i-form-item'
-import IInput from '@/components/common/i-input'
 import ISeparator from '@/components/common/i-separator'
 import { LoginButton } from '@/components/common/login-button'
 import { usePrivy } from '@privy-io/react-auth'
-import { useNavigate } from '@tanstack/react-router'
-import { Button, Checkbox, Modal } from 'antd'
+import { Button, Modal } from 'antd'
 import './styles.scss'
 
 export const LoginDialog: FC<{
@@ -19,7 +16,6 @@ export const LoginDialog: FC<{
 
   const [open, setOpen] = openState
   const [isLoggingIn, setIsLoggingIn] = useState(false)
-  const navigate = useNavigate()
 
   // 监听认证状态变化，登录成功后关闭对话框
   useEffect(() => {
@@ -28,22 +24,6 @@ export const LoginDialog: FC<{
       setIsLoggingIn(false)
     }
   }, [authenticated, isLoggingIn, setOpen])
-
-  const [form, setForm] = useState({
-    email: '',
-    password: ''
-  })
-
-  function setFormData(data: Partial<typeof form>) {
-    setForm(prev => ({
-      ...prev,
-      ...data
-    }))
-  }
-
-  function loginWithEmail() {
-    console.log('form', form)
-  }
 
   function handlePrivyLogin(method: PrivyClientConfig['loginMethods']) {
     try {
@@ -54,13 +34,6 @@ export const LoginDialog: FC<{
       setIsLoggingIn(false)
       console.error('Unexpected error during login', error)
     }
-  }
-
-  function createAccount() {
-    setOpen(false)
-    navigate({
-      to: '/account/create'
-    })
   }
 
   return (
@@ -76,47 +49,33 @@ export const LoginDialog: FC<{
         <div className="text-center text-8 font-medium">Great to have you back!</div>
         <div className="text-center text-4 text-[#898989]">Start your digital asset journey</div>
 
-        <div className="space-y-6">
-          <IFormItem label="Email">
-            <IInput placeholder="Enter your email" className="w-full" onChange={e => setFormData({ email: e.target.value })} />
-          </IFormItem>
-
-          <IFormItem label="Password">
-            <IInput placeholder="Enter password" className="w-full" onChange={e => setFormData({ password: e.target.value })} />
-          </IFormItem>
-
-          <div>
-            <Checkbox className="text-text">Remember Me</Checkbox>
-          </div>
-
-          <div className="space-y-2">
-            <Button
-              type="primary"
-              size="large"
-              className="text-black!"
-              block
-              onClick={loginWithEmail}
-            >
-              Login
-            </Button>
-            <div className="fbc">
-              <Button type="link" className="text-primary!">
-                Forgot Password?
-              </Button>
-              <Button
-                type="link"
-                className="text-primary!"
-                onClick={createAccount}
-              >
-                Create Account
-              </Button>
+        <div className="py-12 text-center">
+          <Button
+            type="primary"
+            size="large"
+            className="text-black!"
+            onClick={() => login({
+              loginMethods: ['email']
+            })}
+          >
+            <div className="fyc gap-2">
+              <div className="i-material-symbols-mail-rounded"></div>
+              <div>{t('login.login_with_email')}</div>
             </div>
-          </div>
+          </Button>
         </div>
 
         <ISeparator text="or" className="my-4" />
 
         <div className="space-y-6">
+          <LoginButton
+            icon="i-mingcute-wallet-4-fill"
+            className="w-full"
+            onClick={() => handlePrivyLogin(['wallet'])}
+          >
+            {t('login.sign_in_with_wallet')}
+          </LoginButton>
+
           <LoginButton
             icon="i-ion-logo-google"
             className="w-full"
@@ -131,14 +90,6 @@ export const LoginDialog: FC<{
             onClick={() => handlePrivyLogin(['apple'])}
           >
             {t('login.sign_in_with_apple')}
-          </LoginButton>
-
-          <LoginButton
-            icon="i-mingcute-wallet-4-fill"
-            className="w-full"
-            onClick={() => handlePrivyLogin(['wallet'])}
-          >
-            {t('login.sign_in_with_wallet')}
           </LoginButton>
         </div>
       </div>
