@@ -4,3 +4,7 @@ export function setToken(token: string, type: number) {
   localStorage.setItem(TOKEN_TYPE_KEY, `${type}`)
   localStorage.setItem(TOKEN_KEY, token)
 }
+
+export function getToken() {
+  return localStorage.getItem(TOKEN_KEY)
+}
