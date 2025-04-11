@@ -3,7 +3,7 @@ import apiMyInfoApi from '@/api/apiMyInfoApi'
 import { LoginDialog } from '@/components/dialog/login'
 import { useGlobalDialogStore } from '@/stores/global-dialog'
 import { useUserStore } from '@/stores/user'
-import { setToken } from '@/utils/user'
+import { clearToken, setToken } from '@/utils/user'
 import { usePrivy } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
 import { Link, useLocation, useNavigate } from '@tanstack/react-router'
@@ -200,6 +200,14 @@ const UserMenu: FC<{
   const navigate = useNavigate()
   const { logout } = usePrivy()
   const { t } = useTranslation()
+  const { setExist, setUserData } = useUserStore()
+
+  async function handleLogout() {
+    await logout()
+    clearToken()
+    setUserData({})
+    setExist(false)
+  }
 
   const items: MenuProps['items'] = [
     {
@@ -220,7 +228,7 @@ const UserMenu: FC<{
       label: (
         <div
           className="text-red"
-          onClick={logout}
+          onClick={handleLogout}
         >
           {i18n.t('header.logout')}
         </div>

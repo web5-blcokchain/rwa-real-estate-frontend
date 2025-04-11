@@ -8,3 +8,8 @@ export function setToken(token: string, type: number) {
 export function getToken() {
   return localStorage.getItem(TOKEN_KEY)
 }
+
+export function clearToken() {
+  localStorage.removeItem(TOKEN_KEY)
+  localStorage.removeItem(TOKEN_TYPE_KEY)
+}
