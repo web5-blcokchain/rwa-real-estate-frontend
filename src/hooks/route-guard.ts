@@ -1,4 +1,5 @@
 import { useUserStore } from '@/stores/user'
+import { getToken } from '@/utils/user'
 import { useLocation, useNavigate } from '@tanstack/react-router'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -14,6 +15,8 @@ export function useRouteGuard() {
   const { isExist } = useUserStore()
   const { t } = useTranslation()
 
+  const token = getToken()
+
   useEffect(() => {
     // 白名单路径列表
     const whiteList = [
@@ -24,7 +27,21 @@ export function useRouteGuard() {
 
     const currentPath = location.pathname
 
-    if (!isExist && !whiteList.includes(currentPath)) {
+    const isWhiteListed = whiteList.includes(currentPath)
+
+    if (isWhiteListed) {
+      return
+    }
+
+    if (!token) {
+      navigate({
+        to: '/home'
+      })
+      toast.error(t('header.error.login_required'))
+      return
+    }
+
+    if (!isExist) {
       toast.error(t('header.error.user_not_found'))
       navigate({
         to: '/account/create'
@@ -34,6 +51,7 @@ export function useRouteGuard() {
     isExist,
     location.pathname, // 使用location.pathname替换router.latestLocation.pathname
     navigate,
-    t
+    t,
+    token
   ])
 }
