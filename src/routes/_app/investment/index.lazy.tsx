@@ -94,6 +94,7 @@ function RouteComponent() {
               total_amount={item.total_amount}
               rental_yield={item.rental_yield}
               image_urls={item.image_urls}
+              order_type={item.order_type}
             />
           ))}
         </div>
