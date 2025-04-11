@@ -1,6 +1,6 @@
 import { GlobalDialog } from '@/components/dialog/chat-help'
 import MainLayout from '@/components/layouts/main'
-import { useRouteGuard } from '@/hooks/useRouteGuard'
+import { useRouteGuard } from '@/hooks/route-guard'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 import ReactDOM from 'react-dom'
 import { ToastContainer } from 'react-toastify'
