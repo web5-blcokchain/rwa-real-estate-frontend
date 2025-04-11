@@ -118,12 +118,13 @@ function RightMenu() {
   const { mutate } = useMutation({
     mutationFn: async () => {
       const res = await apiMyInfoApi.getUserInfo()
-      setUserData(res.data)
-      setUserObj(res.data)
 
       if (_get(res, 'code') === 401) {
         setExist(false)
       }
+
+      setUserData(res.data)
+      setUserObj(res.data)
 
       return res.data
     }
