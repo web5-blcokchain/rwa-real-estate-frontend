@@ -17,7 +17,7 @@ export default function InstitutionalVerification() {
       const res = await apiMyInfo.uploadFile(formData)
       setRegisterData({
         ...registerData,
-        [data.key]: res?.data?.photoUrls || ''
+        [data.key]: _get(res.data, 'file.url', '')
       })
       return res?.data
     },

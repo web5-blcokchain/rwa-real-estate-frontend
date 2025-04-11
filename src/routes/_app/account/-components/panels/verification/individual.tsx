@@ -22,7 +22,7 @@ export default function IndividualVerification() {
       console.log('res', res)
       setRegisterData({
         ...registerData,
-        [data.key]: res?.data?.file?.url || ''
+        [data.key]: _get(res.data, 'file.url', '')
       })
       return res?.data
     },
