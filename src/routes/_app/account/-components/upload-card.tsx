@@ -1,4 +1,4 @@
-import { ImagePreview } from '@/components/common/image-preview'
+import { FilePreview } from '@/components/common/file-preview'
 import { cn } from '@/utils/style'
 import { Upload } from 'antd'
 
@@ -37,7 +37,7 @@ const UploadCard: FC<{
           src && src.length > 0
             ? (
                 <div className="space-y-4">
-                  <ImagePreview
+                  <FilePreview
                     src={src}
                     imageContainerClass="rounded-lg of-hidden"
                   />
