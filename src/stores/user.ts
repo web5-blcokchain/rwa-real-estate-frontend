@@ -12,6 +12,7 @@ interface StoreState {
   setLanguage: (lang: string) => void
   setUserData: (obj: Partial<UserResponse>) => void
   setRegisterData: (obj: Partial<RegisterParams>) => void
+  clearRegisterData: () => void
 }
 
 const store: StateCreator<StoreState, [], [['zustand/persist', StoreState]]> = persist(
@@ -31,6 +32,9 @@ const store: StateCreator<StoreState, [], [['zustand/persist', StoreState]]> = p
     },
     setRegisterData: (obj: Partial<RegisterParams>) => {
       set(state => ({ registerData: { ...state.registerData, ...obj } }))
+    },
+    clearRegisterData: () => {
+      set({ registerData: {} as RegisterParams })
     }
   }),
   { name: 'userInfo' }

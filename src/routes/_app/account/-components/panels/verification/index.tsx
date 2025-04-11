@@ -1,6 +1,7 @@
 import INotice from '@/components/common/i-notice'
+import { AccountType } from '@/enums/create-account'
+import { useUserStore } from '@/stores/user'
 import { useState } from 'react'
-
 import { useSteps } from '../../steps-provider'
 import IndividualVerification from './individual'
 import InstitutionalVerification from './institutional'
@@ -38,6 +39,7 @@ export default function VerificationPanel() {
 function SelectVerification({ setCurrentVisible }: VerificationPanelProps) {
   const { setHandler } = useSteps()
   const { t } = useTranslation()
+  const { setRegisterData } = useUserStore()
 
   const list: Verification[] = [
     {
@@ -46,6 +48,9 @@ function SelectVerification({ setCurrentVisible }: VerificationPanelProps) {
       description: `${t('create.verification.individual_account')}`,
       onClick() {
         setCurrentVisible(VisibleType.Individual)
+        setRegisterData({
+          type: AccountType.Individual
+        })
 
         setHandler({
           onReturn() {
@@ -60,6 +65,9 @@ function SelectVerification({ setCurrentVisible }: VerificationPanelProps) {
       description: `${t('create.verification.organizations')}`,
       onClick() {
         setCurrentVisible(VisibleType.Institutional)
+        setRegisterData({
+          type: AccountType.Institutional
+        })
 
         setHandler({
           onReturn() {

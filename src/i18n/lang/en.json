@@ -97,7 +97,8 @@
     "step1": "Log in to Privy",
     "logged_in_privy": "Logged in Privy",
     "message": {
-      "link_email": "Please bind your email address"
+      "link_email": "Please bind your email address",
+      "create_success": "Account created successfully"
     }
   },
   "home": {

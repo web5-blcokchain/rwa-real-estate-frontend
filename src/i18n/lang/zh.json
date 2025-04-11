@@ -97,7 +97,8 @@
     "step1": "登陆 Privy",
     "logged_in_privy": "已登陆 Privy",
     "message": {
-      "link_email": "请绑定邮箱"
+      "link_email": "请绑定邮箱",
+      "create_success": "创建账号成功"
     }
   },
   "home": {

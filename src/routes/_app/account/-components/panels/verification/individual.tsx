@@ -3,6 +3,7 @@ import apiMyInfo from '@/api/apiMyInfoApi'
 import INotice from '@/components/common/i-notice'
 import { useUserStore } from '@/stores/user'
 import { useMutation } from '@tanstack/react-query'
+import { useNavigate } from '@tanstack/react-router'
 import { Button, Upload } from 'antd'
 import UploadCard from '../../upload-card'
 
@@ -10,16 +11,18 @@ import './individual.scss'
 
 export default function IndividualVerification() {
   const { t } = useTranslation()
-  const { registerData, setRegisterData } = useUserStore()
+  const { registerData, setRegisterData, clearRegisterData } = useUserStore()
+  const navigate = useNavigate()
 
   const { mutate: updateFile } = useMutation({
     mutationFn: async (data: { file: File, key: string }) => {
       const formData = new FormData()
       formData.append('file', data.file)
       const res = await apiMyInfo.uploadFile(formData)
+      console.log('res', res)
       setRegisterData({
         ...registerData,
-        [data.key]: res?.data?.photoUrls || ''
+        [data.key]: res?.data?.file?.url || ''
       })
       return res?.data
     },
@@ -32,15 +35,13 @@ export default function IndividualVerification() {
   })
 
   const { mutate: createMutate } = useMutation({
-    mutationFn: async () => {
-      const res = await apiMyInfo.register({ ...registerData })
-      return res?.data
-    },
-    onSuccess: (res) => {
-      console.log('=-=-=-=onSuccess', res)
-    },
-    onError: (error) => {
-      console.log('=-=-=-=onError', error)
+    mutationFn: () => apiMyInfo.register({ ...registerData }),
+    onSuccess: () => {
+      toast.success(t('create.message.create_success'))
+      clearRegisterData()
+      navigate({
+        to: '/profile'
+      })
     }
   })
 

@@ -1,11 +1,12 @@
 import { useUserStore } from '@/stores/user'
+import { getToken } from '@/utils/user'
 import { usePrivy } from '@privy-io/react-auth'
 import { Button } from 'antd'
 import { useSteps } from '../steps-provider'
 
 export default function LoginPrivyPanel() {
   const { t } = useTranslation()
-  const { login, linkEmail, user, ready, authenticated } = usePrivy()
+  const { user, ready, authenticated, login, linkEmail } = usePrivy()
   const { setRegisterData } = useUserStore()
 
   const { next } = useSteps()
@@ -16,7 +17,8 @@ export default function LoginPrivyPanel() {
     }
 
     setRegisterData({
-      wallet_address: user.wallet.address
+      wallet_address: user.wallet.address,
+      token: getToken()!
     })
   }, [user?.wallet?.address])
 
