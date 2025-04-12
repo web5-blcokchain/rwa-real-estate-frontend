@@ -85,16 +85,7 @@ function RouteComponent() {
           {data && Array.isArray(data) && data.map((item: any) => (
             <InvestmentCard
               key={item.id}
-              id={item.id}
-              name={item.name}
-              location={item.location}
-              property_type={item.property_type}
-              token_price={item.token_price}
-              tokens_held={item.tokens_held}
-              total_amount={item.total_amount}
-              rental_yield={item.rental_yield}
-              image_urls={item.image_urls}
-              order_type={item.order_type}
+              item={item}
             />
           ))}
         </div>

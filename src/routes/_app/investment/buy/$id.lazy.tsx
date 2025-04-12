@@ -1,4 +1,4 @@
-import apiBasic from '@/api/basicApi'
+import { buyAsset } from '@/api/investment'
 import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
@@ -8,7 +8,7 @@ import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
 
-export const Route = createLazyFileRoute('/_app/properties/payment/$id')({
+export const Route = createLazyFileRoute('/_app/investment/buy/$id')({
   component: RouteComponent
 })
 
@@ -18,13 +18,12 @@ function RouteComponent() {
   const navigate = useNavigate()
 
   const { params } = useMatch({
-    from: '/_app/properties/payment/$id'
+    from: '/_app/investment/buy/$id'
   })
 
   const id = Number.parseInt(params.id)
-  const assets = useCommonDataStore(state => state.assets)
-
-  const assetDetail = assets.get(id)!
+  const investmentItems = useCommonDataStore(state => state.investmentItems)
+  const item = investmentItems.get(id)!
 
   const [tokens, setTokens] = useState(1)
 
@@ -36,38 +35,33 @@ function RouteComponent() {
   }
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async () => {
-      const res = await apiBasic.purchaseBuy({ id: assetDetail.id, number: tokens })
+      const res = await buyAsset({ order_market_id: item.id })
       return res.data
     }
   })
 
-  function payment() {
+  function buy() {
     mutateAsync()
-      .then((transactionId) => {
-        navigate({
-          to: '/transaction/$id',
-          params: {
-            id: `${transactionId}`
-          }
-        })
+      .then((response) => {
+        console.log(response)
       })
   }
 
   useEffect(() => {
-    if (!assetDetail) {
+    if (!item) {
       toast.error(t('properties.payment.asset_not_found'))
       navigate({
-        to: '/properties/detail/$id',
+        to: '/investment/buy/$id',
         params
       })
     }
-  }, [assetDetail, navigate, params, t])
+  }, [item, navigate, params, t])
 
-  if (!assetDetail) {
+  if (!item) {
     return null
   }
 
-  const [imageUrl] = joinImagesPath(assetDetail.image_urls)
+  const [imageUrl] = joinImagesPath(item.image_urls)
 
   return (
     <div className="max-w-7xl p-8 space-y-8">
@@ -78,30 +72,30 @@ function RouteComponent() {
           <IImage src={imageUrl} className="size-full rounded" />
         </div>
         <div>
-          <div className="text-6 font-medium">{assetDetail?.name}</div>
+          <div className="text-6 font-medium">{item?.name}</div>
 
           <div className="grid grid-cols-2 mt-4 gap-x-4">
             <IInfoField
               label={t('properties.detail.location')}
-              value={assetDetail?.address}
+              value={item?.location}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
               label={t('properties.detail.property_type')}
-              value={assetDetail?.property_type}
+              value={item?.property_type}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
               label={t('properties.payment.token_price')}
-              value={assetDetail?.price}
+              value={item?.total_amount}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
               label={t('properties.payment.total')}
-              value={Number(assetDetail?.number) * Number(assetDetail?.price)}
+              value={item.total_amount}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
@@ -205,7 +199,7 @@ function RouteComponent() {
               type="primary"
               size="large"
               className="w-48 disabled:bg-gray-2 text-black!"
-              onClick={payment}
+              onClick={buy}
               loading={false}
               disabled={isPending}
             >

@@ -166,7 +166,6 @@
       "analysis": "賃料収入分析"
     },
     "payment": {
-      "payment_title": "支払確認書",
       "token_price": "トークン価格",
       "total": "総評価",
       "payment_details": "支払資料",
@@ -257,6 +256,11 @@
   },
   "action": {
     "sell": "販売",
-    "payment": "支払い"
+    "payment": "支払い",
+    "confirm_sell": "Confirm Sell"
+  },
+  "common": {
+    "payment_title": "支払確認書",
+    "sell_title": "Sell Confirmation"
   }
 }

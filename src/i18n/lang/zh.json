@@ -169,7 +169,6 @@
       "analysis": "租金收入分析"
     },
     "payment": {
-      "payment_title": "付款确认",
       "token_price": "代币价格",
       "total": "总估值",
       "payment_details": "付款详情",
@@ -260,10 +259,13 @@
     "login_with_email": "使用邮箱登陆"
   },
   "common": {
-    "click_to_change": "点击更换图片"
+    "click_to_change": "点击更换图片",
+    "payment_title": "付款确认",
+    "sell_title": "卖出确认"
   },
   "action": {
     "sell": "卖出",
-    "payment": "支付"
+    "payment": "支付",
+    "confirm_sell": "确认卖出"
   }
 }

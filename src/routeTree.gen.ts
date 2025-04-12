@@ -39,6 +39,12 @@ const AppPropertiesPaymentIdLazyImport = createFileRoute(
 const AppPropertiesDetailIdLazyImport = createFileRoute(
   '/_app/properties/detail/$id',
 )()
+const AppInvestmentSellIdLazyImport = createFileRoute(
+  '/_app/investment/sell/$id',
+)()
+const AppInvestmentBuyIdLazyImport = createFileRoute(
+  '/_app/investment/buy/$id',
+)()
 
 // Create/Update Routes
 
@@ -147,6 +153,22 @@ const AppPropertiesDetailIdLazyRoute = AppPropertiesDetailIdLazyImport.update({
   import('./routes/_app/properties/detail/$id.lazy').then((d) => d.Route),
 )
 
+const AppInvestmentSellIdLazyRoute = AppInvestmentSellIdLazyImport.update({
+  id: '/investment/sell/$id',
+  path: '/investment/sell/$id',
+  getParentRoute: () => AppRoute,
+} as any).lazy(() =>
+  import('./routes/_app/investment/sell/$id.lazy').then((d) => d.Route),
+)
+
+const AppInvestmentBuyIdLazyRoute = AppInvestmentBuyIdLazyImport.update({
+  id: '/investment/buy/$id',
+  path: '/investment/buy/$id',
+  getParentRoute: () => AppRoute,
+} as any).lazy(() =>
+  import('./routes/_app/investment/buy/$id.lazy').then((d) => d.Route),
+)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -207,6 +229,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppPropertiesIndexLazyImport
       parentRoute: typeof AppImport
     }
+    '/_app/investment/buy/$id': {
+      id: '/_app/investment/buy/$id'
+      path: '/investment/buy/$id'
+      fullPath: '/investment/buy/$id'
+      preLoaderRoute: typeof AppInvestmentBuyIdLazyImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/investment/sell/$id': {
+      id: '/_app/investment/sell/$id'
+      path: '/investment/sell/$id'
+      fullPath: '/investment/sell/$id'
+      preLoaderRoute: typeof AppInvestmentSellIdLazyImport
+      parentRoute: typeof AppImport
+    }
     '/_app/properties/detail/$id': {
       id: '/_app/properties/detail/$id'
       path: '/properties/detail/$id'
@@ -255,6 +291,8 @@ interface AppRouteChildren {
   AppInvestmentIndexLazyRoute: typeof AppInvestmentIndexLazyRoute
   AppProfileIndexLazyRoute: typeof AppProfileIndexLazyRoute
   AppPropertiesIndexLazyRoute: typeof AppPropertiesIndexLazyRoute
+  AppInvestmentBuyIdLazyRoute: typeof AppInvestmentBuyIdLazyRoute
+  AppInvestmentSellIdLazyRoute: typeof AppInvestmentSellIdLazyRoute
   AppPropertiesDetailIdLazyRoute: typeof AppPropertiesDetailIdLazyRoute
   AppPropertiesPaymentIdLazyRoute: typeof AppPropertiesPaymentIdLazyRoute
   AppAccountCollectionsIndexLazyRoute: typeof AppAccountCollectionsIndexLazyRoute
@@ -270,6 +308,8 @@ const AppRouteChildren: AppRouteChildren = {
   AppInvestmentIndexLazyRoute: AppInvestmentIndexLazyRoute,
   AppProfileIndexLazyRoute: AppProfileIndexLazyRoute,
   AppPropertiesIndexLazyRoute: AppPropertiesIndexLazyRoute,
+  AppInvestmentBuyIdLazyRoute: AppInvestmentBuyIdLazyRoute,
+  AppInvestmentSellIdLazyRoute: AppInvestmentSellIdLazyRoute,
   AppPropertiesDetailIdLazyRoute: AppPropertiesDetailIdLazyRoute,
   AppPropertiesPaymentIdLazyRoute: AppPropertiesPaymentIdLazyRoute,
   AppAccountCollectionsIndexLazyRoute: AppAccountCollectionsIndexLazyRoute,
@@ -289,6 +329,8 @@ export interface FileRoutesByFullPath {
   '/investment': typeof AppInvestmentIndexLazyRoute
   '/profile': typeof AppProfileIndexLazyRoute
   '/properties': typeof AppPropertiesIndexLazyRoute
+  '/investment/buy/$id': typeof AppInvestmentBuyIdLazyRoute
+  '/investment/sell/$id': typeof AppInvestmentSellIdLazyRoute
   '/properties/detail/$id': typeof AppPropertiesDetailIdLazyRoute
   '/properties/payment/$id': typeof AppPropertiesPaymentIdLazyRoute
   '/account/collections': typeof AppAccountCollectionsIndexLazyRoute
@@ -304,6 +346,8 @@ export interface FileRoutesByTo {
   '/investment': typeof AppInvestmentIndexLazyRoute
   '/profile': typeof AppProfileIndexLazyRoute
   '/properties': typeof AppPropertiesIndexLazyRoute
+  '/investment/buy/$id': typeof AppInvestmentBuyIdLazyRoute
+  '/investment/sell/$id': typeof AppInvestmentSellIdLazyRoute
   '/properties/detail/$id': typeof AppPropertiesDetailIdLazyRoute
   '/properties/payment/$id': typeof AppPropertiesPaymentIdLazyRoute
   '/account/collections': typeof AppAccountCollectionsIndexLazyRoute
@@ -321,6 +365,8 @@ export interface FileRoutesById {
   '/_app/investment/': typeof AppInvestmentIndexLazyRoute
   '/_app/profile/': typeof AppProfileIndexLazyRoute
   '/_app/properties/': typeof AppPropertiesIndexLazyRoute
+  '/_app/investment/buy/$id': typeof AppInvestmentBuyIdLazyRoute
+  '/_app/investment/sell/$id': typeof AppInvestmentSellIdLazyRoute
   '/_app/properties/detail/$id': typeof AppPropertiesDetailIdLazyRoute
   '/_app/properties/payment/$id': typeof AppPropertiesPaymentIdLazyRoute
   '/_app/account/collections/': typeof AppAccountCollectionsIndexLazyRoute
@@ -339,6 +385,8 @@ export interface FileRouteTypes {
     | '/investment'
     | '/profile'
     | '/properties'
+    | '/investment/buy/$id'
+    | '/investment/sell/$id'
     | '/properties/detail/$id'
     | '/properties/payment/$id'
     | '/account/collections'
@@ -353,6 +401,8 @@ export interface FileRouteTypes {
     | '/investment'
     | '/profile'
     | '/properties'
+    | '/investment/buy/$id'
+    | '/investment/sell/$id'
     | '/properties/detail/$id'
     | '/properties/payment/$id'
     | '/account/collections'
@@ -368,6 +418,8 @@ export interface FileRouteTypes {
     | '/_app/investment/'
     | '/_app/profile/'
     | '/_app/properties/'
+    | '/_app/investment/buy/$id'
+    | '/_app/investment/sell/$id'
     | '/_app/properties/detail/$id'
     | '/_app/properties/payment/$id'
     | '/_app/account/collections/'
@@ -407,6 +459,8 @@ export const routeTree = rootRoute
         "/_app/investment/",
         "/_app/profile/",
         "/_app/properties/",
+        "/_app/investment/buy/$id",
+        "/_app/investment/sell/$id",
         "/_app/properties/detail/$id",
         "/_app/properties/payment/$id",
         "/_app/account/collections/",
@@ -440,6 +494,14 @@ export const routeTree = rootRoute
     },
     "/_app/properties/": {
       "filePath": "_app/properties/index.lazy.tsx",
+      "parent": "/_app"
+    },
+    "/_app/investment/buy/$id": {
+      "filePath": "_app/investment/buy/$id.lazy.tsx",
+      "parent": "/_app"
+    },
+    "/_app/investment/sell/$id": {
+      "filePath": "_app/investment/sell/$id.lazy.tsx",
       "parent": "/_app"
     },
     "/_app/properties/detail/$id": {

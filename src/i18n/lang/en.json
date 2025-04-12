@@ -166,7 +166,6 @@
       "analysis": "Rental Income Analysis"
     },
     "payment": {
-      "payment_title": "Payment Confirmation",
       "token_price": "Token Price",
       "total": "Total Valuation",
       "payment_details": "Payment Details",
@@ -258,6 +257,11 @@
   },
   "action": {
     "sell": "Sell",
-    "payment": "Pay"
+    "payment": "Pay",
+    "confirm_sell": "Confirm Sell"
+  },
+  "common": {
+    "payment_title": "Payment Confirmation",
+    "sell_title": "Sell Confirmation"
   }
 }
