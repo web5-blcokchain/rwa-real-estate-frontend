@@ -10,17 +10,23 @@ export default function LoginPrivyPanel() {
   const { setRegisterData } = useUserStore()
 
   const { next } = useSteps()
+  const token = getToken()
 
   useEffect(() => {
-    if (!ready || !authenticated || !user?.wallet) {
+    if (
+      !ready
+      || !authenticated
+      || !user?.wallet
+      || !token
+    ) {
       return
     }
 
     setRegisterData({
-      wallet_address: user.wallet.address,
-      token: getToken()!
+      token: token!,
+      wallet_address: user.wallet.address
     })
-  }, [user?.wallet?.address])
+  }, [user?.wallet?.address, token])
 
   if (!ready) {
     return (
