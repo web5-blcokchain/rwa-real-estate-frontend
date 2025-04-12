@@ -6,7 +6,6 @@ import { joinImagePath } from '@/utils/url'
 import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { Button, Upload } from 'antd'
-
 import UploadCard from '../../upload-card'
 import './individual.scss'
 
@@ -42,7 +41,7 @@ export default function IndividualVerification() {
     }
   })
 
-  const { mutate: createMutate } = useMutation({
+  const { mutate: createMutate, isPending } = useMutation({
     mutationFn: () => apiMyInfo.register({
       ...registerData
     }),
@@ -141,7 +140,12 @@ export default function IndividualVerification() {
         </INotice>
 
         <div className="fec">
-          <Button size="large" className="bg-transparent! text-white! hover:text-primary-1!" onClick={() => createMutate()}>
+          <Button
+            size="large"
+            className="bg-transparent! text-white! hover:text-primary-1!"
+            loading={isPending}
+            onClick={() => createMutate()}
+          >
             {t('create.verification.personal.continue')}
           </Button>
         </div>
