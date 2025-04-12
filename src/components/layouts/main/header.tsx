@@ -109,7 +109,7 @@ function RightMenu() {
   const setUserData = useUserStore(state => state.setUserData)
   const { open } = useGlobalDialogStore()
   const navigate = useNavigate()
-  const { isExist, setExist } = useUserStore()
+  const { setExist } = useUserStore()
 
   const [openLoginDialog, setOpenLoginDialog] = useState(false)
 
@@ -119,9 +119,7 @@ function RightMenu() {
     mutationFn: async () => {
       const res = await apiMyInfoApi.getUserInfo()
 
-      if (_get(res, 'code') === 401) {
-        setExist(false)
-      }
+      setExist(_get(res, 'code') !== 401)
 
       const data = _get(res, 'data', {})
       setUserData(data)
@@ -132,7 +130,7 @@ function RightMenu() {
   })
 
   useEffect(() => {
-    if (!authenticated || !isExist)
+    if (!authenticated)
       return
 
     mutate()
@@ -147,7 +145,7 @@ function RightMenu() {
     if (openLoginDialog) {
       setOpenLoginDialog(false)
     }
-  }, [isExist, authenticated, user, mutate])
+  }, [authenticated, user, mutate])
 
   return (
     <>
