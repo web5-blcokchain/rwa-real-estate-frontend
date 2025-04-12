@@ -92,8 +92,7 @@
       "next": "Next",
       "link_email": "Bind the email"
     },
-    "step3": "Identity Verification",
-    "step2": "Complete account information",
+    "step2": "Identity Verification",
     "step1": "Log in to Privy",
     "logged_in_privy": "Logged in Privy",
     "message": {

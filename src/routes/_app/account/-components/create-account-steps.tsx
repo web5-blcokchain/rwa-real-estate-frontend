@@ -11,12 +11,8 @@ export default function CreateAccountSteps() {
       title: `${t('create.step1')}`
     },
     {
-      step: CreateAccountStep.CompleteAccount,
-      title: `${t('create.step2')}`
-    },
-    {
       step: CreateAccountStep.Verification,
-      title: `${t('create.step3')}`
+      title: `${t('create.step2')}`
     }
   ]
 
