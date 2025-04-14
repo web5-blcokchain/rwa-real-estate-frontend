@@ -30,7 +30,7 @@ export const ImageSwiper: FC<{
         {
           list.map(url => (
             <SwiperSlide key={url}>
-              <img src={url} />
+              <img src={url} className="object-cover max-h-128!" />
             </SwiperSlide>
           ))
         }
@@ -47,7 +47,7 @@ export const ImageSwiper: FC<{
         {
           list.map(url => (
             <SwiperSlide key={url}>
-              <img src={url} />
+              <img src={url} className="object-cover size-24!" />
             </SwiperSlide>
           ))
         }
