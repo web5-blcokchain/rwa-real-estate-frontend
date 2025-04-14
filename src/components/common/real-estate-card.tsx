@@ -43,6 +43,7 @@ export const RealEstateCard: FC<{
         <CollectButton
           houseId={houseId}
           collect={collect}
+          queryKey={['properties']}
           className="absolute right-4 top-4"
         />
       </div>
