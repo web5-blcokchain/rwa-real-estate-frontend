@@ -1,7 +1,10 @@
+import apiBasic from '@/api/basicApi'
 import { Banner } from '@/components/common/banner'
 import Card from '@/components/home/card'
 
 import FeatureCard from '@/components/home/feature-card'
+import { joinImagesPath } from '@/utils/url'
+import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
 
 export const Route = createLazyFileRoute('/_app/home/')({
@@ -11,6 +14,18 @@ export const Route = createLazyFileRoute('/_app/home/')({
 function RouteComponent() {
   const { t } = useTranslation()
   const navigate = useNavigate()
+
+  const {
+    data: propertieList,
+    isLoading: propertieLoading
+  } = useQuery({
+    queryKey: ['properties', 1],
+    queryFn: async () => {
+      const res = await apiBasic.getDataList({ page: 1 })
+      const list = _get(res.data, 'list', []) as any[]
+      return list.slice(0, 3)
+    }
+  })
 
   const cards = [
     {
@@ -27,33 +42,6 @@ function RouteComponent() {
       icon: 'double-arrow',
       title: `${t('home.route.investment')}`,
       content: `${t('home.route.investment_content')}`
-    }
-  ]
-
-  const featureCards = [
-    {
-      picture: new URL('@/assets/images/feature-card.png', import.meta.url).href,
-      title: 'Tokyo Luxury Apartment',
-      location: 'Minato-ku, Tokyo',
-      price: 80,
-      tokenPrice: 1000,
-      apy: 8.5
-    },
-    {
-      picture: new URL('@/assets/images/feature-card.png', import.meta.url).href,
-      title: 'Osaka Office Complex',
-      location: 'Chuo-ku, Osaka',
-      price: 120,
-      tokenPrice: 2000,
-      apy: 7.2
-    },
-    {
-      picture: new URL('@/assets/images/feature-card.png', import.meta.url).href,
-      title: 'Ginza Commercial Center',
-      location: 'Ginza, Tokyo',
-      price: 200,
-      tokenPrice: 5000,
-      apy: 9.1
     }
   ]
 
@@ -105,16 +93,36 @@ function RouteComponent() {
       <div className="mt-32 px-8">
         <div className="text-center text-7.5">{t('home.featured')}</div>
 
-        <div className="grid grid-cols-1 mt-8 gap-7 md:grid-cols-3">
-          {
-            featureCards.map((card, i) => (
-              <FeatureCard
-                key={i}
-                {...card}
-              />
-            ))
-          }
-        </div>
+        <Waiting for={!propertieLoading}>
+          <div className="grid grid-cols-1 mt-8 gap-7 md:grid-cols-3">
+            {
+              propertieList && propertieList.map((card) => {
+                console.log(card)
+                const [picture] = joinImagesPath(card.image_urls)
+                return (
+                  <FeatureCard
+                    key={card.id}
+                    picture={picture}
+                    title={card.name}
+                    location={card.address}
+                    price={card.price}
+                    house_life={card.house_life}
+                    bedrooms={card.bedrooms}
+                    className="select-none clickable-99"
+                    onClick={() => {
+                      navigate({
+                        to: '/properties/detail/$id',
+                        params: {
+                          id: card.id
+                        }
+                      })
+                    }}
+                  />
+                )
+              })
+            }
+          </div>
+        </Waiting>
       </div>
 
       <div className="mt-32 bg-[#242933] px-8 py-14">
