@@ -93,7 +93,11 @@ function RouteComponent() {
       <div className="mt-32 px-8">
         <div className="text-center text-7.5">{t('home.featured')}</div>
 
-        <Waiting for={!propertieLoading}>
+        <Waiting
+          for={!propertieLoading}
+          className="h-32 fcc"
+          iconClass="size-8"
+        >
           <div className="grid grid-cols-1 mt-8 gap-7 md:grid-cols-3">
             {
               propertieList && propertieList.map((card) => {
