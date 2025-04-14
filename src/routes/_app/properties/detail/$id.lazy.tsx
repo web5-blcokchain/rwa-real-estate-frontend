@@ -1,5 +1,6 @@
 import type { DetailResponse } from '@/api/basicApi'
 import apiBasic from '@/api/basicApi'
+import { CollectButton } from '@/components/common/collect-button'
 import { IInfoField } from '@/components/common/i-info-field'
 import { ImageSwiper } from '@/components/common/image-swiper'
 import { useCommonDataStore } from '@/stores/common-data'
@@ -30,6 +31,7 @@ function RouteComponent() {
   const [investmentPrice, setInvestmentPrice] = useState<number>(0)
   const [annualReturn, setAnnualReturn] = useState<number>(0)
   const [ratioNum, setRatioNum] = useState<number>(0)
+  const [isCollect, setIsCollect] = useState<0 | 1>(0)
 
   const { data: assetDetail, isLoading } = useQuery<DetailResponse>({
     queryKey: ['property-detail', assetId],
@@ -54,6 +56,7 @@ function RouteComponent() {
 
     setAnnualReturn(annualReturnValue)
     setRatioNum(20)
+    setIsCollect(assetDetail.is_collect)
     // setRatioNum(Number(((investmentPrice * 12) / (rentalNum + capitalNum)) * 100))
   }, [investmentPrice, assetDetail])
 
@@ -80,8 +83,12 @@ function RouteComponent() {
                 <div className="text-6">{assetDetail?.name}</div>
                 <div className="text-4 text-[#d9d9d9]">{assetDetail?.address}</div>
               </div>
-              <div className="size-10 fcc shrink-0 rounded-full bg-primary clickable">
-                <div className="i-ic-round-favorite-border"></div>
+
+              <div className="pr">
+                <CollectButton
+                  houseId={assetId}
+                  collect={isCollect}
+                />
               </div>
             </div>
 

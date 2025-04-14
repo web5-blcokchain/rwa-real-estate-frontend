@@ -49,6 +49,7 @@ export interface DetailResponse {
   status: string
   updated_date: string
   valuation_report: string
+  is_collect: 0 | 1
 }
 
 // 详情接口参数
