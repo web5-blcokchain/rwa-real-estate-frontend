@@ -13,7 +13,6 @@ const SelectComponent: FC<SelectProps> = ({
         'custom-select',
         className
       )}
-      dropdownStyle={{ backgroundColor: '#242933' }}
       {...props}
     />
   )
