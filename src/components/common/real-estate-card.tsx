@@ -43,6 +43,7 @@ export const RealEstateCard: FC<{
         <CollectButton
           houseId={houseId}
           collect={collect}
+          className="absolute right-4 top-4"
         />
       </div>
       <div className="px-6 py-8 space-y-2">
