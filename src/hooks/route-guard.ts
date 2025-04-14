@@ -22,7 +22,8 @@ export function useRouteGuard() {
     const whiteList = [
       '/',
       '/home',
-      '/account/create'
+      '/account/create',
+      '/properties'
     ]
 
     const currentPath = location.pathname
