@@ -5,9 +5,10 @@ import button2 from '@/assets/icons/BUTTON2-2.png'
 import button3 from '@/assets/icons/BUTTON3.png'
 import frame115 from '@/assets/icons/Frame115.png'
 import group272Icon from '@/assets/icons/group272.png'
-import { useQuery } from '@tanstack/react-query'
+import { usePrivy } from '@privy-io/react-auth'
 
-import { Space, Spin } from 'antd'
+import { useQuery } from '@tanstack/react-query'
+import { Space } from 'antd'
 import DataCount from '../-components/dataCount'
 import TableComponent from '../../common/table-component'
 
@@ -121,6 +122,8 @@ function Overview() {
   // const [page, setPage] = useState<number>(1)
   // const [pageSize, setPageSize] = useState<number>(20)
 
+  const { ready, authenticated, user } = usePrivy()
+
   const { data: overviewData, isLoading } = useQuery({
     queryKey: ['overview'],
     queryFn: async () => {
@@ -139,15 +142,27 @@ function Overview() {
 
   if (isLoading || historyLoading) {
     return (
-      <div className="w-full p-8 h-dvh">
-        <Spin />
-      </div>
+      <Waiting
+        className="h-32 fcc"
+        iconClass="size-8"
+      >
+      </Waiting>
     )
   }
 
   return (
-    <div>
+    <div className="space-y-8">
       <DataCount />
+
+      <Waiting for={ready && authenticated} className="h-16 fcc">
+        <div className="rounded-xl bg-[#1e2024] p-4">
+          <div className="fbc text-4">
+            <div>Wallet Address</div>
+            <div>{user?.wallet?.address}</div>
+          </div>
+        </div>
+      </Waiting>
+
       <TableComponent
         columns={columns}
         data={overviewData || []}
