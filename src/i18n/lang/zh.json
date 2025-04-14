@@ -220,11 +220,11 @@
     "menu_property_tokens": "属性",
     "menu_earnings": "收益",
     "menu_history": "历史",
-    "menu_security": "安全",
     "toyota_camry": "Toyota Camry",
     "toyota_balance": "Toyota Balance",
     "monthly_rental_income": "每月租金收入（日元）",
-    "annual_yield": "每年的产量"
+    "annual_yield": "每年的产量",
+    "menu_transaction_history": "交易记录"
   },
   "footer": {
     "about": "关于",
@@ -267,5 +267,12 @@
     "sell": "卖出",
     "payment": "支付",
     "confirm_sell": "确认卖出"
+  },
+  "profile": {
+    "transactions": {
+      "search": "搜索地址",
+      "start_date": "开始日期",
+      "end_date": "结束日期"
+    }
   }
 }

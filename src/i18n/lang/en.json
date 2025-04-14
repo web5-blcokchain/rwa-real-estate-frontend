@@ -217,11 +217,11 @@
     "menu_property_tokens": "Property Tokens",
     "menu_earnings": "earnings",
     "menu_history": "history",
-    "menu_security": "security",
     "toyota_camry": "Toyota Camry",
     "toyota_balance": "Toyota Balance",
     "monthly_rental_income": "Monthly Rental Income(JPY)",
-    "annual_yield": "Annual Yield"
+    "annual_yield": "Annual Yield",
+    "menu_transaction_history": "transactions"
   },
   "footer": {
     "about": "About",
@@ -263,5 +263,12 @@
   "common": {
     "payment_title": "Payment Confirmation",
     "sell_title": "Sell Confirmation"
+  },
+  "profile": {
+    "transactions": {
+      "search": "Search address",
+      "start_date": "Start date",
+      "end_date": "End date"
+    }
   }
 }

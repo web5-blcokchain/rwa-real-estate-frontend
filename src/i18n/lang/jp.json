@@ -217,11 +217,11 @@
     "menu_property_tokens": "不動産トークン",
     "menu_earnings": "収入",
     "menu_history": "履歴",
-    "menu_security": "セキュリティ",
     "toyota_camry": "Toyota Camry",
     "toyota_balance": "Toyota Balance",
     "monthly_rental_income": "家賃収入（円）",
-    "annual_yield": "年間生産高"
+    "annual_yield": "年間生産高",
+    "menu_transaction_history": "取引記録"
   },
   "footer": {
     "about": "について",
@@ -262,5 +262,12 @@
   "common": {
     "payment_title": "支払確認書",
     "sell_title": "Sell Confirmation"
+  },
+  "profile": {
+    "transactions": {
+      "search": "アドレスの検索",
+      "start_date": "何日から",
+      "end_date": "何日まで"
+    }
   }
 }

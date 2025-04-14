@@ -4,7 +4,7 @@ import Earnings from '@/components/profile/earnings/earnings'
 import History from '@/components/profile/history/history'
 import Overview from '@/components/profile/overview/overview'
 import PropertyTokens from '@/components/profile/propertyTokens/propertyTokens'
-import Security from '@/components/profile/security/security'
+import Transactions from '@/components/profile/transactions'
 
 import { useUserStore } from '@/stores/user'
 import { joinImagePath } from '@/utils/url'
@@ -45,7 +45,7 @@ function RouteComponent() {
     getItem(`${t('aboutMe.menu_property_tokens')}`, '2'),
     getItem(`${t('aboutMe.menu_earnings')}`, '3'),
     getItem(`${t('aboutMe.menu_history')}`, '4'),
-    getItem(`${t('aboutMe.menu_security')}`, '5')
+    getItem(`${t('aboutMe.menu_transaction_history')}`, '5')
   ]
 
   const handleMenuClick: MenuProps['onClick'] = (e) => {
@@ -67,7 +67,7 @@ function RouteComponent() {
       case '4':
         return <History />
       case '5':
-        return <Security />
+        return <Transactions />
       default:
         return <Overview />
     }
