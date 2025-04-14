@@ -2,7 +2,7 @@ import { Banner } from '@/components/common/banner'
 import Card from '@/components/home/card'
 
 import FeatureCard from '@/components/home/feature-card'
-import { createLazyFileRoute } from '@tanstack/react-router'
+import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
 
 export const Route = createLazyFileRoute('/_app/home/')({
   component: RouteComponent
@@ -10,6 +10,8 @@ export const Route = createLazyFileRoute('/_app/home/')({
 
 function RouteComponent() {
   const { t } = useTranslation()
+  const navigate = useNavigate()
+
   const cards = [
     {
       icon: 'pie-chart',
@@ -167,11 +169,19 @@ function RouteComponent() {
           {t('home.ready.content')}
         </div>
         <div className="space-x-4 md:space-x-6">
-          <button className="rounded-md bg-text px-6 py-2 text-background md:px-8 md:py-3">
+          <button
+            className="rounded-md bg-text px-6 py-2 text-background md:px-8 md:py-3"
+            onClick={() => {
+              navigate({ to: '/investment' })
+            }}
+          >
             {t('home.ready.button')}
-            {' '}
           </button>
-          <button className="rounded-md bg-background-secondary px-6 py-2 text-text md:px-8 md:py-3">{t('home.ready.button2')}</button>
+          <button
+            className="rounded-md bg-background-secondary px-6 py-2 text-text md:px-8 md:py-3"
+          >
+            {t('home.ready.button2')}
+          </button>
         </div>
       </div>
     </div>
