@@ -1,12 +1,13 @@
 import type { MenuProps } from 'antd'
-import maskGroup from '@/assets/images/mask-group.png'
+import { IImage } from '@/components/common/i-image'
 import Earnings from '@/components/profile/earnings/earnings'
 import History from '@/components/profile/history/history'
 import Overview from '@/components/profile/overview/overview'
 import PropertyTokens from '@/components/profile/propertyTokens/propertyTokens'
 import Security from '@/components/profile/security/security'
-import { useUserStore } from '@/stores/user'
 
+import { useUserStore } from '@/stores/user'
+import { joinImagePath } from '@/utils/url'
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { Layout, Menu } from 'antd'
 import React from 'react'
@@ -15,8 +16,6 @@ import './styles.scss'
 export const Route = createLazyFileRoute('/_app/profile/')({
   component: RouteComponent
 })
-
-const baseUrl = import.meta.env.VITE_PUBLIC_API_URL
 
 const { Content, Sider } = Layout
 
@@ -78,8 +77,12 @@ function RouteComponent() {
     <Layout className="aboutMe">
       <Sider className="sider bg-[#181a1e]">
         <div className="flex justify-start pb-4 pr-4 pt-4">
-          <div className="img-wrap h-16 w-16">
-            <img src={`${baseUrl}${userData?.avatar}` || maskGroup} alt="" className="bg-[#797b80]" style={{ width: '100%', height: '100%' }} />
+          <div className="img-wrap size-16 shrink-0">
+            <IImage
+              src={joinImagePath(userData?.avatar)}
+              alt="avatar"
+              className="size-full shrink-0 bg-[#797b80]"
+            />
           </div>
           <div className="justify-space-between ml-3 mt-1 flex flex-col">
             <div className="text-[#b5b5b5]">{t('aboutMe.welcome')}</div>
