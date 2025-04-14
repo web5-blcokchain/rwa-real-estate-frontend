@@ -14,6 +14,7 @@ export const IImage: FC<
   ...props
 }) => {
   const [loading, setLoading] = useState(true)
+  const [isFailed, setFailed] = useState(false)
 
   const handleLoad = (e: SyntheticEvent<HTMLImageElement, Event>) => {
     setLoading(false)
@@ -21,6 +22,7 @@ export const IImage: FC<
   }
 
   const handleError = () => {
+    setFailed(true)
     setLoading(false)
   }
 
@@ -39,15 +41,26 @@ export const IImage: FC<
           </div>
         )
       }
-      <img
-        src={src}
-        className={cn(
-          'size-full',
-          imgClass
-        )}
-        onLoad={handleLoad}
-        onError={handleError}
-      />
+      {
+        isFailed
+          ? (
+              <div className="pa inset-0 fcc bg-background-secondary">
+                <div className="i-material-symbols-image-not-supported-outline-rounded size-[30%] bg-gray-3"></div>
+              </div>
+            )
+          : (
+              <img
+                src={src}
+                className={cn(
+                  'size-full',
+                  imgClass
+                )}
+                onLoad={handleLoad}
+                onError={handleError}
+              />
+            )
+      }
+
     </div>
   )
 }
