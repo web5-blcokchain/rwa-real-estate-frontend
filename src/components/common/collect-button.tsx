@@ -6,7 +6,8 @@ export const CollectButton: FC<{
   collect: 0 | 1
 } & React.HTMLAttributes<HTMLDivElement>> = ({
   houseId,
-  collect
+  collect,
+  className
 }) => {
   const queryClient = useQueryClient()
 
@@ -34,9 +35,10 @@ export const CollectButton: FC<{
   return (
     <div
       className={cn(
-        'absolute right-4 top-4 size-8 rounded-full',
+        'size-8 rounded-full',
         'flex items-center justify-center',
         'clickable',
+        className,
         collect ? 'bg-white' : 'bg-primary'
       )}
     >
