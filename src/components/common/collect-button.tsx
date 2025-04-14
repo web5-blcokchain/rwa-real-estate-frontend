@@ -10,9 +10,10 @@ export const CollectButton: FC<{
   className
 }) => {
   const queryClient = useQueryClient()
+  const [defaultValue, setDefaultValue] = useState(collect)
 
   const {
-    mutate: collectMutate,
+    mutateAsync: collectMutate,
     isPending: collectIsPending
   } = useMutation({
     mutationFn: async () => {
@@ -22,7 +23,7 @@ export const CollectButton: FC<{
     }
   })
   const {
-    mutate: unCollectMutate,
+    mutateAsync: unCollectMutate,
     isPending: unCollectIsPending
   } = useMutation({
     mutationFn: async () => {
@@ -39,23 +40,23 @@ export const CollectButton: FC<{
         'flex items-center justify-center',
         'clickable',
         className,
-        collect ? 'bg-white' : 'bg-primary'
+        defaultValue ? 'bg-white' : 'bg-primary'
       )}
     >
       <Waiting
         for={!(queryClient.isFetching({ queryKey: ['properties'] }) || collectIsPending || unCollectIsPending)}
         iconClass={cn(
-          collect ? 'bg-black' : 'bg-white'
+          defaultValue ? 'bg-black' : 'bg-white'
         )}
       >
         <div
           className={cn(
             'size-5',
-            collect
+            defaultValue
               ? 'i-material-symbols-check-rounded bg-gray'
               : 'i-ic-round-favorite-border text-white'
           )}
-          onClick={(e) => {
+          onClick={async (e) => {
             e.stopPropagation()
             e.preventDefault()
 
@@ -63,12 +64,14 @@ export const CollectButton: FC<{
               return
             }
 
-            if (collect) {
-              unCollectMutate()
+            if (defaultValue) {
+              await unCollectMutate()
             }
             else {
-              collectMutate()
+              await collectMutate()
             }
+
+            setDefaultValue(defaultValue ? 0 : 1)
           }}
         >
         </div>
