@@ -57,8 +57,12 @@ export const InvestmentCard: FC<InvestmentCardProps> = ({
     <div
       className="fyc gap-8 bg-[#1e2024] p-6 space-y-4"
     >
-      <div className="w-84 shrink-0 overflow-hidden rounded-lg">
-        <IImage src={firstImage} className="size-full" />
+      <div className="h-64 w-84 shrink-0 overflow-hidden rounded-lg">
+        <IImage
+          src={firstImage}
+          className="size-full"
+          imgClass="object-cover"
+        />
       </div>
 
       <div className="h-full w-full">
