@@ -4,9 +4,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 export const CollectButton: FC<{
   houseId: number
   collect: 0 | 1
+  queryKey?: string[]
 } & React.HTMLAttributes<HTMLDivElement>> = ({
   houseId,
   collect,
+  queryKey,
   className
 }) => {
   const queryClient = useQueryClient()
@@ -18,7 +20,9 @@ export const CollectButton: FC<{
   } = useMutation({
     mutationFn: async () => {
       const res = await basicApi.setCollect({ id: `${houseId}` })
-      queryClient.invalidateQueries({ queryKey: ['properties'] })
+      if (queryKey) {
+        await queryClient.refetchQueries({ queryKey })
+      }
       return res.data
     }
   })
@@ -28,10 +32,14 @@ export const CollectButton: FC<{
   } = useMutation({
     mutationFn: async () => {
       const res = await basicApi.setUnCollect({ id: `${houseId}` })
-      queryClient.invalidateQueries({ queryKey: ['properties'] })
+      if (queryKey) {
+        await queryClient.refetchQueries({ queryKey })
+      }
       return res.data
     }
   })
+
+  const isLoading = (queryKey && queryClient.isFetching({ queryKey }) > 0) || collectIsPending || unCollectIsPending
 
   return (
     <div
@@ -44,7 +52,7 @@ export const CollectButton: FC<{
       )}
     >
       <Waiting
-        for={!(queryClient.isFetching({ queryKey: ['properties'] }) || collectIsPending || unCollectIsPending)}
+        for={!isLoading}
         iconClass={cn(
           defaultValue ? 'bg-black' : 'bg-white'
         )}
@@ -60,7 +68,7 @@ export const CollectButton: FC<{
             e.stopPropagation()
             e.preventDefault()
 
-            if (queryClient.isFetching({ queryKey: ['properties'] }) || collectIsPending || unCollectIsPending) {
+            if (isLoading) {
               return
             }
 
