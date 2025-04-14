@@ -35,7 +35,7 @@ function RouteComponent() {
     queryKey: ['property-detail', assetId],
     queryFn: async () => {
       const response = await apiBasic.getDataListDetail({ id: assetId })
-      return response.data
+      return response.data!
     }
   })
 
