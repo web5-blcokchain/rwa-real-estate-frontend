@@ -121,7 +121,8 @@ function RightMenu() {
 
   const { ready, authenticated, user, getAccessToken } = usePrivy()
 
-  const { mutate } = useMutation({
+  const { mutateAsync } = useMutation({
+    mutationKey: ['getUserInfo'],
     mutationFn: async () => {
       const res = await apiMyInfoApi.getUserInfo()
 
@@ -139,19 +140,21 @@ function RightMenu() {
     if (!authenticated)
       return
 
-    mutate()
+    Promise.all([
+      mutateAsync(),
+      getAccessToken().then((token) => {
+        if (!token)
+          return
 
-    getAccessToken().then((token) => {
-      if (!token)
-        return
-
-      setToken(token, 2)
-    })
-
-    if (openLoginDialog) {
-      setOpenLoginDialog(false)
-    }
-  }, [authenticated, user, mutate])
+        setToken(token, 2)
+      })
+    ])
+      .then(() => {
+        if (openLoginDialog) {
+          setOpenLoginDialog(false)
+        }
+      })
+  }, [authenticated, user, mutateAsync])
 
   return (
     <>
