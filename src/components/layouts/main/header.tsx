@@ -4,6 +4,7 @@ import { LoginDialog } from '@/components/dialog/login'
 import { useGlobalDialogStore } from '@/stores/global-dialog'
 import { useUserStore } from '@/stores/user'
 import { clearToken, setToken } from '@/utils/user'
+import { shortAddress } from '@/utils/wallet'
 import { usePrivy } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
 import { Link, useLocation, useNavigate } from '@tanstack/react-router'
@@ -110,7 +111,7 @@ function NavMenu({ className }: { className?: string }) {
 
 function RightMenu() {
   const { t } = useTranslation()
-  const [userObj, setUserObj] = useState<Record<string, any>>()
+  const [, setUserObj] = useState<Record<string, any>>()
   const setUserData = useUserStore(state => state.setUserData)
   const { open } = useGlobalDialogStore()
   const navigate = useNavigate()
@@ -182,7 +183,7 @@ function RightMenu() {
             {
               authenticated
                 ? (
-                    <UserMenu nickname={userObj?.nickname} />
+                    <UserMenu />
                   )
                 : (
                     <div className="w-full fec space-x-4">
@@ -212,13 +213,9 @@ function RightMenu() {
   )
 }
 
-const UserMenu: FC<{
-  nickname: string
-}> = ({
-  nickname
-}) => {
+const UserMenu: FC = () => {
   const navigate = useNavigate()
-  const { logout } = usePrivy()
+  const { logout, user } = usePrivy()
   const { t } = useTranslation()
   const { setExist, setUserData } = useUserStore()
 
@@ -260,7 +257,9 @@ const UserMenu: FC<{
     <Dropdown menu={{ items }} placement="bottomRight">
       <div className="fyc gap-1 clickable">
         <div className="i-material-symbols-account-circle-outline size-5 bg-white"></div>
-        <div className="text-4 text-white">{nickname || ''}</div>
+        <div className="text-4 text-white">
+          {shortAddress(_get(user?.wallet, 'address', ''))}
+        </div>
         <div className="i-ic-round-keyboard-arrow-down size-5 bg-white"></div>
       </div>
     </Dropdown>
