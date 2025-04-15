@@ -22,6 +22,7 @@ export function useRouteGuard() {
     const whiteList = [
       '/',
       '/home',
+      '/about',
       '/account/create',
       '/properties'
     ]
