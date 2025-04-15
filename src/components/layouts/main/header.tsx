@@ -178,30 +178,32 @@ function RightMenu() {
         </div>
 
         <Waiting for={ready}>
-          {
-            authenticated
-              ? (
-                  <UserMenu nickname={userObj?.nickname} />
-                )
-              : (
-                  <div className="space-x-4">
-                    <Button
-                      className="text-white bg-transparent!"
-                      onClick={() => setOpenLoginDialog(true)}
-                    >
-                      {t('header.login')}
-                    </Button>
-                    <Button
-                      className="text-white bg-transparent!"
-                      onClick={() => navigate({
-                        to: '/account/create'
-                      })}
-                    >
-                      {t('header.register')}
-                    </Button>
-                  </div>
-                )
-          }
+          <div className="w-full fec">
+            {
+              authenticated
+                ? (
+                    <UserMenu nickname={userObj?.nickname} />
+                  )
+                : (
+                    <div className="w-full fec space-x-4">
+                      <Button
+                        className="text-white bg-transparent!"
+                        onClick={() => setOpenLoginDialog(true)}
+                      >
+                        {t('header.login')}
+                      </Button>
+                      <Button
+                        className="text-white bg-transparent!"
+                        onClick={() => navigate({
+                          to: '/account/create'
+                        })}
+                      >
+                        {t('header.register')}
+                      </Button>
+                    </div>
+                  )
+            }
+          </div>
         </Waiting>
       </div>
 
