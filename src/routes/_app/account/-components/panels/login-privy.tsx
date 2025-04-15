@@ -24,9 +24,10 @@ export default function LoginPrivyPanel() {
 
     setRegisterData({
       token: token!,
-      wallet_address: user.wallet.address
+      wallet_address: user.wallet.address,
+      email: user.email?.address
     })
-  }, [user?.wallet?.address, token])
+  }, [user?.email?.address, user?.wallet?.address, token])
 
   if (!ready) {
     return (
