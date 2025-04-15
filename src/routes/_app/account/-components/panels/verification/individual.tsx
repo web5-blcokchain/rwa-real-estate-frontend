@@ -43,11 +43,7 @@ export default function IndividualVerification() {
 
   const { mutate: createMutate, isPending } = useMutation({
     mutationFn: () => apiMyInfo.register({
-      ...registerData,
-      email: 'test7@imba97.cn',
-      // TODO: 接口去掉必填验证
-      mobile: '13000000008',
-      password: 'aA123456'
+      ...registerData
     }),
     onSuccess: () => {
       toast.success(t('create.message.create_success'))
