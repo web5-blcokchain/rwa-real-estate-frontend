@@ -149,49 +149,56 @@ function RightMenu() {
 
   return (
     <>
-      <LanguageSelect />
-      <div
-        className="i-material-symbols-help-outline size-5 bg-white clickable"
-        onClick={() => open('help')}
-      >
-      </div>
-      <div className="i-material-symbols-notifications-outline size-5 bg-white"></div>
-      <div
-        className="i-material-symbols-favorite-outline-rounded size-5 bg-white clickable"
-        onClick={
-          () => navigate({
-            to: '/account/collections'
-          })
-        }
-      >
-      </div>
+      <div className="flex flex-col items-center justify-end gap-4 md:flex-row">
+        <div className="fyc gap-4">
+          <LanguageSelect />
 
-      <Waiting for={ready}>
-        {
-          authenticated
-            ? (
-                <UserMenu nickname={userObj?.nickname} />
-              )
-            : (
-                <div className="space-x-4">
-                  <Button
-                    className="text-white bg-transparent!"
-                    onClick={() => setOpenLoginDialog(true)}
-                  >
-                    {t('header.login')}
-                  </Button>
-                  <Button
-                    className="text-white bg-transparent!"
-                    onClick={() => navigate({
-                      to: '/account/create'
-                    })}
-                  >
-                    {t('header.register')}
-                  </Button>
-                </div>
-              )
-        }
-      </Waiting>
+          <div className="fyc gap-4">
+            <div
+              className="i-material-symbols-help-outline size-5 bg-white clickable"
+              onClick={() => open('help')}
+            >
+            </div>
+            <div className="i-material-symbols-notifications-outline size-5 bg-white"></div>
+            <div
+              className="i-material-symbols-favorite-outline-rounded size-5 bg-white clickable"
+              onClick={
+                () => navigate({
+                  to: '/account/collections'
+                })
+              }
+            >
+            </div>
+          </div>
+        </div>
+
+        <Waiting for={ready}>
+          {
+            authenticated
+              ? (
+                  <UserMenu nickname={userObj?.nickname} />
+                )
+              : (
+                  <div className="space-x-4">
+                    <Button
+                      className="text-white bg-transparent!"
+                      onClick={() => setOpenLoginDialog(true)}
+                    >
+                      {t('header.login')}
+                    </Button>
+                    <Button
+                      className="text-white bg-transparent!"
+                      onClick={() => navigate({
+                        to: '/account/create'
+                      })}
+                    >
+                      {t('header.register')}
+                    </Button>
+                  </div>
+                )
+          }
+        </Waiting>
+      </div>
 
       <LoginDialog openState={[openLoginDialog, setOpenLoginDialog]} />
     </>
