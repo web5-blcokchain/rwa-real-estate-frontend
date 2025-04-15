@@ -68,10 +68,11 @@ export const InvestmentCard: FC<InvestmentCardProps> = ({
       <div className="h-full w-full">
         <div className="text-5 font-medium">{item.name}</div>
 
-        <div className="fbc">
+        <div className="fb gap-4">
           <IInfoField
             label={t('properties.detail.location')}
             value={item.location}
+            className="w-1/2"
             labelClass="text-[#898989]"
             valueClass="text-white"
           />
