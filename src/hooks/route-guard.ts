@@ -35,8 +35,8 @@ export function useRouteGuard() {
 
     // 如果用户已登录，且当前路径在黑名单中，则重定向到首页
     if (
-      isExist
-      && loggedInBlackList.includes(currentPath)) {
+      isExist && loggedInBlackList.includes(currentPath)
+    ) {
       navigate({
         to: '/'
       })
