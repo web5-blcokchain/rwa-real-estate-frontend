@@ -12,6 +12,7 @@ import { Button, Drawer, Dropdown } from 'antd'
 export default function MainHeader() {
   const [open, setOpen] = useState(false)
   const { t } = useTranslation()
+  const { pathname } = useLocation()
 
   const showDrawer = () => {
     setOpen(true)
@@ -20,6 +21,10 @@ export default function MainHeader() {
   const onClose = () => {
     setOpen(false)
   }
+
+  useEffect(() => {
+    onClose()
+  }, [pathname])
 
   return (
     <header className="sticky left-0 top-0 z-10 h-32 fbc bg-background px-8 text-text">
