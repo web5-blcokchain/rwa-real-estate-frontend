@@ -26,7 +26,20 @@ export function useRouteGuard() {
       '/properties'
     ]
 
+    const loggedInBlackList = [
+      '/account/create'
+    ]
+
     const currentPath = location.pathname
+
+    // 如果用户已登录，且当前路径在黑名单中，则重定向到首页
+    if (
+      (token || isExist)
+      && loggedInBlackList.includes(currentPath)) {
+      navigate({
+        to: '/'
+      })
+    }
 
     const isWhiteListed = whiteList.includes(currentPath)
 
