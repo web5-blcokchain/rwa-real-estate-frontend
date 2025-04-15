@@ -45,7 +45,7 @@ export const LoginDialog: FC<{
       className="login-dialog"
       onCancel={() => setOpen(false)}
     >
-      <div className="mx-a w-128 py-16">
+      <div className="mx-a max-w-128 w-full py-16">
         <div className="text-center text-8 font-medium">Great to have you back!</div>
         <div className="text-center text-4 text-[#898989]">Start your digital asset journey</div>
 
