@@ -17,7 +17,7 @@ interface StoreState {
 
 const store: StateCreator<StoreState, [], [['zustand/persist', StoreState]]> = persist(
   set => ({
-    isExist: true,
+    isExist: false,
     language: 'en',
     userData: {} as UserResponse,
     registerData: {} as RegisterParams,
