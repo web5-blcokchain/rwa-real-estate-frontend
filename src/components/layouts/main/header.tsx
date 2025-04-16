@@ -227,9 +227,16 @@ const UserMenu: FC = () => {
 
   async function handleLogout() {
     logout()
-    clearToken()
-    setUserData({})
-    setCode(UserCode.NotExist)
+      .then(
+        () => navigate({
+          to: '/home'
+        })
+      )
+      .then(() => {
+        clearToken()
+        setUserData({})
+        setCode(UserCode.NotExist)
+      })
   }
 
   const items: MenuProps['items'] = [
