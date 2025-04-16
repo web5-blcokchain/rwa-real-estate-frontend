@@ -1,6 +1,7 @@
 import type { UploadProps } from 'antd'
 import apiMyInfo from '@/api/apiMyInfoApi'
 import INotice from '@/components/common/i-notice'
+import { UserCode } from '@/enums/user'
 import { useUserStore } from '@/stores/user'
 import { joinImagePath } from '@/utils/url'
 import { useMutation } from '@tanstack/react-query'
@@ -11,7 +12,7 @@ import './individual.scss'
 
 export default function IndividualVerification() {
   const { t } = useTranslation()
-  const { registerData, setExist, setRegisterData, clearRegisterData } = useUserStore()
+  const { registerData, setCode: setExist, setRegisterData, clearRegisterData } = useUserStore()
   const navigate = useNavigate()
 
   // 获取身份证正反面图片地址
@@ -47,7 +48,7 @@ export default function IndividualVerification() {
     }),
     onSuccess: () => {
       toast.success(t('create.message.create_success'))
-      setExist(true)
+      setExist(UserCode.LoggedIn)
       clearRegisterData()
       navigate({
         to: '/profile'

@@ -1,14 +1,15 @@
 import type { RegisterParams, UserResponse } from '@/api/apiMyInfoApi'
 import type { StateCreator } from 'zustand'
+import { UserCode } from '@/enums/user'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 interface StoreState {
-  isExist: boolean
+  code: UserCode
   language: string
   userData: UserResponse
   registerData: RegisterParams
-  setExist: (isExist: boolean) => void
+  setCode: (code?: UserCode) => void
   setLanguage: (lang: string) => void
   setUserData: (obj: Partial<UserResponse>) => void
   setRegisterData: (obj: Partial<RegisterParams>) => void
@@ -17,12 +18,12 @@ interface StoreState {
 
 const store: StateCreator<StoreState, [], [['zustand/persist', StoreState]]> = persist(
   set => ({
-    isExist: false,
+    code: 401,
     language: 'en',
     userData: {} as UserResponse,
     registerData: {} as RegisterParams,
-    setExist: (isExist: boolean) => {
-      set({ isExist })
+    setCode: (code: UserCode = UserCode.NotExist) => {
+      set({ code })
     },
     setLanguage: (language: string) => {
       set({ language })

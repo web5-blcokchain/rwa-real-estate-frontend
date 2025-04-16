@@ -1,3 +1,4 @@
+import { UserCode } from '@/enums/user'
 import { useUserStore } from '@/stores/user'
 import { getToken } from '@/utils/user'
 import { useLocation, useNavigate } from '@tanstack/react-router'
@@ -12,7 +13,7 @@ import { toast } from 'react-toastify'
 export function useRouteGuard() {
   const navigate = useNavigate()
   const location = useLocation()
-  const { isExist } = useUserStore()
+  const { code } = useUserStore()
   const { t } = useTranslation()
 
   const token = getToken()
@@ -35,7 +36,11 @@ export function useRouteGuard() {
 
     // 如果用户已登录，且当前路径在黑名单中，则重定向到首页
     if (
-      isExist && loggedInBlackList.includes(currentPath)
+      !(new Set([
+        UserCode.NotExist,
+        UserCode.NotAudited
+      ]).has(code))
+      && loggedInBlackList.includes(currentPath)
     ) {
       navigate({
         to: '/'
@@ -56,14 +61,14 @@ export function useRouteGuard() {
       return
     }
 
-    if (!isExist) {
+    if (!code) {
       toast.error(t('header.error.user_not_found'))
       navigate({
         to: '/account/create'
       })
     }
   }, [
-    isExist,
+    code,
     location.pathname, // 使用location.pathname替换router.latestLocation.pathname
     navigate,
     t,

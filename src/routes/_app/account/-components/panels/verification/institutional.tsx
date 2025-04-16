@@ -1,5 +1,6 @@
 import apiMyInfo from '@/api/apiMyInfoApi'
 import INotice from '@/components/common/i-notice'
+import { UserCode } from '@/enums/user'
 import { useUserStore } from '@/stores/user'
 import { joinImagePath } from '@/utils/url'
 import { useMutation } from '@tanstack/react-query'
@@ -11,7 +12,7 @@ import './individual.scss'
 
 export default function InstitutionalVerification() {
   const { t } = useTranslation()
-  const { registerData, setRegisterData, setExist, clearRegisterData } = useUserStore()
+  const { registerData, setRegisterData, setCode: setExist, clearRegisterData } = useUserStore()
   const navigate = useNavigate()
 
   // 获取各种文档的URL
@@ -50,7 +51,7 @@ export default function InstitutionalVerification() {
     },
     onSuccess: () => {
       toast.success(t('create.message.create_success'))
-      setExist(true)
+      setExist(UserCode.LoggedIn)
       clearRegisterData()
       navigate({
         to: '/profile'

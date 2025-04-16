@@ -1,6 +1,7 @@
 import type { MenuProps } from 'antd'
 import apiMyInfoApi from '@/api/apiMyInfoApi'
 import { LoginDialog } from '@/components/dialog/login'
+import { UserCode } from '@/enums/user'
 import { useGlobalDialogStore } from '@/stores/global-dialog'
 import { useUserStore } from '@/stores/user'
 import { clearToken, setToken } from '@/utils/user'
@@ -115,7 +116,7 @@ function RightMenu() {
   const setUserData = useUserStore(state => state.setUserData)
   const { open } = useGlobalDialogStore()
   const navigate = useNavigate()
-  const { setExist } = useUserStore()
+  const { setCode } = useUserStore()
 
   const [openLoginDialog, setOpenLoginDialog] = useState(false)
 
@@ -126,7 +127,9 @@ function RightMenu() {
     mutationFn: async () => {
       const res = await apiMyInfoApi.getUserInfo()
 
-      setExist(_get(res, 'code') !== 401)
+      const code = _get(res, 'code')
+
+      setCode(code)
 
       const data = _get(res, 'data', {})
       setUserData(data)
@@ -220,13 +223,13 @@ const UserMenu: FC = () => {
   const navigate = useNavigate()
   const { logout, user } = usePrivy()
   const { t } = useTranslation()
-  const { setExist, setUserData } = useUserStore()
+  const { setCode, setUserData } = useUserStore()
 
   async function handleLogout() {
     logout()
     clearToken()
     setUserData({})
-    setExist(false)
+    setCode(UserCode.NotExist)
   }
 
   const items: MenuProps['items'] = [
