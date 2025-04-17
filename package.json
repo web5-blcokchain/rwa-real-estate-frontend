@@ -44,6 +44,7 @@
     "recharts": "^2.15.1",
     "swiper": "^11.2.5",
     "tailwind-merge": "^3.0.2",
+    "web3": "^4.16.0",
     "zod": "^3.24.2",
     "zustand": "^5.0.3"
   },
@@ -85,7 +86,8 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "@swc/core",
-      "esbuild"
+      "esbuild",
+      "keccak"
     ]
   },
   "simple-git-hooks": {
