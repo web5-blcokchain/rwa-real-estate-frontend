@@ -11,10 +11,6 @@ export const PaymentMethod: FC<{
 
   const [selectedWallet, setSelectedWallet] = walletState
 
-  useEffect(() => {
-    console.log(selectedWallet)
-  }, [selectedWallet])
-
   return (
     <Waiting for={ready}>
       <div className="flex flex-col gap-2">
