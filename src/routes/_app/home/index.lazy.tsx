@@ -136,7 +136,7 @@ function RouteComponent() {
           {
             howItWorks.map((item, index) => (
               <div key={index} className="lt-md:flex lt-md:gap-4 md:text-center">
-                <div className="mx-a size-16 fcc rounded-full bg-primary-6">
+                <div className="mx-a size-16 fcc shrink-0 rounded-full bg-primary-6">
                   <SvgIcon name={item.icon} className="size-7" />
                 </div>
                 <div className="md:mt-4 space-y-2">
