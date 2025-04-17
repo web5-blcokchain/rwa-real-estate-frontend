@@ -25,7 +25,8 @@ export function useRouteGuard() {
       '/home',
       '/about',
       '/account/create',
-      '/properties'
+      '/properties',
+      '/investment'
     ]
 
     const loggedInBlackList = [
