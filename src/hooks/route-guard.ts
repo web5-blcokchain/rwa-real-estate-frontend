@@ -62,7 +62,7 @@ export function useRouteGuard() {
       return
     }
 
-    if (!code) {
+    if (code === UserCode.NotExist) {
       toast.error(t('header.error.user_not_found'))
       navigate({
         to: '/account/create'
