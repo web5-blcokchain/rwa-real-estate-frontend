@@ -45,7 +45,7 @@ export const PaymentMethod: FC<{
                 }
               </div>
               <span>{wallet.meta.name}</span>
-              <span>{wallet.address}</span>
+              <span className="text-3.5 text-[#898989]">{wallet.address}</span>
             </div>
           ))}
         </div>
