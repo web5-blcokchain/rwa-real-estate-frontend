@@ -55,6 +55,7 @@ function RouteComponent() {
   async function payment() {
     if (!wallet) {
       console.log('Please select a wallet')
+      toast.error(t('payment.errors.no_wallet'))
       return
     }
 
@@ -62,6 +63,7 @@ function RouteComponent() {
       // 确保用户钱包已连接
       if (!window.ethereum) {
         console.log('Please install MetaMask or use a Web3 browser')
+        toast.error(t('payment.errors.no_ethereum'))
         return
       }
 
@@ -106,6 +108,11 @@ function RouteComponent() {
       )
       console.log('createBuyOrder method ABI:', methodAbi)
 
+      if (!methodAbi) {
+        toast.error(t('payment.errors.method_not_found'))
+        return
+      }
+
       // 获取合约方法的 ABI 数据 - 尝试不同的参数顺序或组合
       try {
         const data = contract.methods.createBuyOrder(
@@ -138,17 +145,20 @@ function RouteComponent() {
             // 检查是否包含特定错误字符串
             if (errorString.includes('revert')) {
               console.log('合约调用被回滚，原因可能是参数不符合条件或权限不足')
+              toast.error(t('payment.errors.contract_revert'))
 
               // 尝试发现特定原因
               const revertReason = errorString.match(/revert: (.*)($|\n)/)?.[1]
               if (revertReason) {
                 console.log('回滚原因:', revertReason)
+                toast.error(t('payment.errors.revert_reason', { reason: revertReason }))
               }
             }
 
             // 检查是否需要支付ETH
             if (errorString.includes('value')) {
               console.log('交易可能需要发送ETH值')
+              toast.warning(t('payment.errors.may_need_eth'))
             }
           }
         }
@@ -166,6 +176,7 @@ function RouteComponent() {
         }
         catch (gasError) {
           console.error('Gas estimation error:', gasError)
+          toast.error(t('payment.errors.gas_estimate'))
 
           // 测试是否需要发送ETH值
           try {
@@ -177,9 +188,11 @@ function RouteComponent() {
             })
             console.log('Gas estimation with ETH value successful:', gasEstimate)
             console.log('交易需要发送ETH!')
+            toast.info(t('payment.info.eth_required'))
           }
           catch (ethGasError) {
             console.error('Gas estimation with ETH value still failed:', ethGasError)
+            toast.error(t('payment.errors.gas_estimate_with_eth'))
             gasEstimate = 500000 // 使用一个较高的默认值
           }
         }
@@ -197,6 +210,7 @@ function RouteComponent() {
 
         if (userBalance < txCost) {
           console.error('余额不足，无法支付交易费用')
+          toast.error(t('payment.errors.insufficient_balance'))
           return
         }
 
@@ -217,8 +231,7 @@ function RouteComponent() {
         const txHash = await web3.eth.sendTransaction(txParams)
 
         console.log('Transaction hash:', txHash)
-
-        console.log('Transaction sent successfully')
+        toast.success(t('payment.success.tx_sent'))
 
         // 等待交易确认
         const receipt = await web3.eth.getTransactionReceipt(txHash.transactionHash)
@@ -228,6 +241,7 @@ function RouteComponent() {
 
           if (receipt.status) {
             console.log('Payment successful')
+            toast.success(t('payment.success.payment_success'))
             // 调用后端API记录交易
             mutateAsync()
               .then((transactionId) => {
@@ -241,36 +255,46 @@ function RouteComponent() {
           }
           else {
             console.log('Transaction failed')
+            toast.error(t('payment.errors.tx_failed'))
           }
         }
         else {
           console.log('Transaction not yet confirmed.')
-          console.log('Transaction not yet confirmed')
+          toast.info(t('payment.info.tx_pending'))
         }
       }
       catch (encodeError: any) {
         console.error('ABI encoding error:', encodeError)
+        toast.error(t('payment.errors.encoding', { error: encodeError.message }))
         throw new Error(`Failed to encode contract method call: ${encodeError.message}`)
       }
     }
     catch (error) {
       console.error('Payment error:', error)
-      console.log(`Payment failed: ${error instanceof Error ? error.message : String(error)}`)
 
-      // 添加更详细的错误分析
+      // 添加更详细的错误分析和相应的toast提示
       if (error instanceof Error) {
-        if (error.message.includes('gas required exceeds allowance')) {
-          console.log('Gas issue: The transaction requires more gas than allowed')
+        const errorMsg = error.message
+        console.log(`Payment failed: ${errorMsg}`)
+
+        if (errorMsg.includes('gas required exceeds allowance')) {
+          toast.error(t('payment.errors.gas_limit'))
         }
-        else if (error.message.includes('nonce too low')) {
-          console.log('Nonce issue: Try resetting your wallet connection')
+        else if (errorMsg.includes('nonce too low')) {
+          toast.error(t('payment.errors.nonce'))
         }
-        else if (error.message.includes('insufficient funds')) {
-          console.log('Balance issue: Your wallet has insufficient funds')
+        else if (errorMsg.includes('insufficient funds')) {
+          toast.error(t('payment.errors.funds'))
         }
-        else if (error.message.includes('execution reverted')) {
-          console.log('Contract issue: The smart contract reverted the transaction')
+        else if (errorMsg.includes('execution reverted')) {
+          toast.error(t('payment.errors.execution'))
         }
+        else {
+          toast.error(t('payment.errors.general', { error: errorMsg }))
+        }
+      }
+      else {
+        toast.error(t('payment.errors.unknown'))
       }
     }
   }

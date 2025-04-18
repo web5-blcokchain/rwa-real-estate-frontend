@@ -19,6 +19,35 @@
       "login_required": "Please log in first"
     }
   },
+  "payment": {
+    "errors": {
+      "no_wallet": "ウォレットを選択してください",
+      "no_ethereum": "MetaMaskをインストールするか、Web3ブラウザを使用してください",
+      "method_not_found": "コントラクトメソッドcreateBuyOrderが見つかりません",
+      "contract_revert": "コントラクトコールが取り消されました：パラメータが無効か、権限がありません",
+      "revert_reason": "取り消し理由: {{reason}}",
+      "may_need_eth": "トランザクションはETHの送信が必要かもしれません",
+      "gas_estimate": "ガス量の見積もりに失敗しました",
+      "gas_estimate_with_eth": "ETH値を含めてもガス量の見積もりに失敗しました",
+      "insufficient_balance": "残高不足のため、取引手数料を支払えません",
+      "tx_failed": "ブロックチェーン上でトランザクションが失敗しました",
+      "encoding": "コントラクトメソッド呼び出しのエンコードに失敗しました: {{error}}",
+      "gas_limit": "必要なガスが許容量を超えています",
+      "nonce": "ノンスが低すぎます。ウォレット接続をリセットしてみてください",
+      "funds": "ウォレットの資金が不足しています",
+      "execution": "コントラクト実行が取り消されました",
+      "general": "支払いに失敗しました: {{error}}",
+      "unknown": "不明な支払いエラー"
+    },
+    "info": {
+      "eth_required": "トランザクションにはETHの送信が必要です",
+      "tx_pending": "トランザクションはまだ確認されていません"
+    },
+    "success": {
+      "tx_sent": "トランザクションが正常に送信されました",
+      "payment_success": "支払い成功"
+    }
+  },
   "create": {
     "baseInfo": {
       "title": "アカウントを作成します",

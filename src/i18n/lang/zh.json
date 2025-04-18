@@ -19,6 +19,35 @@
       "login_required": "请先登陆"
     }
   },
+  "payment": {
+    "errors": {
+      "no_wallet": "请选择钱包",
+      "no_ethereum": "请安装MetaMask或使用Web3浏览器",
+      "method_not_found": "未找到合约方法createBuyOrder",
+      "contract_revert": "合约调用被回滚：参数可能无效或权限不足",
+      "revert_reason": "回滚原因: {{reason}}",
+      "may_need_eth": "交易可能需要发送ETH",
+      "gas_estimate": "无法估算gas",
+      "gas_estimate_with_eth": "即使发送ETH也无法估算gas",
+      "insufficient_balance": "余额不足，无法支付交易费用",
+      "tx_failed": "区块链上的交易失败",
+      "encoding": "无法编码合约方法调用: {{error}}",
+      "gas_limit": "所需gas超出了允许限额",
+      "nonce": "Nonce值过低，请尝试重置钱包连接",
+      "funds": "钱包中资金不足",
+      "execution": "合约执行被回滚",
+      "general": "支付失败: {{error}}",
+      "unknown": "未知的支付错误"
+    },
+    "info": {
+      "eth_required": "交易需要发送ETH",
+      "tx_pending": "交易尚未确认"
+    },
+    "success": {
+      "tx_sent": "交易发送成功",
+      "payment_success": "支付成功"
+    }
+  },
   "create": {
     "baseInfo": {
       "title": "创建您的账户",

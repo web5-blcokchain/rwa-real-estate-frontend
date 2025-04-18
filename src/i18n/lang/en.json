@@ -19,6 +19,35 @@
       "login_required": "Please log in first"
     }
   },
+  "payment": {
+    "errors": {
+      "no_wallet": "Please select a wallet",
+      "no_ethereum": "Please install MetaMask or use a Web3 browser",
+      "method_not_found": "Contract method createBuyOrder not found",
+      "contract_revert": "Contract call reverted: parameters may be invalid or permission denied",
+      "revert_reason": "Revert reason: {{reason}}",
+      "may_need_eth": "Transaction may require sending ETH",
+      "gas_estimate": "Failed to estimate gas",
+      "gas_estimate_with_eth": "Failed to estimate gas even with ETH value",
+      "insufficient_balance": "Insufficient balance to pay for transaction",
+      "tx_failed": "Transaction failed on blockchain",
+      "encoding": "Failed to encode contract method call: {{error}}",
+      "gas_limit": "Gas required exceeds allowance",
+      "nonce": "Nonce too low. Try resetting your wallet connection",
+      "funds": "Insufficient funds in your wallet",
+      "execution": "Contract execution reverted",
+      "general": "Payment failed: {{error}}",
+      "unknown": "Unknown payment error"
+    },
+    "info": {
+      "eth_required": "Transaction requires sending ETH",
+      "tx_pending": "Transaction not yet confirmed"
+    },
+    "success": {
+      "tx_sent": "Transaction sent successfully",
+      "payment_success": "Payment successful"
+    }
+  },
   "create": {
     "baseInfo": {
       "title": "Create Your Account",
