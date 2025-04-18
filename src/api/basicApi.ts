@@ -25,6 +25,7 @@ export interface DetailResponse {
   Inception_number: number
   address: string
   area: string
+  contract_address: string
   bedrooms: number
   capital_appreciation: string
   create_user: string

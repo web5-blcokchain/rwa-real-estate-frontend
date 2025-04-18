@@ -1,12 +1,19 @@
+import type { ConnectedWallet } from '@privy-io/react-auth'
 import apiBasic from '@/api/basicApi'
 import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
+import { PaymentMethod } from '@/components/common/payment-method'
+import { useTradingManagerContract } from '@/contract'
 import { useCommonDataStore } from '@/stores/common-data'
 import { joinImagesPath } from '@/utils/url'
+import { useWallets } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import Web3 from 'web3'
 
 export const Route = createLazyFileRoute('/_app/properties/payment/$id')({
   component: RouteComponent
@@ -16,6 +23,10 @@ function RouteComponent() {
   const { t } = useTranslation()
   const router = useRouter()
   const navigate = useNavigate()
+  const { ready, wallets } = useWallets()
+  const contract = useTradingManagerContract()
+
+  const [wallet, setWallet] = useState<ConnectedWallet | null>(null)
 
   const { params } = useMatch({
     from: '/_app/properties/payment/$id'
@@ -41,21 +52,239 @@ function RouteComponent() {
     }
   })
 
-  function payment() {
-    mutateAsync()
-      .then((transactionId) => {
-        navigate({
-          to: '/transaction/$id',
-          params: {
-            id: `${transactionId}`
+  async function payment() {
+    if (!wallet) {
+      console.log('Please select a wallet')
+      return
+    }
+
+    try {
+      // 确保用户钱包已连接
+      if (!window.ethereum) {
+        console.log('Please install MetaMask or use a Web3 browser')
+        return
+      }
+
+      const web3 = new Web3(window.ethereum)
+
+      // 检查网络是否正确
+      const chainId = await web3.eth.getChainId()
+      console.log('Current chain ID:', chainId)
+
+      // 获取当前资产信息用于日志
+      console.log('Asset details:', assetDetail)
+      console.log('Token amount:', tokens)
+      console.log('Price:', assetDetail.price)
+      console.log('Total price in wei:', web3.utils.toWei((tokens * Number(assetDetail.price)).toString(), 'ether'))
+
+      // 查询用户余额
+      const balance = await web3.eth.getBalance(wallet.address)
+      console.log('User balance:', web3.utils.fromWei(balance, 'ether'), 'ETH')
+
+      // 确认合约方法和参数
+      console.log('Contract methods:', Object.keys(contract.methods))
+
+      // 修改：检查合约ABI格式和参数类型
+      // 使用BigNumber或十六进制字符串处理大数值
+      const tokenAmount = tokens.toString()
+      // 使用十六进制表示的wei值，避免精度问题
+      const priceInWei = web3.utils.toHex(web3.utils.toWei((tokens * Number(assetDetail.price)).toString(), 'ether'))
+
+      console.log('Creating buy order with params:')
+      console.log('- Contract address:', assetDetail.contract_address)
+      console.log('- Wallet address:', wallet.address)
+      console.log('- Token amount:', tokenAmount)
+      console.log('- Price in Wei (hex):', priceInWei)
+
+      // 尝试通过检查合约方法签名来排查问题
+      console.log('Available contract methods:', Object.keys(contract.methods)
+        .filter(key => typeof contract.methods[key] === 'function' && key.includes('createBuy')))
+
+      // 获取合约ABI并查看createBuyOrder方法的具体定义
+      const methodAbi = contract.options.jsonInterface.find(
+        method => method.type === 'function' && 'name' in method && method.name === 'createBuyOrder'
+      )
+      console.log('createBuyOrder method ABI:', methodAbi)
+
+      // 获取合约方法的 ABI 数据 - 尝试不同的参数顺序或组合
+      try {
+        const data = contract.methods.createBuyOrder(
+          assetDetail.contract_address,
+          wallet.address,
+          tokenAmount,
+          priceInWei
+        ).encodeABI()
+
+        console.log('Encoded ABI data:', data)
+
+        // 尝试直接调用合约方法以获取更详细的错误
+        try {
+          // 使用call()而不是estimateGas()获取详细错误
+          await contract.methods.createBuyOrder(
+            assetDetail.contract_address,
+            wallet.address,
+            tokenAmount,
+            priceInWei
+          ).call({ from: wallet.address })
+
+          console.log('Direct call succeeded! This is unexpected since transaction failed.')
+        }
+        catch (callError) {
+          console.error('Direct call error (expected):', callError)
+          // 解析错误以获取更多信息
+          if (callError instanceof Error) {
+            const errorString = callError.toString()
+
+            // 检查是否包含特定错误字符串
+            if (errorString.includes('revert')) {
+              console.log('合约调用被回滚，原因可能是参数不符合条件或权限不足')
+
+              // 尝试发现特定原因
+              const revertReason = errorString.match(/revert: (.*)($|\n)/)?.[1]
+              if (revertReason) {
+                console.log('回滚原因:', revertReason)
+              }
+            }
+
+            // 检查是否需要支付ETH
+            if (errorString.includes('value')) {
+              console.log('交易可能需要发送ETH值')
+            }
           }
-        })
-      })
+        }
+
+        // 估算gas，但使用更高的默认值和超时时间
+        let gasEstimate
+        try {
+          gasEstimate = await web3.eth.estimateGas({
+            from: wallet.address,
+            to: contract.options.address,
+            data,
+            value: '0x0' // 测试是否需要发送ETH
+          })
+          console.log('Gas estimation successful:', gasEstimate)
+        }
+        catch (gasError) {
+          console.error('Gas estimation error:', gasError)
+
+          // 测试是否需要发送ETH值
+          try {
+            gasEstimate = await web3.eth.estimateGas({
+              from: wallet.address,
+              to: contract.options.address,
+              data,
+              value: web3.utils.toWei('0.1', 'ether')
+            })
+            console.log('Gas estimation with ETH value successful:', gasEstimate)
+            console.log('交易需要发送ETH!')
+          }
+          catch (ethGasError) {
+            console.error('Gas estimation with ETH value still failed:', ethGasError)
+            gasEstimate = 500000 // 使用一个较高的默认值
+          }
+        }
+
+        // 修改：使用原始gasPrice并确保gas值足够
+        const gasPrice = await web3.eth.getGasPrice()
+        console.log('Gas price:', gasPrice)
+
+        // 尝试检查账户余额是否足够
+        const txCost = BigInt(gasEstimate) * BigInt(gasPrice)
+        const userBalance = BigInt(await web3.eth.getBalance(wallet.address))
+
+        console.log('Estimated tx cost (wei):', txCost.toString())
+        console.log('User balance (wei):', userBalance.toString())
+
+        if (userBalance < txCost) {
+          console.error('余额不足，无法支付交易费用')
+          return
+        }
+
+        // 使用更简化的交易参数
+        const txParams = {
+          from: wallet.address,
+          to: contract.options.address,
+          data,
+          gas: Math.floor(Number(gasEstimate) * 1.2), // 使用2倍气体限制
+          // 尝试不指定gasPrice和chainId，让钱包自动填充
+          value: '0x0' // 如果合约需要ETH，这里需要修改
+        }
+
+        console.log('Transaction params:', txParams)
+        console.log('Sending transaction...')
+
+        // 使用 Privy 钱包签名并发送交易
+        const txHash = await web3.eth.sendTransaction(txParams)
+
+        console.log('Transaction hash:', txHash)
+
+        console.log('Transaction sent successfully')
+
+        // 等待交易确认
+        const receipt = await web3.eth.getTransactionReceipt(txHash.transactionHash)
+
+        if (receipt) {
+          console.log('Transaction receipt:', receipt)
+
+          if (receipt.status) {
+            console.log('Payment successful')
+            // 调用后端API记录交易
+            mutateAsync()
+              .then((transactionId) => {
+                navigate({
+                  to: '/transaction/$id',
+                  params: {
+                    id: `${transactionId}`
+                  }
+                })
+              })
+          }
+          else {
+            console.log('Transaction failed')
+          }
+        }
+        else {
+          console.log('Transaction not yet confirmed.')
+          console.log('Transaction not yet confirmed')
+        }
+      }
+      catch (encodeError: any) {
+        console.error('ABI encoding error:', encodeError)
+        throw new Error(`Failed to encode contract method call: ${encodeError.message}`)
+      }
+    }
+    catch (error) {
+      console.error('Payment error:', error)
+      console.log(`Payment failed: ${error instanceof Error ? error.message : String(error)}`)
+
+      // 添加更详细的错误分析
+      if (error instanceof Error) {
+        if (error.message.includes('gas required exceeds allowance')) {
+          console.log('Gas issue: The transaction requires more gas than allowed')
+        }
+        else if (error.message.includes('nonce too low')) {
+          console.log('Nonce issue: Try resetting your wallet connection')
+        }
+        else if (error.message.includes('insufficient funds')) {
+          console.log('Balance issue: Your wallet has insufficient funds')
+        }
+        else if (error.message.includes('execution reverted')) {
+          console.log('Contract issue: The smart contract reverted the transaction')
+        }
+      }
+    }
   }
 
   useEffect(() => {
+    if (ready) {
+      const [firstWallet] = wallets
+      if (firstWallet) {
+        setWallet(firstWallet)
+      }
+    }
+
     if (!assetDetail) {
-      toast.error(t('properties.payment.asset_not_found'))
+      console.log(t('properties.payment.asset_not_found'))
       navigate({
         to: '/properties/detail/$id',
         params
@@ -151,25 +380,7 @@ function RouteComponent() {
 
       <div className="rounded-xl bg-[#202329] p-6 space-y-4">
         <div className="text-4.5">{t('properties.payment.payment_method')}</div>
-        <div className="grid grid-cols-2 gap-6">
-          <div className="fcc select-none b b-background rounded-xl b-solid bg-[#212936] py-6 clickable-99">
-            <div className="fccc">
-              <SvgIcon name="credit-card" className="size-8" />
-              <div>
-                {t('properties.payment.credit_card')}
-              </div>
-            </div>
-          </div>
-
-          <div className="fcc select-none b b-background rounded-xl b-solid bg-[#212936] py-6 clickable-99">
-            <div className="fccc">
-              <SvgIcon name="cryptocurrency" className="size-8" />
-              <div>
-                {t('properties.payment.cryptocurrency')}
-              </div>
-            </div>
-          </div>
-        </div>
+        <PaymentMethod walletState={[wallet, setWallet]} />
       </div>
 
       <div className="rounded-xl bg-[#202329] p-6 text-4 text-[#898989] space-y-2">
