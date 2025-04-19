@@ -5,10 +5,12 @@ import { IInfoField } from '@/components/common/i-info-field'
 import { ImageSwiper } from '@/components/common/image-swiper'
 import { useCommonDataStore } from '@/stores/common-data'
 import { joinImagesPath } from '@/utils/url'
+import { getContractBalance } from '@/utils/web3'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate } from '@tanstack/react-router'
 import { Button, Input } from 'antd'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { LocationCard } from './-cards/location'
 import { PropertyDescriptionCard } from './-cards/property-description'
 import { RegionalPriceTrendsCard } from './-cards/regional-price-trends'
@@ -32,6 +34,7 @@ function RouteComponent() {
   const [annualReturn, setAnnualReturn] = useState<number>(0)
   const [ratioNum, setRatioNum] = useState<number>(0)
   const [isCollect, setIsCollect] = useState<0 | 1>(0)
+  const [, setContractBalance] = useState<string>('0')
 
   const { data: assetDetail, isLoading } = useQuery<DetailResponse>({
     queryKey: ['property-detail', assetId],
@@ -58,6 +61,15 @@ function RouteComponent() {
     setRatioNum(20)
     setIsCollect(assetDetail.is_collect)
     // setRatioNum(Number(((investmentPrice * 12) / (rentalNum + capitalNum)) * 100))
+
+    // 使用工具函数替换原代码
+    if (assetDetail.contract_address) {
+      getContractBalance(assetDetail.contract_address)
+        .then((etherBalance) => {
+          setContractBalance(etherBalance)
+          console.log('合约余额:', etherBalance, 'ETH')
+        })
+    }
   }, [investmentPrice, assetDetail])
 
   const imageList = joinImagesPath(assetDetail?.image_urls)
