@@ -233,35 +233,16 @@ function RouteComponent() {
         console.log('Transaction hash:', txHash)
         toast.success(t('payment.success.tx_sent'))
 
-        // 等待交易确认
-        const receipt = await web3.eth.getTransactionReceipt(txHash.transactionHash)
-
-        if (receipt) {
-          console.log('Transaction receipt:', receipt)
-
-          if (receipt.status) {
-            console.log('Payment successful')
-            toast.success(t('payment.success.payment_success'))
-            // 调用后端API记录交易
-            mutateAsync()
-              .then((transactionId) => {
-                navigate({
-                  to: '/transaction/$id',
-                  params: {
-                    id: `${transactionId}`
-                  }
-                })
-              })
-          }
-          else {
-            console.log('Transaction failed')
-            toast.error(t('payment.errors.tx_failed'))
-          }
-        }
-        else {
-          console.log('Transaction not yet confirmed.')
-          toast.info(t('payment.info.tx_pending'))
-        }
+        // 调用后端API记录交易
+        mutateAsync()
+          .then((transactionId) => {
+            navigate({
+              to: '/transaction/$id',
+              params: {
+                id: `${transactionId}`
+              }
+            })
+          })
       }
       catch (encodeError: any) {
         console.error('ABI encoding error:', encodeError)
