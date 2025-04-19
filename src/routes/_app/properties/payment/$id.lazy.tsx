@@ -46,8 +46,12 @@ function RouteComponent() {
     }
   }
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: async () => {
-      const res = await apiBasic.purchaseBuy({ id: assetDetail.id, number: tokens })
+    mutationFn: async (hash: string) => {
+      const res = await apiBasic.purchaseBuy({
+        id: assetDetail.id,
+        number: tokens,
+        hash
+      })
       return res.data
     }
   })
@@ -233,13 +237,15 @@ function RouteComponent() {
         console.log('Transaction hash:', txHash)
         toast.success(t('payment.success.tx_sent'))
 
+        const hash = txHash.transactionHash.toString()
+
         // 调用后端API记录交易
-        mutateAsync()
-          .then((transactionId) => {
+        mutateAsync(hash)
+          .then(() => {
             navigate({
-              to: '/transaction/$id',
+              to: '/transaction/$hash',
               params: {
-                id: `${transactionId}`
+                hash
               }
             })
           })

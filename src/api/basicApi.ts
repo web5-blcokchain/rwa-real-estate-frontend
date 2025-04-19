@@ -83,6 +83,7 @@ function getCostAnalysis() {
 interface PurchaseBuyParams {
   id: number
   number: number
+  hash: string
 }
 
 export interface PurchaseBuyResponse { }
