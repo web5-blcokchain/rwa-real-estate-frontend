@@ -86,9 +86,16 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": [
+      "@parcel/watcher",
       "@swc/core",
+      "bigint-buffer",
+      "bufferutil",
+      "cpu-features",
       "esbuild",
-      "keccak"
+      "keccak",
+      "simple-git-hooks",
+      "ssh2",
+      "utf-8-validate"
     ]
   },
   "simple-git-hooks": {
