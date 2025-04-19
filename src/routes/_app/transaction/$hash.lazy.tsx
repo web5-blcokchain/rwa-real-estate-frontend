@@ -6,7 +6,7 @@ import { shortAddress } from '@/utils/wallet'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch } from '@tanstack/react-router'
 import { Button, Progress } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Web3 from 'web3'
 
@@ -33,6 +33,9 @@ function RouteComponent() {
   })
 
   // 使用交易确认逻辑
+  // 使用 ref 跟踪是否是首次查询
+  const isFirstCheck = useRef(true)
+
   useEffect(() => {
     if (!data || isLoading)
       return
@@ -60,7 +63,10 @@ function RouteComponent() {
 
           if (receipt.status) {
             console.log('Payment successful')
-            toast.success(t('payment.success.payment_success'))
+            // 只有非首次查询才显示 toast
+            if (!isFirstCheck.current) {
+              toast.success(t('payment.success.payment_success'))
+            }
             setStatus('success')
             setProgress(100)
             // 交易成功后清除间隔定时器
@@ -68,7 +74,10 @@ function RouteComponent() {
           }
           else {
             console.log('Transaction failed')
-            toast.error(t('payment.errors.tx_failed'))
+            // 只有非首次查询才显示 toast
+            if (!isFirstCheck.current) {
+              toast.error(t('payment.errors.tx_failed'))
+            }
             setStatus('failed')
             // 交易失败后清除间隔定时器
             clearInterval(intervalId)
@@ -76,9 +85,17 @@ function RouteComponent() {
         }
         else {
           console.log('Transaction not yet confirmed.')
-          toast.info(t('payment.info.tx_pending'))
+          // 只有非首次查询才显示 toast
+          if (!isFirstCheck.current) {
+            toast.info(t('payment.info.tx_pending'))
+          }
           // 增加进度但不到100%，表示处理中
           setProgress(prev => Math.min(prev + 5, 90))
+        }
+
+        // 首次检查完成后更新标志
+        if (isFirstCheck.current) {
+          isFirstCheck.current = false
         }
       }
       catch (error) {
