@@ -2,6 +2,7 @@ import type { FC } from 'react'
 import { getTransactionDetail } from '@/api/transaction'
 import { ChatButton } from '@/components/common/chat-button'
 import { IInfoField } from '@/components/common/i-info-field'
+import { shortAddress } from '@/utils/wallet'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch } from '@tanstack/react-router'
 import { Button, Progress } from 'antd'
@@ -124,7 +125,7 @@ function RouteComponent() {
             <div className="fbc text-3.5">
               <div>Smart Contract Address</div>
               <div className="fyc gap-2">
-                <div>{_get(data, 'token.smart_contract_address')}</div>
+                <div>{shortAddress(_get(data, 'token.smart_contract_address'))}</div>
                 <div
                   className="i-mingcute-copy-2-fill bg-[#b5b5b5] clickable"
                   onClick={
@@ -140,7 +141,7 @@ function RouteComponent() {
             <div className="fbc text-3.5">
               <div>Token Contract Address</div>
               <div className="fyc gap-2">
-                <div>{_get(data, 'token.token_contract_address')}</div>
+                <div>{shortAddress(_get(data, 'token.token_contract_address'))}</div>
                 <div
                   className="i-mingcute-copy-2-fill bg-[#b5b5b5] clickable"
                   onClick={
@@ -204,7 +205,7 @@ function RouteComponent() {
           <div className="fbc text-3.5">
             <div>Transaction Hash</div>
             <div className="fyc gap-2">
-              <div>{_get(data, 'transaction.hash')}</div>
+              <div>{shortAddress(_get(data, 'transaction.hash'))}</div>
               <div
                 className="i-mingcute-copy-2-fill bg-[#b5b5b5] clickable"
                 onClick={
