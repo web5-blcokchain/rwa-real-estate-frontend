@@ -40,6 +40,10 @@ function RouteComponent() {
     if (!txHash)
       return
 
+    // 如果已经知道交易结果，不再查询
+    if (status === 'success' || status === 'failed')
+      return
+
     const checkTransaction = async () => {
       try {
         if (!window.ethereum) {
@@ -58,11 +62,15 @@ function RouteComponent() {
             toast.success(t('payment.success.payment_success'))
             setStatus('success')
             setProgress(100)
+            // 交易成功后清除间隔定时器
+            clearInterval(intervalId)
           }
           else {
             console.log('Transaction failed')
             toast.error(t('payment.errors.tx_failed'))
             setStatus('failed')
+            // 交易失败后清除间隔定时器
+            clearInterval(intervalId)
           }
         }
         else {
@@ -80,11 +88,14 @@ function RouteComponent() {
     // 立即检查一次
     checkTransaction()
 
-    // 设置定期检查
-    const interval = setInterval(checkTransaction, 3000)
+    // 设置定期检查，保存间隔ID以便后续清除
+    let intervalId = setInterval(checkTransaction, 3000)
 
-    return () => clearInterval(interval)
-  }, [data, isLoading, t])
+    return () => {
+      if (intervalId)
+        clearInterval(intervalId)
+    }
+  }, [data, isLoading, t, status])
 
   // 根据状态选择要显示的组件
   const renderStatusComponent = () => {
