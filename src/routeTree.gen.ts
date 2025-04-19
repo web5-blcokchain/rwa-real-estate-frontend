@@ -23,7 +23,9 @@ const AppProfileIndexLazyImport = createFileRoute('/_app/profile/')()
 const AppInvestmentIndexLazyImport = createFileRoute('/_app/investment/')()
 const AppHomeIndexLazyImport = createFileRoute('/_app/home/')()
 const AppAboutIndexLazyImport = createFileRoute('/_app/about/')()
-const AppTransactionIdLazyImport = createFileRoute('/_app/transaction/$id')()
+const AppTransactionHashLazyImport = createFileRoute(
+  '/_app/transaction/$hash',
+)()
 const AppPropertiesInstitutionalIndexLazyImport = createFileRoute(
   '/_app/properties/institutional/',
 )()
@@ -99,12 +101,12 @@ const AppAboutIndexLazyRoute = AppAboutIndexLazyImport.update({
   import('./routes/_app/about/index.lazy').then((d) => d.Route),
 )
 
-const AppTransactionIdLazyRoute = AppTransactionIdLazyImport.update({
-  id: '/transaction/$id',
-  path: '/transaction/$id',
+const AppTransactionHashLazyRoute = AppTransactionHashLazyImport.update({
+  id: '/transaction/$hash',
+  path: '/transaction/$hash',
   getParentRoute: () => AppRoute,
 } as any).lazy(() =>
-  import('./routes/_app/transaction/$id.lazy').then((d) => d.Route),
+  import('./routes/_app/transaction/$hash.lazy').then((d) => d.Route),
 )
 
 const AppPropertiesInstitutionalIndexLazyRoute =
@@ -187,11 +189,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexLazyImport
       parentRoute: typeof AppImport
     }
-    '/_app/transaction/$id': {
-      id: '/_app/transaction/$id'
-      path: '/transaction/$id'
-      fullPath: '/transaction/$id'
-      preLoaderRoute: typeof AppTransactionIdLazyImport
+    '/_app/transaction/$hash': {
+      id: '/_app/transaction/$hash'
+      path: '/transaction/$hash'
+      fullPath: '/transaction/$hash'
+      preLoaderRoute: typeof AppTransactionHashLazyImport
       parentRoute: typeof AppImport
     }
     '/_app/about/': {
@@ -285,7 +287,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppIndexLazyRoute: typeof AppIndexLazyRoute
-  AppTransactionIdLazyRoute: typeof AppTransactionIdLazyRoute
+  AppTransactionHashLazyRoute: typeof AppTransactionHashLazyRoute
   AppAboutIndexLazyRoute: typeof AppAboutIndexLazyRoute
   AppHomeIndexLazyRoute: typeof AppHomeIndexLazyRoute
   AppInvestmentIndexLazyRoute: typeof AppInvestmentIndexLazyRoute
@@ -302,7 +304,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppIndexLazyRoute: AppIndexLazyRoute,
-  AppTransactionIdLazyRoute: AppTransactionIdLazyRoute,
+  AppTransactionHashLazyRoute: AppTransactionHashLazyRoute,
   AppAboutIndexLazyRoute: AppAboutIndexLazyRoute,
   AppHomeIndexLazyRoute: AppHomeIndexLazyRoute,
   AppInvestmentIndexLazyRoute: AppInvestmentIndexLazyRoute,
@@ -323,7 +325,7 @@ const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 export interface FileRoutesByFullPath {
   '': typeof AppRouteWithChildren
   '/': typeof AppIndexLazyRoute
-  '/transaction/$id': typeof AppTransactionIdLazyRoute
+  '/transaction/$hash': typeof AppTransactionHashLazyRoute
   '/about': typeof AppAboutIndexLazyRoute
   '/home': typeof AppHomeIndexLazyRoute
   '/investment': typeof AppInvestmentIndexLazyRoute
@@ -340,7 +342,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof AppIndexLazyRoute
-  '/transaction/$id': typeof AppTransactionIdLazyRoute
+  '/transaction/$hash': typeof AppTransactionHashLazyRoute
   '/about': typeof AppAboutIndexLazyRoute
   '/home': typeof AppHomeIndexLazyRoute
   '/investment': typeof AppInvestmentIndexLazyRoute
@@ -359,7 +361,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_app': typeof AppRouteWithChildren
   '/_app/': typeof AppIndexLazyRoute
-  '/_app/transaction/$id': typeof AppTransactionIdLazyRoute
+  '/_app/transaction/$hash': typeof AppTransactionHashLazyRoute
   '/_app/about/': typeof AppAboutIndexLazyRoute
   '/_app/home/': typeof AppHomeIndexLazyRoute
   '/_app/investment/': typeof AppInvestmentIndexLazyRoute
@@ -379,7 +381,7 @@ export interface FileRouteTypes {
   fullPaths:
     | ''
     | '/'
-    | '/transaction/$id'
+    | '/transaction/$hash'
     | '/about'
     | '/home'
     | '/investment'
@@ -395,7 +397,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/transaction/$id'
+    | '/transaction/$hash'
     | '/about'
     | '/home'
     | '/investment'
@@ -412,7 +414,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_app'
     | '/_app/'
-    | '/_app/transaction/$id'
+    | '/_app/transaction/$hash'
     | '/_app/about/'
     | '/_app/home/'
     | '/_app/investment/'
@@ -453,7 +455,7 @@ export const routeTree = rootRoute
       "filePath": "_app.tsx",
       "children": [
         "/_app/",
-        "/_app/transaction/$id",
+        "/_app/transaction/$hash",
         "/_app/about/",
         "/_app/home/",
         "/_app/investment/",
@@ -472,8 +474,8 @@ export const routeTree = rootRoute
       "filePath": "_app/index.lazy.tsx",
       "parent": "/_app"
     },
-    "/_app/transaction/$id": {
-      "filePath": "_app/transaction/$id.lazy.tsx",
+    "/_app/transaction/$hash": {
+      "filePath": "_app/transaction/$hash.lazy.tsx",
       "parent": "/_app"
     },
     "/_app/about/": {

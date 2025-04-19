@@ -9,24 +9,24 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Web3 from 'web3'
 
-export const Route = createLazyFileRoute('/_app/transaction/$id')({
+export const Route = createLazyFileRoute('/_app/transaction/$hash')({
   component: RouteComponent
 })
 
 function RouteComponent() {
   const { t } = useTranslation()
   const { params } = useMatch({
-    from: '/_app/transaction/$id'
+    from: '/_app/transaction/$hash'
   })
 
-  const id = Number.parseInt(params.id)
+  const hash = params.hash
   const [status, setStatus] = useState<'pending' | 'success' | 'failed'>('pending')
   const [progress, setProgress] = useState(10)
 
   const { data, isLoading } = useQuery({
-    queryKey: ['transaction', id],
+    queryKey: ['transaction', hash],
     queryFn: async () => {
-      const res = await getTransactionDetail({ id })
+      const res = await getTransactionDetail({ hash })
       return res.data
     }
   })
