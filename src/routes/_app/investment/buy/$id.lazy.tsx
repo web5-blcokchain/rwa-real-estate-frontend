@@ -1,12 +1,17 @@
+import type { ConnectedWallet } from '@privy-io/react-auth'
 import { buyAsset } from '@/api/investment'
 import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
+import { PaymentMethod } from '@/components/common/payment-method'
 import { useCommonDataStore } from '@/stores/common-data'
 import { joinImagesPath } from '@/utils/url'
+import { useWallets } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 export const Route = createLazyFileRoute('/_app/investment/buy/$id')({
   component: RouteComponent
@@ -16,6 +21,8 @@ function RouteComponent() {
   const { t } = useTranslation()
   const router = useRouter()
   const navigate = useNavigate()
+  const { ready, wallets } = useWallets()
+  const [wallet, setWallet] = useState<ConnectedWallet | null>(null)
 
   const { params } = useMatch({
     from: '/_app/investment/buy/$id'
@@ -48,6 +55,13 @@ function RouteComponent() {
   }
 
   useEffect(() => {
+    if (ready) {
+      const [firstWallet] = wallets
+      if (firstWallet) {
+        setWallet(firstWallet)
+      }
+    }
+
     if (!item) {
       toast.error(t('properties.payment.asset_not_found'))
       navigate({
@@ -55,7 +69,7 @@ function RouteComponent() {
         params
       })
     }
-  }, [item, navigate, params, t])
+  }, [item, navigate, params, t, ready, wallets])
 
   if (!item) {
     return null
@@ -145,25 +159,7 @@ function RouteComponent() {
 
       <div className="rounded-xl bg-[#202329] p-6 space-y-4">
         <div className="text-4.5">{t('properties.payment.payment_method')}</div>
-        <div className="grid grid-cols-2 gap-6">
-          <div className="fcc select-none b b-background rounded-xl b-solid bg-[#212936] py-6 clickable-99">
-            <div className="fccc">
-              <SvgIcon name="credit-card" className="size-8" />
-              <div>
-                {t('properties.payment.credit_card')}
-              </div>
-            </div>
-          </div>
-
-          <div className="fcc select-none b b-background rounded-xl b-solid bg-[#212936] py-6 clickable-99">
-            <div className="fccc">
-              <SvgIcon name="cryptocurrency" className="size-8" />
-              <div>
-                {t('properties.payment.cryptocurrency')}
-              </div>
-            </div>
-          </div>
-        </div>
+        <PaymentMethod walletState={[wallet, setWallet]} />
       </div>
 
       <div className="rounded-xl bg-[#202329] p-6 text-4 text-[#898989] space-y-2">
