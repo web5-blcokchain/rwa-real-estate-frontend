@@ -7,7 +7,7 @@ export function useTradingManagerContract() {
   const web3 = new Web3(Env.web3.rpc)
   const contract = new web3.eth.Contract(
     TradingManager.abi,
-    '0x01E21d7B8c39dc4C764c19b308Bd8b14B1ba139E'
+    '0x905Ad472d7eeB94ed1Fc29D8ff4B53FD4D5a5Eb4'
   )
 
   return contract
