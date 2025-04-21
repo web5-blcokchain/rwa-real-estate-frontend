@@ -37,15 +37,36 @@
       "funds": "Insufficient funds in your wallet",
       "execution": "Contract execution reverted",
       "general": "Payment failed: {{error}}",
-      "unknown": "Unknown payment error"
+      "unknown": "Unknown payment error",
+      "insufficient_usdt": "Insufficient USDT balance",
+      "approval_failed": "USDT approval failed",
+      "approval_rejected": "USDT approval rejected",
+      "rejected": "Transaction rejected by user",
+      "invalid_contract": "Invalid contract address",
+      "contract_error": "Contract call error: {{error}}",
+      "gas_error": "Gas calculation error",
+      "network_connection": "Blockchain network connection failed, please check your internet connection",
+      "metamask_rpc_error": "MetaMask internal error, please try refreshing the page or restarting MetaMask",
+      "contract_revert_with_reason": "Contract call failed: {{reason}}",
+      "transaction_timeout": "Transaction wait timeout, please check MetaMask notifications",
+      "amount_below_minimum": "Token amount below minimum requirement (Min: {{min}})",
+      "contract_not_initialized": "Contract not initialized",
+      "insufficient_eth": "Insufficient ETH balance, please ensure you have enough ETH to pay for transaction fees",
+      "transaction_failed": "Transaction execution failed, please try again later"
     },
     "info": {
       "eth_required": "Transaction requires sending ETH",
-      "tx_pending": "Transaction not yet confirmed"
+      "tx_pending": "Transaction not yet confirmed",
+      "approving_usdt": "Approving USDT...",
+      "creating_order": "Creating buy order...",
+      "metamask_reset": "Attempting to reset MetaMask connection...",
+      "min_tokens_required": "Minimum purchase: {{min}} tokens",
+      "creating_transaction": "Creating transaction..."
     },
     "success": {
       "tx_sent": "Transaction sent successfully",
-      "payment_success": "Payment successful"
+      "payment_success": "Payment successful",
+      "usdt_approved": "USDT approved successfully"
     }
   },
   "create": {

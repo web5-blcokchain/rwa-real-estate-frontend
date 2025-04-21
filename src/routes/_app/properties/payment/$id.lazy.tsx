@@ -4,16 +4,20 @@ import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
 import { PaymentMethod } from '@/components/common/payment-method'
-import { useTradingManagerContract } from '@/contract'
+import { usePropertyManagerContract, useTradingManagerContract } from '@/contract'
 import { useCommonDataStore } from '@/stores/common-data'
 import { joinImagesPath } from '@/utils/url'
+import { getWeb3Instance } from '@/utils/web3'
 import { useWallets } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import Web3 from 'web3'
+import { isAddress } from 'web3-validator'
+
+// 最小购买数量常量
+const MIN_TOKEN_PURCHASE = 2 // 设置最小购买量为2个代币，根据合约要求调整
 
 export const Route = createLazyFileRoute('/_app/properties/payment/$id')({
   component: RouteComponent
@@ -24,9 +28,11 @@ function RouteComponent() {
   const router = useRouter()
   const navigate = useNavigate()
   const { ready, wallets } = useWallets()
-  const contract = useTradingManagerContract()
+  const tradingManagerContract = useTradingManagerContract()
+  const propertyManagerContract = usePropertyManagerContract()
 
   const [wallet, setWallet] = useState<ConnectedWallet | null>(null)
+  const [minTokenAmount, setMinTokenAmount] = useState(MIN_TOKEN_PURCHASE)
 
   const { params } = useMatch({
     from: '/_app/properties/payment/$id'
@@ -37,11 +43,12 @@ function RouteComponent() {
 
   const assetDetail = assets.get(id)!
 
-  const [tokens, setTokens] = useState(1)
+  // 默认购买量设置为最小值
+  const [tokens, setTokens] = useState(MIN_TOKEN_PURCHASE)
 
   const plus = () => setTokens(tokens + 1)
   const minus = () => {
-    if (tokens > 1) {
+    if (tokens > minTokenAmount) {
       setTokens(tokens - 1)
     }
   }
@@ -56,188 +63,114 @@ function RouteComponent() {
     }
   })
 
+  // 获取最小购买量
+  useEffect(() => {
+    const fetchMinAmount = async () => {
+      if (tradingManagerContract && assetDetail?.contract_address) {
+        try {
+          // 如果合约有提供获取最小购买量的方法
+          // const minAmount = await tradingManagerContract.methods.getMinimumTokenAmount().call();
+          // setMinTokenAmount(Number(minAmount));
+
+          // 如果没有相关方法，则使用默认值
+          setMinTokenAmount(MIN_TOKEN_PURCHASE)
+        }
+        catch (error) {
+          console.error('获取最小购买量失败:', error)
+          setMinTokenAmount(MIN_TOKEN_PURCHASE)
+        }
+      }
+    }
+
+    fetchMinAmount()
+  }, [tradingManagerContract, assetDetail])
+
   async function payment() {
     if (!wallet) {
-      console.log('Please select a wallet')
       toast.error(t('payment.errors.no_wallet'))
+      return
+    }
+
+    // 检查购买数量是否达到最小要求
+    if (tokens < minTokenAmount) {
+      toast.error(t('payment.errors.amount_below_minimum', { min: minTokenAmount }))
       return
     }
 
     try {
       // 确保用户钱包已连接
       if (!window.ethereum) {
-        console.log('Please install MetaMask or use a Web3 browser')
         toast.error(t('payment.errors.no_ethereum'))
         return
       }
 
-      const web3 = new Web3(window.ethereum)
-
-      // 检查网络是否正确
-      const chainId = await web3.eth.getChainId()
-      console.log('Current chain ID:', chainId)
-
-      // 获取当前资产信息用于日志
-      console.log('Asset details:', assetDetail)
-      console.log('Token amount:', tokens)
-      console.log('Price:', assetDetail.price)
-      console.log('Total price in wei:', web3.utils.toWei((tokens * Number(assetDetail.price)).toString(), 'ether'))
-
-      // 查询用户余额
-      const balance = await web3.eth.getBalance(wallet.address)
-      console.log('User balance:', web3.utils.fromWei(balance, 'ether'), 'ETH')
-
-      // 确认合约方法和参数
-      console.log('Contract methods:', Object.keys(contract.methods))
-
-      // 修改：检查合约ABI格式和参数类型
-      // 使用BigNumber或十六进制字符串处理大数值
-      const tokenAmount = tokens.toString()
-      // 使用十六进制表示的wei值，避免精度问题
-      const priceInWei = web3.utils.toHex(web3.utils.toWei((tokens * Number(assetDetail.price)).toString(), 'ether'))
-
-      console.log('Creating buy order with params:')
-      console.log('- Contract address:', assetDetail.contract_address)
-      console.log('- Wallet address:', wallet.address)
-      console.log('- Token amount:', tokenAmount)
-      console.log('- Price in Wei (hex):', priceInWei)
-
-      // 尝试通过检查合约方法签名来排查问题
-      console.log('Available contract methods:', Object.keys(contract.methods)
-        .filter(key => typeof contract.methods[key] === 'function' && key.includes('createBuy')))
-
-      // 获取合约ABI并查看createBuyOrder方法的具体定义
-      const methodAbi = contract.options.jsonInterface.find(
-        method => method.type === 'function' && 'name' in method && method.name === 'createBuyOrder'
-      )
-      console.log('createBuyOrder method ABI:', methodAbi)
-
-      if (!methodAbi) {
-        toast.error(t('payment.errors.method_not_found'))
+      // 首先获取当前房产的合约地址
+      if (!assetDetail.contract_address || !isAddress(assetDetail.contract_address)) {
+        toast.error(t('payment.errors.invalid_contract'))
         return
       }
 
-      // 获取合约方法的 ABI 数据 - 尝试不同的参数顺序或组合
+      const contractAddress = assetDetail.contract_address
+      const investorAddress = wallet.address
+
+      // 检查投资者ETH余额是否充足
+      const web3 = getWeb3Instance()
+      const investorBalance = await web3.eth.getBalance(investorAddress)
+      const minBalance = web3.utils.toWei('0.01', 'ether') // 最小需要0.01 ETH
+
+      if (BigInt(investorBalance) < BigInt(minBalance)) {
+        toast.error(t('payment.errors.insufficient_eth'))
+        return
+      }
+
+      // 展示购买信息
+      console.log('初始购买信息:')
+      console.log(`- 房产ID: ${assetDetail.id}`)
+      console.log(`- 代币合约地址: ${contractAddress}`)
+      console.log(`- 数量: ${tokens}`)
+
+      // 执行初始购买
+      toast.info(t('payment.info.creating_transaction'))
+
+      // 验证propertyManagerContract已经初始化
+      if (!propertyManagerContract || !propertyManagerContract.methods) {
+        toast.error(t('payment.errors.contract_not_initialized'))
+        return
+      }
+
       try {
-        const data = contract.methods.createBuyOrder(
-          assetDetail.contract_address,
-          wallet.address,
-          tokenAmount,
-          priceInWei
-        ).encodeABI()
+        // 输出调试信息，查看当前房产ID
+        console.log('调用合约前的房产信息:')
+        console.log(`- 房产ID类型: ${typeof assetDetail.id}`)
+        console.log(`- 房产ID值: ${assetDetail.id}`)
+        console.log(`- 房产合约地址: ${contractAddress}`)
 
-        console.log('Encoded ABI data:', data)
+        // 确保我们传递正确的房产标识符
+        // 可能合约需要使用房产的合约地址或其他标识符，而不是仅仅使用ID
+        const propertyIdentifier = assetDetail.id.toString()
 
-        // 尝试直接调用合约方法以获取更详细的错误
-        try {
-          // 使用call()而不是estimateGas()获取详细错误
-          await contract.methods.createBuyOrder(
-            assetDetail.contract_address,
-            wallet.address,
-            tokenAmount,
-            priceInWei
-          ).call({ from: wallet.address })
+        // 估算gas以检查交易是否可能成功
+        const gasEstimate = await propertyManagerContract.methods.initialBuyPropertyToken(
+          propertyIdentifier, // 使用合约地址作为房产标识符
+          tokens.toString()
+        ).estimateGas({ from: investorAddress })
 
-          console.log('Direct call succeeded! This is unexpected since transaction failed.')
-        }
-        catch (callError) {
-          console.error('Direct call error (expected):', callError)
-          // 解析错误以获取更多信息
-          if (callError instanceof Error) {
-            const errorString = callError.toString()
+        console.log('预估的gas用量:', gasEstimate)
 
-            // 检查是否包含特定错误字符串
-            if (errorString.includes('revert')) {
-              console.log('合约调用被回滚，原因可能是参数不符合条件或权限不足')
-              toast.error(t('payment.errors.contract_revert'))
+        // 增加20%的gas以避免gas不足
+        const gasLimit = Math.floor(Number(gasEstimate) * 1.2).toString()
 
-              // 尝试发现特定原因
-              const revertReason = errorString.match(/revert: (.*)($|\n)/)?.[1]
-              if (revertReason) {
-                console.log('回滚原因:', revertReason)
-                toast.error(t('payment.errors.revert_reason', { reason: revertReason }))
-              }
-            }
+        // 执行交易
+        const initialBuyTx = await propertyManagerContract.methods.initialBuyPropertyToken(
+          propertyIdentifier, // 同样使用合约地址作为房产标识符
+          tokens.toString()
+        ).send({
+          from: investorAddress,
+          gas: gasLimit
+        })
 
-            // 检查是否需要支付ETH
-            if (errorString.includes('value')) {
-              console.log('交易可能需要发送ETH值')
-              toast.warning(t('payment.errors.may_need_eth'))
-            }
-          }
-        }
-
-        // 估算gas，但使用更高的默认值和超时时间
-        let gasEstimate
-        try {
-          gasEstimate = await web3.eth.estimateGas({
-            from: wallet.address,
-            to: contract.options.address,
-            data,
-            value: '0x0' // 测试是否需要发送ETH
-          })
-          console.log('Gas estimation successful:', gasEstimate)
-        }
-        catch (gasError) {
-          console.error('Gas estimation error:', gasError)
-          toast.error(t('payment.errors.gas_estimate'))
-
-          // 测试是否需要发送ETH值
-          try {
-            gasEstimate = await web3.eth.estimateGas({
-              from: wallet.address,
-              to: contract.options.address,
-              data,
-              value: web3.utils.toWei('0.1', 'ether')
-            })
-            console.log('Gas estimation with ETH value successful:', gasEstimate)
-            console.log('交易需要发送ETH!')
-            toast.info(t('payment.info.eth_required'))
-          }
-          catch (ethGasError) {
-            console.error('Gas estimation with ETH value still failed:', ethGasError)
-            toast.error(t('payment.errors.gas_estimate_with_eth'))
-            gasEstimate = 500000 // 使用一个较高的默认值
-          }
-        }
-
-        // 修改：使用原始gasPrice并确保gas值足够
-        const gasPrice = await web3.eth.getGasPrice()
-        console.log('Gas price:', gasPrice)
-
-        // 尝试检查账户余额是否足够
-        const txCost = BigInt(gasEstimate) * BigInt(gasPrice)
-        const userBalance = BigInt(await web3.eth.getBalance(wallet.address))
-
-        console.log('Estimated tx cost (wei):', txCost.toString())
-        console.log('User balance (wei):', userBalance.toString())
-
-        if (userBalance < txCost) {
-          console.error('余额不足，无法支付交易费用')
-          toast.error(t('payment.errors.insufficient_balance'))
-          return
-        }
-
-        // 使用更简化的交易参数
-        const txParams = {
-          from: wallet.address,
-          to: contract.options.address,
-          data,
-          gas: Math.floor(Number(gasEstimate) * 1.2), // 使用2倍气体限制
-          // 尝试不指定gasPrice和chainId，让钱包自动填充
-          value: '0x0' // 如果合约需要ETH，这里需要修改
-        }
-
-        console.log('Transaction params:', txParams)
-        console.log('Sending transaction...')
-
-        // 使用 Privy 钱包签名并发送交易
-        const txHash = await web3.eth.sendTransaction(txParams)
-
-        console.log('Transaction hash:', txHash)
         toast.success(t('payment.success.tx_sent'))
-
-        const hash = txHash.transactionHash.toString()
+        const hash = initialBuyTx.transactionHash.toString()
 
         // 调用后端API记录交易
         mutateAsync(hash)
@@ -250,34 +183,45 @@ function RouteComponent() {
             })
           })
       }
-      catch (encodeError: any) {
-        console.error('ABI encoding error:', encodeError)
-        toast.error(t('payment.errors.encoding', { error: encodeError.message }))
-        throw new Error(`Failed to encode contract method call: ${encodeError.message}`)
+      catch (estimateError: any) {
+        console.error('Gas估算或交易错误:', estimateError)
+
+        // 提取错误消息
+        const errorMessage = estimateError.message || ''
+
+        // 检查是否是最小数量错误
+        if (errorMessage.includes('Amount below minimum')) {
+          toast.error(t('payment.errors.amount_below_minimum', { min: minTokenAmount }))
+          return
+        }
+
+        // 尝试提取更详细的错误信息
+        const innerErrorMatch = errorMessage.match(/reverted with reason string '(.+?)'/i)
+        const innerError = innerErrorMatch ? innerErrorMatch[1] : ''
+
+        if (innerError) {
+          toast.error(t('payment.errors.contract_revert_with_reason', { reason: innerError }))
+        }
+        else if (errorMessage.includes('insufficient funds')) {
+          toast.error(t('payment.errors.insufficient_eth'))
+        }
+        else if (errorMessage.includes('User denied')) {
+          toast.error(t('payment.errors.rejected'))
+        }
+        else {
+          toast.error(t('payment.errors.transaction_failed'))
+        }
       }
     }
     catch (error) {
       console.error('Payment error:', error)
 
-      // 添加更详细的错误分析和相应的toast提示
       if (error instanceof Error) {
-        const errorMsg = error.message
-        console.log(`Payment failed: ${errorMsg}`)
-
-        if (errorMsg.includes('gas required exceeds allowance')) {
-          toast.error(t('payment.errors.gas_limit'))
-        }
-        else if (errorMsg.includes('nonce too low')) {
-          toast.error(t('payment.errors.nonce'))
-        }
-        else if (errorMsg.includes('insufficient funds')) {
-          toast.error(t('payment.errors.funds'))
-        }
-        else if (errorMsg.includes('execution reverted')) {
-          toast.error(t('payment.errors.execution'))
+        if (error.message.includes('rejected')) {
+          toast.error(t('payment.errors.rejected'))
         }
         else {
-          toast.error(t('payment.errors.general', { error: errorMsg }))
+          toast.error(t('payment.errors.general', { error: error.message }))
         }
       }
       else {
@@ -301,7 +245,7 @@ function RouteComponent() {
         params
       })
     }
-  }, [assetDetail, navigate, params, t])
+  }, [assetDetail, navigate, params, t, ready, wallets])
 
   if (!assetDetail) {
     return null
@@ -365,18 +309,18 @@ function RouteComponent() {
 
           <div className="space-y-4">
             <div className="fyc gap-4">
-              <Button className="b-none text-white bg-[#374151]!" onClick={minus}>-</Button>
+              <Button className="b-none text-white bg-[#374151]!" onClick={minus} disabled={tokens <= minTokenAmount}>-</Button>
               <div className="w-12 select-none text-center">{tokens}</div>
               <Button className="b-none text-white bg-[#374151]!" onClick={plus}>+</Button>
             </div>
 
             <div className="text-right">
               $
-              {tokens * 500}
+              {tokens * Number(assetDetail.price)}
             </div>
             <div className="text-right">
               $
-              {tokens * 10}
+              {(tokens * Number(assetDetail.price) * 0.02).toFixed(2)}
             </div>
           </div>
         </div>
@@ -385,7 +329,15 @@ function RouteComponent() {
 
         <div className="fbc">
           <div>{t('properties.payment.total_amount')}</div>
-          <div className="text-primary">$510</div>
+          <div className="text-primary">
+            $
+            {(tokens * Number(assetDetail.price) * 1.02).toFixed(2)}
+          </div>
+        </div>
+
+        {/* 添加最小购买量提示 */}
+        <div className="text-xs text-[#f59e0b]">
+          {t('payment.info.min_tokens_required', { min: minTokenAmount })}
         </div>
       </div>
 
@@ -402,8 +354,6 @@ function RouteComponent() {
         </p>
         <p>
           {t('properties.payment.please_verify_1')}
-
-          Your account must be fully verified with a valid government-issued ID or passport.
         </p>
       </div>
 
@@ -428,8 +378,8 @@ function RouteComponent() {
               size="large"
               className="w-48 disabled:bg-gray-2 text-black!"
               onClick={payment}
-              loading={false}
-              disabled={isPending}
+              loading={isPending}
+              disabled={isPending || tokens < minTokenAmount}
             >
               <Waiting for={!isPending}>
                 {t('properties.payment.confirm_payment')}

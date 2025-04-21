@@ -87,7 +87,8 @@
     "unplugin-auto-import": "^19.1.1",
     "vite": "^6.2.1",
     "vite-plugin-svg-icons": "^2.0.1",
-    "vite-plugin-svgr": "^4.3.0"
+    "vite-plugin-svgr": "^4.3.0",
+    "web3-validator": "^2.0.6"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

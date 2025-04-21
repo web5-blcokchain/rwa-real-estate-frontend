@@ -37,15 +37,36 @@
       "funds": "ウォレットの資金が不足しています",
       "execution": "コントラクト実行が取り消されました",
       "general": "支払いに失敗しました: {{error}}",
-      "unknown": "不明な支払いエラー"
+      "unknown": "不明な支払いエラー",
+      "insufficient_usdt": "USDT残高が不足しています",
+      "approval_failed": "USDT承認に失敗しました",
+      "approval_rejected": "USDT承認が拒否されました",
+      "rejected": "ユーザーによってトランザクションが拒否されました",
+      "invalid_contract": "無効なコントラクトアドレス",
+      "contract_error": "コントラクトコールエラー: {{error}}",
+      "gas_error": "ガス計算エラー",
+      "network_connection": "ブロックチェーンネットワーク接続に失敗しました。インターネット接続を確認してください",
+      "metamask_rpc_error": "MetaMask内部エラー。ページを更新するか、MetaMaskを再起動してみてください",
+      "contract_revert_with_reason": "コントラクト呼び出し失敗: {{reason}}",
+      "transaction_timeout": "トランザクション待機タイムアウト。MetaMask通知を確認してください",
+      "amount_below_minimum": "トークン数量が最小購入要件を下回っています (最小: {{min}})",
+      "contract_not_initialized": "コントラクトが初期化されていません",
+      "insufficient_eth": "ETH残高が不足しています。取引手数料を支払うのに十分なETHを確保してください",
+      "transaction_failed": "トランザクションの実行に失敗しました。後でもう一度お試しください"
     },
     "info": {
       "eth_required": "トランザクションにはETHの送信が必要です",
-      "tx_pending": "トランザクションはまだ確認されていません"
+      "tx_pending": "トランザクションはまだ確認されていません",
+      "approving_usdt": "USDTを承認中...",
+      "creating_order": "購入注文を作成中...",
+      "metamask_reset": "MetaMask接続のリセットを試みています...",
+      "min_tokens_required": "最小購入量: {{min}} トークン",
+      "creating_transaction": "トランザクションを作成中..."
     },
     "success": {
       "tx_sent": "トランザクションが正常に送信されました",
-      "payment_success": "支払い成功"
+      "payment_success": "支払い成功",
+      "usdt_approved": "USDTが正常に承認されました"
     }
   },
   "create": {

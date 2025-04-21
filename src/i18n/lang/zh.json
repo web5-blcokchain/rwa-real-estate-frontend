@@ -37,15 +37,36 @@
       "funds": "钱包中资金不足",
       "execution": "合约执行被回滚",
       "general": "支付失败: {{error}}",
-      "unknown": "未知的支付错误"
+      "unknown": "未知的支付错误",
+      "insufficient_usdt": "USDT 余额不足",
+      "approval_failed": "USDT 授权失败",
+      "approval_rejected": "USDT 授权被拒绝",
+      "rejected": "用户拒绝交易",
+      "invalid_contract": "无效的合约地址",
+      "contract_error": "合约调用错误: {{error}}",
+      "gas_error": "燃气费计算错误",
+      "network_connection": "区块链网络连接失败，请检查您的互联网连接",
+      "metamask_rpc_error": "MetaMask内部错误，请尝试刷新页面或重启MetaMask",
+      "contract_revert_with_reason": "合约调用失败: {{reason}}",
+      "transaction_timeout": "交易等待超时，请检查MetaMask通知",
+      "amount_below_minimum": "代币数量低于最小购买要求 (最小: {{min}})",
+      "contract_not_initialized": "合约未初始化",
+      "insufficient_eth": "ETH 余额不足，请确保有足够的 ETH 支付交易费用",
+      "transaction_failed": "交易执行失败，请稍后重试"
     },
     "info": {
       "eth_required": "交易需要发送ETH",
-      "tx_pending": "交易尚未确认"
+      "tx_pending": "交易尚未确认",
+      "approving_usdt": "正在授权 USDT...",
+      "creating_order": "正在创建买单...",
+      "metamask_reset": "正在尝试重置MetaMask连接...",
+      "min_tokens_required": "最小购买量: {{min}} 个代币",
+      "creating_transaction": "正在创建交易..."
     },
     "success": {
       "tx_sent": "交易发送成功",
-      "payment_success": "支付成功"
+      "payment_success": "支付成功",
+      "usdt_approved": "USDT 授权成功"
     }
   },
   "create": {
