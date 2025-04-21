@@ -135,8 +135,8 @@ function RouteComponent() {
         <div className="grid grid-cols-1 mt-16 gap-8 md:grid-cols-4">
           {
             howItWorks.map((item, index) => (
-              <div key={index} className="lt-md:flex lt-md:gap-4 md:text-center">
-                <div className="mx-a size-16 fcc shrink-0 rounded-full bg-primary-6">
+              <div key={index} className="lt-md:flex lt-md:gap-8 md:text-center">
+                <div className="mx-a size-16 fcc shrink-0 rounded-full bg-primary-6 lt-md:mx-0">
                   <SvgIcon name={item.icon} className="size-7" />
                 </div>
                 <div className="md:mt-4 space-y-2">
