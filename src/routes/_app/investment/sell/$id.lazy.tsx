@@ -141,11 +141,11 @@ function RouteComponent() {
 
             <div className="text-right">
               $
-              {tokens * 500}
+              {tokens * Number(assetDetail.token_price)}
             </div>
             <div className="text-right">
               $
-              {tokens * 10}
+              {tokens * Number(assetDetail.token_price) * 0.02}
             </div>
           </div>
         </div>
@@ -154,7 +154,9 @@ function RouteComponent() {
 
         <div className="fbc">
           <div>{t('properties.payment.total_amount')}</div>
-          <div className="text-primary">$510</div>
+          <div className="text-primary">
+            {`$${(tokens * Number(assetDetail.token_price)) + (tokens * Number(assetDetail.token_price) * 0.02)}`}
+          </div>
         </div>
       </div>
 
