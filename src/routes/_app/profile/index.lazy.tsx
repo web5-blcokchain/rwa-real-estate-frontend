@@ -5,7 +5,8 @@ import History from '@/components/profile/history'
 import Overview from '@/components/profile/overview'
 import PropertyTokens from '@/components/profile/propertyTokens'
 import Transactions from '@/components/profile/transactions'
-
+import { ProfileTab } from '@/enums/profile'
+import { useProfileStore } from '@/stores/profile'
 import { useUserStore } from '@/stores/user'
 import { joinImagePath } from '@/utils/url'
 import { createLazyFileRoute } from '@tanstack/react-router'
@@ -37,36 +38,36 @@ function getItem(
 
 function RouteComponent() {
   const { t } = useTranslation()
-  const [selectedKey, setSelectedKey] = useState<string>('1') // 默认选中第一个菜单项
   const userData = useUserStore(state => state.userData)
+  const { selectedTab, setSelectedTab } = useProfileStore()
 
   const items: MenuItem[] = [
-    getItem(`${t('aboutMe.menu_overview')}`, '1'),
-    getItem(`${t('aboutMe.menu_property_tokens')}`, '2'),
-    getItem(`${t('aboutMe.menu_earnings')}`, '3'),
-    getItem(`${t('aboutMe.menu_history')}`, '4'),
-    getItem(`${t('aboutMe.menu_transaction_history')}`, '5')
+    getItem(`${t('aboutMe.menu_overview')}`, ProfileTab.Overview),
+    getItem(`${t('aboutMe.menu_property_tokens')}`, ProfileTab.PropertyTokens),
+    getItem(`${t('aboutMe.menu_earnings')}`, ProfileTab.Earnings),
+    getItem(`${t('aboutMe.menu_history')}`, ProfileTab.History),
+    getItem(`${t('aboutMe.menu_transaction_history')}`, ProfileTab.TransactionHistory)
   ]
 
   const handleMenuClick: MenuProps['onClick'] = (e) => {
-    setSelectedKey(e.key)
+    setSelectedTab(e.key as ProfileTab)
   }
 
   useEffect(() => {
-    // 这里可以添加一些逻辑，比如根据 selectedKey 获取数据
-  }, [selectedKey])
+    // 这里可以添加一些逻辑，比如根据 selectedTab 获取数据
+  }, [selectedTab])
 
   const renderContent = () => {
-    switch (selectedKey) {
-      case '1':
+    switch (selectedTab) {
+      case ProfileTab.Overview:
         return <Overview />
-      case '2':
+      case ProfileTab.PropertyTokens:
         return <PropertyTokens />
-      case '3':
+      case ProfileTab.Earnings:
         return <Earnings />
-      case '4':
+      case ProfileTab.History:
         return <History />
-      case '5':
+      case ProfileTab.TransactionHistory:
         return <Transactions />
       default:
         return <Overview />
@@ -91,7 +92,8 @@ function RouteComponent() {
         </div>
         <Menu
           theme="dark"
-          defaultSelectedKeys={['1']}
+          defaultSelectedKeys={[selectedTab]}
+          selectedKeys={[selectedTab]}
           mode="inline"
           items={items}
           className="bg-[#181a1e]"
@@ -101,7 +103,6 @@ function RouteComponent() {
 
       <Layout className="page-layout-wrap bg-[#181a1e]">
         <Content>
-          {/* <Overview /> */}
           {renderContent()}
         </Content>
       </Layout>
