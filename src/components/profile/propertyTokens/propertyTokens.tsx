@@ -1,6 +1,5 @@
 import type { listProps } from '@/api/apiMyInfoApi'
 import apiMyInfo from '@/api/apiMyInfoApi'
-import { useUserStore } from '@/stores/user'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { Button, Spin } from 'antd'
@@ -11,7 +10,6 @@ function PropertyTokens() {
   const navigate = useNavigate()
   const [page, setPage] = useState(1)
   const [keyword, setKeyword] = useState('')
-  const setAssetId = useUserStore((state: { setAssetId: (id: number) => void }) => state.setAssetId)
 
   const { data: tokenData, isLoading } = useQuery({
     queryKey: ['PropertyTokens', page, keyword],
@@ -54,22 +52,21 @@ function PropertyTokens() {
 
         <div className="grid grid-cols-1 mt-8 gap-8 md:grid-cols-3">
           {
-            tokenData?.map((_: listProps, i: number) => (
+            tokenData?.map((item: listProps, i: number) => (
               <CarPreview
-                key={_.id}
-                picture={_.image_urls || `https://picsum.photos/500/300?random=${i}`}
-                title={_.name}
-                location={_.location}
+                key={item.id}
+                picture={item.image_urls || `https://picsum.photos/500/300?random=${i}`}
+                title={item.name}
+                location={item.location}
                 size="813 sq ft"
-                beds={_.bedrooms}
-                price={_.current_price}
-                tokenPrice={_.total_purchase}
-                status={_.status}
-                annual_return={_.expected_annual_return}
-                number={_.number}
+                beds={item.bedrooms}
+                price={item.current_price}
+                tokenPrice={item.total_purchase}
+                status={item.status}
+                annual_return={item.expected_annual_return}
+                number={item.number}
                 onClick={() => {
-                  setAssetId(_.id)
-                  navigate({ to: '/properties/detail' })
+                  navigate({ to: '/properties/detail/$id', params: { id: `${item.id}` } })
                 }}
               />
             ))
