@@ -98,7 +98,7 @@ const data: DataType[] = [
 ]
 
 // 表格2配置
-const columnsTwo: TableProps<DataType>['columns'] = [
+const columnsTwo: TableProps<DataTypeTwo>['columns'] = [
   {
     title: 'Time',
     dataIndex: 'Time',
