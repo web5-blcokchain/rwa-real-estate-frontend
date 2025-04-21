@@ -254,7 +254,8 @@
     "monthly_rental_income": "每月租金收入（日元）",
     "annual_yield": "每年的产量",
     "menu_edit": "编辑设置",
-    "menu_recording": "交易记录"
+    "menu_recording": "交易记录",
+    "menu_transaction_status": "交易状态"
   },
   "footer": {
     "about": "关于",

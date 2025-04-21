@@ -251,7 +251,8 @@
     "monthly_rental_income": "家賃収入（円）",
     "annual_yield": "年間生産高",
     "menu_edit": "Edit settings",
-    "menu_recording": "取引記録"
+    "menu_recording": "取引記録",
+    "menu_transaction_status": "取引ステータス"
   },
   "footer": {
     "about": "について",

@@ -7,3 +7,7 @@ export function getTransactions(data: Record<string, any>) {
 export function getTransactionDetail(data: Record<string, any>) {
   return apiClient.post('/api/assets/tokenDistribution', data)
 }
+
+export function getTransactionStatus(data: Record<string, any>) {
+  return apiClient.post('/api/market/orderList', data)
+}

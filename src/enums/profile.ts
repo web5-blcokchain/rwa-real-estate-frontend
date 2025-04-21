@@ -4,5 +4,6 @@ export enum ProfileTab {
   PropertyTokens = 'PropertyTokens',
   Earnings = 'Earnings',
   History = 'History',
-  Recording = 'Recording'
+  Recording = 'Recording',
+  TransactionStatus = 'TransactionStatus'
 }

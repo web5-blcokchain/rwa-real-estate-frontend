@@ -251,7 +251,8 @@
     "monthly_rental_income": "Monthly Rental Income(JPY)",
     "annual_yield": "Annual Yield",
     "menu_edit": "Edit settings",
-    "menu_recording": "Recording"
+    "menu_recording": "Recording",
+    "menu_transaction_status": "Transaction Status"
   },
   "footer": {
     "about": "About",
