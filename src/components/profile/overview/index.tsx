@@ -6,7 +6,6 @@ import button3 from '@/assets/icons/BUTTON3.png'
 import frame115 from '@/assets/icons/Frame115.png'
 import group272Icon from '@/assets/icons/group272.png'
 import { usePrivy } from '@privy-io/react-auth'
-
 import { useQuery } from '@tanstack/react-query'
 import { Space } from 'antd'
 import DataCount from '../-components/data-count'
