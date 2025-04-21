@@ -1,9 +1,9 @@
 import type { MenuProps } from 'antd'
 import { IImage } from '@/components/common/i-image'
-import Earnings from '@/components/profile/earnings/earnings'
-import History from '@/components/profile/history/history'
-import Overview from '@/components/profile/overview/overview'
-import PropertyTokens from '@/components/profile/propertyTokens/propertyTokens'
+import Earnings from '@/components/profile/earnings'
+import History from '@/components/profile/history'
+import Overview from '@/components/profile/overview'
+import PropertyTokens from '@/components/profile/propertyTokens'
 import Transactions from '@/components/profile/transactions'
 
 import { useUserStore } from '@/stores/user'

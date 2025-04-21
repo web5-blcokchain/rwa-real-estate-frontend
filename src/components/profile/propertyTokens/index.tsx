@@ -3,7 +3,7 @@ import apiMyInfo from '@/api/apiMyInfoApi'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { Button, Spin } from 'antd'
-import DataCount from '../-components/dataCount'
+import DataCount from '../-components/data-count'
 import PropertyTokenCard from '../-components/property-token-card'
 
 function PropertyTokens() {

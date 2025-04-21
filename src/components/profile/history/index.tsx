@@ -1,4 +1,4 @@
-import SelectComponent from '../-components/SelectComponent'
+import SelectComponent from '../-components/select-component'
 import { TitleCard } from '../-components/titleCard'
 import HistoryDecmber from './historyDecmber'
 import { HistoryEchart } from './historyEchart'

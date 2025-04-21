@@ -4,7 +4,7 @@ import TableComponent from '@/components/common/table-component'
 import { useQuery } from '@tanstack/react-query'
 import { DatePicker, Pagination } from 'antd'
 import dayjs from 'dayjs'
-import SelectComponent from '../-components/SelectComponent'
+import SelectComponent from '../-components/select-component'
 
 function Transactions() {
   const { t } = useTranslation()

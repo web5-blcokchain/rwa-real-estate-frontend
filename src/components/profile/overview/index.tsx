@@ -1,45 +1,30 @@
+import type { historyResponse, listProps } from '@/api/apiMyInfoApi'
 import type { TableProps } from 'antd'
 import apiMyInfo from '@/api/apiMyInfoApi'
 import button2 from '@/assets/icons/BUTTON2-2.png'
 import button3 from '@/assets/icons/BUTTON3.png'
 import frame115 from '@/assets/icons/Frame115.png'
 import group272Icon from '@/assets/icons/group272.png'
+import { usePrivy } from '@privy-io/react-auth'
+
 import { useQuery } from '@tanstack/react-query'
 import { Space } from 'antd'
-import DataCount from '../-components/dataCount'
+import DataCount from '../-components/data-count'
 import TableComponent from '../../common/table-component'
 
-interface DataType {
-  key: string
-  Asset: string
-  Amount: string
-  JPY: string
-  Change: string
-  Share: string
-}
-
-interface DataTypeTwo {
-  key: string
-  Time: string
-  Type: string
-  Asset: string
-  AmountJPY: string
-  Status: string
-}
-
 // 表格1配置
-const columns: TableProps<DataType>['columns'] = [
+const columns: TableProps<listProps>['columns'] = [
   {
     title: 'Asset',
-    dataIndex: 'Asset',
+    dataIndex: 'total_purchase',
     key: 'Asset',
     render: (_, record) => (
       <>
         <div className="flex items-center justify-start">
           <img src={group272Icon} alt="" className="mr-2 h-6 w-6" />
           <div className="flex flex-col justify-start">
-            <div>{record.Asset}</div>
-            <div className="text-[#8d909a]">TKYT</div>
+            <div>{record.address}</div>
+            <div className="text-[#8d909a]">{record.property_type}</div>
           </div>
         </div>
       </>
@@ -47,23 +32,23 @@ const columns: TableProps<DataType>['columns'] = [
   },
   {
     title: 'Amount',
-    dataIndex: 'Amount',
+    dataIndex: 'purchase_price',
     key: 'Amount',
     render: text => <a>{text}</a>
   },
   {
     title: 'Value (JPY)',
-    dataIndex: 'JPY',
+    dataIndex: 'purchase_price',
     key: 'JPY'
   },
   {
     title: 'Share',
-    key: 'Share',
-    dataIndex: 'Share'
+    dataIndex: 'number',
+    key: 'Share'
   },
   {
     title: '24h Change',
-    dataIndex: 'Change',
+    dataIndex: 'expected_annual_return',
     key: 'Change'
   },
   {
@@ -78,35 +63,16 @@ const columns: TableProps<DataType>['columns'] = [
   }
 ]
 
-const data: DataType[] = [
-  {
-    key: '1',
-    Asset: 'Tokyo Tower Apartments RWA',
-    Amount: '5,280.00',
-    JPY: '¥5,280,000.00',
-    Change: '+2.8%',
-    Share: '42.3%'
-  },
-  {
-    key: '2',
-    Asset: 'Osaka Business Center RWA',
-    Amount: '3,246.45',
-    JPY: '¥3,246,450.00',
-    Change: '-0.5%',
-    Share: '6.1%'
-  }
-]
-
 // 表格2配置
-const columnsTwo: TableProps<DataType>['columns'] = [
+const columnsTwo: TableProps<historyResponse>['columns'] = [
   {
     title: 'Time',
-    dataIndex: 'Time',
+    dataIndex: 'income_date',
     key: 'Time'
   },
   {
     title: 'Type',
-    dataIndex: 'Type',
+    dataIndex: 'type',
     key: 'Type',
     render: text => <a>{text}</a>
   },
@@ -118,7 +84,7 @@ const columnsTwo: TableProps<DataType>['columns'] = [
       <>
         <div className="flex items-center justify-start">
           <div className="flex flex-col justify-start">
-            <div>{record.Asset}</div>
+            <div>{record.address}</div>
             <div className="text-[#8d909a]">TKYT</div>
           </div>
         </div>
@@ -128,12 +94,12 @@ const columnsTwo: TableProps<DataType>['columns'] = [
   {
     title: 'Amount (JPY)',
     key: 'AmountJPY',
-    dataIndex: 'AmountJPY',
+    dataIndex: 'number',
     render: (_, record) => (
       <>
         <div className="flex items-center justify-start">
           <div className="flex flex-col justify-start">
-            <div>{record.AmountJPY}</div>
+            <div>{record.number}</div>
             <div className="text-[#8d909a]">≈ 25.4 TKYT</div>
           </div>
         </div>
@@ -151,53 +117,67 @@ const columnsTwo: TableProps<DataType>['columns'] = [
   }
 ]
 
-const dataTwo: DataTypeTwo[] = [
-  {
-    key: '1',
-    Time: '2024-12-15 15:30',
-    Type: 'Rental Distribution',
-    Asset: 'Tokyo Tower Apartments RWA',
-    AmountJPY: '¥25,400.00',
-    Status: '42.3%'
-  },
-  {
-    key: '2',
-    Time: '2024-12-15 15:30',
-    Type: 'Rental Distribution',
-    Asset: 'Tokyo Tower Apartments RWA',
-    AmountJPY: '¥25,400.00',
-    Status: '42.3%'
-  }
-]
+function Overview() {
+  // const [keyword, setKeyword] = useState<string>('')
+  // const [page, setPage] = useState<number>(1)
+  // const [pageSize, setPageSize] = useState<number>(20)
 
-function Earnings() {
-  const { data: EarningsData = [], isLoading } = useQuery({
-    queryKey: ['Earnings'],
+  const { ready, authenticated, user } = usePrivy()
+
+  const { data: overviewData, isLoading } = useQuery({
+    queryKey: ['overview'],
     queryFn: async () => {
-      const res = await apiMyInfo.getEarningsHistory()
+      const res = await apiMyInfo.getMeInfo({})
+      return res.data?.list
+    }
+  })
+
+  const { data: historyData, isLoading: historyLoading } = useQuery({
+    queryKey: ['history'],
+    queryFn: async () => {
+      const res = await apiMyInfo.getHistory()
       return res.data?.list || []
     }
   })
-  console.log('=-=-=-', EarningsData, isLoading)
+
+  if (isLoading || historyLoading) {
+    return (
+      <Waiting
+        className="h-32 fcc"
+        iconClass="size-8"
+      >
+      </Waiting>
+    )
+  }
 
   return (
-    <div>
+    <div className="space-y-8">
       <DataCount />
-      <TableComponent
-        columns={columns}
-        data={data}
-      >
-        <div className="mb-2 text-5">Income Composition</div>
-      </TableComponent>
+
+      <Waiting for={ready && authenticated} className="h-16 fcc">
+        <div className="rounded-xl bg-[#1e2024] p-4">
+          <div className="fbc text-4">
+            <div>Wallet Address</div>
+            <div>{user?.wallet?.address}</div>
+          </div>
+        </div>
+      </Waiting>
 
       <TableComponent
-        columns={columnsTwo}
-        data={dataTwo || []}
+        columns={columns}
+        data={overviewData || []}
       >
-        <div className="mb-2 text-5">Historical Income Records</div>
+        <div className="mb-2 text-5">Token Holdings</div>
+      </TableComponent>
+
+      <TableComponent<historyResponse>
+        columns={columnsTwo}
+        data={historyData || []}
+      >
+        <div className="mb-2 text-5">Earnings History</div>
       </TableComponent>
     </div>
   )
 }
 
-export default Earnings
+export default Overview
