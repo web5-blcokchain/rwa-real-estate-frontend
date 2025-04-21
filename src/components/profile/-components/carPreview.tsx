@@ -1,8 +1,8 @@
 import { IImage } from '@/components/common/i-image'
+import { joinImagePath } from '@/utils/url'
 import { Button } from 'antd'
 import numeral from 'numeral'
 
-const baseUrl = import.meta.env.VITE_PUBLIC_API_URL
 const CarPreview: FC<{
   picture: string
   title: string
@@ -11,7 +11,7 @@ const CarPreview: FC<{
   tokenPrice: number
   size: string
   beds: number
-  status: number
+  property_type: string
   annual_return?: number
   number?: number
 } & React.HTMLAttributes<HTMLDivElement>> = ({
@@ -22,12 +22,24 @@ const CarPreview: FC<{
   tokenPrice,
   size,
   beds,
-  status,
+  property_type,
   className,
   annual_return,
   number,
   ...props
 }) => {
+  const onTraidClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    // 这里处理 Traid 按钮点击逻辑
+    console.log('Traid clicked')
+  }
+
+  const onRedeemClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    // 这里处理 Redeem 按钮点击逻辑
+    console.log('Redeem clicked')
+  }
+
   return (
     <div
       className={cn(
@@ -37,7 +49,11 @@ const CarPreview: FC<{
       {...props}
     >
       <div className="relative h-56">
-        <IImage src={`${baseUrl}${picture}`} className="size-full" />
+        <IImage
+          src={joinImagePath(picture)}
+          className="size-full"
+          imgClass="object-cover"
+        />
       </div>
 
       <div className="px-6 py-8 space-y-2">
@@ -45,7 +61,7 @@ const CarPreview: FC<{
           <div className="text-4 font-medium">{title}</div>
 
           <div className="rounded bg-[#8465bb] bg-opacity-50 px-2 py-1 text-3 text-purple">
-            {status}
+            {property_type}
           </div>
         </div>
 
@@ -86,6 +102,7 @@ const CarPreview: FC<{
             type="primary"
             size="large"
             className="mr-2 w-1/2 text-black!"
+            onClick={onTraidClick}
           >
             Traid
           </Button>
@@ -93,6 +110,7 @@ const CarPreview: FC<{
           <Button
             size="large"
             className="w-1/2 border-[#9e9e9e] bg-[#202329] text-[#9e9e9e]!"
+            onClick={onRedeemClick}
           >
             Redeem
           </Button>
