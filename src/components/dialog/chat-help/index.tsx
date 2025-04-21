@@ -1,5 +1,5 @@
 import type { TabsProps } from 'antd'
-import { useGlobalDialogStore } from '@/stores/global-dialog'
+import { useGlobalDialogStore } from '@/stores/chat-help-dialog'
 import { Tabs } from 'antd'
 import { useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'

@@ -1,4 +1,4 @@
-import { useGlobalDialogStore } from '@/stores/global-dialog'
+import { useGlobalDialogStore } from '@/stores/chat-help-dialog'
 import ReactDOM from 'react-dom'
 
 export const ChatButton: FC = () => {
