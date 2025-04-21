@@ -3,7 +3,7 @@ import { joinImagePath } from '@/utils/url'
 import { Button } from 'antd'
 import numeral from 'numeral'
 
-const CarPreview: FC<{
+const PropertyTokenCard: FC<{
   picture: string
   title: string
   location: string
@@ -120,4 +120,4 @@ const CarPreview: FC<{
   )
 }
 
-export default CarPreview
+export default PropertyTokenCard

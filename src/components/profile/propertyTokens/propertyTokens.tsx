@@ -3,8 +3,8 @@ import apiMyInfo from '@/api/apiMyInfoApi'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { Button, Spin } from 'antd'
-import CarPreview from '../-components/carPreview'
 import DataCount from '../-components/dataCount'
+import PropertyTokenCard from '../-components/property-token-card'
 
 function PropertyTokens() {
   const navigate = useNavigate()
@@ -53,7 +53,7 @@ function PropertyTokens() {
         <div className="grid grid-cols-1 mt-8 gap-8 xl:grid-cols-2">
           {
             tokenData?.map((item: listProps) => (
-              <CarPreview
+              <PropertyTokenCard
                 key={item.id}
                 picture={item.image_urls}
                 title={item.name}
