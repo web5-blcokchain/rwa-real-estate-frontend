@@ -50,19 +50,19 @@ function PropertyTokens() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 mt-8 gap-8 md:grid-cols-3">
+        <div className="grid grid-cols-1 mt-8 gap-8 xl:grid-cols-2">
           {
-            tokenData?.map((item: listProps, i: number) => (
+            tokenData?.map((item: listProps) => (
               <CarPreview
                 key={item.id}
-                picture={item.image_urls || `https://picsum.photos/500/300?random=${i}`}
+                picture={item.image_urls}
                 title={item.name}
                 location={item.location}
                 size="813 sq ft"
                 beds={item.bedrooms}
                 price={item.current_price}
                 tokenPrice={item.total_purchase}
-                status={item.status}
+                property_type={item.property_type}
                 annual_return={item.expected_annual_return}
                 number={item.number}
                 onClick={() => {
