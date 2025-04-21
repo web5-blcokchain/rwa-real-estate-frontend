@@ -250,7 +250,8 @@
     "toyota_balance": "Toyota Balance",
     "monthly_rental_income": "家賃収入（円）",
     "annual_yield": "年間生産高",
-    "menu_transaction_history": "取引記録"
+    "menu_transaction_history": "取引記録",
+    "menu_edit": "Edit settings"
   },
   "footer": {
     "about": "について",
@@ -297,6 +298,25 @@
       "search": "アドレスの検索",
       "start_date": "何日から",
       "end_date": "何日まで"
+    },
+    "edit": {
+      "title": "プロフィール編集",
+      "nickname": "ニックネーム",
+      "email": "Eメール",
+      "nickname_required": "ニックネームを入力してください！",
+      "change_avatar": "アバターを変更",
+      "save": "変更を保存",
+      "account_management": "アカウント管理",
+      "account_management_desc": "個人情報とアカウントのセキュリティ設定を管理する",
+      "basic_info": "基本情報",
+      "upload": "アップロード",
+      "upload_desc": "JPG、PNG形式をサポート、ファイルサイズは最大2MB",
+      "name": "名前",
+      "phone": "電話番号",
+      "phone_placeholder": "+81 90-1234-5678",
+      "email_placeholder": "email@example.com",
+      "location": "場所",
+      "location_placeholder": "都市、国"
     }
   }
 }

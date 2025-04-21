@@ -1,6 +1,7 @@
 import type { MenuProps } from 'antd'
 import { IImage } from '@/components/common/i-image'
 import Earnings from '@/components/profile/earnings'
+import { ProfileEdit } from '@/components/profile/edit'
 import History from '@/components/profile/history'
 import Overview from '@/components/profile/overview'
 import PropertyTokens from '@/components/profile/propertyTokens'
@@ -43,6 +44,7 @@ function RouteComponent() {
 
   const items: MenuItem[] = [
     getItem(`${t('aboutMe.menu_overview')}`, ProfileTab.Overview),
+    getItem(`${t('aboutMe.menu_edit')}`, ProfileTab.Edit),
     getItem(`${t('aboutMe.menu_property_tokens')}`, ProfileTab.PropertyTokens),
     getItem(`${t('aboutMe.menu_earnings')}`, ProfileTab.Earnings),
     getItem(`${t('aboutMe.menu_history')}`, ProfileTab.History),
@@ -69,6 +71,8 @@ function RouteComponent() {
         return <History />
       case ProfileTab.TransactionHistory:
         return <Transactions />
+      case ProfileTab.Edit:
+        return <ProfileEdit />
       default:
         return <Overview />
     }
