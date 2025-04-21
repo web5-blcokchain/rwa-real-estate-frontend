@@ -8,11 +8,13 @@ const r = (path: string) => fileURLToPath(new URL(path, import.meta.url))
 
 const CONTRACTS = [
   'TradingManager',
-  'SimpleERC20'
+  'PropertyManager',
+  'SimpleERC20',
 ]
 
 const ADDRESS_MAP = {
   'TradingManager': 'CONTRACT_TRADINGMANAGER_ADDRESS',
+  'PropertyManager': 'CONTRACT_PROPERTYMANAGER_ADDRESS',
   'SimpleERC20': 'CONTRACT_TESTTOKEN_ADDRESS'
 }
 
