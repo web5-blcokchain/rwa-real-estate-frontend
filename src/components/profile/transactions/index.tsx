@@ -6,7 +6,7 @@ import { DatePicker, Pagination } from 'antd'
 import dayjs from 'dayjs'
 import SelectComponent from '../-components/select-component'
 
-function Transactions() {
+function Recording() {
   const { t } = useTranslation()
 
   const [keyword, setKeyword] = useState('')
@@ -149,4 +149,4 @@ function Transactions() {
   )
 }
 
-export default Transactions
+export default Recording

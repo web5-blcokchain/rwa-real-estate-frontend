@@ -250,8 +250,8 @@
     "toyota_balance": "Toyota Balance",
     "monthly_rental_income": "Monthly Rental Income(JPY)",
     "annual_yield": "Annual Yield",
-    "menu_transaction_history": "transactions",
-    "menu_edit": "Edit settings"
+    "menu_edit": "Edit settings",
+    "menu_recording": "Recording"
   },
   "footer": {
     "about": "About",

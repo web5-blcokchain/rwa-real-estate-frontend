@@ -5,7 +5,7 @@ import { ProfileEdit } from '@/components/profile/edit'
 import History from '@/components/profile/history'
 import Overview from '@/components/profile/overview'
 import PropertyTokens from '@/components/profile/propertyTokens'
-import Transactions from '@/components/profile/transactions'
+import Recording from '@/components/profile/transactions'
 import { ProfileTab } from '@/enums/profile'
 import { useProfileStore } from '@/stores/profile'
 import { useUserStore } from '@/stores/user'
@@ -48,7 +48,7 @@ function RouteComponent() {
     getItem(`${t('aboutMe.menu_property_tokens')}`, ProfileTab.PropertyTokens),
     getItem(`${t('aboutMe.menu_earnings')}`, ProfileTab.Earnings),
     getItem(`${t('aboutMe.menu_history')}`, ProfileTab.History),
-    getItem(`${t('aboutMe.menu_transaction_history')}`, ProfileTab.TransactionHistory)
+    getItem(`${t('aboutMe.menu_recording')}`, ProfileTab.Recording)
   ]
 
   const handleMenuClick: MenuProps['onClick'] = (e) => {
@@ -63,16 +63,16 @@ function RouteComponent() {
     switch (selectedTab) {
       case ProfileTab.Overview:
         return <Overview />
+      case ProfileTab.Edit:
+        return <ProfileEdit />
       case ProfileTab.PropertyTokens:
         return <PropertyTokens />
       case ProfileTab.Earnings:
         return <Earnings />
       case ProfileTab.History:
         return <History />
-      case ProfileTab.TransactionHistory:
-        return <Transactions />
-      case ProfileTab.Edit:
-        return <ProfileEdit />
+      case ProfileTab.Recording:
+        return <Recording />
       default:
         return <Overview />
     }
