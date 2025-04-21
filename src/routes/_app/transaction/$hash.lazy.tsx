@@ -1,4 +1,3 @@
-import type { FC } from 'react'
 import { getTransactionDetail } from '@/api/transaction'
 import { ChatButton } from '@/components/common/chat-button'
 import { IInfoField } from '@/components/common/i-info-field'
