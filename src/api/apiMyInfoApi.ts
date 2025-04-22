@@ -82,7 +82,7 @@ export interface AboutMeParams {
   keyword?: string
 }
 
-export interface listProps {
+export interface PropertieItem {
   id: number
   user_id: number
   properties_id: number
@@ -106,7 +106,7 @@ export interface listProps {
   latitude: string | null
 }
 export interface AboutMeResponse {
-  list: listProps[]
+  list: PropertieItem[]
   count: number
   page: number
   pageSize: number
