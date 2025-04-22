@@ -4,6 +4,7 @@ import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
 import { PaymentMethod } from '@/components/common/payment-method'
+import QuantitySelector from '@/components/common/quantity-selector'
 import { usePropertyManagerContract, useTradingManagerContract } from '@/contract'
 import { useCommonDataStore } from '@/stores/common-data'
 import { joinImagesPath } from '@/utils/url'
@@ -46,12 +47,6 @@ function RouteComponent() {
   // 默认购买量设置为最小值
   const [tokens, setTokens] = useState(MIN_TOKEN_PURCHASE)
 
-  const plus = () => setTokens(tokens + 1)
-  const minus = () => {
-    if (tokens > minTokenAmount) {
-      setTokens(tokens - 1)
-    }
-  }
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async (hash: string) => {
       const res = await apiBasic.purchaseBuy({
@@ -308,10 +303,13 @@ function RouteComponent() {
           </div>
 
           <div className="space-y-4">
-            <div className="fyc gap-4">
-              <Button className="b-none text-white bg-[#374151]!" onClick={minus} disabled={tokens <= minTokenAmount}>-</Button>
-              <div className="w-12 select-none text-center">{tokens}</div>
-              <Button className="b-none text-white bg-[#374151]!" onClick={plus}>+</Button>
+            <div className="flex justify-end">
+              <QuantitySelector
+                value={tokens}
+                onChange={setTokens}
+                min={minTokenAmount}
+                disabled={isPending}
+              />
             </div>
 
             <div className="text-right">
