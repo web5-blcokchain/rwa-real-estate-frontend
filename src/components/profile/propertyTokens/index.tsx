@@ -59,7 +59,7 @@ function PropertyTokens() {
                 onClick={() => {
                   navigate({
                     to: '/properties/detail/$id',
-                    params: { id: `${item.id}` }
+                    params: { id: `${item.properties_id}` }
                   })
                 }}
               />
