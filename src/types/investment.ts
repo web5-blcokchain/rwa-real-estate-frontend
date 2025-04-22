@@ -5,6 +5,7 @@ export interface InvestmentItem {
   name: string
   location: string
   property_type: string
+  contract_address: string
   token_price: string
   tokens_held: number
   total_amount: string

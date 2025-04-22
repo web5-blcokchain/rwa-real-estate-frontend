@@ -14,6 +14,7 @@ interface InvestmentCardProps {
     name: string
     address: string
     location: string
+    contract_address: string
     property_type: string
     token_price: string
     tokens_held: number
@@ -49,7 +50,7 @@ export const InvestmentCard: FC<InvestmentCardProps> = ({
     investmentItems.set(item.id, item)
 
     navigate({
-      to: '/investment/sell/$id',
+      to: '/transaction/create-sell-order/$id',
       params: {
         id: `${item.id}`
       }
