@@ -1,6 +1,6 @@
+import type { InvestmentOrderType } from '@/enums/investment'
 import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
-import { InvestmentOrderType } from '@/enums/investment'
 import { useCommonDataStore } from '@/stores/common-data'
 import { joinImagesPath } from '@/utils/url'
 import { useNavigate } from '@tanstack/react-router'
@@ -20,6 +20,7 @@ interface InvestmentCardProps {
     total_amount: string
     rental_yield: string
     image_urls: string
+    has_holdings: boolean
     order_type: InvestmentOrderType
   }
 }
@@ -91,7 +92,7 @@ export const InvestmentCard: FC<InvestmentCardProps> = ({
           />
           <IInfoField
             label={t('properties.payment.token_price')}
-            value={`$${numeral(item.token_price).format('0,0')} / token`}
+            value={`$${numeral(item.token_price).format('0,0')}`}
             labelClass="text-[#898989]"
             valueClass="text-white"
           />
@@ -115,27 +116,25 @@ export const InvestmentCard: FC<InvestmentCardProps> = ({
 
           <div className="w-1/2 fe gap-6">
             {
-              item.order_type === InvestmentOrderType.Buy
-                ? (
-                    <Button
-                      type="primary"
-                      size="large"
-                      className="w-1/2 text-black!"
-                      onClick={buy}
-                    >
-                      {t('action.payment')}
-                    </Button>
-                  )
-                : (
-                    <Button
-                      size="large"
-                      className="w-1/2 bg-transparent! text-white!"
-                      onClick={sell}
-                    >
-                      {t('action.sell')}
-                    </Button>
-                  )
+              item.has_holdings && (
+                <Button
+                  size="large"
+                  className="w-1/2 bg-transparent! text-white!"
+                  onClick={sell}
+                >
+                  {t('action.sell')}
+                </Button>
+              )
             }
+
+            <Button
+              type="primary"
+              size="large"
+              className="w-1/2 text-black!"
+              onClick={buy}
+            >
+              {t('action.payment')}
+            </Button>
 
           </div>
         </div>
