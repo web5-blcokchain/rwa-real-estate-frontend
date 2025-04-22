@@ -65,8 +65,7 @@ function RouteComponent() {
     if (!item) {
       toast.error(t('properties.payment.asset_not_found'))
       navigate({
-        to: '/investment/buy/$id',
-        params
+        to: '/investment'
       })
     }
   }, [item, navigate, params, t, ready, wallets])
