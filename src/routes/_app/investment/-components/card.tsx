@@ -12,6 +12,7 @@ interface InvestmentCardProps {
   item: {
     id: number
     name: string
+    address: string
     location: string
     property_type: string
     token_price: string
@@ -71,7 +72,7 @@ export const InvestmentCard: FC<InvestmentCardProps> = ({
         <div className="fb gap-4">
           <IInfoField
             label={t('properties.detail.location')}
-            value={item.location}
+            value={item.address}
             className="w-1/2"
             labelClass="text-[#898989]"
             valueClass="text-white"
