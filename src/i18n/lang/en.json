@@ -236,7 +236,8 @@
       "please_verify_1": " Your account must be fully verified with a valid government-issued ID or passport.",
       "expire": "Payment will expire in",
       "confirm_payment": "Confirm Payment",
-      "asset_not_found": "The assets do not exist"
+      "asset_not_found": "The assets do not exist",
+      "tokens_held": "Tokens held"
     }
   },
   "help": {

@@ -251,6 +251,7 @@ function RouteComponent() {
 
         <div className="flex items-center justify-between text-4">
           <div className="text-[#898989] space-y-4">
+            <div>{t('properties.payment.tokens_held')}</div>
             <div>{t('properties.payment.number')}</div>
             <div>{t('properties.payment.subtotal')}</div>
             <div>
@@ -261,11 +262,13 @@ function RouteComponent() {
           </div>
 
           <div className="space-y-4">
+            <div className="text-right text-[#898989]">{item.tokens_held}</div>
             <div className="flex justify-end">
               <QuantitySelector
                 value={tokens}
                 onChange={setTokens}
                 min={1}
+                max={item.tokens_held}
                 disabled={isPending}
               />
             </div>

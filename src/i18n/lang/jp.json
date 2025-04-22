@@ -236,7 +236,8 @@
       "please_verify_1": "アカウントは、有効な政府発行の身分証明書またはパスポートを使用して完全に検証する必要があります。",
       "expire": "支払は期限切れになります",
       "confirm_payment": "支払いの確認",
-      "asset_not_found": "The assets do not exist"
+      "asset_not_found": "The assets do not exist",
+      "tokens_held": "持っているトークン"
     }
   },
   "help": {
