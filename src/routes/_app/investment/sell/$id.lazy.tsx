@@ -4,14 +4,15 @@ import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
 import { PaymentMethod } from '@/components/common/payment-method'
+import QuantitySelector from '@/components/common/quantity-selector'
+import { useTradingManagerContract } from '@/contract'
 import { useCommonDataStore } from '@/stores/common-data'
 import { joinImagesPath } from '@/utils/url'
 import { useWallets } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
-import { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import numeral from 'numeral'
 
 export const Route = createLazyFileRoute('/_app/investment/sell/$id')({
   component: RouteComponent
@@ -23,6 +24,7 @@ function RouteComponent() {
   const navigate = useNavigate()
   const { ready, wallets } = useWallets()
   const [wallet, setWallet] = useState<ConnectedWallet | null>(null)
+  const tradingManagerContract = useTradingManagerContract()
 
   const { params } = useMatch({
     from: '/_app/investment/sell/$id'
@@ -31,28 +33,155 @@ function RouteComponent() {
   const id = Number.parseInt(params.id)
   const investmentItems = useCommonDataStore(state => state.investmentItems)
 
-  const assetDetail = investmentItems.get(id)!
+  const item = investmentItems.get(id)!
 
   const [tokens, setTokens] = useState(1)
 
-  const plus = () => setTokens(tokens + 1)
-  const minus = () => {
-    if (tokens > 1) {
-      setTokens(tokens - 1)
-    }
-  }
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: async () => {
-      const res = await sellAsset({ order_market_id: assetDetail.id })
+    mutationFn: async (hash: string) => {
+      const res = await sellAsset({
+        order_market_id: item.id,
+        hash
+      })
       return res.data
     }
   })
 
-  function sell() {
-    mutateAsync()
-      .then((response) => {
-        console.log(response)
-      })
+  async function sell() {
+    if (!wallet) {
+      toast.error(t('payment.errors.no_wallet'))
+      return
+    }
+
+    try {
+      // 确保用户钱包已连接
+      if (!window.ethereum) {
+        toast.error(t('payment.errors.no_ethereum'))
+        return
+      }
+
+      // 验证tradingManagerContract已经初始化
+      if (!tradingManagerContract || !tradingManagerContract.methods) {
+        toast.error(t('payment.errors.contract_not_initialized'))
+        return
+      }
+
+      // 获取买单ID
+      const orderId = BigInt(23)
+      console.log('orderId', orderId)
+      // const orderId = `${assetDetail.id}`
+      if (!orderId) {
+        toast.error(t('payment.errors.invalid_order_id'))
+        return
+      }
+
+      // 获取买单信息
+      try {
+        const order = await tradingManagerContract.methods.getOrder(orderId).call() as Record<string, any>
+        console.log('买单信息:', {
+          buyer: order.buyer,
+          token: order.token,
+          amount: order.amount.toString(),
+          price: order.price.toString(),
+          active: order.active
+        })
+
+        if (!order.active) {
+          toast.error(t('payment.errors.order_not_active'))
+          return
+        }
+      }
+      catch (error) {
+        console.error('获取买单信息失败:', error)
+        toast.error(t('payment.errors.get_order_failed'))
+        return
+      }
+
+      // 显示交易处理中
+      toast.info(t('payment.info.creating_transaction'))
+
+      try {
+        // 执行卖单交易
+        const sellOrderTx = await tradingManagerContract.methods.sellOrder(orderId).send({
+          from: wallet.address
+        })
+
+        const hash = sellOrderTx.transactionHash
+        toast.success(t('payment.success.tx_sent'))
+
+        // 调用后端API记录交易
+        mutateAsync(hash)
+          .then(() => {
+            navigate({
+              to: '/transaction/$hash',
+              params: {
+                hash
+              }
+            })
+          })
+
+        // 获取交易信息
+        try {
+          const userTradesLength = await tradingManagerContract.methods.getUserTradesLength(wallet.address).call() as string
+          const tradeId = Number.parseInt(userTradesLength) - 1
+
+          if (tradeId >= 0) {
+            const trade = await tradingManagerContract.methods.getTrade(tradeId).call() as Record<string, any>
+            console.log('交易信息:', {
+              buyer: trade.buyer,
+              seller: trade.seller,
+              token: trade.token,
+              amount: trade.amount.toString(),
+              price: trade.price.toString()
+            })
+          }
+        }
+        catch (tradeError) {
+          console.error('获取交易信息失败:', tradeError)
+        }
+      }
+      catch (contractError: any) {
+        console.error('合约交易错误:', contractError)
+
+        // 提取错误消息
+        const errorMessage = contractError.message || ''
+
+        // 尝试提取更详细的错误信息
+        const innerErrorMatch = errorMessage.match(/reverted with reason string '(.+?)'/i)
+        const innerError = innerErrorMatch ? innerErrorMatch[1] : ''
+
+        if (innerError) {
+          toast.error(t('payment.errors.contract_revert_with_reason', { reason: innerError }))
+        }
+        else if (errorMessage.includes('insufficient funds')) {
+          toast.error(t('payment.errors.insufficient_eth'))
+        }
+        else if (errorMessage.includes('User denied')) {
+          toast.error(t('payment.errors.rejected'))
+        }
+        else if (errorMessage.includes('execution reverted')) {
+          toast.error(t('payment.errors.execution_reverted'))
+        }
+        else {
+          toast.error(t('payment.errors.transaction_failed'))
+        }
+      }
+    }
+    catch (error) {
+      console.error('Sell error:', error)
+
+      if (error instanceof Error) {
+        if (error.message.includes('rejected')) {
+          toast.error(t('payment.errors.rejected'))
+        }
+        else {
+          toast.error(t('payment.errors.general', { error: error.message }))
+        }
+      }
+      else {
+        toast.error(t('payment.errors.unknown'))
+      }
+    }
   }
 
   useEffect(() => {
@@ -63,19 +192,19 @@ function RouteComponent() {
       }
     }
 
-    if (!assetDetail) {
+    if (!item) {
       toast.error(t('properties.payment.asset_not_found'))
       navigate({
         to: '/investment'
       })
     }
-  }, [assetDetail, navigate, params, t, ready, wallets])
+  }, [item, navigate, params, t, ready, wallets])
 
-  if (!assetDetail) {
+  if (!item) {
     return null
   }
 
-  const [imageUrl] = joinImagesPath(assetDetail.image_urls)
+  const [imageUrl] = joinImagesPath(item.image_urls)
 
   return (
     <div className="max-w-7xl p-8 space-y-8">
@@ -86,30 +215,30 @@ function RouteComponent() {
           <IImage src={imageUrl} className="size-full rounded" />
         </div>
         <div>
-          <div className="text-6 font-medium">{assetDetail?.name}</div>
+          <div className="text-6 font-medium">{item?.name}</div>
 
           <div className="grid grid-cols-2 mt-4 gap-x-4">
             <IInfoField
               label={t('properties.detail.location')}
-              value={assetDetail?.location}
+              value={item?.location}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
               label={t('properties.detail.property_type')}
-              value={assetDetail?.property_type}
+              value={item?.property_type}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
               label={t('properties.payment.token_price')}
-              value={assetDetail?.total_amount}
+              value={`${numeral(item?.total_amount).format('0,0')} / token`}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
               label={t('properties.payment.total')}
-              value="100"
+              value={numeral(Number(item?.total_amount) * item.tokens_held).format('0,0')}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
@@ -132,19 +261,22 @@ function RouteComponent() {
           </div>
 
           <div className="space-y-4">
-            <div className="fyc gap-4">
-              <Button className="b-none text-white bg-[#374151]!" onClick={minus}>-</Button>
-              <div className="w-12 select-none text-center">{tokens}</div>
-              <Button className="b-none text-white bg-[#374151]!" onClick={plus}>+</Button>
+            <div className="flex justify-end">
+              <QuantitySelector
+                value={tokens}
+                onChange={setTokens}
+                min={1}
+                disabled={isPending}
+              />
             </div>
 
             <div className="text-right">
               $
-              {tokens * Number(assetDetail.token_price)}
+              {tokens * Number(item.token_price)}
             </div>
             <div className="text-right">
               $
-              {tokens * Number(assetDetail.token_price) * 0.02}
+              {tokens * Number(item.token_price) * 0.02}
             </div>
           </div>
         </div>
@@ -154,7 +286,7 @@ function RouteComponent() {
         <div className="fbc">
           <div>{t('properties.payment.total_amount')}</div>
           <div className="text-primary">
-            {`$${(tokens * Number(assetDetail.token_price)) + (tokens * Number(assetDetail.token_price) * 0.02)}`}
+            {`$${(tokens * Number(item.token_price)) + (tokens * Number(item.token_price) * 0.02)}`}
           </div>
         </div>
       </div>

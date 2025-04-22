@@ -1,4 +1,4 @@
-import type { listProps } from '@/api/apiMyInfoApi'
+import type { TokenHeldItem } from '@/types/profile'
 import apiMyInfo from '@/api/apiMyInfoApi'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
@@ -52,21 +52,15 @@ function PropertyTokens() {
 
         <div className="grid grid-cols-1 mt-8 gap-8 xl:grid-cols-2">
           {
-            tokenData?.map((item: listProps) => (
+            tokenData?.map((item: TokenHeldItem) => (
               <PropertyTokenCard
                 key={item.id}
-                picture={item.image_urls}
-                title={item.name}
-                location={item.location}
-                size="813 sq ft"
-                beds={item.bedrooms}
-                price={item.current_price}
-                tokenPrice={item.total_purchase}
-                property_type={item.property_type}
-                annual_return={item.expected_annual_return}
-                number={item.number}
+                {...item}
                 onClick={() => {
-                  navigate({ to: '/properties/detail/$id', params: { id: `${item.id}` } })
+                  navigate({
+                    to: '/properties/detail/$id',
+                    params: { id: `${item.id}` }
+                  })
                 }}
               />
             ))

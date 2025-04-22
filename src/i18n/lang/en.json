@@ -52,7 +52,12 @@
       "amount_below_minimum": "Token amount below minimum requirement (Min: {{min}})",
       "contract_not_initialized": "Contract not initialized",
       "insufficient_eth": "Insufficient ETH balance, please ensure you have enough ETH to pay for transaction fees",
-      "transaction_failed": "Transaction execution failed, please try again later"
+      "transaction_failed": "Transaction execution failed, please try again later",
+      "invalid_order_id": "Invalid order ID",
+      "order_id_not_found": "Order ID not found",
+      "order_not_active": "The order is not active",
+      "get_order_failed": "Failed to get order information",
+      "execution_reverted": "Execution reverted by the contract"
     },
     "info": {
       "eth_required": "Transaction requires sending ETH",

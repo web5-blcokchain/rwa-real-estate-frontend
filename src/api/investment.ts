@@ -15,6 +15,7 @@ export function buyAsset(data: {
 
 export function sellAsset(data: {
   order_market_id: number
+  hash: string
 }) {
   return apiClient.post('/api/market/confirmSell', data)
 }

@@ -52,7 +52,12 @@
       "amount_below_minimum": "代币数量低于最小购买要求 (最小: {{min}})",
       "contract_not_initialized": "合约未初始化",
       "insufficient_eth": "ETH 余额不足，请确保有足够的 ETH 支付交易费用",
-      "transaction_failed": "交易执行失败，请稍后重试"
+      "transaction_failed": "交易执行失败，请稍后重试",
+      "invalid_order_id": "无效的订单ID",
+      "order_id_not_found": "找不到订单ID",
+      "order_not_active": "订单已失效",
+      "get_order_failed": "获取订单信息失败",
+      "execution_reverted": "合约执行被回滚"
     },
     "info": {
       "eth_required": "交易需要发送ETH",

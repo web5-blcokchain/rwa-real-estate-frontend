@@ -1,37 +1,48 @@
+import type { TokenHeldItem } from '@/types/profile'
 import { IImage } from '@/components/common/i-image'
-import { joinImagePath } from '@/utils/url'
+import { InvestmentOrderType } from '@/enums/investment'
+import { useCommonDataStore } from '@/stores/common-data'
+import { joinImagesPath } from '@/utils/url'
+import { useNavigate } from '@tanstack/react-router'
 import { Button } from 'antd'
 import numeral from 'numeral'
 
-const PropertyTokenCard: FC<{
-  picture: string
-  title: string
-  location: string
-  price: number
-  tokenPrice: number
-  size: string
-  beds: number
-  property_type: string
-  annual_return?: number
-  number?: number
-} & React.HTMLAttributes<HTMLDivElement>> = ({
-  picture,
-  title,
+const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTMLAttributes<HTMLDivElement>> = ({
+  Inception_number,
+  name,
+  image_urls,
   location,
-  price,
-  tokenPrice,
-  size,
-  beds,
+  address,
+  properties_id,
   property_type,
-  className,
-  annual_return,
+  current_price,
+  total_current,
+  expected_annual_return,
   number,
+  className,
   ...props
 }) => {
-  const onTraidClick = (e: React.MouseEvent) => {
+  const navigate = useNavigate()
+  const investmentItems = useCommonDataStore(state => state.investmentItems)
+
+  const onSellClick = (e: React.MouseEvent) => {
     e.stopPropagation()
-    // 这里处理 Traid 按钮点击逻辑
-    console.log('Traid clicked')
+    investmentItems.set(properties_id, {
+      id: properties_id,
+      name,
+      location: address,
+      property_type,
+      token_price: current_price,
+      tokens_held: number,
+      total_amount: total_current,
+      rental_yield: expected_annual_return,
+      image_urls,
+      order_type: InvestmentOrderType.Buy
+    })
+    navigate({
+      to: '/investment/sell/$id',
+      params: { id: `${properties_id}` }
+    })
   }
 
   const onRedeemClick = (e: React.MouseEvent) => {
@@ -39,6 +50,8 @@ const PropertyTokenCard: FC<{
     // 这里处理 Redeem 按钮点击逻辑
     console.log('Redeem clicked')
   }
+
+  const [firstImage] = joinImagesPath(image_urls)
 
   return (
     <div
@@ -50,7 +63,7 @@ const PropertyTokenCard: FC<{
     >
       <div className="relative h-56">
         <IImage
-          src={joinImagePath(picture)}
+          src={firstImage}
           className="size-full"
           imgClass="object-cover"
         />
@@ -58,7 +71,7 @@ const PropertyTokenCard: FC<{
 
       <div className="px-6 py-8 space-y-2">
         <div className="fbc text-5">
-          <div className="text-4 font-medium">{title}</div>
+          <div className="text-4 font-medium">{name}</div>
 
           <div className="rounded bg-[#8465bb] bg-opacity-50 px-2 py-1 text-3 text-purple">
             {property_type}
@@ -69,7 +82,7 @@ const PropertyTokenCard: FC<{
           <div className="w-1/2 flex flex-col justify-start py-3">
             <div className="text-sm text-[#b5b5b5]">Token Price</div>
             <div className="text-4">
-              {`$${numeral(tokenPrice).format('0,0')}`}
+              {`$${numeral(current_price).format('0,0.00')}`}
             </div>
           </div>
 
@@ -77,14 +90,15 @@ const PropertyTokenCard: FC<{
             <div className="text-sm text-[#b5b5b5]">Tokens Held</div>
             <div className="text-4">
               {number}
-              /1000
+              /
+              {Inception_number}
             </div>
           </div>
 
           <div className="w-1/2 flex flex-col justify-start py-3">
             <div className="text-sm text-[#b5b5b5]">Annual Yield</div>
             <div className="text-4">
-              {annual_return}
+              {expected_annual_return}
               %
             </div>
           </div>
@@ -92,7 +106,7 @@ const PropertyTokenCard: FC<{
           <div className="w-1/2 flex flex-col justify-start py-3">
             <div className="text-sm text-[#b5b5b5]">Valuation</div>
             <div className="text-4">
-              {`$${numeral(tokenPrice).format('0,0')}`}
+              {`$${numeral(current_price).format('0,0')}`}
             </div>
           </div>
         </div>
@@ -102,9 +116,9 @@ const PropertyTokenCard: FC<{
             type="primary"
             size="large"
             className="mr-2 w-1/2 text-black!"
-            onClick={onTraidClick}
+            onClick={onSellClick}
           >
-            Traid
+            Sell
           </Button>
 
           <Button

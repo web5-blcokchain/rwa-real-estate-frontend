@@ -52,7 +52,12 @@
       "amount_below_minimum": "トークン数量が最小購入要件を下回っています (最小: {{min}})",
       "contract_not_initialized": "コントラクトが初期化されていません",
       "insufficient_eth": "ETH残高が不足しています。取引手数料を支払うのに十分なETHを確保してください",
-      "transaction_failed": "トランザクションの実行に失敗しました。後でもう一度お試しください"
+      "transaction_failed": "トランザクションの実行に失敗しました。後でもう一度お試しください",
+      "invalid_order_id": "無効な注文ID",
+      "order_id_not_found": "注文IDが見つかりません",
+      "order_not_active": "注文がアクティブではありません",
+      "get_order_failed": "注文情報の取得に失敗しました",
+      "execution_reverted": "コントラクトによって実行が取り消されました"
     },
     "info": {
       "eth_required": "トランザクションにはETHの送信が必要です",
