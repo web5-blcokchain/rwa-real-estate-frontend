@@ -20,6 +20,7 @@ interface InvestmentCardProps {
     total_amount: string
     rental_yield: string
     image_urls: string
+    total_selling: number
     has_holdings: boolean
     order_type: InvestmentOrderType
   }
@@ -102,7 +103,7 @@ export const InvestmentCard: FC<InvestmentCardProps> = ({
           <div className="fyc gap-8">
             <IInfoField
               label={t('properties.payment.number')}
-              value={`${item.tokens_held}/1000`}
+              value={`${item.tokens_held}/${item.total_selling}`}
               labelClass="text-[#898989]"
               valueClass="text-white"
             />
