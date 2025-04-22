@@ -57,7 +57,10 @@
       "order_id_not_found": "注文IDが見つかりません",
       "order_not_active": "注文がアクティブではありません",
       "get_order_failed": "注文情報の取得に失敗しました",
-      "execution_reverted": "コントラクトによって実行が取り消されました"
+      "execution_reverted": "コントラクトによって実行が取り消されました",
+      "approving_tokens": "トークンを承認中...",
+      "tokens_approved": "トークンが正常に承認されました",
+      "property_token_not_initialized": "資産トークン契約が初期化されていないか、アドレスが無効です"
     },
     "info": {
       "eth_required": "トランザクションにはETHの送信が必要です",
@@ -66,12 +69,14 @@
       "creating_order": "購入注文を作成中...",
       "metamask_reset": "MetaMask接続のリセットを試みています...",
       "min_tokens_required": "最小購入量: {{min}} トークン",
-      "creating_transaction": "トランザクションを作成中..."
+      "creating_transaction": "トランザクションを作成中...",
+      "approving_tokens": "トークンを承認中..."
     },
     "success": {
       "tx_sent": "トランザクションが正常に送信されました",
       "payment_success": "支払い成功",
-      "usdt_approved": "USDTが正常に承認されました"
+      "usdt_approved": "USDTが正常に承認されました",
+      "tokens_approved": "トークンが正常に承認されました"
     }
   },
   "create": {
@@ -155,7 +160,10 @@
       "create_success": "Account created successfully"
     },
     "upload_id_card_front": "Upload ID card front",
-    "upload_id_card_back": "Upload ID card back"
+    "upload_id_card_back": "Upload ID card back",
+    "id_card_front": "身分証明書の表面",
+    "id_card_back": "身分証明書の裏面",
+    "reupload": "再アップロード"
   },
   "home": {
     "banner": {
@@ -319,7 +327,8 @@
   },
   "common": {
     "payment_title": "支払確認書",
-    "sell_title": "Sell Confirmation"
+    "sell_title": "売却確認",
+    "click_to_change": "クリックして画像を変更"
   },
   "profile": {
     "transactions": {

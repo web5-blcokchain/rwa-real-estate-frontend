@@ -57,7 +57,10 @@
       "order_id_not_found": "Order ID not found",
       "order_not_active": "The order is not active",
       "get_order_failed": "Failed to get order information",
-      "execution_reverted": "Execution reverted by the contract"
+      "execution_reverted": "Execution reverted by the contract",
+      "approving_tokens": "Approving tokens...",
+      "tokens_approved": "Tokens approved successfully",
+      "property_token_not_initialized": "Property token contract not initialized or invalid address"
     },
     "info": {
       "eth_required": "Transaction requires sending ETH",
@@ -66,12 +69,14 @@
       "creating_order": "Creating buy order...",
       "metamask_reset": "Attempting to reset MetaMask connection...",
       "min_tokens_required": "Minimum purchase: {{min}} tokens",
-      "creating_transaction": "Creating transaction..."
+      "creating_transaction": "Creating transaction...",
+      "approving_tokens": "Approving tokens..."
     },
     "success": {
       "tx_sent": "Transaction sent successfully",
       "payment_success": "Payment successful",
-      "usdt_approved": "USDT approved successfully"
+      "usdt_approved": "USDT approved successfully",
+      "tokens_approved": "Tokens approved successfully"
     }
   },
   "create": {
@@ -155,7 +160,10 @@
       "create_success": "Account created successfully"
     },
     "upload_id_card_front": "Upload ID card front",
-    "upload_id_card_back": "Upload ID card back"
+    "upload_id_card_back": "Upload ID card back",
+    "id_card_front": "ID Card Front",
+    "id_card_back": "ID Card Back",
+    "reupload": "Reupload"
   },
   "home": {
     "banner": {
@@ -320,7 +328,8 @@
   },
   "common": {
     "payment_title": "Payment Confirmation",
-    "sell_title": "Sell Confirmation"
+    "sell_title": "Sell Confirmation",
+    "click_to_change": "Click to change image"
   },
   "profile": {
     "transactions": {

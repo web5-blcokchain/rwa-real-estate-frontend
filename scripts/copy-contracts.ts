@@ -11,14 +11,20 @@ const CONTRACTS = [
   'PropertyManager',
   'PropertyToken',
   'SimpleERC20',
+  'RealEstateFacade'
 ]
 
 const ADDRESS_MAP = {
   'TradingManager': 'CONTRACT_TRADINGMANAGER_ADDRESS',
   'PropertyManager': 'CONTRACT_PROPERTYMANAGER_ADDRESS',
   'PropertyToken': 'CONTRACT_PROPERTYTOKEN_ADDRESS',
-  'SimpleERC20': 'CONTRACT_TESTTOKEN_ADDRESS'
+  'SimpleERC20': 'CONTRACT_TESTTOKEN_ADDRESS',
+  'RealEstateFacade': 'CONTRACT_REALESTATEFACADE_ADDRESS'
 }
+
+const needContractAddress = [
+  'PropertyToken'
+]
 
 const [, , root] = process.argv
 
@@ -74,7 +80,39 @@ contractList.forEach(contract => {
 const indexContent = `import { getWeb3Instance } from '@/utils/web3'
 ${contractList.map(contract => `import ${contract.name} from './${contract.name}.json'`).join('\n')}
 
-${contractList.map(contract => `
+${contractList.map(contract => {
+  // 如果合约需要动态地址
+  if (needContractAddress.includes(contract.name)) {
+    return `
+/**
+ * 获取 ${contract.name} 合约实例
+ * @param contractAddress ${contract.name} 合约地址，每个房产都有自己的 ${contract.name} 合约
+ * @returns ${contract.name} 合约实例
+ */
+export function use${contract.name}Contract(contractAddress?: string) {
+  if (!contractAddress) return null
+
+  try {
+    const web3 = getWeb3Instance()
+    const contract = new web3.eth.Contract(
+      ${contract.name}.abi,
+      contractAddress
+    )
+
+    return contract
+  } catch (error) {
+    console.error('Failed to get ${contract.name} contract:', error)
+    return null
+  }
+}`
+  } 
+  // 常规合约使用固定地址
+  else {
+    return `
+/**
+ * 获取 ${contract.name} 合约实例
+ * @returns ${contract.name} 合约实例
+ */
 export function use${contract.name}Contract() {
   const web3 = getWeb3Instance()
   const contract = new web3.eth.Contract(
@@ -83,7 +121,9 @@ export function use${contract.name}Contract() {
   )
 
   return contract
-}`).join('\n')}
+}`
+  }
+}).join('\n')}
 `
 
 const indexFilePath = resolve(targetPath, 'index.ts')

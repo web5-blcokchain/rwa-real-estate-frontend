@@ -57,7 +57,10 @@
       "order_id_not_found": "找不到订单ID",
       "order_not_active": "订单已失效",
       "get_order_failed": "获取订单信息失败",
-      "execution_reverted": "合约执行被回滚"
+      "execution_reverted": "合约执行被回滚",
+      "approving_tokens": "正在授权代币...",
+      "tokens_approved": "代币授权成功",
+      "property_token_not_initialized": "资产代币合约未初始化或地址无效"
     },
     "info": {
       "eth_required": "交易需要发送ETH",
@@ -66,12 +69,14 @@
       "creating_order": "正在创建买单...",
       "metamask_reset": "正在尝试重置MetaMask连接...",
       "min_tokens_required": "最小购买量: {{min}} 个代币",
-      "creating_transaction": "正在创建交易..."
+      "creating_transaction": "正在创建交易...",
+      "approving_tokens": "正在授权代币..."
     },
     "success": {
       "tx_sent": "交易发送成功",
       "payment_success": "支付成功",
-      "usdt_approved": "USDT 授权成功"
+      "usdt_approved": "USDT 授权成功",
+      "tokens_approved": "代币授权成功"
     }
   },
   "create": {
