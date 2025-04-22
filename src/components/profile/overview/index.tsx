@@ -1,4 +1,4 @@
-import type { historyResponse, listProps } from '@/api/apiMyInfoApi'
+import type { historyResponse, PropertieItem } from '@/api/apiMyInfoApi'
 import type { TableProps } from 'antd'
 import apiMyInfo from '@/api/apiMyInfoApi'
 import button2 from '@/assets/icons/BUTTON2-2.png'
@@ -12,7 +12,7 @@ import DataCount from '../-components/data-count'
 import TableComponent from '../../common/table-component'
 
 // 表格1配置
-const columns: TableProps<listProps>['columns'] = [
+const columns: TableProps<PropertieItem>['columns'] = [
   {
     title: 'Asset',
     dataIndex: 'total_purchase',
