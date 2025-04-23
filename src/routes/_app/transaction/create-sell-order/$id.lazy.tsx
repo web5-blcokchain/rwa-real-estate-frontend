@@ -5,16 +5,13 @@ import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
 import { PaymentMethod } from '@/components/common/payment-method'
 import QuantitySelector from '@/components/common/quantity-selector'
-import { usePropertyTokenContract, useRealEstateFacadeContract, useTradingManagerContract } from '@/contract'
 import { useCommonDataStore } from '@/stores/common-data'
 import { joinImagesPath } from '@/utils/url'
-import { getWeb3Instance } from '@/utils/web3'
 import { useWallets } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
 import numeral from 'numeral'
-import type { Contract } from 'web3'
 
 export const Route = createLazyFileRoute('/_app/transaction/create-sell-order/$id')({
   component: RouteComponent
@@ -26,15 +23,9 @@ function RouteComponent() {
   const navigate = useNavigate()
   const { ready, wallets } = useWallets()
   const [wallet, setWallet] = useState<ConnectedWallet | null>(null)
-  const tradingManagerContract = useTradingManagerContract()
-  // 不再全局使用 propertyTokenContract，而是在需要时根据地址获取
-  const _propertyTokenContract = usePropertyTokenContract()
-  const facadeContract = useRealEstateFacadeContract()
-  
-  const [propertyTokenAddress, setPropertyTokenAddress] = useState('')
- 
-  
-  const [propertyTokenContractInstance, setPropertyTokenContractInstance] = useState<Contract<any> | null>(null)
+  // const tradingManagerContract = useTradingManagerContract()
+  // const propertyTokenContract = usePropertyTokenContract()
+  // const facadeContract = useRealEstateFacadeContract()
 
   const { params } = useMatch({
     from: '/_app/transaction/create-sell-order/$id'
@@ -49,7 +40,7 @@ function RouteComponent() {
 
   console.log('item', item)
 
-  const { mutateAsync, isPending } = useMutation({
+  const { isPending } = useMutation({
     mutationFn: async (hash: string) => {
       const res = await sellAsset({
         order_market_id: item.id,
@@ -59,161 +50,15 @@ function RouteComponent() {
     }
   })
 
-  // 获取PropertyToken合约地址
-  useEffect(() => {
-    const getPropertyTokenAddress = async () => {
-      if (facadeContract && item) {
-        try {
-          // 通过facadeContract获取PropertyToken地址
-          const tokenAddress = await facadeContract.methods.getPropertyTokenAddress(item.id).call() as string
-          console.log('PropertyToken地址:', tokenAddress)
-          setPropertyTokenAddress(tokenAddress)
-          
-          // 使用获取到的地址初始化PropertyToken合约
-          const tokenContract = usePropertyTokenContract(tokenAddress)
-          setPropertyTokenContractInstance(tokenContract)
-        } catch (error) {
-          console.error('获取PropertyToken地址失败:', error)
-          toast.error(t('payment.errors.get_token_address_failed'))
-        }
-      }
-    }
-    
-    if (facadeContract && item) {
-      getPropertyTokenAddress()
-    }
-  }, [facadeContract, item, t])
-
   async function sell() {
     if (!wallet) {
       toast.error(t('payment.errors.no_wallet'))
       return
     }
 
-    try {
-      // 确保用户钱包已连接
-      if (!window.ethereum) {
-        toast.error(t('payment.errors.no_ethereum'))
-        return
-      }
+    console.log('item', item)
 
-      // 验证tradingManagerContract已经初始化
-      if (!tradingManagerContract || !tradingManagerContract.methods) {
-        toast.error(t('payment.errors.contract_not_initialized'))
-        return
-      }
-
-      // 验证propertyTokenContract已经初始化
-      if (!propertyTokenContractInstance || !propertyTokenContractInstance.methods) {
-        toast.error(t('payment.errors.property_token_not_initialized'))
-        return
-      }
-
-      // 显示交易处理中
-      toast.info(t('payment.info.creating_transaction'))
-
-      // 计算卖出的代币数量
-      const tokenAmount = String(tokens)
-      const tokenPrice = item.token_price // 使用现有的token价格
-
-      const web3 = getWeb3Instance()
-
-      try {
-        // 使用获取到的PropertyToken地址
-        const _resolvedPropertyTokenAddress = item.contract_address || propertyTokenAddress
-
-        // 获取当前授权金额
-        const currentAllowance = await propertyTokenContractInstance.methods.allowance(
-          wallet.address,
-          tradingManagerContract.options.address
-        ).call()
-
-        // 将要卖出的代币数量转换为合约需要的格式
-        const tokenAmountInWei = web3.utils.toWei(tokenAmount, 'ether')
-
-        // 如果授权额度不足，请求授权
-        if (Number(currentAllowance) < Number(tokenAmountInWei)) {
-          toast.info(t('payment.info.approving_tokens'))
-
-          // 授权代币
-          await propertyTokenContractInstance.methods.approve(
-            tradingManagerContract.options.address,
-            tokenAmountInWei
-          ).send({
-            from: wallet.address
-          })
-
-          toast.success(t('payment.success.tokens_approved'))
-        }
-
-        // 创建卖单
-        const createSellOrderTx = await tradingManagerContract.methods.createSellOrder(
-          propertyTokenAddress,
-          item.id,
-          tokenAmountInWei,
-          web3.utils.toWei(tokenPrice, 'ether')
-        ).send({
-          from: wallet.address
-        })
-
-        const hash = createSellOrderTx.transactionHash
-        toast.success(t('payment.success.tx_sent'))
-
-        // 调用后端API记录交易
-        mutateAsync(hash)
-          .then(() => {
-            navigate({
-              to: '/transaction/$hash',
-              params: {
-                hash
-              }
-            })
-          })
-
-        // 获取用户订单
-        try {
-          const userOrders = await tradingManagerContract.methods.getUserOrders(wallet.address).call() as any[]
-          const orderId = userOrders[userOrders.length - 1]
-
-          if (orderId) {
-            console.log('卖单创建成功，订单ID:', orderId)
-          }
-        }
-        catch (orderError) {
-          console.error('获取用户订单失败:', orderError)
-        }
-      }
-      catch (contractError: any) {
-        console.error('合约交易错误:', contractError)
-
-        // 提取错误消息
-        const errorMessage = contractError.message || ''
-
-        // 尝试提取更详细的错误信息
-        const innerErrorMatch = errorMessage.match(/reverted with reason string '(.+?)'/i)
-        const innerError = innerErrorMatch ? innerErrorMatch[1] : ''
-
-        if (innerError) {
-          toast.error(t('payment.errors.contract_revert_with_reason', { reason: innerError }))
-        }
-        else if (errorMessage.includes('insufficient funds')) {
-          toast.error(t('payment.errors.insufficient_eth'))
-        }
-        else if (errorMessage.includes('User denied')) {
-          toast.error(t('payment.errors.rejected'))
-        }
-        else if (errorMessage.includes('execution reverted')) {
-          toast.error(t('payment.errors.execution_reverted'))
-        }
-        else {
-          toast.error(t('payment.errors.transaction_failed'))
-        }
-      }
-    }
-    catch (error: any) {
-      console.error('卖出交易失败:', error)
-      toast.error(t('payment.errors.transaction_failed'))
-    }
+    console.log(wallet)
   }
 
   useEffect(() => {
