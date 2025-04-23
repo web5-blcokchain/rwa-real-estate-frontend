@@ -221,7 +221,7 @@ function RightMenu() {
 
 const UserMenu: FC = () => {
   const navigate = useNavigate()
-  const { logout, user } = usePrivy()
+  const { user, logout, linkWallet } = usePrivy()
   const { t } = useTranslation()
   const { setCode, setUserData } = useUserStore()
 
@@ -250,6 +250,14 @@ const UserMenu: FC = () => {
         }}
         >
           {t('header.profile')}
+        </div>
+      )
+    },
+    {
+      key: 'link_wallet',
+      label: (
+        <div onClick={linkWallet}>
+          {t('header.link_wallet')}
         </div>
       )
     },
