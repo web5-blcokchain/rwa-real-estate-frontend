@@ -17,7 +17,8 @@
     "error": {
       "user_not_found": "Please complete user information",
       "login_required": "Please log in first"
-    }
+    },
+    "link_wallet": "リンク財布"
   },
   "payment": {
     "errors": {
@@ -323,7 +324,7 @@
   "action": {
     "sell": "販売",
     "payment": "支払い",
-    "confirm_sell": "Confirm Sell"
+    "confirm_sell": "販売を確認"
   },
   "common": {
     "payment_title": "支払確認書",

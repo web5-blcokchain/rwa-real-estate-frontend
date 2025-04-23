@@ -17,7 +17,8 @@
     "error": {
       "user_not_found": "请完善用户信息",
       "login_required": "请先登陆"
-    }
+    },
+    "link_wallet": "连接钱包"
   },
   "payment": {
     "errors": {

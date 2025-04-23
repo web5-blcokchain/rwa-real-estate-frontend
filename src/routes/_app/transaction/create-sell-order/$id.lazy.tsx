@@ -5,6 +5,8 @@ import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
 import { PaymentMethod } from '@/components/common/payment-method'
 import QuantitySelector from '@/components/common/quantity-selector'
+import { usePropertyTokenContract, useTradingManagerContract } from '@/contract'
+import { address as TradingManagerAddress } from '@/contract/TradingManager.json'
 import { useCommonDataStore } from '@/stores/common-data'
 import { joinImagesPath } from '@/utils/url'
 import { useWallets } from '@privy-io/react-auth'
@@ -23,9 +25,8 @@ function RouteComponent() {
   const navigate = useNavigate()
   const { ready, wallets } = useWallets()
   const [wallet, setWallet] = useState<ConnectedWallet | null>(null)
-  // const tradingManagerContract = useTradingManagerContract()
-  // const propertyTokenContract = usePropertyTokenContract()
-  // const facadeContract = useRealEstateFacadeContract()
+  const [isApproving, setIsApproving] = useState(false)
+  const [isProcessing, setIsProcessing] = useState(false)
 
   const { params } = useMatch({
     from: '/_app/transaction/create-sell-order/$id'
@@ -36,11 +37,11 @@ function RouteComponent() {
 
   const item = investmentItems.get(id)!
 
+  const tradingManagerContract = useTradingManagerContract()
+
   const [tokens, setTokens] = useState(1)
 
-  console.log('item', item)
-
-  const { isPending } = useMutation({
+  const { isPending, mutate } = useMutation({
     mutationFn: async (hash: string) => {
       const res = await sellAsset({
         order_market_id: item.id,
@@ -56,9 +57,129 @@ function RouteComponent() {
       return
     }
 
-    console.log('item', item)
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const propertyTokenContract = usePropertyTokenContract(item.contract_address)!
 
-    console.log(wallet)
+    if (!propertyTokenContract) {
+      toast.error(t('payment.errors.property_token_not_initialized'))
+      return
+    }
+
+    if (!tradingManagerContract) {
+      toast.error(t('payment.errors.contract_not_initialized'))
+      return
+    }
+
+    try {
+      setIsProcessing(true)
+
+      // 检查当前代币授权额度
+      const tokenAmount = tokens
+      const tokenPrice = BigInt(numeral(item.token_price).value() ?? 0)
+
+      const investorAddress = wallet.address
+
+      console.log('investorAddress', investorAddress)
+
+      // 检查操作者代币余额
+      const operatorTokenBalance = await propertyTokenContract.methods.balanceOf(investorAddress).call() as bigint
+
+      console.log(operatorTokenBalance, tokenAmount)
+
+      if (operatorTokenBalance < tokenAmount) {
+        toast.error(t('payment.errors.insufficient_balance'))
+        setIsProcessing(false)
+        return
+      }
+
+      // 检查代币授权额度
+      const currentTokenAllowance = await propertyTokenContract.methods.allowance(
+        investorAddress,
+        TradingManagerAddress
+      ).call() as number
+
+      // 如果代币授权额度不足，进行授权
+      if (currentTokenAllowance < tokenAmount) {
+        setIsApproving(true)
+        toast.loading(t('payment.info.approving_tokens'))
+
+        try {
+          const tokenApproveTx = await propertyTokenContract.methods.approve(
+            TradingManagerAddress,
+            tokenAmount
+          ).send({ from: investorAddress }) as any
+
+          console.log('tokenApproveTx', tokenApproveTx)
+
+          await tokenApproveTx.wait()
+
+          toast.success(t('payment.success.tokens_approved'))
+
+          // 再次检查授权额度
+          const newAllowance = await propertyTokenContract.methods.allowance(
+            investorAddress,
+            TradingManagerAddress
+          ).call() as number
+
+          if (newAllowance < tokenAmount) {
+            throw new Error(t('payment.errors.approval_failed'))
+          }
+        }
+        catch (error: any) {
+          if (error.code === 4001) {
+            toast.error(t('payment.errors.approval_rejected'))
+          }
+          else {
+            toast.error(`${t('payment.errors.approval_failed')}: ${error.message}`)
+          }
+          setIsApproving(false)
+          setIsProcessing(false)
+          return
+        }
+
+        setIsApproving(false)
+      }
+
+      // 创建卖单
+      toast.loading(t('payment.info.creating_order'))
+      const tx = await tradingManagerContract.methods.createSellOrder(
+        item.contract_address,
+        item.id,
+        tokenAmount,
+        tokenPrice
+      ).send({ from: investorAddress }) as any
+
+      toast.success(t('payment.success.tx_sent'))
+
+      // 等待交易确认
+      const receipt = await tx.wait()
+
+      // 调用后端 API 记录交易
+      mutate(receipt.hash)
+
+      toast.success(t('payment.success.payment_success'))
+
+      // 返回到前一页或投资页
+      setTimeout(() => {
+        router.history.back()
+      }, 2000)
+    }
+    catch (error: any) {
+      console.error('Error during sell transaction:', error)
+
+      if (error.code === 4001) {
+        toast.error(t('payment.errors.rejected'))
+      }
+      else if (error.reason) {
+        toast.error(`${t('payment.errors.contract_revert_with_reason', { reason: error.reason })}`)
+      }
+      else {
+        toast.error(`${t('payment.errors.general', { error: error.message })}`)
+      }
+    }
+    finally {
+      setIsProcessing(false)
+    }
   }
 
   useEffect(() => {
@@ -146,7 +267,7 @@ function RouteComponent() {
                 onChange={setTokens}
                 min={1}
                 max={item.tokens_held}
-                disabled={isPending}
+                disabled={isPending || isProcessing}
               />
             </div>
 
@@ -184,8 +305,6 @@ function RouteComponent() {
         </p>
         <p>
           {t('properties.payment.please_verify_1')}
-
-          Your account must be fully verified with a valid government-issued ID or passport.
         </p>
       </div>
 
@@ -210,11 +329,11 @@ function RouteComponent() {
               size="large"
               className="w-48 disabled:bg-gray-2 text-black!"
               onClick={sell}
-              loading={false}
-              disabled={isPending}
+              loading={isApproving || isProcessing}
+              disabled={isPending || isApproving || isProcessing}
             >
-              <Waiting for={!isPending}>
-                {t('action.confirm_sell')}
+              <Waiting for={!(isPending || isApproving || isProcessing)}>
+                {isApproving ? t('payment.errors.approving_tokens') : t('action.confirm_sell')}
               </Waiting>
             </Button>
           </div>

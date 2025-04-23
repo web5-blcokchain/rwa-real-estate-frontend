@@ -17,7 +17,8 @@
     "error": {
       "user_not_found": "Please complete user information",
       "login_required": "Please log in first"
-    }
+    },
+    "link_wallet": "Link wallet"
   },
   "payment": {
     "errors": {
