@@ -81,41 +81,6 @@ export async function getContractBalanceEthers(contractAddress: string): Promise
 }
 
 /**
- * 通过 Privy 钱包获取 Ethers Signer 实例
- * @param privyWallet Privy 钱包实例
- * @returns Promise<ethers.Signer> Ethers 签名者实例
- */
-export async function getSignerFromPrivyWallet(privyWallet: any): Promise<ethers.Signer> {
-  if (!privyWallet) {
-    throw new Error('钱包未连接')
-  }
-
-  try {
-    if (privyWallet.provider) {
-      // 使用正确的方式创建 Web3Provider 和 Signer
-      return new ethers.BrowserProvider(privyWallet.provider).getSigner()
-    }
-    else if (privyWallet.ethereum) {
-      return new ethers.BrowserProvider(privyWallet.ethereum).getSigner()
-    }
-    else if (typeof privyWallet.getEthereumProvider === 'function') {
-      const ethereumProvider = await privyWallet.getEthereumProvider()
-      return new ethers.BrowserProvider(ethereumProvider).getSigner()
-    }
-    else {
-      // 使用钱包地址和 JsonRpcProvider 创建 Signer
-      console.warn('使用只读钱包签名者，可能无法执行交易')
-      // 这不是一个真正能够签名的钱包，但是可以用于读取操作
-      return getEthersProvider().getSigner(privyWallet.address)
-    }
-  }
-  catch (error) {
-    console.error('从Privy钱包获取Signer失败:', error)
-    throw new Error(`获取钱包签名者失败: ${(error as Error).message}`)
-  }
-}
-
-/**
  * 创建合约实例
  * @param address 合约地址
  * @param abi 合约ABI
