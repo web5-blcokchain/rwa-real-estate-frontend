@@ -7,8 +7,8 @@ import { PaymentMethod } from '@/components/common/payment-method'
 import QuantitySelector from '@/components/common/quantity-selector'
 import PropertyTokenABI from '@/contract/PropertyToken.json'
 import TradingManagerABI, { address as TradingManagerAddress } from '@/contract/TradingManager.json'
+import { Env } from '@/lib/global'
 import { useCommonDataStore } from '@/stores/common-data'
-import { getSignerFromPrivyWallet } from '@/utils/ethers'
 import { joinImagesPath } from '@/utils/url'
 import { useWallets } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
@@ -57,45 +57,39 @@ function RouteComponent() {
       return
     }
 
+    setIsProcessing(true)
+
+    const provider = new ethers.JsonRpcProvider(Env.web3.rpc)
+
     try {
-      setIsProcessing(true)
+      // TODO: 测试用合约地址和ID，后续删除
+      ;(item as any).id = 'PROP-1745501565874'
+      item.contract_address = '0x1c38DE9B3011431eF58e0302e38C0977519AC41f'
 
+      // 1. 正确获取钱包signer
       try {
-        // 1. 获取提供者和签名者
-        let signer
-        try {
-          signer = await getSignerFromPrivyWallet(wallet)
-          console.log('Successfully got signer from wallet')
-        }
-        catch (error) {
-          console.error('Failed to get signer from Privy wallet:', error)
-          toast.error('Failed to connect wallet')
-          setIsProcessing(false)
-          return
-        }
+        // TODO: 测试用钱包，后续删除
+        const investor = new ethers.Wallet('877bfccd2c9e75a46571117dde988cfc01556f252352dec24efa91bddbf87b4b', provider)
 
-        const investorAddress = await signer.getAddress()
-        console.log('投资者地址:', investorAddress)
-
-        // 2. 加载合约
         const propertyTokenContract = new ethers.Contract(
           item.contract_address,
           PropertyTokenABI.abi,
-          signer
+          investor
         )
 
         const tradingManagerContract = new ethers.Contract(
           TradingManagerAddress,
           TradingManagerABI.abi,
-          signer
+          investor
         )
 
+        // 3. 检查合约是否可用
         if (!propertyTokenContract || !tradingManagerContract) {
           toast.error(t('payment.errors.contract_not_initialized'))
           return
         }
 
-        // 3. 获取代币信息
+        // 4. 获取代币信息
         const tokenSymbol = await propertyTokenContract.symbol()
         const tokenName = await propertyTokenContract.name()
         const tokenDecimals = await propertyTokenContract.decimals()
@@ -103,38 +97,38 @@ function RouteComponent() {
         console.log(`代币信息: ${tokenName} (${tokenSymbol})`)
         console.log(`小数位数: ${tokenDecimals}`)
 
-        // 4. 创建卖单参数 - 确保使用可用的代币数量
+        // 5. 设置交易参数
         const tokenAmount = ethers.parseUnits('2', 18)
-        const tokenPrice = '1'
+        const tokenPrice = BigInt(3)
 
         console.log('创建卖单参数:')
         console.log(`- 代币地址: ${item.contract_address}`)
         console.log(`- 房产ID: ${item.id}`)
-        console.log(`- 数量: ${ethers.formatUnits(tokenAmount, tokenDecimals)} 个代币 (已调整为安全值)`)
+        console.log(`- 数量: ${ethers.formatUnits(tokenAmount, tokenDecimals)} 个代币`)
         console.log(`- 价格: ${tokenPrice} USDT/代币`)
 
-        // 5. 再次确认操作者代币余额足够
-        const balance = await propertyTokenContract.balanceOf(await signer.getAddress())
-        if (Number(ethers.formatUnits(balance, tokenDecimals)) < Number(ethers.formatUnits(tokenAmount, tokenDecimals))) {
-          toast.error(`代币余额不足: 需要 ${ethers.formatUnits(tokenAmount, tokenDecimals)}, 实际有 ${balance}`)
+        // 6. 检查余额
+        const operatorTokenBalance = await propertyTokenContract.balanceOf(investor.address)
+        console.log(`操作者代币余额: ${ethers.formatUnits(operatorTokenBalance, tokenDecimals)} 个代币`)
+
+        // 7. 检查授权
+        const currentTokenAllowance = await propertyTokenContract.allowance(
+          investor,
+          TradingManagerAddress
+        )
+
+        if (operatorTokenBalance < tokenAmount) {
+          toast.error(`代币余额不足: ${ethers.formatUnits(operatorTokenBalance, tokenDecimals)} < ${ethers.formatUnits(tokenAmount, tokenDecimals)}`)
           setIsProcessing(false)
           return
         }
 
-        // 6. 检查当前代币授权额度
-        const currentTokenAllowance = await propertyTokenContract.allowance(
-          investorAddress,
-          TradingManagerAddress
-        )
-
         console.log(`当前代币授权额度: ${ethers.formatUnits(currentTokenAllowance, tokenDecimals)}`)
 
-        // 7. 如果代币授权额度不足，进行授权
+        // 8. 如果授权不足则进行授权
         if (currentTokenAllowance < tokenAmount) {
           setIsApproving(true)
-          toast.info(t('payment.info.approving_tokens'))
-
-          console.log(`授权代币... 授权数量: ${ethers.formatUnits(tokenAmount, tokenDecimals)}`)
+          toast.info('正在授权代币...')
 
           try {
             const tokenApproveTx = await propertyTokenContract.approve(
@@ -142,84 +136,60 @@ function RouteComponent() {
               tokenAmount
             )
 
-            console.log(`代币授权交易已发送，交易哈希: ${tokenApproveTx.hash}`)
-            const receipt = await tokenApproveTx.wait()
-            console.log(`代币授权交易已确认，区块号: ${receipt.blockNumber}`)
-            toast.success(t('payment.success.tokens_approved'))
+            console.log(`授权交易已发送: ${tokenApproveTx.hash}`)
+            await tokenApproveTx.wait()
+            console.log('授权交易已确认')
+            toast.success('代币授权成功')
 
-            // 再次检查授权额度
             const newAllowance = await propertyTokenContract.allowance(
-              investorAddress,
+              investor,
               TradingManagerAddress
             )
-
-            console.log(`新的代币授权额度: ${ethers.formatUnits(newAllowance, tokenDecimals)}`)
-
-            if (newAllowance < tokenAmount) {
-              throw new Error(t('payment.errors.approval_failed'))
-            }
+            console.log(`新的授权额度: ${ethers.formatUnits(newAllowance, tokenDecimals)}`)
           }
           catch (error: any) {
-            if (error.code === 'ACTION_REJECTED' || error.code === 4001) {
-              toast.error(t('payment.errors.approval_rejected'))
-            }
-            else {
-              toast.error(`${t('payment.errors.approval_failed')}: ${error.message}`)
-            }
+            console.error('授权失败:', error)
+            toast.error(`授权失败: ${error.message}`)
             setIsApproving(false)
             setIsProcessing(false)
             return
           }
-
           setIsApproving(false)
         }
-        else {
-          console.log('代币授权额度充足，无需重新授权')
-        }
-
-        // 8. 创建卖单前检查余额
-        const beforeBalance = await propertyTokenContract.balanceOf(investorAddress)
-        console.log('\n创建卖单前余额:')
-        console.log(`- 代币余额: ${ethers.formatUnits(beforeBalance, tokenDecimals)} 个代币`)
 
         // 9. 创建卖单
-        toast.info(t('payment.info.creating_order'))
-        console.log('\n发送交易...')
-
-        console.log('tokenAmount', tokenAmount)
-        console.log('tokenPrice', tokenPrice)
+        toast.info('正在创建卖单...')
+        console.log('发送createSellOrder交易')
 
         try {
-          // 确保所有参数格式正确
-          const tx = await tradingManagerContract.createSellOrder(
+          const gasLimit = await tradingManagerContract.createSellOrder.estimateGas(
             item.contract_address,
             String(item.id),
             tokenAmount,
             tokenPrice
           )
 
-          console.log(`交易已发送，等待确认... 交易哈希: ${tx.hash}`)
-          toast.success(t('payment.success.tx_sent'))
+          console.log(`预估gas: ${gasLimit.toString()}`)
+
+          const tx = await tradingManagerContract.createSellOrder(
+            item.contract_address,
+            String(item.id),
+            tokenAmount,
+            tokenPrice,
+            { gasLimit: Math.floor(Number(gasLimit) * 1.2) } // 增加20%的gas限制
+          )
+
+          console.log(`交易已发送: ${tx.hash}`)
+          toast.success('交易已发送')
 
           const receipt = await tx.wait()
-          console.log(`交易已确认，区块号: ${receipt.blockNumber}`)
+          console.log(`交易已确认，块号: ${receipt.blockNumber}`)
+          toast.success('卖单创建成功')
 
-          // 10. 创建卖单后检查余额
-          const afterBalance = await propertyTokenContract.balanceOf(investorAddress)
-          console.log('\n创建卖单后余额:')
-          console.log(`- 代币余额: ${ethers.formatUnits(afterBalance, tokenDecimals)} 个代币`)
-
-          // 11. 计算余额变化
-          const tokenChange = beforeBalance - afterBalance
-          console.log('\n余额变化:')
-          console.log(`- 代币变化: ${ethers.formatUnits(tokenChange, tokenDecimals)} 个代币`)
-
-          // 12. 调用后端 API 记录交易
+          // 10. 记录交易
           mutate(tx.hash)
 
-          toast.success(t('payment.success.payment_success'))
-
-          // 13. 返回到前一页或投资页
+          // 11. 返回上一页
           setTimeout(() => {
             router.history.back()
           }, 2000)
@@ -227,80 +197,20 @@ function RouteComponent() {
         catch (error: any) {
           console.error('创建卖单失败:', error)
 
-          // 尝试使用更小的代币数量
-          if (error.message && error.message.includes('transfer amount exceeds balance')) {
-            console.log('余额不足，尝试使用更小的代币数量...')
-
-            // 使用非常小的安全值
-            const microAmount = BigInt(1) // 最小单位1 wei
-
-            try {
-              toast.info('使用最小数量重试...')
-              const tx = await tradingManagerContract.createSellOrder(
-                item.contract_address,
-                String(item.id),
-                microAmount,
-                tokenPrice
-              )
-
-              console.log(`交易已发送(微量)，等待确认... 交易哈希: ${tx.hash}`)
-              toast.success(t('payment.success.tx_sent'))
-
-              const receipt = await tx.wait()
-              console.log(`交易已确认，区块号: ${receipt.blockNumber}`)
-
-              // 调用后端 API 记录交易
-              mutate(tx.hash)
-              toast.success(t('payment.success.payment_success'))
-
-              // 返回到前一页
-              setTimeout(() => {
-                router.history.back()
-              }, 2000)
-
-              return
-            }
-            catch (microError: any) {
-              console.error('使用微量值尝试也失败:', microError)
-              toast.error(`即使使用微量代币也失败: ${microError.message}`)
-            }
-          }
-
-          // 正常的错误处理
           if (error.code === 'ACTION_REJECTED' || error.code === 4001) {
-            toast.error(t('payment.errors.rejected'))
+            toast.error('交易已被拒绝')
           }
           else {
-            toast.error(`${t('payment.errors.general', { error: error.message })}`)
+            console.error(`创建卖单失败: ${error.message}`)
           }
         }
       }
       catch (error: any) {
-        console.error('Error during sell transaction:', error)
-
-        if (error.code === 'ACTION_REJECTED' || error.code === 4001) {
-          toast.error(t('payment.errors.rejected'))
-        }
-        else if (error.reason) {
-          toast.error(`${t('payment.errors.contract_revert_with_reason', { reason: error.reason })}`)
-        }
-        else {
-          toast.error(`${t('payment.errors.general', { error: error.message })}`)
-        }
+        console.error('获取钱包失败:', error)
       }
     }
     catch (error: any) {
-      console.error('Error during sell transaction:', error)
-
-      if (error.code === 'ACTION_REJECTED' || error.code === 4001) {
-        toast.error(t('payment.errors.rejected'))
-      }
-      else if (error.reason) {
-        toast.error(`${t('payment.errors.contract_revert_with_reason', { reason: error.reason })}`)
-      }
-      else {
-        toast.error(`${t('payment.errors.general', { error: error.message })}`)
-      }
+      console.error('交易过程中出现错误:', error)
     }
     finally {
       setIsProcessing(false)
@@ -434,10 +344,6 @@ function RouteComponent() {
       </div>
 
       <div>
-        <div className="text-center text-3.5 text-[#898989]">
-          {t('properties.payment.expire')}
-          14:59
-        </div>
         <div className="grid grid-cols-3 mt-2">
           <div>
             <Button
@@ -457,9 +363,7 @@ function RouteComponent() {
               loading={isApproving || isProcessing}
               disabled={isPending || isApproving || isProcessing}
             >
-              <Waiting for={!(isPending || isApproving || isProcessing)}>
-                {isApproving ? t('payment.errors.approving_tokens') : t('action.confirm_sell')}
-              </Waiting>
+              {isApproving ? t('payment.errors.approving_tokens') : t('action.confirm_sell')}
             </Button>
           </div>
           <div></div>
