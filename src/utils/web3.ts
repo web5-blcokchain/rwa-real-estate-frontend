@@ -11,7 +11,7 @@ let web3Instance: Web3 | null = null
 export function getWeb3Instance(): Web3 {
   if (!web3Instance) {
     // 使用全局配置的 RPC URL
-    const provider = window.ethereum || new Web3.providers.HttpProvider(Env.web3.rpc)
+    const provider = new Web3.providers.HttpProvider(Env.web3.rpc)
     web3Instance = new Web3(provider)
 
     // 如果有设置链 ID，确保当前网络是正确的链

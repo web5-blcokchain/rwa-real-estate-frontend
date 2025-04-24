@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@ant-design/v5-patch-for-react-19": "^1.0.3",
+    "@ethersproject/providers": "^5.8.0",
     "@fontsource-variable/inter": "^5.2.5",
     "@fontsource-variable/jetbrains-mono": "^5.2.5",
     "@privy-io/react-auth": "^2.6.2",
@@ -29,6 +30,7 @@
     "clsx": "^2.1.1",
     "copy-to-clipboard": "^3.3.3",
     "dayjs": "^1.11.13",
+    "ethers": "^6.13.5",
     "i18next": "^24.2.2",
     "ky": "^1.7.5",
     "lucide-react": "^0.479.0",

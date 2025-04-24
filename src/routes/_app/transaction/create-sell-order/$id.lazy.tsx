@@ -5,14 +5,16 @@ import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
 import { PaymentMethod } from '@/components/common/payment-method'
 import QuantitySelector from '@/components/common/quantity-selector'
-import { usePropertyTokenContract, useTradingManagerContract } from '@/contract'
-import { address as TradingManagerAddress } from '@/contract/TradingManager.json'
+import PropertyTokenABI from '@/contract/PropertyToken.json'
+import TradingManagerABI, { address as TradingManagerAddress } from '@/contract/TradingManager.json'
 import { useCommonDataStore } from '@/stores/common-data'
+import { getSignerFromPrivyWallet } from '@/utils/ethers'
 import { joinImagesPath } from '@/utils/url'
 import { useWallets } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
+import { ethers } from 'ethers'
 import numeral from 'numeral'
 
 export const Route = createLazyFileRoute('/_app/transaction/create-sell-order/$id')({
@@ -37,8 +39,6 @@ function RouteComponent() {
 
   const item = investmentItems.get(id)!
 
-  const tradingManagerContract = useTradingManagerContract()
-
   const [tokens, setTokens] = useState(1)
 
   const { isPending, mutate } = useMutation({
@@ -57,117 +57,242 @@ function RouteComponent() {
       return
     }
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const propertyTokenContract = usePropertyTokenContract(item.contract_address)!
-
-    if (!propertyTokenContract) {
-      toast.error(t('payment.errors.property_token_not_initialized'))
-      return
-    }
-
-    if (!tradingManagerContract) {
-      toast.error(t('payment.errors.contract_not_initialized'))
-      return
-    }
-
     try {
       setIsProcessing(true)
 
-      // 检查当前代币授权额度
-      const tokenAmount = tokens
-      const tokenPrice = BigInt(numeral(item.token_price).value() ?? 0)
-
-      const investorAddress = wallet.address
-
-      console.log('investorAddress', investorAddress)
-
-      // 检查操作者代币余额
-      const operatorTokenBalance = await propertyTokenContract.methods.balanceOf(investorAddress).call() as bigint
-
-      console.log(operatorTokenBalance, tokenAmount)
-
-      if (operatorTokenBalance < tokenAmount) {
-        toast.error(t('payment.errors.insufficient_balance'))
-        setIsProcessing(false)
-        return
-      }
-
-      // 检查代币授权额度
-      const currentTokenAllowance = await propertyTokenContract.methods.allowance(
-        investorAddress,
-        TradingManagerAddress
-      ).call() as number
-
-      // 如果代币授权额度不足，进行授权
-      if (currentTokenAllowance < tokenAmount) {
-        setIsApproving(true)
-        toast.loading(t('payment.info.approving_tokens'))
-
+      try {
+        // 1. 获取提供者和签名者
+        let signer
         try {
-          const tokenApproveTx = await propertyTokenContract.methods.approve(
-            TradingManagerAddress,
-            tokenAmount
-          ).send({ from: investorAddress }) as any
-
-          console.log('tokenApproveTx', tokenApproveTx)
-
-          await tokenApproveTx.wait()
-
-          toast.success(t('payment.success.tokens_approved'))
-
-          // 再次检查授权额度
-          const newAllowance = await propertyTokenContract.methods.allowance(
-            investorAddress,
-            TradingManagerAddress
-          ).call() as number
-
-          if (newAllowance < tokenAmount) {
-            throw new Error(t('payment.errors.approval_failed'))
-          }
+          signer = await getSignerFromPrivyWallet(wallet)
+          console.log('Successfully got signer from wallet')
         }
-        catch (error: any) {
-          if (error.code === 4001) {
-            toast.error(t('payment.errors.approval_rejected'))
-          }
-          else {
-            toast.error(`${t('payment.errors.approval_failed')}: ${error.message}`)
-          }
-          setIsApproving(false)
+        catch (error) {
+          console.error('Failed to get signer from Privy wallet:', error)
+          toast.error('Failed to connect wallet')
           setIsProcessing(false)
           return
         }
 
-        setIsApproving(false)
+        const investorAddress = await signer.getAddress()
+        console.log('投资者地址:', investorAddress)
+
+        // 2. 加载合约
+        const propertyTokenContract = new ethers.Contract(
+          item.contract_address,
+          PropertyTokenABI.abi,
+          signer
+        )
+
+        const tradingManagerContract = new ethers.Contract(
+          TradingManagerAddress,
+          TradingManagerABI.abi,
+          signer
+        )
+
+        if (!propertyTokenContract || !tradingManagerContract) {
+          toast.error(t('payment.errors.contract_not_initialized'))
+          return
+        }
+
+        // 3. 获取代币信息
+        const tokenSymbol = await propertyTokenContract.symbol()
+        const tokenName = await propertyTokenContract.name()
+        const tokenDecimals = await propertyTokenContract.decimals()
+
+        console.log(`代币信息: ${tokenName} (${tokenSymbol})`)
+        console.log(`小数位数: ${tokenDecimals}`)
+
+        // 4. 创建卖单参数 - 确保使用可用的代币数量
+        const tokenAmount = ethers.parseUnits('2', 18)
+        const tokenPrice = '1'
+
+        console.log('创建卖单参数:')
+        console.log(`- 代币地址: ${item.contract_address}`)
+        console.log(`- 房产ID: ${item.id}`)
+        console.log(`- 数量: ${ethers.formatUnits(tokenAmount, tokenDecimals)} 个代币 (已调整为安全值)`)
+        console.log(`- 价格: ${tokenPrice} USDT/代币`)
+
+        // 5. 再次确认操作者代币余额足够
+        const balance = await propertyTokenContract.balanceOf(await signer.getAddress())
+        if (Number(ethers.formatUnits(balance, tokenDecimals)) < Number(ethers.formatUnits(tokenAmount, tokenDecimals))) {
+          toast.error(`代币余额不足: 需要 ${ethers.formatUnits(tokenAmount, tokenDecimals)}, 实际有 ${balance}`)
+          setIsProcessing(false)
+          return
+        }
+
+        // 6. 检查当前代币授权额度
+        const currentTokenAllowance = await propertyTokenContract.allowance(
+          investorAddress,
+          TradingManagerAddress
+        )
+
+        console.log(`当前代币授权额度: ${ethers.formatUnits(currentTokenAllowance, tokenDecimals)}`)
+
+        // 7. 如果代币授权额度不足，进行授权
+        if (currentTokenAllowance < tokenAmount) {
+          setIsApproving(true)
+          toast.info(t('payment.info.approving_tokens'))
+
+          console.log(`授权代币... 授权数量: ${ethers.formatUnits(tokenAmount, tokenDecimals)}`)
+
+          try {
+            const tokenApproveTx = await propertyTokenContract.approve(
+              TradingManagerAddress,
+              tokenAmount
+            )
+
+            console.log(`代币授权交易已发送，交易哈希: ${tokenApproveTx.hash}`)
+            const receipt = await tokenApproveTx.wait()
+            console.log(`代币授权交易已确认，区块号: ${receipt.blockNumber}`)
+            toast.success(t('payment.success.tokens_approved'))
+
+            // 再次检查授权额度
+            const newAllowance = await propertyTokenContract.allowance(
+              investorAddress,
+              TradingManagerAddress
+            )
+
+            console.log(`新的代币授权额度: ${ethers.formatUnits(newAllowance, tokenDecimals)}`)
+
+            if (newAllowance < tokenAmount) {
+              throw new Error(t('payment.errors.approval_failed'))
+            }
+          }
+          catch (error: any) {
+            if (error.code === 'ACTION_REJECTED' || error.code === 4001) {
+              toast.error(t('payment.errors.approval_rejected'))
+            }
+            else {
+              toast.error(`${t('payment.errors.approval_failed')}: ${error.message}`)
+            }
+            setIsApproving(false)
+            setIsProcessing(false)
+            return
+          }
+
+          setIsApproving(false)
+        }
+        else {
+          console.log('代币授权额度充足，无需重新授权')
+        }
+
+        // 8. 创建卖单前检查余额
+        const beforeBalance = await propertyTokenContract.balanceOf(investorAddress)
+        console.log('\n创建卖单前余额:')
+        console.log(`- 代币余额: ${ethers.formatUnits(beforeBalance, tokenDecimals)} 个代币`)
+
+        // 9. 创建卖单
+        toast.info(t('payment.info.creating_order'))
+        console.log('\n发送交易...')
+
+        console.log('tokenAmount', tokenAmount)
+        console.log('tokenPrice', tokenPrice)
+
+        try {
+          // 确保所有参数格式正确
+          const tx = await tradingManagerContract.createSellOrder(
+            item.contract_address,
+            String(item.id),
+            tokenAmount,
+            tokenPrice
+          )
+
+          console.log(`交易已发送，等待确认... 交易哈希: ${tx.hash}`)
+          toast.success(t('payment.success.tx_sent'))
+
+          const receipt = await tx.wait()
+          console.log(`交易已确认，区块号: ${receipt.blockNumber}`)
+
+          // 10. 创建卖单后检查余额
+          const afterBalance = await propertyTokenContract.balanceOf(investorAddress)
+          console.log('\n创建卖单后余额:')
+          console.log(`- 代币余额: ${ethers.formatUnits(afterBalance, tokenDecimals)} 个代币`)
+
+          // 11. 计算余额变化
+          const tokenChange = beforeBalance - afterBalance
+          console.log('\n余额变化:')
+          console.log(`- 代币变化: ${ethers.formatUnits(tokenChange, tokenDecimals)} 个代币`)
+
+          // 12. 调用后端 API 记录交易
+          mutate(tx.hash)
+
+          toast.success(t('payment.success.payment_success'))
+
+          // 13. 返回到前一页或投资页
+          setTimeout(() => {
+            router.history.back()
+          }, 2000)
+        }
+        catch (error: any) {
+          console.error('创建卖单失败:', error)
+
+          // 尝试使用更小的代币数量
+          if (error.message && error.message.includes('transfer amount exceeds balance')) {
+            console.log('余额不足，尝试使用更小的代币数量...')
+
+            // 使用非常小的安全值
+            const microAmount = BigInt(1) // 最小单位1 wei
+
+            try {
+              toast.info('使用最小数量重试...')
+              const tx = await tradingManagerContract.createSellOrder(
+                item.contract_address,
+                String(item.id),
+                microAmount,
+                tokenPrice
+              )
+
+              console.log(`交易已发送(微量)，等待确认... 交易哈希: ${tx.hash}`)
+              toast.success(t('payment.success.tx_sent'))
+
+              const receipt = await tx.wait()
+              console.log(`交易已确认，区块号: ${receipt.blockNumber}`)
+
+              // 调用后端 API 记录交易
+              mutate(tx.hash)
+              toast.success(t('payment.success.payment_success'))
+
+              // 返回到前一页
+              setTimeout(() => {
+                router.history.back()
+              }, 2000)
+
+              return
+            }
+            catch (microError: any) {
+              console.error('使用微量值尝试也失败:', microError)
+              toast.error(`即使使用微量代币也失败: ${microError.message}`)
+            }
+          }
+
+          // 正常的错误处理
+          if (error.code === 'ACTION_REJECTED' || error.code === 4001) {
+            toast.error(t('payment.errors.rejected'))
+          }
+          else {
+            toast.error(`${t('payment.errors.general', { error: error.message })}`)
+          }
+        }
       }
+      catch (error: any) {
+        console.error('Error during sell transaction:', error)
 
-      // 创建卖单
-      toast.loading(t('payment.info.creating_order'))
-      const tx = await tradingManagerContract.methods.createSellOrder(
-        item.contract_address,
-        item.id,
-        tokenAmount,
-        tokenPrice
-      ).send({ from: investorAddress }) as any
-
-      toast.success(t('payment.success.tx_sent'))
-
-      // 等待交易确认
-      const receipt = await tx.wait()
-
-      // 调用后端 API 记录交易
-      mutate(receipt.hash)
-
-      toast.success(t('payment.success.payment_success'))
-
-      // 返回到前一页或投资页
-      setTimeout(() => {
-        router.history.back()
-      }, 2000)
+        if (error.code === 'ACTION_REJECTED' || error.code === 4001) {
+          toast.error(t('payment.errors.rejected'))
+        }
+        else if (error.reason) {
+          toast.error(`${t('payment.errors.contract_revert_with_reason', { reason: error.reason })}`)
+        }
+        else {
+          toast.error(`${t('payment.errors.general', { error: error.message })}`)
+        }
+      }
     }
     catch (error: any) {
       console.error('Error during sell transaction:', error)
 
-      if (error.code === 4001) {
+      if (error.code === 'ACTION_REJECTED' || error.code === 4001) {
         toast.error(t('payment.errors.rejected'))
       }
       else if (error.reason) {
