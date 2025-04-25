@@ -37,10 +37,11 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
       total_amount: total_current,
       rental_yield: expected_annual_return,
       image_urls,
-      order_type: InvestmentOrderType.Buy
+      order_type: InvestmentOrderType.Buy,
+      contract_address: `${properties_id}`
     })
     navigate({
-      to: '/investment/sell/$id',
+      to: '/transaction/sell/$id',
       params: { id: `${properties_id}` }
     })
   }

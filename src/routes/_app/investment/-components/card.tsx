@@ -39,7 +39,7 @@ export const InvestmentCard: FC<InvestmentCardProps> = ({
     investmentItems.set(item.id, item)
 
     navigate({
-      to: '/investment/buy/$id',
+      to: '/transaction/buy/$id',
       params: {
         id: `${item.id}`
       }
