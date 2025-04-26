@@ -4,14 +4,15 @@ import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
 import { PaymentMethod } from '@/components/common/payment-method'
+import SimpleERC20ABI from '@/contract/SimpleERC20.json'
+import TradingManagerABI from '@/contract/TradingManager.json'
 import { useCommonDataStore } from '@/stores/common-data'
 import { joinImagesPath } from '@/utils/url'
 import { useWallets } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
-import { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { ethers } from 'ethers'
 
 export const Route = createLazyFileRoute('/_app/transaction/buy/$id')({
   component: RouteComponent
@@ -42,16 +43,101 @@ function RouteComponent() {
   }
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async () => {
-      const res = await buyAsset({ order_market_id: item.id })
+      const res = await buyAsset({ order_id: item.id })
       return res.data
     }
   })
 
-  function buy() {
-    mutateAsync()
-      .then((response) => {
-        console.log(response)
-      })
+  async function buy() {
+    if (!wallet) {
+      toast.error(t('payment.errors.no_wallet'))
+      return
+    }
+
+    const ethProvider = await wallet.getEthereumProvider()
+    const provider = new ethers.BrowserProvider(ethProvider)
+    const signer = await provider.getSigner()
+
+    const usdtContract = new ethers.Contract(
+      SimpleERC20ABI.address,
+      SimpleERC20ABI.abi,
+      signer
+    )
+
+    const tradingManagerContract = new ethers.Contract(
+      TradingManagerABI.address,
+      TradingManagerABI.abi,
+      signer
+    )
+
+    const orderId = BigInt(7)
+
+    // 买单交易流程
+    try {
+      // 获取订单信息
+      const order = await tradingManagerContract.getOrder(orderId)
+      console.log('订单信息:', order)
+
+      // 计算需要的USDT数量
+      const requiredUsdt = (order.amount * order.price) as unknown as bigint
+      console.log(`需要的USDT数量: ${ethers.formatUnits(requiredUsdt, 18)}`)
+
+      // 检查USDT余额
+      const investorAddress = wallet.address
+      const usdtBalance = await usdtContract.balanceOf(investorAddress)
+      console.log(`当前USDT余额: ${ethers.formatUnits(usdtBalance, 18)}`)
+
+      if (usdtBalance < requiredUsdt) {
+        throw new Error(`USDT余额不足，需要 ${ethers.formatUnits(requiredUsdt, 18)}，实际有 ${ethers.formatUnits(usdtBalance, 18)}`)
+      }
+
+      // 检查USDT授权额度
+      const currentAllowance = await usdtContract.allowance(investorAddress, TradingManagerABI.address)
+      console.log(`当前USDT授权额度: ${ethers.formatUnits(currentAllowance, 18)}`)
+
+      // 如果授权额度不足，进行授权
+      if (currentAllowance < requiredUsdt) {
+        console.log(`USDT授权额度不足，正在授权...`)
+        // 授权一个非常大的额度，避免后续交易再次授权
+        const approveAmount = requiredUsdt * BigInt(10)
+
+        // 先清零授权
+        console.log(`清零当前授权...`)
+        const resetTx = await usdtContract.approve(TradingManagerABI.address, 0)
+        await resetTx.wait()
+
+        // 设置新的授权额度
+        console.log(`设置新的授权额度: ${ethers.formatUnits(approveAmount, 18)} USDT`)
+        const approveTx = await usdtContract.approve(TradingManagerABI.address, approveAmount)
+        await approveTx.wait()
+
+        // 再次检查授权额度
+        const newAllowance = await usdtContract.allowance(investorAddress, TradingManagerABI.address)
+        console.log(`新的USDT授权额度: ${ethers.formatUnits(newAllowance, 18)}`)
+
+        if (newAllowance < requiredUsdt) {
+          throw new Error(`USDT授权失败，当前授权额度 ${ethers.formatUnits(newAllowance, 18)} 小于需要的 ${ethers.formatUnits(requiredUsdt, 18)}`)
+        }
+      }
+
+      // 执行买单
+      console.log(`准备执行买单，订单ID: ${orderId}`)
+      const tx = await tradingManagerContract.buyOrder(orderId)
+      console.log(`买单交易已发送，等待确认...`)
+      const receipt = await tx.wait()
+      console.log(`买单执行成功，交易哈希: ${receipt.hash}`)
+
+      // 获取最新的订单信息
+      const updatedOrder = await tradingManagerContract.getOrder(orderId)
+      console.log(`交易完成后订单信息:`, updatedOrder)
+
+      // 调用后端API记录购买信息
+      return await mutateAsync()
+    }
+    catch (error) {
+      console.error(`执行买单失败:`, error)
+      throw error
+    }
   }
 
   useEffect(() => {
@@ -177,10 +263,6 @@ function RouteComponent() {
       </div>
 
       <div>
-        <div className="text-center text-3.5 text-[#898989]">
-          {t('properties.payment.expire')}
-          14:59
-        </div>
         <div className="grid grid-cols-3 mt-2">
           <div>
             <Button
@@ -197,12 +279,10 @@ function RouteComponent() {
               size="large"
               className="w-48 disabled:bg-gray-2 text-black!"
               onClick={buy}
-              loading={false}
+              loading={isPending}
               disabled={isPending}
             >
-              <Waiting for={!isPending}>
-                {t('properties.payment.confirm_payment')}
-              </Waiting>
+              {t('properties.payment.confirm_payment')}
             </Button>
           </div>
           <div></div>
