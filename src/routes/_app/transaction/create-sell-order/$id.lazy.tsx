@@ -41,10 +41,10 @@ function RouteComponent() {
   const [tokens, setTokens] = useState(1)
 
   const { isPending, mutateAsync } = useMutation({
-    mutationFn: async (hash: string) => {
+    mutationFn: async (sell_order_id: number) => {
       const res = await sellAsset({
-        order_market_id: item.id,
-        hash
+        id: item.id,
+        sell_order_id
       })
       return res.data
     }
@@ -212,9 +212,6 @@ function RouteComponent() {
             tokenPrice,
             {
               gasLimit: adjustedGasLimit
-              // 可选：指定 maxFeePerGas 和 maxPriorityFeePerGas 以更好地控制交易费用
-              // maxFeePerGas: ethers.parseUnits('50', 'gwei'),
-              // maxPriorityFeePerGas: ethers.parseUnits('2', 'gwei'),
             }
           )
 
@@ -222,7 +219,7 @@ function RouteComponent() {
           toast.success('交易已发送')
 
           const receipt = await tx.wait()
-          console.log(`交易已确认，块号: ${receipt.blockNumber}`)
+          console.log(`交易已确认: ${receipt}`)
           toast.success('卖单创建成功')
 
           // 10. 记录交易
