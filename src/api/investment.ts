@@ -14,8 +14,9 @@ export function buyAsset(data: {
 }
 
 export function sellAsset(data: {
-  id: number
-  sell_order_id: number
+  id: string
+  token_number: string
+  sell_order_id: string
 }) {
   return apiClient.post('/api/market/confirmSell', data)
 }
