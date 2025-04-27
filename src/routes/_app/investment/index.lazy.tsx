@@ -1,6 +1,6 @@
 import { getInvestmentList } from '@/api/investment'
 import { useQuery } from '@tanstack/react-query'
-import { createLazyFileRoute } from '@tanstack/react-router'
+import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
 import { Button, Input, Select } from 'antd'
 import { useState } from 'react'
 import { InvestmentCard } from './-components/card'
@@ -12,6 +12,8 @@ export const Route = createLazyFileRoute('/_app/investment/')({
 function RouteComponent() {
   const [page, setPage] = useState(1)
   const [keyword, setKeyword] = useState('')
+  const { t } = useTranslation()
+  const navigate = useNavigate()
 
   const assetTypeOptions = [
     { label: 'All', value: 'all' },
@@ -37,38 +39,55 @@ function RouteComponent() {
   return (
     <div className="p-8 space-y-8">
       <div className={cn(
-        'rounded-md bg-[#1e2024] p-6',
-        'grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'
+        'rounded-md bg-[#1e2024] p-6'
       )}
       >
-        <Input
-          size="large"
-          placeholder="Search address, type"
-          className={cn(
-            'bg-transparent! text-white!',
-            '[&>input]:(placeholder-text-[#898989])'
-          )}
-          prefix={(
-            <div
-              className="i-iconamoon-search mx-1 size-4 bg-[#b5b5b5]"
+        <div className="fbc">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-4 md:grid-cols-3 xl:grid-cols-5">
+            <Input
+              size="large"
+              placeholder="Search address, type"
+              className={cn(
+                'bg-transparent! text-white!',
+                '[&>input]:(placeholder-text-[#898989])'
+              )}
+              prefix={(
+                <div
+                  className="i-iconamoon-search mx-1 size-4 bg-[#b5b5b5]"
+                />
+              )}
+              value={keyword}
+              onChange={e => handleSearch(e.target.value)}
             />
-          )}
-          value={keyword}
-          onChange={e => handleSearch(e.target.value)}
-        />
 
-        <Select
-          size="large"
-          placeholder="Asset Type"
-          className={cn(
-            '[&_.ant-select-selector]:(bg-transparent! text-white!)',
-            '[&_.ant-select-selection-placeholder]:(text-[#898989]!)',
-            '[&_.ant-select-selection-item]:(bg-transparent! text-white!)',
-            '[&_.ant-select-arrow]:(text-white!)'
-          )}
-          options={assetTypeOptions}
-          allowClear
-        />
+            <Select
+              size="large"
+              placeholder="Asset Type"
+              className={cn(
+                '[&_.ant-select-selector]:(bg-transparent! text-white!)',
+                '[&_.ant-select-selection-placeholder]:(text-[#898989]!)',
+                '[&_.ant-select-selection-item]:(bg-transparent! text-white!)',
+                '[&_.ant-select-arrow]:(text-white!)'
+              )}
+              options={assetTypeOptions}
+              allowClear
+            />
+          </div>
+
+          <div className="flex-1">
+            <Button
+              type="primary"
+              size="large"
+              className="text-black!"
+              onClick={() => navigate({
+                to: '/transaction/create-buy-order'
+              })}
+            >
+              {t('investment.button.create-buy-order')}
+            </Button>
+          </div>
+        </div>
+
       </div>
 
       <Waiting
