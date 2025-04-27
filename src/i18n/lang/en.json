@@ -362,5 +362,10 @@
     "sell": {
       "detail": "Sell detail"
     }
+  },
+  "investment": {
+    "button": {
+      "create-buy-order": "Create buy order"
+    }
   }
 }

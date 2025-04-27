@@ -361,5 +361,10 @@
     "sell": {
       "detail": "売却の詳細"
     }
+  },
+  "investment": {
+    "button": {
+      "create-buy-order": "購入注文の作成"
+    }
   }
 }

@@ -362,5 +362,10 @@
     "sell": {
       "detail": "详情"
     }
+  },
+  "investment": {
+    "button": {
+      "create-buy-order": "创建求购单"
+    }
   }
 }
