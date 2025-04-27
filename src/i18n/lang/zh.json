@@ -357,5 +357,10 @@
       "location": "位置",
       "location_placeholder": "城市，国家"
     }
+  },
+  "transaction": {
+    "sell": {
+      "detail": "详情"
+    }
   }
 }

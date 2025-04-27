@@ -357,5 +357,10 @@
       "location": "Location",
       "location_placeholder": "City, Country"
     }
+  },
+  "transaction": {
+    "sell": {
+      "detail": "Sell detail"
+    }
   }
 }

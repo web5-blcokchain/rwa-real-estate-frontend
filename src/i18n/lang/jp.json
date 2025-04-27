@@ -356,5 +356,10 @@
       "location": "場所",
       "location_placeholder": "都市、国"
     }
+  },
+  "transaction": {
+    "sell": {
+      "detail": "売却の詳細"
+    }
   }
 }

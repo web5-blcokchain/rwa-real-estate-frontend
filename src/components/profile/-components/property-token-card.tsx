@@ -25,7 +25,7 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
   const navigate = useNavigate()
   const investmentItems = useCommonDataStore(state => state.investmentItems)
 
-  const onSellClick = (e: React.MouseEvent) => {
+  const createSellOrder = (e: React.MouseEvent) => {
     e.stopPropagation()
     investmentItems.set(properties_id, {
       id: properties_id,
@@ -41,7 +41,7 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
       contract_address: `${properties_id}`
     })
     navigate({
-      to: '/transaction/sell/$id',
+      to: '/transaction/create-sell-order/$id',
       params: { id: `${properties_id}` }
     })
   }
@@ -117,9 +117,9 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
             type="primary"
             size="large"
             className="mr-2 w-1/2 text-black!"
-            onClick={onSellClick}
+            onClick={createSellOrder}
           >
-            Sell
+            Create Sell Order
           </Button>
 
           <Button

@@ -281,7 +281,7 @@ function RouteComponent() {
     if (!item) {
       toast.error(t('properties.payment.asset_not_found'))
       navigate({
-        to: '/investment'
+        to: '/profile'
       })
     }
   }, [item, navigate, params, t, ready, wallets])
@@ -333,7 +333,7 @@ function RouteComponent() {
       </div>
 
       <div className="rounded-xl bg-[#202329] p-6 space-y-4">
-        <div className="text-4.5">{t('properties.payment.payment_details')}</div>
+        <div className="text-4.5">{t('transaction.sell.detail')}</div>
 
         <div className="flex items-center justify-between text-4">
           <div className="text-[#898989] space-y-4">
