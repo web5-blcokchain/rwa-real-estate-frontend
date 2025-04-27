@@ -111,7 +111,7 @@ function RouteComponent() {
         toast.success(t('payment.success.tx_sent'))
 
         // 调用后端API记录交易
-        mutateAsync(hash)
+        mutateAsync()
           .then(() => {
             navigate({
               to: '/transaction/$hash',
