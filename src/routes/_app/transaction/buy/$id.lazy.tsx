@@ -4,6 +4,7 @@ import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
 import { PaymentMethod } from '@/components/common/payment-method'
+import QuantitySelector from '@/components/common/quantity-selector'
 import SimpleERC20ABI from '@/contract/SimpleERC20.json'
 import TradingManagerABI from '@/contract/TradingManager.json'
 import { useCommonDataStore } from '@/stores/common-data'
@@ -35,12 +36,6 @@ function RouteComponent() {
 
   const [tokens, setTokens] = useState(1)
 
-  const plus = () => setTokens(tokens + 1)
-  const minus = () => {
-    if (tokens > 1) {
-      setTokens(tokens - 1)
-    }
-  }
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async () => {
       const res = await buyAsset({ order_id: item.id })
@@ -217,10 +212,14 @@ function RouteComponent() {
           </div>
 
           <div className="space-y-4">
-            <div className="fyc gap-4">
-              <Button className="b-none text-white bg-[#374151]!" onClick={minus}>-</Button>
-              <div className="w-12 select-none text-center">{tokens}</div>
-              <Button className="b-none text-white bg-[#374151]!" onClick={plus}>+</Button>
+            <div className="flex justify-end">
+              <QuantitySelector
+                value={tokens}
+                onChange={setTokens}
+                min={1}
+                max={100}
+                disabled={isPending}
+              />
             </div>
 
             <div className="text-right">
