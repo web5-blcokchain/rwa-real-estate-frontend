@@ -78,6 +78,14 @@
       "payment_success": "Payment successful",
       "usdt_approved": "USDT approved successfully",
       "tokens_approved": "Tokens approved successfully"
+    },
+    "messages": {
+      "approving_usdt": "Approving USDT...",
+      "waiting_for_approval": "Waiting for approval confirmation...",
+      "creating_buy_order": "Creating buy order...",
+      "waiting_for_confirmation": "Waiting for transaction confirmation...",
+      "buy_order_created": "Buy order created successfully",
+      "sell_order_created": "Sell order created successfully"
     }
   },
   "create": {

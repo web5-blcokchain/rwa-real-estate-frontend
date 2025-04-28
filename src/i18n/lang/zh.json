@@ -78,6 +78,14 @@
       "payment_success": "支付成功",
       "usdt_approved": "USDT 授权成功",
       "tokens_approved": "代币授权成功"
+    },
+    "messages": {
+      "approving_usdt": "正在授权 USDT...",
+      "waiting_for_approval": "等待授权确认...",
+      "creating_buy_order": "正在创建买单...",
+      "waiting_for_confirmation": "等待交易确认...",
+      "buy_order_created": "买单创建成功",
+      "sell_order_created": "卖单创建成功"
     }
   },
   "create": {
