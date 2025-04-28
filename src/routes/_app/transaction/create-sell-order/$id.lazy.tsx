@@ -43,8 +43,9 @@ function RouteComponent() {
   const { isPending, mutateAsync } = useMutation({
     mutationFn: async (sell_order_id: number) => {
       const res = await sellAsset({
-        id: item.id,
-        sell_order_id
+        id: `${item.id}`,
+        token_number: `${tokens}`,
+        sell_order_id: `${sell_order_id}`
       })
       return res.data
     }
