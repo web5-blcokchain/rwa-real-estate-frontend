@@ -89,7 +89,7 @@ interface PurchaseBuyParams {
 export interface PurchaseBuyResponse { }
 
 // 购买接口参数
-function purchaseBuy(data: PurchaseBuyParams) {
+function initialBuyAsset(data: PurchaseBuyParams) {
   return apiClient.post<number>('/api/assets/buy', data)
 }
 
@@ -126,7 +126,7 @@ const apiBasic = {
   getDataListDetail,
   getPriceTrend,
   getCostAnalysis,
-  purchaseBuy,
+  initialBuyAsset,
   setCollect,
   setUnCollect,
   getCoreTeam

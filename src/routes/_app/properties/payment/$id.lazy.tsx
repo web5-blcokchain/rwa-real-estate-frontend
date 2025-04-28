@@ -49,7 +49,7 @@ function RouteComponent() {
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async (hash: string) => {
-      const res = await apiBasic.purchaseBuy({
+      const res = await apiBasic.initialBuyAsset({
         id: assetDetail.id,
         number: tokens,
         hash
