@@ -4,6 +4,7 @@ import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
 import { PaymentMethod } from '@/components/common/payment-method'
+import QuantitySelector from '@/components/common/quantity-selector'
 import SimpleERC20ABI from '@/contract/SimpleERC20.json'
 import TradingManagerABI from '@/contract/TradingManager.json'
 import { joinImagesPath } from '@/utils/url'
@@ -15,6 +16,9 @@ import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
+
+// 最小购买数量常量
+const MIN_TOKEN_PURCHASE = 2 // 设置最小购买量为2个代币，根据合约要求调整
 
 export const Route = createFileRoute('/_app/transaction/create-buy-order/')({
   component: RouteComponent
@@ -29,14 +33,9 @@ function RouteComponent() {
 
   const [id] = useState<number | null>(null)
   const [item] = useState<any>(null)
-  const [tokens, setTokens] = useState(1)
+  const [tokens, setTokens] = useState(MIN_TOKEN_PURCHASE)
+  const [minTokenAmount] = useState(MIN_TOKEN_PURCHASE)
 
-  const plus = () => setTokens(tokens + 1)
-  const minus = () => {
-    if (tokens > 1) {
-      setTokens(tokens - 1)
-    }
-  }
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async () => {
       const res = await buyAsset({ order_id: id! })
@@ -47,6 +46,12 @@ function RouteComponent() {
   async function createBuyOrder() {
     if (!wallet) {
       toast.error(t('payment.errors.no_wallet'))
+      return
+    }
+
+    // 检查购买数量是否达到最小要求
+    if (tokens < minTokenAmount) {
+      toast.error(t('payment.errors.amount_below_minimum', { min: minTokenAmount }))
       return
     }
 
@@ -215,10 +220,13 @@ function RouteComponent() {
           </div>
 
           <div className="space-y-4">
-            <div className="fyc gap-4">
-              <Button className="b-none text-white bg-[#374151]!" onClick={minus}>-</Button>
-              <div className="w-12 select-none text-center">{tokens}</div>
-              <Button className="b-none text-white bg-[#374151]!" onClick={plus}>+</Button>
+            <div className="flex justify-end">
+              <QuantitySelector
+                value={tokens}
+                onChange={setTokens}
+                min={minTokenAmount}
+                disabled={isPending}
+              />
             </div>
 
             <div className="text-right">
@@ -227,7 +235,7 @@ function RouteComponent() {
             </div>
             <div className="text-right">
               $
-              {tokens * Number(item.token_price) * 0.02}
+              {(tokens * Number(item.token_price) * 0.02).toFixed(2)}
             </div>
           </div>
         </div>
@@ -237,8 +245,14 @@ function RouteComponent() {
         <div className="fbc">
           <div>{t('properties.payment.total_amount')}</div>
           <div className="text-primary">
-            {`$${(tokens * Number(item.token_price)) + (tokens * Number(item.token_price) * 0.02)}`}
+            $
+            {(tokens * Number(item.token_price) * 1.02).toFixed(2)}
           </div>
+        </div>
+
+        {/* 添加最小购买量提示 */}
+        <div className="text-xs text-[#f59e0b]">
+          {t('payment.info.min_tokens_required', { min: minTokenAmount })}
         </div>
       </div>
 
@@ -278,7 +292,7 @@ function RouteComponent() {
               className="w-48 disabled:bg-gray-2 text-black!"
               onClick={createBuyOrder}
               loading={isPending}
-              disabled={isPending}
+              disabled={isPending || tokens < minTokenAmount}
             >
               {t('properties.payment.confirm_payment')}
             </Button>
