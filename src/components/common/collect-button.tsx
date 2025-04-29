@@ -14,6 +14,11 @@ export const CollectButton: FC<{
   const queryClient = useQueryClient()
   const [defaultValue, setDefaultValue] = useState(collect)
 
+  // 监听外部传入的collect属性变化
+  useEffect(() => {
+    setDefaultValue(collect)
+  }, [collect])
+
   const {
     mutateAsync: collectMutate,
     isPending: collectIsPending
