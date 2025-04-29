@@ -337,7 +337,8 @@
   "common": {
     "payment_title": "支払確認書",
     "sell_title": "売却確認",
-    "click_to_change": "クリックして画像を変更"
+    "click_to_change": "クリックして画像を変更",
+    "empty": "データがありません"
   },
   "profile": {
     "transactions": {
@@ -373,6 +374,8 @@
   "investment": {
     "button": {
       "create-buy-order": "購入注文の作成"
-    }
+    },
+    "sale": "販売",
+    "buy": "購入希望"
   }
 }

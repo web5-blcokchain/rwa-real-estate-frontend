@@ -333,7 +333,8 @@
   "common": {
     "click_to_change": "点击更换图片",
     "payment_title": "付款确认",
-    "sell_title": "卖出确认"
+    "sell_title": "卖出确认",
+    "empty": "暂无数据"
   },
   "action": {
     "sell": "卖出",
@@ -374,6 +375,8 @@
   "investment": {
     "button": {
       "create-buy-order": "创建求购单"
-    }
+    },
+    "sale": "出售",
+    "buy": "求购"
   }
 }

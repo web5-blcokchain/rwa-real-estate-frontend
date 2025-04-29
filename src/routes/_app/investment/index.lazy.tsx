@@ -1,8 +1,9 @@
 import { getInvestmentList } from '@/api/investment'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
-import { Button, Input, Select } from 'antd'
+import { Button, Input, Select, Tabs } from 'antd'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { InvestmentCard } from './-components/card'
 
 export const Route = createLazyFileRoute('/_app/investment/')({
@@ -12,6 +13,7 @@ export const Route = createLazyFileRoute('/_app/investment/')({
 function RouteComponent() {
   const [page, setPage] = useState(1)
   const [keyword, setKeyword] = useState('')
+  const [type, setType] = useState('1') // 1: 出售, 2: 求购
   const { t } = useTranslation()
   const navigate = useNavigate()
 
@@ -24,9 +26,9 @@ function RouteComponent() {
   ]
 
   const { data, isLoading } = useQuery({
-    queryKey: ['investment-list', page, keyword],
+    queryKey: ['investment-list', page, keyword, type],
     queryFn: async () => {
-      const res = await getInvestmentList({ page, keyword })
+      const res = await getInvestmentList({ page, keyword, type })
       return _get(res.data, 'list', [])
     }
   })
@@ -37,7 +39,28 @@ function RouteComponent() {
   }
 
   return (
-    <div className="p-8 space-y-8">
+    <div className="p-8">
+      <div>
+        <Tabs
+          activeKey={type}
+          onChange={(key) => {
+            setType(key)
+            setPage(1)
+          }}
+          className={cn(
+            'mb-4 inline-flex',
+            '[&_.ant-tabs-nav]:(mb-0!)',
+            '[&_.ant-tabs-nav::before]:(b-none!)',
+            '[&_.ant-tabs-tab-active]:(text-white!)',
+            '[&_.ant-tabs-tab]:(text-[#898989]!)'
+          )}
+          items={[
+            { label: t('investment.sale'), key: '1' },
+            { label: t('investment.buy'), key: '2' }
+          ]}
+        />
+      </div>
+
       <div className={cn(
         'rounded-md bg-[#1e2024] p-6'
       )}
@@ -75,19 +98,23 @@ function RouteComponent() {
           </div>
 
           <div className="flex-1">
-            <Button
-              type="primary"
-              size="large"
-              className="text-black!"
-              onClick={() => navigate({
-                to: '/transaction/create-buy-order'
-              })}
-            >
-              {t('investment.button.create-buy-order')}
-            </Button>
+            {
+              type === '2' && (
+                <Button
+                  type="primary"
+                  size="large"
+                  className="text-black!"
+                  onClick={() => navigate({
+                    to: '/transaction/create-buy-order'
+                  })}
+                >
+                  {t('investment.button.create-buy-order')}
+                </Button>
+              )
+            }
+
           </div>
         </div>
-
       </div>
 
       <Waiting
@@ -95,19 +122,27 @@ function RouteComponent() {
         className="h-32 fcc"
         iconClass="size-8"
       >
-        <div
-          className={cn(
-            'bg-[#1e2024] p-6',
-            '[&>div+div]:(b-t b-solid b-[#898989])'
-          )}
-        >
-          {data && Array.isArray(data) && data.map((item: any) => (
-            <InvestmentCard
-              key={item.id}
-              item={item}
-            />
-          ))}
-        </div>
+        {data && Array.isArray(data) && data.length > 0
+          ? (
+              <div
+                className={cn(
+                  'bg-[#1e2024] p-6',
+                  '[&>div+div]:(b-t b-solid b-[#898989])'
+                )}
+              >
+                {data.map((item: any) => (
+                  <InvestmentCard
+                    key={item.id}
+                    item={item}
+                  />
+                ))}
+              </div>
+            )
+          : (
+              <div className="h-32 w-full fcc bg-[#1e2024] p-6 text-[#898989]">
+                {t('common.empty')}
+              </div>
+            )}
       </Waiting>
 
       {!isLoading && data?.list && data.list.length > 20 && (
@@ -118,7 +153,7 @@ function RouteComponent() {
             className="rounded-full! text-black!"
             onClick={() => setPage(page + 1)}
           >
-            Load More
+            {t('system.loadMore')}
           </Button>
         </div>
       )}

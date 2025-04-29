@@ -338,7 +338,8 @@
   "common": {
     "payment_title": "Payment Confirmation",
     "sell_title": "Sell Confirmation",
-    "click_to_change": "Click to change image"
+    "click_to_change": "Click to change image",
+    "empty": "No data available"
   },
   "profile": {
     "transactions": {
@@ -374,6 +375,8 @@
   "investment": {
     "button": {
       "create-buy-order": "Create buy order"
-    }
+    },
+    "sale": "For Sale",
+    "buy": "Wanted"
   }
 }
