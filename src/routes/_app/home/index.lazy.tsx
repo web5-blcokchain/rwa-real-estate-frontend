@@ -191,6 +191,9 @@ function RouteComponent() {
           </button>
           <button
             className="rounded-md bg-background-secondary px-6 py-2 text-text md:px-8 md:py-3"
+            onClick={() => {
+              navigate({ to: '/about' })
+            }}
           >
             {t('home.ready.button2')}
           </button>
