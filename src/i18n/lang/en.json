@@ -61,7 +61,9 @@
       "execution_reverted": "Execution reverted by the contract",
       "approving_tokens": "Approving tokens...",
       "tokens_approved": "Tokens approved successfully",
-      "property_token_not_initialized": "Property token contract not initialized or invalid address"
+      "property_token_not_initialized": "Property token contract not initialized or invalid address",
+      "invalid_token_price": "Token price is invalid or undefined",
+      "invalid_property": "Invalid property ID"
     },
     "info": {
       "eth_required": "Transaction requires sending ETH",
@@ -253,7 +255,10 @@
       "expire": "Payment will expire in",
       "confirm_payment": "Confirm Payment",
       "asset_not_found": "The assets do not exist",
-      "tokens_held": "Tokens held"
+      "tokens_held": "Tokens held",
+      "select_asset": "Select Asset",
+      "search_asset": "Search Asset",
+      "select_asset_prompt": "Please select an asset to create a buy order"
     }
   },
   "help": {

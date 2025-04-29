@@ -61,7 +61,9 @@
       "execution_reverted": "コントラクトによって実行が取り消されました",
       "approving_tokens": "トークンを承認中...",
       "tokens_approved": "トークンが正常に承認されました",
-      "property_token_not_initialized": "資産トークン契約が初期化されていないか、アドレスが無効です"
+      "property_token_not_initialized": "資産トークン契約が初期化されていないか、アドレスが無効です",
+      "invalid_token_price": "トークン価格が無効または未定義です",
+      "invalid_property": "無効な物件ID"
     },
     "info": {
       "eth_required": "トランザクションにはETHの送信が必要です",
@@ -253,7 +255,10 @@
       "expire": "支払は期限切れになります",
       "confirm_payment": "支払いの確認",
       "asset_not_found": "The assets do not exist",
-      "tokens_held": "持っているトークン"
+      "tokens_held": "持っているトークン",
+      "select_asset": "資産を選択",
+      "search_asset": "資産を検索",
+      "select_asset_prompt": "購入注文を作成するには資産を選択してください"
     }
   },
   "help": {
