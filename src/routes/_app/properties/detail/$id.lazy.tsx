@@ -8,7 +8,7 @@ import { joinImagesPath } from '@/utils/url'
 import { getContractBalance } from '@/utils/web3'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate } from '@tanstack/react-router'
-import { Button, Input } from 'antd'
+import { Button } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LocationCard } from './-cards/location'
@@ -30,7 +30,6 @@ function RouteComponent() {
   const assets = useCommonDataStore(state => state.assets)
   const assetId = Number.parseInt(params.id)
 
-  const [investmentPrice, setInvestmentPrice] = useState<number>(0)
   const [annualReturn, setAnnualReturn] = useState<number>(0)
   const [ratioNum, setRatioNum] = useState<number>(0)
   const [isCollect, setIsCollect] = useState<0 | 1>(0)
@@ -70,7 +69,7 @@ function RouteComponent() {
           console.log('合约余额:', etherBalance, 'ETH')
         })
     }
-  }, [investmentPrice, assetDetail])
+  }, [assetDetail])
 
   const imageList = joinImagesPath(assetDetail?.image_urls)
 
@@ -127,24 +126,6 @@ function RouteComponent() {
                 %
                 {' '}
                 {t('properties.detail.capital')}
-              </div>
-
-              <div className="fbc pt-4">
-                <div className="text-4.5">
-                  {t('properties.detail.calculator')}
-                  {' '}
-                </div>
-                <div className="text-4 text-[#898989]">{t('properties.detail.average')}</div>
-              </div>
-
-              <div>
-                <Input
-                  className="bg-background! text-text! [&>input]:(placeholder-text-[#898989])"
-                  size="large"
-                  placeholder={t('properties.detail.amount_placeholder')}
-                  suffix="GBP"
-                  onChange={e => setInvestmentPrice(Number(e.target.value))}
-                />
               </div>
 
               <div className="fbc">
