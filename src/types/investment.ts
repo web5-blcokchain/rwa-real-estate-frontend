@@ -11,5 +11,6 @@ export interface InvestmentItem {
   total_amount: string
   rental_yield: string
   image_urls: string
+  sell_order_id: string
   order_type: InvestmentOrderType
 }

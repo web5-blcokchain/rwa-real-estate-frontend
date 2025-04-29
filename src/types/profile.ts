@@ -22,6 +22,8 @@ export interface TokenHeldItem {
    * token 单价
    */
   current_price: string
+
+  sell_order_id: string
   address: string
   property_type: string
   bedrooms: 10

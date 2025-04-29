@@ -19,6 +19,7 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
   total_current,
   expected_annual_return,
   number,
+  sell_order_id,
   className,
   ...props
 }) => {
@@ -37,6 +38,7 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
       total_amount: total_current,
       rental_yield: expected_annual_return,
       image_urls,
+      sell_order_id,
       order_type: InvestmentOrderType.Buy,
       contract_address: `${properties_id}`
     })

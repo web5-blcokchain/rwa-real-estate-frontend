@@ -65,7 +65,7 @@ function RouteComponent() {
       signer
     )
 
-    const orderId = BigInt(7)
+    const orderId = BigInt(item.sell_order_id)
 
     // 买单交易流程
     try {
