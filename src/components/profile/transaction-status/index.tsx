@@ -78,13 +78,13 @@ export const TransactionStatus: FC = () => {
         }
 
         return (
-          <div className={cn(
-            'text-center p-1 rounded-md',
+          <span className={cn(
+            'text-center py-1 px-2 rounded-md',
             typeClass
           )}
           >
             {typeName}
-          </div>
+          </span>
         )
       }
     },
