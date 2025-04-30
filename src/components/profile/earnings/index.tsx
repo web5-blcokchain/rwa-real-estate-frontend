@@ -1,203 +1,142 @@
 import type { TableProps } from 'antd'
-import apiMyInfo from '@/api/apiMyInfoApi'
-import button2 from '@/assets/icons/BUTTON2-2.png'
-import button3 from '@/assets/icons/BUTTON3.png'
-import frame115 from '@/assets/icons/Frame115.png'
-import group272Icon from '@/assets/icons/group272.png'
+import { getEarningList, reciveEarnings } from '@/api/profile'
+import TableComponent from '@/components/common/table-component'
 import { useQuery } from '@tanstack/react-query'
-import { Space } from 'antd'
-import DataCount from '../-components/data-count'
-import TableComponent from '../../common/table-component'
+import { Button, Pagination } from 'antd'
+import dayjs from 'dayjs'
 
-interface DataType {
-  key: string
-  Asset: string
-  Amount: string
-  JPY: string
-  Change: string
-  Share: string
-}
+export const Earnings: FC = () => {
+  const { t } = useTranslation()
 
-interface DataTypeTwo {
-  key: string
-  Time: string
-  Type: string
-  Asset: string
-  AmountJPY: string
-  Status: string
-}
+  const [page, setPage] = useState(1)
+  const [total, setTotal] = useState(0)
+  const [recivingId, setRecivingId] = useState<number[]>([])
 
-// 表格1配置
-const columns: TableProps<DataType>['columns'] = [
-  {
-    title: 'Asset',
-    dataIndex: 'Asset',
-    key: 'Asset',
-    render: (_, record) => (
-      <>
-        <div className="flex items-center justify-start">
-          <img src={group272Icon} alt="" className="mr-2 h-6 w-6" />
-          <div className="flex flex-col justify-start">
-            <div>{record.Asset}</div>
-            <div className="text-[#8d909a]">TKYT</div>
-          </div>
-        </div>
-      </>
-    )
-  },
-  {
-    title: 'Amount',
-    dataIndex: 'Amount',
-    key: 'Amount',
-    render: text => <a>{text}</a>
-  },
-  {
-    title: 'Value (JPY)',
-    dataIndex: 'JPY',
-    key: 'JPY'
-  },
-  {
-    title: 'Share',
-    key: 'Share',
-    dataIndex: 'Share'
-  },
-  {
-    title: '24h Change',
-    dataIndex: 'Change',
-    key: 'Change'
-  },
-  {
-    title: 'Action',
-    key: 'action',
-    render: () => (
-      <Space size="middle">
-        <img src={button3} alt="" className="mr-2 h-6 w-8" />
-        <img src={button2} alt="" className="mr-2 h-6 w-8" />
-      </Space>
-    )
-  }
-]
+  const pageSize = 20
 
-const data: DataType[] = [
-  {
-    key: '1',
-    Asset: 'Tokyo Tower Apartments RWA',
-    Amount: '5,280.00',
-    JPY: '¥5,280,000.00',
-    Change: '+2.8%',
-    Share: '42.3%'
-  },
-  {
-    key: '2',
-    Asset: 'Osaka Business Center RWA',
-    Amount: '3,246.45',
-    JPY: '¥3,246,450.00',
-    Change: '-0.5%',
-    Share: '6.1%'
-  }
-]
-
-// 表格2配置
-const columnsTwo: TableProps<DataTypeTwo>['columns'] = [
-  {
-    title: 'Time',
-    dataIndex: 'Time',
-    key: 'Time'
-  },
-  {
-    title: 'Type',
-    dataIndex: 'Type',
-    key: 'Type',
-    render: text => <a>{text}</a>
-  },
-  {
-    title: 'Asset',
-    dataIndex: 'Asset',
-    key: 'Asset',
-    render: (_, record) => (
-      <>
-        <div className="flex items-center justify-start">
-          <div className="flex flex-col justify-start">
-            <div>{record.Asset}</div>
-            <div className="text-[#8d909a]">TKYT</div>
-          </div>
-        </div>
-      </>
-    )
-  },
-  {
-    title: 'Amount (JPY)',
-    key: 'AmountJPY',
-    dataIndex: 'AmountJPY',
-    render: (_, record) => (
-      <>
-        <div className="flex items-center justify-start">
-          <div className="flex flex-col justify-start">
-            <div>{record.AmountJPY}</div>
-            <div className="text-[#8d909a]">≈ 25.4 TKYT</div>
-          </div>
-        </div>
-      </>
-    )
-  },
-  {
-    title: 'Status',
-    key: 'Status',
-    render: () => (
-      <Space size="middle">
-        <img src={frame115} alt="" className="img-frame115" />
-      </Space>
-    )
-  }
-]
-
-const dataTwo: DataTypeTwo[] = [
-  {
-    key: '1',
-    Time: '2024-12-15 15:30',
-    Type: 'Rental Distribution',
-    Asset: 'Tokyo Tower Apartments RWA',
-    AmountJPY: '¥25,400.00',
-    Status: '42.3%'
-  },
-  {
-    key: '2',
-    Time: '2024-12-15 15:30',
-    Type: 'Rental Distribution',
-    Asset: 'Tokyo Tower Apartments RWA',
-    AmountJPY: '¥25,400.00',
-    Status: '42.3%'
-  }
-]
-
-function Earnings() {
-  const { data: EarningsData = [], isLoading } = useQuery({
-    queryKey: ['Earnings'],
+  const { data: transactionsData, isLoading, refetch } = useQuery({
+    queryKey: ['get-earning-list', page, pageSize],
     queryFn: async () => {
-      const res = await apiMyInfo.getEarningsHistory()
-      return res.data?.list || []
+      const res = await getEarningList()
+
+      setTotal(_get(res.data, 'count', 0))
+      return _get(res.data, 'list', [])
     }
   })
-  console.log('=-=-=-', EarningsData, isLoading)
+
+  const columns: TableProps['columns'] = [
+    {
+      title: 'Date',
+      dataIndex: 'create_date',
+      render(value) {
+        return (
+          <div>
+            {dayjs(value).format('YYYY-MM-DD')}
+          </div>
+        )
+      }
+    },
+    {
+      title: 'Asset',
+      key: 'property_name',
+      dataIndex: 'property_name'
+    },
+    {
+      title: 'Amount',
+      key: 'income_amount',
+      dataIndex: 'income_amount'
+    },
+    {
+      title: 'Tokens',
+      key: 'number',
+      dataIndex: 'number'
+    },
+    {
+      title: 'Status',
+      key: 'status',
+      dataIndex: 'status',
+      render(value) {
+        let typeName
+        let typeClass
+        switch (value) {
+          case 0:
+            typeName = t('profile.earnings.available')
+            typeClass = 'text-green-6 bg-[#1e4939]'
+            break
+          case 1:
+            typeName = t('profile.earnings.received')
+            typeClass = 'text-black bg-primary'
+            break
+        }
+
+        return (
+          <span className={cn(
+            'text-center py-1 px-2 rounded-md',
+            typeClass
+          )}
+          >
+            {typeName}
+          </span>
+        )
+      }
+    },
+    {
+      title: '',
+      render(_, record) {
+        return record.status === 0 && (
+          <div>
+            <Button
+              size="large"
+              className="w-1/2 bg-transparent! text-white!"
+              loading={recivingId.includes(record.id)}
+              onClick={() => recive(record.id)}
+            >
+              {t('profile.earnings.receive')}
+            </Button>
+          </div>
+        )
+      }
+    }
+  ]
+
+  async function recive(incomeId: number) {
+    if (!incomeId)
+      return
+
+    try {
+      setRecivingId(prev => [...prev, incomeId])
+      await reciveEarnings({
+        income_id: `${incomeId}`
+      })
+    }
+    finally {
+      setRecivingId(prev => prev.filter(id => id !== incomeId))
+      refetch()
+    }
+  }
 
   return (
-    <div>
-      <DataCount />
-      <TableComponent
-        columns={columns}
-        data={data}
+    <div className="text-white space-y-6">
+      <Waiting
+        for={!isLoading}
+        className="h-32 fcc"
+        iconClass="size-8"
       >
-        <div className="mb-2 text-5">Income Composition</div>
-      </TableComponent>
+        <TableComponent
+          columns={columns}
+          data={transactionsData}
+        />
+      </Waiting>
 
-      <TableComponent
-        columns={columnsTwo}
-        data={dataTwo || []}
-      >
-        <div className="mb-2 text-5">Historical Income Records</div>
-      </TableComponent>
+      <div className="flex justify-end">
+        <Pagination
+          current={page}
+          pageSize={20}
+          total={total}
+          onChange={page => setPage(page)}
+          className="mt-4"
+        />
+      </div>
     </div>
   )
 }
-
-export default Earnings

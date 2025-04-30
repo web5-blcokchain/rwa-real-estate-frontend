@@ -1,6 +1,6 @@
 import type { MenuProps } from 'antd'
 import { IImage } from '@/components/common/i-image'
-import Earnings from '@/components/profile/earnings'
+import { Earnings } from '@/components/profile/earnings'
 import { ProfileEdit } from '@/components/profile/edit'
 import History from '@/components/profile/history'
 import Overview from '@/components/profile/overview'

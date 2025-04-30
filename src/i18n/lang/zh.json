@@ -369,6 +369,11 @@
       "email_placeholder": "email@example.com",
       "location": "位置",
       "location_placeholder": "城市，国家"
+    },
+    "earnings": {
+      "receive": "领取",
+      "available": "可领取",
+      "received": "已领取"
     }
   },
   "transaction": {

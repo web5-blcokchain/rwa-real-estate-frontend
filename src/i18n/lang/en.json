@@ -369,6 +369,11 @@
       "email_placeholder": "email@example.com",
       "location": "Location",
       "location_placeholder": "City, Country"
+    },
+    "earnings": {
+      "receive": "Receive",
+      "available": "Available",
+      "received": "Received"
     }
   },
   "transaction": {

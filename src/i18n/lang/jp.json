@@ -368,6 +368,11 @@
       "email_placeholder": "email@example.com",
       "location": "場所",
       "location_placeholder": "都市、国"
+    },
+    "earnings": {
+      "receive": "受け取り",
+      "available": "受け取り可能",
+      "received": "完成"
     }
   },
   "transaction": {
