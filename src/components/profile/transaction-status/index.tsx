@@ -1,5 +1,5 @@
 import type { TableProps } from 'antd'
-import { getTransactionStatus } from '@/api/transaction'
+import { cancelTransaction as cancelTransactionApi, getTransactionStatus } from '@/api/transaction'
 import TableComponent from '@/components/common/table-component'
 import { useQuery } from '@tanstack/react-query'
 import { Button, Pagination } from 'antd'
@@ -12,10 +12,11 @@ export const TransactionStatus: FC = () => {
   const [keyword, setKeyword] = useState('')
   const [page, setPage] = useState(1)
   const [total, setTotal] = useState(0)
+  const [cancellingId, setCancellingId] = useState<number>(0)
 
   const pageSize = 20
 
-  const { data: transactionsData, isLoading } = useQuery({
+  const { data: transactionsData, isLoading, refetch } = useQuery({
     queryKey: ['get-transaction-status', page, keyword, pageSize],
     queryFn: async () => {
       const res = await getTransactionStatus({
@@ -75,6 +76,10 @@ export const TransactionStatus: FC = () => {
             typeName = 'Sold'
             typeClass = 'text-black bg-primary'
             break
+          case 2:
+            typeName = 'Cancelled'
+            typeClass = 'text-[#898989] b b-solid b-[#898989]'
+            break
         }
 
         return (
@@ -96,6 +101,8 @@ export const TransactionStatus: FC = () => {
             <Button
               size="large"
               className="w-1/2 bg-transparent! text-white!"
+              loading={cancellingId === record.id}
+              onClick={() => cancelTransaction(record.id)}
             >
               Cancel
             </Button>
@@ -107,6 +114,22 @@ export const TransactionStatus: FC = () => {
 
   function handleSearch(value: string) {
     setKeyword(value)
+  }
+
+  async function cancelTransaction(orderId: number) {
+    if (!orderId)
+      return
+
+    try {
+      setCancellingId(orderId)
+      await cancelTransactionApi({
+        order_id: `${orderId}`
+      })
+    }
+    finally {
+      setCancellingId(0)
+      refetch()
+    }
   }
 
   return (

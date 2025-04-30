@@ -11,3 +11,9 @@ export function getTransactionDetail(data: Record<string, any>) {
 export function getTransactionStatus(data: Record<string, any>) {
   return apiClient.post('/api/market/orderList', data)
 }
+
+export function cancelTransaction(data: {
+  order_id: string
+}) {
+  return apiClient.post('/api/market/cancelOrder', data)
+}
