@@ -51,8 +51,8 @@ export const TransactionStatus: FC = () => {
     },
     {
       title: 'Asset',
-      key: 'name',
-      dataIndex: 'name'
+      key: 'asset_name',
+      dataIndex: 'asset_name'
     },
     {
       title: 'Number of Tokens',
@@ -65,17 +65,24 @@ export const TransactionStatus: FC = () => {
       dataIndex: 'status',
       render(value) {
         let typeName
+        let typeClass
         switch (value) {
-          case 1:
-            typeName = 'Property Investment'
+          case 0:
+            typeName = 'Selling'
+            typeClass = 'text-green-6 bg-[#1e4939]'
             break
-          case 2:
-            typeName = 'Property Sell'
+          case 1:
+            typeName = 'Sold'
+            typeClass = 'text-black bg-primary'
             break
         }
 
         return (
-          <div>
+          <div className={cn(
+            'text-center p-1 rounded-md',
+            typeClass
+          )}
+          >
             {typeName}
           </div>
         )
@@ -83,14 +90,14 @@ export const TransactionStatus: FC = () => {
     },
     {
       title: '',
-      render() {
-        return (
+      render(_, record) {
+        return record.status === 0 && (
           <div>
             <Button
               size="large"
               className="w-1/2 bg-transparent! text-white!"
             >
-              Cancel the sale
+              Cancel
             </Button>
           </div>
         )
