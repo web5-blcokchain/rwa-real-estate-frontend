@@ -342,7 +342,8 @@
     "payment_title": "支払確認書",
     "sell_title": "売却確認",
     "click_to_change": "クリックして画像を変更",
-    "empty": "データがありません"
+    "empty": "データがありません",
+    "all": "全部"
   },
   "profile": {
     "transactions": {
@@ -385,6 +386,8 @@
       "create-buy-order": "購入注文の作成"
     },
     "sale": "販売",
-    "buy": "購入希望"
+    "buy": "購入希望",
+    "hold": "持っている",
+    "not-held": "持っていない"
   }
 }

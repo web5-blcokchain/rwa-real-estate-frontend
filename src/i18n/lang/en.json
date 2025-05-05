@@ -343,7 +343,8 @@
     "payment_title": "Payment Confirmation",
     "sell_title": "Sell Confirmation",
     "click_to_change": "Click to change image",
-    "empty": "No data available"
+    "empty": "No data available",
+    "all": "All"
   },
   "profile": {
     "transactions": {
@@ -386,6 +387,8 @@
       "create-buy-order": "Create buy order"
     },
     "sale": "For Sale",
-    "buy": "Wanted"
+    "buy": "Wanted",
+    "hold": "Hold",
+    "not-held": "Not held"
   }
 }

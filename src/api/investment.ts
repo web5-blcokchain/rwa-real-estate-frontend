@@ -4,6 +4,7 @@ export function getInvestmentList(data: {
   page: number
   keyword: string
   type: string
+  order_type: string
 }) {
   return apiClient.post('/api/market/marketList', data)
 }

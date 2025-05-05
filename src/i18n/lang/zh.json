@@ -338,7 +338,8 @@
     "click_to_change": "点击更换图片",
     "payment_title": "付款确认",
     "sell_title": "卖出确认",
-    "empty": "暂无数据"
+    "empty": "暂无数据",
+    "all": "全部"
   },
   "action": {
     "sell": "卖出",
@@ -386,6 +387,8 @@
       "create-buy-order": "创建求购单"
     },
     "sale": "出售",
-    "buy": "求购"
+    "buy": "求购",
+    "hold": "持有",
+    "not-held": "未持有"
   }
 }

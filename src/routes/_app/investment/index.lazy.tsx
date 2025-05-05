@@ -13,28 +13,37 @@ export const Route = createLazyFileRoute('/_app/investment/')({
 function RouteComponent() {
   const [page, setPage] = useState(1)
   const [keyword, setKeyword] = useState('')
-  const [type, setType] = useState('1') // 1: 出售, 2: 求购
+  const [type, setType] = useState('1')
+  const [orderType, setOrderType] = useState('0')
   const { t } = useTranslation()
   const navigate = useNavigate()
 
-  const assetTypeOptions = [
-    { label: 'All', value: 'all' },
-    { label: 'Apartment', value: 'apartment' },
-    { label: 'House', value: 'house' },
-    { label: 'Land', value: 'land' },
-    { label: 'Commercial', value: 'commercial' }
+  const orderTypeOptions = [
+    { label: t('common.all'), value: '0' },
+    { label: t('investment.hold'), value: '1' },
+    { label: t('investment.not-held'), value: '2' }
   ]
 
   const { data, isLoading } = useQuery({
-    queryKey: ['investment-list', page, keyword, type],
+    queryKey: ['investment-list', page, keyword, type, orderType], // 添加 assetType 到查询键
     queryFn: async () => {
-      const res = await getInvestmentList({ page, keyword, type })
+      const res = await getInvestmentList({
+        page,
+        keyword,
+        type,
+        order_type: orderType
+      })
       return _get(res.data, 'list', [])
     }
   })
 
   const handleSearch = (value: string) => {
     setKeyword(value)
+    setPage(1)
+  }
+
+  const handleAssetTypeChange = (value: string) => {
+    setOrderType(value || '0') // 如果清除了选择，设为默认值 '0'
     setPage(1)
   }
 
@@ -92,8 +101,10 @@ function RouteComponent() {
                 '[&_.ant-select-selection-item]:(bg-transparent! text-white!)',
                 '[&_.ant-select-arrow]:(text-white!)'
               )}
-              options={assetTypeOptions}
+              options={orderTypeOptions}
               allowClear
+              value={orderType === '0' ? null : orderType}
+              onChange={handleAssetTypeChange}
             />
           </div>
 
