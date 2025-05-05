@@ -24,6 +24,7 @@ interface InvestmentCardProps {
     total_selling: number
     has_holdings: boolean
     order_type: InvestmentOrderType
+    sell_order_id: string
   }
 }
 
