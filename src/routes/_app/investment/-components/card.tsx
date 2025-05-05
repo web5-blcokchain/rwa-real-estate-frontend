@@ -2,7 +2,7 @@ import type { InvestmentOrderType } from '@/enums/investment'
 import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import { useCommonDataStore } from '@/stores/common-data'
-import { joinImagesPath } from '@/utils/url'
+import { joinImagePath, joinImagesPath } from '@/utils/url'
 import { useNavigate } from '@tanstack/react-router'
 import { Button } from 'antd'
 import numeral from 'numeral'
@@ -25,6 +25,8 @@ interface InvestmentCardProps {
     has_holdings: boolean
     order_type: InvestmentOrderType
     sell_order_id: string
+    avatar: string
+    nickname: string
   }
 }
 
@@ -115,6 +117,13 @@ export const InvestmentCard: FC<InvestmentCardProps> = ({
               labelClass="text-[#898989]"
               valueClass="text-white"
             />
+          </div>
+
+          <div className="fyc gap-2">
+            <div className="size-8 overflow-hidden rounded-full">
+              <IImage src={joinImagePath(item.avatar)} alt="avatar" className="size-full" />
+            </div>
+            <div>{item.nickname}</div>
           </div>
 
           <div className="w-1/2 fe gap-6">
