@@ -1,29 +1,105 @@
+import { uploadFile } from '@/api/apiMyInfoApi'
+import { updateProfile } from '@/api/profile'
 import { IImage } from '@/components/common/i-image'
 import { useUserStore } from '@/stores/user'
 import { joinImagePath } from '@/utils/url'
-import { Button, Form, Input } from 'antd'
-import { useEffect } from 'react'
+import { Button, Form, Input, message } from 'antd'
 import { useTranslation } from 'react-i18next'
 
 export const ProfileEdit: FC = () => {
-  const { userData } = useUserStore()
+  const { userData, setUserData } = useUserStore()
   const [form] = Form.useForm()
   const { t } = useTranslation()
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [saving, setSaving] = useState(false)
 
   useEffect(() => {
     if (userData) {
       form.setFieldsValue({
-        name: userData.nickname,
+        avatar: userData.avatar,
+        nickname: userData.nickname,
         email: userData.email,
-        phone: userData.mobile || '',
-        location: userData.address || ''
+        mobile: userData.mobile || '',
+        address: userData.address || ''
       })
     }
   }, [userData, form])
 
-  const onFinish = (values: any) => {
-    console.log('Form values:', values)
-    // 这里可以添加更新用户信息的逻辑
+  const onFinish = async (values: any) => {
+    try {
+      setSaving(true)
+
+      const profileData = {
+        nickname: values.nickname,
+        email: values.email,
+        mobile: values.mobile,
+        address: values.address,
+        avatar: userData.avatar
+      }
+
+      await updateProfile(profileData)
+
+      // 更新用户数据
+      setUserData({
+        ...userData,
+        ...profileData
+      })
+
+      message.success(t('common.save_success'))
+    }
+    catch (error) {
+      console.error('Failed to save profile:', error)
+      message.error(t('common.save_failed'))
+    }
+    finally {
+      setSaving(false)
+    }
+  }
+
+  const handleUploadClick = () => {
+    fileInputRef.current?.click()
+  }
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file)
+      return
+
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+
+      const response = await uploadFile(formData)
+
+      const avatarUrl = _get(response, 'data.file.url')
+
+      if (avatarUrl) {
+        // 更新用户数据中的头像
+        setUserData({
+          ...userData,
+          avatar: avatarUrl
+        })
+
+        // 更新表单中的头像字段
+        form.setFieldsValue({
+          avatar: response.data
+        })
+
+        message.success(t('profile.edit.upload_success'))
+      }
+      else {
+        toast.error(t('profile.edit.upload_failed'))
+      }
+    }
+    catch (error) {
+      console.error('Upload failed:', error)
+      message.error(t('profile.edit.upload_failed'))
+    }
+
+    // 重置文件输入以允许再次选择相同的文件
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
   }
 
   return (
@@ -54,9 +130,17 @@ export const ProfileEdit: FC = () => {
           </div>
 
           <div className="flex flex-col items-center sm:items-start">
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              accept="image/*"
+              className="hidden"
+            />
             <Button
               className="border-none! bg-[#242933]! text-white!"
               size="large"
+              onClick={handleUploadClick}
             >
               {t('profile.edit.upload')}
             </Button>
@@ -75,7 +159,7 @@ export const ProfileEdit: FC = () => {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <Form.Item
               label={<span className="text-4 text-white">{t('profile.edit.name')}</span>}
-              name="name"
+              name="nickname"
               className="mb-6"
             >
               <Input
@@ -86,7 +170,7 @@ export const ProfileEdit: FC = () => {
 
             <Form.Item
               label={<span className="text-4 text-white">{t('profile.edit.phone')}</span>}
-              name="phone"
+              name="mobile"
               className="mb-6"
             >
               <Input
@@ -110,7 +194,7 @@ export const ProfileEdit: FC = () => {
 
             <Form.Item
               label={<span className="text-4 text-white">{t('profile.edit.location')}</span>}
-              name="location"
+              name="address"
               className="mb-6"
             >
               <Input
@@ -127,6 +211,7 @@ export const ProfileEdit: FC = () => {
               htmlType="submit"
               size="large"
               className="px-8 text-black!"
+              loading={saving}
             >
               {t('profile.edit.save')}
             </Button>

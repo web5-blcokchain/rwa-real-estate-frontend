@@ -339,7 +339,9 @@
     "payment_title": "付款确认",
     "sell_title": "卖出确认",
     "empty": "暂无数据",
-    "all": "全部"
+    "all": "全部",
+    "save_success": "保存成功",
+    "save_failed": "保存失败"
   },
   "action": {
     "sell": "卖出",
@@ -369,7 +371,9 @@
       "phone_placeholder": "+86 13812345678",
       "email_placeholder": "email@example.com",
       "location": "位置",
-      "location_placeholder": "城市，国家"
+      "location_placeholder": "城市，国家",
+      "upload_failed": "上传失败",
+      "upload_success": "上传成功"
     },
     "earnings": {
       "receive": "领取",

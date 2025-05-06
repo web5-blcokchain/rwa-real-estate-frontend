@@ -23,3 +23,13 @@ export function getEarningList() {
 export function reciveEarnings(data: { income_id: string }) {
   return apiClient.post('/api/info/claimIncome', data)
 }
+
+export function updateProfile(data: {
+  nickname: string
+  email: string
+  mobile: string
+  address: string
+  avatar: string
+}) {
+  return apiClient.post('/api/info/editUser', data)
+}

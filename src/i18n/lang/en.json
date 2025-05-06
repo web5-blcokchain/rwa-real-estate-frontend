@@ -344,7 +344,9 @@
     "sell_title": "Sell Confirmation",
     "click_to_change": "Click to change image",
     "empty": "No data available",
-    "all": "All"
+    "all": "All",
+    "save_success": "Save successfully",
+    "save_failed": "Saving failed"
   },
   "profile": {
     "transactions": {
@@ -369,7 +371,9 @@
       "phone_placeholder": "+81 90-1234-5678",
       "email_placeholder": "email@example.com",
       "location": "Location",
-      "location_placeholder": "City, Country"
+      "location_placeholder": "City, Country",
+      "upload_failed": "Upload failed",
+      "upload_success": "Upload successfully"
     },
     "earnings": {
       "receive": "Receive",

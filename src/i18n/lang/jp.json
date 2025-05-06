@@ -343,7 +343,9 @@
     "sell_title": "売却確認",
     "click_to_change": "クリックして画像を変更",
     "empty": "データがありません",
-    "all": "全部"
+    "all": "全部",
+    "save_success": "保存に成功した",
+    "save_failed": "保存に失敗した"
   },
   "profile": {
     "transactions": {
@@ -368,7 +370,9 @@
       "phone_placeholder": "+81 90-1234-5678",
       "email_placeholder": "email@example.com",
       "location": "場所",
-      "location_placeholder": "都市、国"
+      "location_placeholder": "都市、国",
+      "upload_failed": "アップロード失敗",
+      "upload_success": "アップロード成功"
     },
     "earnings": {
       "receive": "受け取り",

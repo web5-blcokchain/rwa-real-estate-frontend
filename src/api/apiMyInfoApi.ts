@@ -24,7 +24,7 @@ export interface LoginResponse {
   time: number
 }
 // 上传文件
-function uploadFile(data: FormData) {
+export function uploadFile(data: FormData) {
   return apiClient.post<{ file: { url: string } }>('/api/user/upload', data)
 }
 
