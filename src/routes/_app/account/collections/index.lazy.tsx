@@ -185,14 +185,6 @@ function RouteComponent() {
           >
             Clear Favorites
           </Button>
-
-          <Button
-            type="primary"
-            size="large"
-            className="rounded-xl bg-primary-2 text-black!"
-          >
-            Invest Now
-          </Button>
         </div>
       </div>
     </div>
