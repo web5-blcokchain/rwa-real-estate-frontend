@@ -4,7 +4,6 @@ import TableComponent from '@/components/common/table-component'
 import { useQuery } from '@tanstack/react-query'
 import { DatePicker, Pagination } from 'antd'
 import dayjs from 'dayjs'
-import SelectComponent from '../-components/select-component'
 
 function Recording() {
   const { t } = useTranslation()
@@ -28,14 +27,6 @@ function Recording() {
       return _get(res.data, 'list', [])
     }
   })
-
-  const assetTypeOptions = [
-    { label: 'All', value: 'all' },
-    { label: 'Apartment', value: 'apartment' },
-    { label: 'House', value: 'house' },
-    { label: 'Land', value: 'land' },
-    { label: 'Commercial', value: 'commercial' }
-  ]
 
   const columns: TableProps['columns'] = [
     {
@@ -100,20 +91,6 @@ function Recording() {
             onChange={e => handleSearch(e.target.value)}
           />
         </div>
-
-        <SelectComponent
-          size="large"
-          placeholder="Asset Type"
-          className={cn(
-            'b b-solid b-white rounded-xl of-hidden',
-            '[&_.ant-select-selector]:(bg-transparent! text-white!)',
-            '[&_.ant-select-selection-placeholder]:(text-[#898989]!)',
-            '[&_.ant-select-selection-item]:(bg-transparent! text-white!)',
-            '[&_.ant-select-arrow]:(text-white!)'
-          )}
-          options={assetTypeOptions}
-          allowClear
-        />
 
         <DatePicker
           placeholder={t('profile.transactions.start_date')}
