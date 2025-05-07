@@ -68,6 +68,11 @@ function Recording() {
       }
     },
     {
+      title: 'Price',
+      key: 'price',
+      dataIndex: 'price'
+    },
+    {
       title: 'Total Money',
       key: 'total_money',
       dataIndex: 'total_money'
