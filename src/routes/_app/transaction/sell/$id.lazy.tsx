@@ -314,10 +314,6 @@ function RouteComponent() {
       </div>
 
       <div>
-        <div className="text-center text-3.5 text-[#898989]">
-          {t('properties.payment.expire')}
-          14:59
-        </div>
         <div className="grid grid-cols-3 mt-2">
           <div>
             <Button
