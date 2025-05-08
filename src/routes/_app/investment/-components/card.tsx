@@ -1,6 +1,7 @@
 import type { InvestmentOrderType } from '@/enums/investment'
 import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
+import { InvestmentTab } from '@/enums/investment'
 import { useCommonDataStore } from '@/stores/common-data'
 import { joinImagePath, joinImagesPath } from '@/utils/url'
 import { useNavigate } from '@tanstack/react-router'
@@ -28,10 +29,12 @@ interface InvestmentCardProps {
     avatar: string
     nickname: string
   }
+  type: InvestmentTab
 }
 
 export const InvestmentCard: FC<InvestmentCardProps> = ({
-  item
+  item,
+  type
 }) => {
   const [firstImage] = joinImagesPath(item.image_urls)
   const { t } = useTranslation()
@@ -128,26 +131,30 @@ export const InvestmentCard: FC<InvestmentCardProps> = ({
 
           <div className="w-1/2 fe gap-6">
             {
-              item.has_holdings && (
+              type === InvestmentTab.Sale && (
+                <Button
+                  type="primary"
+                  size="large"
+                  className="w-1/2 text-black!"
+                  onClick={buy}
+                >
+                  {t('action.payment')}
+                </Button>
+              )
+            }
+
+            {
+              type === InvestmentTab.WantToBuy && (
                 <Button
                   size="large"
-                  className="w-1/2 bg-transparent! text-white!"
+                  className="w-1/2 bg-transparent! text-white! disabled:text-gray-5!"
+                  disabled={!item.has_holdings}
                   onClick={sell}
                 >
                   {t('action.sell')}
                 </Button>
               )
             }
-
-            <Button
-              type="primary"
-              size="large"
-              className="w-1/2 text-black!"
-              onClick={buy}
-            >
-              {t('action.payment')}
-            </Button>
-
           </div>
         </div>
       </div>

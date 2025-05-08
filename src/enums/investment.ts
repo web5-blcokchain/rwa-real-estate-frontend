@@ -9,3 +9,15 @@ export enum InvestmentOrderType {
    */
   Sell = 2
 }
+
+export enum InvestmentTab {
+  /**
+   * 出售
+   */
+  Sale = '1',
+
+  /**
+   * 求购
+   */
+  WantToBuy = '2'
+}

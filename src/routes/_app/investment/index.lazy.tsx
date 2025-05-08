@@ -1,4 +1,5 @@
 import { getInvestmentList } from '@/api/investment'
+import { InvestmentTab } from '@/enums/investment'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
 import { Button, Input, Select, Tabs } from 'antd'
@@ -13,7 +14,7 @@ export const Route = createLazyFileRoute('/_app/investment/')({
 function RouteComponent() {
   const [page, setPage] = useState(1)
   const [keyword, setKeyword] = useState('')
-  const [type, setType] = useState('1')
+  const [type, setType] = useState(InvestmentTab.Sale)
   const [orderType, setOrderType] = useState('0')
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -53,7 +54,7 @@ function RouteComponent() {
         <Tabs
           activeKey={type}
           onChange={(key) => {
-            setType(key)
+            setType(key as InvestmentTab)
             setPage(1)
           }}
           className={cn(
@@ -64,8 +65,8 @@ function RouteComponent() {
             '[&_.ant-tabs-tab]:(text-[#898989]!)'
           )}
           items={[
-            { label: t('investment.sale'), key: '1' },
-            { label: t('investment.buy'), key: '2' }
+            { label: t('investment.sale'), key: InvestmentTab.Sale },
+            { label: t('investment.buy'), key: InvestmentTab.WantToBuy }
           ]}
         />
       </div>
@@ -110,7 +111,7 @@ function RouteComponent() {
 
           <div className="flex-1">
             {
-              type === '2' && (
+              type === InvestmentTab.WantToBuy && (
                 <Button
                   type="primary"
                   size="large"
@@ -145,6 +146,7 @@ function RouteComponent() {
                   <InvestmentCard
                     key={item.id}
                     item={item}
+                    type={type}
                   />
                 ))}
               </div>
