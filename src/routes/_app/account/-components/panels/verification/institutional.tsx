@@ -43,9 +43,7 @@ export default function InstitutionalVerification() {
   const { mutate: createMutate, isPending } = useMutation({
     mutationFn: async () => {
       const res = await apiMyInfo.register({
-        ...registerData,
-        email: 'test3@imba97.cn',
-        wallet_address: '0x123412341234abc3'
+        ...registerData
       })
       return res?.data
     },
