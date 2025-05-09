@@ -20,6 +20,7 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
   expected_annual_return,
   number,
   sell_order_id,
+  contract_address,
   className,
   ...props
 }) => {
@@ -40,7 +41,7 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
       image_urls,
       sell_order_id,
       order_type: InvestmentOrderType.Buy,
-      contract_address: `${properties_id}`
+      contract_address
     })
     navigate({
       to: '/transaction/create-sell-order/$id',
