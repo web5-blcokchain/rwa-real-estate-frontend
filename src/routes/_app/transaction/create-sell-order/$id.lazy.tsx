@@ -109,8 +109,8 @@ function RouteComponent() {
         console.log(`小数位数: ${tokenDecimals}`)
 
         // 5. 设置交易参数
-        const tokenAmount = ethers.parseUnits('2', 18)
-        const tokenPrice = BigInt(3)
+        const tokenAmount = ethers.parseUnits(`${tokens}`, 18)
+        const tokenPrice = ethers.parseUnits(`${item.token_price}`, 18)
 
         console.log('创建卖单参数:')
         console.log(`- 代币地址: ${item.contract_address}`)
