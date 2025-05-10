@@ -130,7 +130,7 @@ function RouteComponent() {
       // 设置购买参数
       const tokenAmount = ethers.parseUnits(`${tokens}`, 18) // 转换为wei单位
       const tokenPrice = ethers.parseUnits(`${item.price}`, 18)
-      const requiredUsdt = tokenAmount * tokenPrice
+      const requiredUsdt = BigInt(tokens) * tokenPrice
 
       // 获取签名者地址
       const signerAddress = await signer.getAddress()
