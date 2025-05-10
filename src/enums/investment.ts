@@ -12,12 +12,12 @@ export enum InvestmentOrderType {
 
 export enum InvestmentTab {
   /**
-   * 出售
-   */
-  Sale = '1',
-
-  /**
    * 求购
    */
-  WantToBuy = '2'
+  WantToBuy = '1',
+
+  /**
+   * 出售
+   */
+  Sale = '2'
 }

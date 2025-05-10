@@ -14,19 +14,19 @@ export const Route = createLazyFileRoute('/_app/investment/')({
 function RouteComponent() {
   const [page, setPage] = useState(1)
   const [keyword, setKeyword] = useState('')
-  const [type, setType] = useState(InvestmentTab.Sale)
-  const [orderType, setOrderType] = useState('0')
+  const [orderType, setOrder_Type] = useState(InvestmentTab.Sale)
+  const [type, setType] = useState('0')
   const { t } = useTranslation()
   const navigate = useNavigate()
 
-  const orderTypeOptions = [
+  const typeOptions = [
     { label: t('common.all'), value: '0' },
     { label: t('investment.hold'), value: '1' },
     { label: t('investment.not-held'), value: '2' }
   ]
 
   const { data, isLoading } = useQuery({
-    queryKey: ['investment-list', page, keyword, type, orderType], // 添加 assetType 到查询键
+    queryKey: ['investment-list', page, keyword, orderType, type], // 添加 assetType 到查询键
     queryFn: async () => {
       const res = await getInvestmentList({
         page,
@@ -44,7 +44,7 @@ function RouteComponent() {
   }
 
   const handleAssetTypeChange = (value: string) => {
-    setOrderType(value || '0') // 如果清除了选择，设为默认值 '0'
+    setType(value || '0') // 如果清除了选择，设为默认值 '0'
     setPage(1)
   }
 
@@ -52,9 +52,9 @@ function RouteComponent() {
     <div className="p-8">
       <div>
         <Tabs
-          activeKey={type}
+          activeKey={orderType}
           onChange={(key) => {
-            setType(key as InvestmentTab)
+            setOrder_Type(key as InvestmentTab)
             setPage(1)
           }}
           className={cn(
@@ -102,16 +102,16 @@ function RouteComponent() {
                 '[&_.ant-select-selection-item]:(bg-transparent! text-white!)',
                 '[&_.ant-select-arrow]:(text-white!)'
               )}
-              options={orderTypeOptions}
+              options={typeOptions}
               allowClear
-              value={orderType === '0' ? null : orderType}
+              value={type === '0' ? null : type}
               onChange={handleAssetTypeChange}
             />
           </div>
 
           <div className="flex-1">
             {
-              type === InvestmentTab.WantToBuy && (
+              orderType === InvestmentTab.WantToBuy && (
                 <Button
                   type="primary"
                   size="large"
@@ -146,7 +146,7 @@ function RouteComponent() {
                   <InvestmentCard
                     key={item.id}
                     item={item}
-                    type={type}
+                    type={orderType}
                   />
                 ))}
               </div>
