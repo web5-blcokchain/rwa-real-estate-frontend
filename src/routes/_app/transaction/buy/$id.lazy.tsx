@@ -67,14 +67,26 @@ function RouteComponent() {
 
     const orderId = BigInt(item.sell_order_id)
 
+    console.log('orderId', orderId)
+
     // 买单交易流程
     try {
       // 获取订单信息
       const order = await tradingManagerContract.getOrder(orderId)
-      console.log('订单信息:', order)
+
+      const orderAmount = BigInt(Number(ethers.formatUnits(order.amount, 18)))
+      const orderPrice = BigInt(Number(order.price))
+
+      console.log(`卖单信息:
+          - 卖家: ${order.seller}
+          - 代币: ${order.token}
+          - 数量: ${orderAmount}
+          - 价格: ${orderPrice}
+          - 是否活跃: ${order.active}
+      `)
 
       // 计算需要的USDT数量
-      const requiredUsdt = (order.amount * order.price) as unknown as bigint
+      const requiredUsdt = orderAmount * orderPrice
       console.log(`需要的USDT数量: ${ethers.formatUnits(requiredUsdt, 18)}`)
 
       // 检查USDT余额
