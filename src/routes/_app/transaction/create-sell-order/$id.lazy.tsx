@@ -61,6 +61,10 @@ function RouteComponent() {
 
     console.log(wallet)
 
+    // item.contract_address = '0xa0FA9cfEC8B6F8E0C3C7edBbBA3Ae5237FF6D4f3'
+    // ;(item as any).id = 'PROP-1746803801088'
+    // wallet.address = '0xA5922D51BfD5b9381f1FF32418FddFdE35582cAC'
+
     try {
       // 获取以太坊提供者并创建签名者
       const ethProvider = await wallet.getEthereumProvider()
@@ -97,6 +101,7 @@ function RouteComponent() {
         // 3. 检查合约是否可用
         if (!propertyTokenContract || !tradingManagerContract) {
           toast.error(t('payment.errors.contract_not_initialized'))
+          setIsProcessing(false)
           return
         }
 
@@ -108,7 +113,7 @@ function RouteComponent() {
         console.log(`代币信息: ${tokenName} (${tokenSymbol})`)
         console.log(`小数位数: ${tokenDecimals}`)
 
-        // 5. 设置交易参数
+        // 5. 设置交易参数 - 使用合约实际 decimals
         const tokenAmount = ethers.parseUnits(`${tokens}`, 18)
         const tokenPrice = ethers.parseUnits(`${item.token_price}`, 18)
 
@@ -116,17 +121,11 @@ function RouteComponent() {
         console.log(`- 代币地址: ${item.contract_address}`)
         console.log(`- 房产ID: ${item.id}`)
         console.log(`- 数量: ${ethers.formatUnits(tokenAmount, tokenDecimals)} 个代币`)
-        console.log(`- 价格: ${tokenPrice} USDT/代币`)
+        console.log(`- 价格: ${ethers.formatUnits(tokenPrice, 18)} USDT/代币`)
 
-        // 6. 检查余额
+        // 6. 检查余额（链上余额）
         const operatorTokenBalance = await propertyTokenContract.balanceOf(wallet.address)
         console.log(`操作者代币余额: ${ethers.formatUnits(operatorTokenBalance, tokenDecimals)} 个代币`)
-
-        // 7. 检查授权
-        const currentTokenAllowance = await propertyTokenContract.allowance(
-          wallet.address,
-          TradingManagerAddress
-        )
 
         if (operatorTokenBalance < tokenAmount) {
           toast.error(`代币余额不足: ${ethers.formatUnits(operatorTokenBalance, tokenDecimals)} < ${ethers.formatUnits(tokenAmount, tokenDecimals)}`)
@@ -134,7 +133,13 @@ function RouteComponent() {
           return
         }
 
-        console.log(`当前代币授权额度: ${ethers.formatUnits(currentTokenAllowance, tokenDecimals)}`)
+        // 7. 检查授权
+        const currentTokenAllowance = await propertyTokenContract.allowance(
+          wallet.address,
+          TradingManagerAddress
+        )
+
+        console.log(`当前代币授权额度: ${ethers.formatUnits(currentTokenAllowance, 18)}`)
 
         // 8. 如果授权不足则进行授权
         if (currentTokenAllowance < tokenAmount) {
@@ -148,15 +153,26 @@ function RouteComponent() {
             )
 
             console.log(`授权交易已发送: ${tokenApproveTx.hash}`)
+            toast.info(`授权交易已发送，等待确认...`)
+
             await tokenApproveTx.wait()
             console.log('授权交易已确认')
             toast.success('代币授权成功')
 
+            // 验证授权是否成功
             const newAllowance = await propertyTokenContract.allowance(
               wallet.address,
               TradingManagerAddress
             )
-            console.log(`新的授权额度: ${ethers.formatUnits(newAllowance, tokenDecimals)}`)
+            console.log(`新的授权额度: ${ethers.formatUnits(newAllowance, 18)}`)
+
+            // 确保授权成功
+            if (newAllowance < tokenAmount) {
+              toast.error('授权失败，请重试')
+              setIsApproving(false)
+              setIsProcessing(false)
+              return
+            }
           }
           catch (error: any) {
             console.error('授权失败:', error)
@@ -173,47 +189,18 @@ function RouteComponent() {
         console.log('发送createSellOrder交易')
 
         try {
-          // 准备交易参数
-          const tokenAmount = ethers.parseUnits('2', 18)
-          const tokenPrice = BigInt(3)
-
           console.log('交易参数:')
           console.log(`- 合约地址: ${item.contract_address}`)
           console.log(`- 房产ID: ${item.id}`)
           console.log(`- 代币数量: ${ethers.formatUnits(tokenAmount, 18)}`)
-          console.log(`- 价格: ${tokenPrice}`)
+          console.log(`- 价格: ${ethers.formatUnits(tokenPrice, 18)}`)
 
-          // 估算 gas
-          let gasLimit
-          try {
-            gasLimit = await tradingManagerContract.createSellOrder.estimateGas(
-              item.contract_address,
-              String(item.id),
-              tokenAmount,
-              tokenPrice
-            )
-            console.log(`预估gas: ${gasLimit.toString()}`)
-          }
-          catch (error: any) {
-            console.error('Gas 估算失败:', error)
-            toast.error(`Gas 估算失败: ${error.message || '未知错误'}`)
-            setIsProcessing(false)
-            return
-          }
-
-          // 增加更多的 gas 限制以避免 out of gas 错误
-          const adjustedGasLimit = Math.floor(Number(gasLimit) * 1.5) // 增加50%的gas限制
-          console.log(`调整后的gas: ${adjustedGasLimit}`)
-
-          // 尝试通过直接创建交易对象来发送交易
+          // 使用与授权相同的tokenAmount变量
           const tx = await tradingManagerContract.createSellOrder(
             item.contract_address,
             String(item.id),
             tokenAmount,
-            tokenPrice,
-            {
-              gasLimit: adjustedGasLimit
-            }
+            tokenPrice
           )
 
           console.log(`交易已发送: ${tx.hash}`)
@@ -253,7 +240,7 @@ function RouteComponent() {
             toast.error('账户余额不足，无法支付 gas 费用')
           }
           else {
-            toast.error(`创建卖单失败: ${error.message || '未知错误'}`)
+            toast.error('创建卖单失败')
           }
 
           setIsProcessing(false)
@@ -261,10 +248,14 @@ function RouteComponent() {
       }
       catch (error: any) {
         console.error('获取钱包失败:', error)
+        toast.error(`获取钱包失败: ${error.message || '未知错误'}`)
+        setIsProcessing(false)
       }
     }
     catch (error: any) {
       console.error('交易过程中出现错误:', error)
+      toast.error(`交易过程中出现错误: ${error.message || '未知错误'}`)
+      setIsProcessing(false)
     }
     finally {
       setIsProcessing(false)

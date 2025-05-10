@@ -384,6 +384,9 @@
   "transaction": {
     "sell": {
       "detail": "详情"
+    },
+    "create_sell_order": {
+      "gas_estimation_failed": "Gas 估算失败"
     }
   },
   "investment": {

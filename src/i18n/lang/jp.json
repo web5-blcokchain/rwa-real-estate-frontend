@@ -383,6 +383,9 @@
   "transaction": {
     "sell": {
       "detail": "売却の詳細"
+    },
+    "create_sell_order": {
+      "gas_estimation_failed": "Gas見積もりに失敗しました"
     }
   },
   "investment": {
