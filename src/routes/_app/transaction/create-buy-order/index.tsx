@@ -127,21 +127,23 @@ function RouteComponent() {
         signer
       )
 
+      // 获取USDT decimals
+      const usdtDecimals = await usdtContract.decimals()
+
       // 设置购买参数
-      const tokenAmount = ethers.parseUnits(`${tokens}`, 18) // 转换为wei单位
+      const tokenAmount = ethers.parseUnits(`${tokens}`, 18) // 假设房产token为18位
       const tokenPrice = ethers.parseUnits(`${item.price}`, 18)
-      const requiredUsdt = BigInt(tokens) * tokenPrice
+      const requiredUsdt = tokenAmount * tokenPrice / BigInt(10 ** 18)
 
       // 获取签名者地址
       const signerAddress = await signer.getAddress()
 
       // 检查USDT余额
       const usdtBalance = await usdtContract.balanceOf(signerAddress)
-      console.log(usdtBalance, requiredUsdt)
       if (usdtBalance < requiredUsdt) {
         toast.error(t('payment.errors.insufficient_usdt', {
-          required: ethers.formatUnits(requiredUsdt, 18),
-          balance: ethers.formatUnits(usdtBalance, 18)
+          required: ethers.formatUnits(requiredUsdt, usdtDecimals),
+          balance: ethers.formatUnits(usdtBalance, usdtDecimals)
         }))
         return
       }
