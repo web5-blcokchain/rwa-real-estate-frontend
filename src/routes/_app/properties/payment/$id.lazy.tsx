@@ -6,13 +6,14 @@ import ISeparator from '@/components/common/i-separator'
 import { PaymentMethod } from '@/components/common/payment-method'
 import QuantitySelector from '@/components/common/quantity-selector'
 import { usePropertyManagerContract, useTradingManagerContract } from '@/contract'
+import SimpleERC20ABI from '@/contract/SimpleERC20.json'
 import { useCommonDataStore } from '@/stores/common-data'
 import { joinImagesPath } from '@/utils/url'
-import { getWeb3Instance } from '@/utils/web3'
 import { useWallets } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
+import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { isAddress } from 'web3-validator'
@@ -42,7 +43,7 @@ function RouteComponent() {
   const id = Number.parseInt(params.id)
   const assets = useCommonDataStore(state => state.assets)
 
-  const assetDetail = assets.get(id)!
+  const item = assets.get(id)!
 
   // 默认购买量设置为最小值
   const [tokens, setTokens] = useState(MIN_TOKEN_PURCHASE)
@@ -50,7 +51,7 @@ function RouteComponent() {
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async (hash: string) => {
       const res = await apiBasic.initialBuyAsset({
-        id: assetDetail.id,
+        id: item.id,
         number: tokens,
         hash
       })
@@ -61,7 +62,7 @@ function RouteComponent() {
   // 获取最小购买量
   useEffect(() => {
     const fetchMinAmount = async () => {
-      if (tradingManagerContract && assetDetail?.contract_address) {
+      if (tradingManagerContract && item?.contract_address) {
         try {
           // 如果合约有提供获取最小购买量的方法
           // const minAmount = await tradingManagerContract.methods.getMinimumTokenAmount().call();
@@ -78,7 +79,7 @@ function RouteComponent() {
     }
 
     fetchMinAmount()
-  }, [tradingManagerContract, assetDetail])
+  }, [tradingManagerContract, item])
 
   async function payment() {
     if (!wallet) {
@@ -99,30 +100,45 @@ function RouteComponent() {
         return
       }
 
-      // 首先获取当前房产的合约地址
-      if (!assetDetail.contract_address || !isAddress(assetDetail.contract_address)) {
+      // 检查房产合约地址
+      if (!item.contract_address || !isAddress(item.contract_address)) {
         toast.error(t('payment.errors.invalid_contract'))
         return
       }
 
-      const contractAddress = assetDetail.contract_address
+      const contractAddress = item.contract_address
       const investorAddress = wallet.address
 
-      // 检查投资者ETH余额是否充足
-      const web3 = getWeb3Instance()
-      const investorBalance = await web3.eth.getBalance(investorAddress)
-      const minBalance = web3.utils.toWei('0.01', 'ether') // 最小需要0.01 ETH
+      // 准备Provider和Signer
+      const ethProvider = await wallet.getEthereumProvider()
+      const provider = new ethers.BrowserProvider(ethProvider)
+      const signer = await provider.getSigner()
 
-      if (BigInt(investorBalance) < BigInt(minBalance)) {
+      // 获取USDT合约
+      const usdtContract = new ethers.Contract(
+        SimpleERC20ABI.address,
+        SimpleERC20ABI.abi,
+        signer
+      )
+
+      // 检查USDT余额
+      const signerAddress = await signer.getAddress()
+      const usdtBalance = await usdtContract.balanceOf(signerAddress)
+      const requiredBalance = ethers.parseUnits('0.01', 18) // 最小要求的USDT余额
+
+      console.log('用户的USDT余额:', ethers.formatUnits(usdtBalance, 18))
+
+      if (usdtBalance < requiredBalance) {
         toast.error(t('payment.errors.insufficient_eth'))
         return
       }
 
       // 展示购买信息
       console.log('初始购买信息:')
-      console.log(`- 房产ID: ${assetDetail.id}`)
+      console.log(`- 房产ID: ${item.id}`)
       console.log(`- 代币合约地址: ${contractAddress}`)
       console.log(`- 数量: ${tokens}`)
+      console.log(`- 代币价格: ${item.price}`)
 
       // 执行初始购买
       toast.info(t('payment.info.creating_transaction'))
@@ -134,20 +150,20 @@ function RouteComponent() {
       }
 
       try {
-        // 输出调试信息，查看当前房产ID
-        console.log('调用合约前的房产信息:')
-        console.log(`- 房产ID类型: ${typeof assetDetail.id}`)
-        console.log(`- 房产ID值: ${assetDetail.id}`)
-        console.log(`- 房产合约地址: ${contractAddress}`)
+        const tokensToSend = ethers.parseUnits(tokens.toString(), 18)
 
-        // 确保我们传递正确的房产标识符
-        // 可能合约需要使用房产的合约地址或其他标识符，而不是仅仅使用ID
-        const propertyIdentifier = assetDetail.id.toString()
+        // 使用房产ID作为标识符
+        const propertyId = item.id.toString()
 
-        // 估算gas以检查交易是否可能成功
+        console.log('准备调用合约:')
+        console.log(`- 房产ID: ${propertyId}`)
+        console.log(`- 代币数量: ${ethers.formatUnits(tokensToSend, 18)}`)
+        console.log(`- 投资者地址: ${investorAddress}`)
+
+        // 估算gas
         const gasEstimate = await propertyManagerContract.methods.initialBuyPropertyToken(
-          propertyIdentifier, // 使用合约地址作为房产标识符
-          tokens.toString()
+          propertyId,
+          tokensToSend
         ).estimateGas({ from: investorAddress })
 
         console.log('预估的gas用量:', gasEstimate)
@@ -157,15 +173,18 @@ function RouteComponent() {
 
         // 执行交易
         const initialBuyTx = await propertyManagerContract.methods.initialBuyPropertyToken(
-          propertyIdentifier, // 同样使用合约地址作为房产标识符
-          tokens.toString()
+          propertyId,
+          tokensToSend
         ).send({
           from: investorAddress,
           gas: gasLimit
         })
 
         toast.success(t('payment.success.tx_sent'))
-        const hash = initialBuyTx.transactionHash.toString()
+        const hash = initialBuyTx.transactionHash
+
+        console.log('交易哈希:', hash)
+        console.log('购买后余额', await usdtContract.balanceOf(signerAddress))
 
         // 调用后端API记录交易
         mutateAsync(hash)
@@ -184,18 +203,9 @@ function RouteComponent() {
         // 提取错误消息
         const errorMessage = estimateError.message || ''
 
-        // 检查是否是最小数量错误
+        // 分析错误类型并提供相应反馈
         if (errorMessage.includes('Amount below minimum')) {
           toast.error(t('payment.errors.amount_below_minimum', { min: minTokenAmount }))
-          return
-        }
-
-        // 尝试提取更详细的错误信息
-        const innerErrorMatch = errorMessage.match(/reverted with reason string '(.+?)'/i)
-        const innerError = innerErrorMatch ? innerErrorMatch[1] : ''
-
-        if (innerError) {
-          toast.error(t('payment.errors.contract_revert_with_reason', { reason: innerError }))
         }
         else if (errorMessage.includes('insufficient funds')) {
           toast.error(t('payment.errors.insufficient_eth'))
@@ -204,7 +214,16 @@ function RouteComponent() {
           toast.error(t('payment.errors.rejected'))
         }
         else {
-          toast.error(t('payment.errors.transaction_failed'))
+          // 尝试提取更详细的错误信息
+          const innerErrorMatch = errorMessage.match(/reverted with reason string '(.+?)'/i)
+          const innerError = innerErrorMatch ? innerErrorMatch[1] : ''
+
+          if (innerError) {
+            toast.error(t('payment.errors.contract_revert_with_reason', { reason: innerError }))
+          }
+          else {
+            toast.error(t('payment.errors.transaction_failed'))
+          }
         }
       }
     }
@@ -233,20 +252,20 @@ function RouteComponent() {
       }
     }
 
-    if (!assetDetail) {
+    if (!item) {
       console.log(t('properties.payment.asset_not_found'))
       navigate({
         to: '/properties/detail/$id',
         params
       })
     }
-  }, [assetDetail, navigate, params, t, ready, wallets])
+  }, [item, navigate, params, t, ready, wallets])
 
-  if (!assetDetail) {
+  if (!item) {
     return null
   }
 
-  const [imageUrl] = joinImagesPath(assetDetail.image_urls)
+  const [imageUrl] = joinImagesPath(item.image_urls)
 
   return (
     <div className="max-w-7xl p-8 space-y-8">
@@ -257,30 +276,30 @@ function RouteComponent() {
           <IImage src={imageUrl} className="size-full rounded" />
         </div>
         <div>
-          <div className="text-6 font-medium">{assetDetail?.name}</div>
+          <div className="text-6 font-medium">{item?.name}</div>
 
           <div className="grid grid-cols-2 mt-4 gap-x-4">
             <IInfoField
               label={t('properties.detail.location')}
-              value={assetDetail?.address}
+              value={item?.address}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
               label={t('properties.detail.property_type')}
-              value={assetDetail?.property_type}
+              value={item?.property_type}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
               label={t('properties.payment.token_price')}
-              value={assetDetail?.price}
+              value={item?.price}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
               label={t('properties.payment.total')}
-              value={Number(assetDetail?.number) * Number(assetDetail?.price)}
+              value={Number(item?.number) * Number(item?.price)}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
@@ -314,11 +333,11 @@ function RouteComponent() {
 
             <div className="text-right">
               $
-              {tokens * Number(assetDetail.price)}
+              {tokens * Number(item.price)}
             </div>
             <div className="text-right">
               $
-              {(tokens * Number(assetDetail.price) * 0.02).toFixed(2)}
+              {(tokens * Number(item.price) * 0.02).toFixed(2)}
             </div>
           </div>
         </div>
@@ -329,7 +348,7 @@ function RouteComponent() {
           <div>{t('properties.payment.total_amount')}</div>
           <div className="text-primary">
             $
-            {(tokens * Number(assetDetail.price) * 1.02).toFixed(2)}
+            {(tokens * Number(item.price) * 1.02).toFixed(2)}
           </div>
         </div>
 
