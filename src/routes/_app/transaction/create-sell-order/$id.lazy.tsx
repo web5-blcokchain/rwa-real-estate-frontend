@@ -204,14 +204,20 @@ function RouteComponent() {
           )
 
           console.log(`交易已发送: ${tx.hash}`)
+          console.log('tx', tx)
           toast.success('交易已发送')
 
           const receipt = await tx.wait()
-          console.log(`交易已确认: ${receipt}`)
+          console.log('交易已确认', receipt)
           toast.success('卖单创建成功')
 
+          const orders = await tradingManagerContract.getUserOrders(wallet.address)
+          console.log('用户订单:', orders)
+          const lastOrderId = orders[orders.length - 1]
+          console.log('最后一个订单ID:', lastOrderId)
+
           // 10. 记录交易
-          mutateAsync(tx.hash)
+          await mutateAsync(lastOrderId)
 
           // 11. 返回上一页
           setTimeout(() => {
