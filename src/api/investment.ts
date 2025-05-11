@@ -10,7 +10,8 @@ export function getInvestmentList(data: {
 }
 
 export function buyAsset(data: {
-  order_id: number
+  id: string
+  token_number: string
 }) {
   return apiClient.post('/api/market/confirmBuy', data)
 }
