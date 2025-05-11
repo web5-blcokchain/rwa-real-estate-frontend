@@ -114,7 +114,7 @@ function RouteComponent() {
         console.log(`小数位数: ${tokenDecimals}`)
 
         // 5. 设置交易参数 - 使用合约实际 decimals
-        const tokenAmount = ethers.parseUnits(`${tokens}`, 18)
+        const tokenAmount = tokens
         const tokenPrice = ethers.parseUnits(`${item.token_price}`, 18)
 
         console.log('创建卖单参数:')
@@ -194,12 +194,14 @@ function RouteComponent() {
           console.log(`- 房产ID: ${item.id}`)
           console.log(`- 代币数量: ${ethers.formatUnits(tokenAmount, 18)}`)
           console.log(`- 价格: ${ethers.formatUnits(tokenPrice, 18)}`)
+          console.log(`- 最小值: ${await tradingManagerContract.minTradeAmount()}`)
+          console.log(`- 最大值: ${await tradingManagerContract.maxTradeAmount()}`)
 
           // 使用与授权相同的tokenAmount变量
           const tx = await tradingManagerContract.createSellOrder(
             item.contract_address,
             String(item.id),
-            tokenAmount,
+            `${tokens}`,
             tokenPrice
           )
 

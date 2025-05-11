@@ -74,8 +74,9 @@ function RouteComponent() {
       // 获取订单信息
       const order = await tradingManagerContract.getOrder(orderId)
 
-      const orderAmount = BigInt(Number(ethers.formatUnits(order.amount, 18)))
-      const orderPrice = BigInt(Number(order.price))
+      const orderAmount = BigInt(order.amount)
+      // price 默认是以 wei 为单位的，不用转换
+      const orderPrice = BigInt(order.price)
 
       console.log(`卖单信息:
           - 卖家: ${order.seller}

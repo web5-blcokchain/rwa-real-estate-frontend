@@ -150,20 +150,18 @@ function RouteComponent() {
       }
 
       try {
-        const tokensToSend = ethers.parseUnits(tokens.toString(), 18)
-
         // 使用房产ID作为标识符
         const propertyId = item.id.toString()
 
         console.log('准备调用合约:')
         console.log(`- 房产ID: ${propertyId}`)
-        console.log(`- 代币数量: ${ethers.formatUnits(tokensToSend, 18)}`)
+        console.log(`- 代币数量: ${tokens}`)
         console.log(`- 投资者地址: ${investorAddress}`)
 
         // 估算gas
         const gasEstimate = await propertyManagerContract.methods.initialBuyPropertyToken(
           propertyId,
-          tokensToSend
+          tokens
         ).estimateGas({ from: investorAddress })
 
         console.log('预估的gas用量:', gasEstimate)
@@ -174,7 +172,7 @@ function RouteComponent() {
         // 执行交易
         const initialBuyTx = await propertyManagerContract.methods.initialBuyPropertyToken(
           propertyId,
-          tokensToSend
+          tokens
         ).send({
           from: investorAddress,
           gas: gasLimit

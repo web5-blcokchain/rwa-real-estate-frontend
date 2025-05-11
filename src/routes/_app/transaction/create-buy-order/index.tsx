@@ -131,9 +131,9 @@ function RouteComponent() {
       const usdtDecimals = await usdtContract.decimals()
 
       // 设置购买参数
-      const tokenAmount = ethers.parseUnits(`${tokens}`, 18) // 假设房产token为18位
+      const tokenAmount = BigInt(tokens)
       const tokenPrice = ethers.parseUnits(`${item.price}`, 18)
-      const requiredUsdt = tokenAmount * tokenPrice / BigInt(10 ** 18)
+      const requiredUsdt = tokenAmount * tokenPrice
 
       // 获取签名者地址
       const signerAddress = await signer.getAddress()
