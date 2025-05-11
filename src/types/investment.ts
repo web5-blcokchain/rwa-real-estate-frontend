@@ -9,6 +9,8 @@ export interface InvestmentItem {
   token_price: string
   tokens_held: number
   total_amount: string
+  token_number: number
+  total_selling: number
   rental_yield: string
   image_urls: string
   sell_order_id: string

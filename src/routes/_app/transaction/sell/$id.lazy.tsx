@@ -4,7 +4,6 @@ import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
 import { PaymentMethod } from '@/components/common/payment-method'
-import QuantitySelector from '@/components/common/quantity-selector'
 import { useTradingManagerContract } from '@/contract'
 import { useCommonDataStore } from '@/stores/common-data'
 import { joinImagesPath } from '@/utils/url'
@@ -41,12 +40,17 @@ function RouteComponent() {
     mutationFn: async () => {
       const res = await sellAsset({
         id: `${item.id}`,
-        token_number: `${tokens}`,
-        sell_order_id: `${id}`
+        token_number: `${tokens}`
       })
       return res.data
     }
   })
+
+  useEffect(() => {
+    if (item) {
+      setTokens(item.token_number)
+    }
+  }, [item])
 
   async function sell() {
     if (!wallet) {
@@ -132,8 +136,8 @@ function RouteComponent() {
               buyer: trade.buyer,
               seller: trade.seller,
               token: trade.token,
-              amount: trade.amount.toString(),
-              price: trade.price.toString()
+              amount: `${trade.amount}`,
+              price: `${trade.price}`
             })
           }
         }
@@ -265,13 +269,7 @@ function RouteComponent() {
           <div className="space-y-4">
             <div className="text-right text-[#898989]">{item.tokens_held}</div>
             <div className="flex justify-end">
-              <QuantitySelector
-                value={tokens}
-                onChange={setTokens}
-                min={1}
-                max={item.tokens_held}
-                disabled={isPending}
-              />
+              {item.token_number}
             </div>
 
             <div className="text-right">

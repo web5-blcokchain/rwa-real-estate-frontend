@@ -20,6 +20,7 @@ interface InvestmentCardProps {
     token_price: string
     tokens_held: number
     total_amount: string
+    token_number: number
     rental_yield: string
     image_urls: string
     total_selling: number
