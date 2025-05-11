@@ -13,7 +13,7 @@ export function useTradingManagerContract() {
   const web3 = getWeb3Instance()
   const contract = new web3.eth.Contract(
     TradingManager.abi,
-    '0x0165878A594ca255338adfa4d48449f69242Eb8F'
+    '0xccf1769D8713099172642EB55DDFFC0c5A444FE9'
   )
 
   return contract
@@ -27,7 +27,7 @@ export function usePropertyManagerContract() {
   const web3 = getWeb3Instance()
   const contract = new web3.eth.Contract(
     PropertyManager.abi,
-    '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9'
+    '0x3C15538ED063e688c8DF3d571Cb7a0062d2fB18D'
   )
 
   return contract
@@ -65,7 +65,7 @@ export function useSimpleERC20Contract() {
   const web3 = getWeb3Instance()
   const contract = new web3.eth.Contract(
     SimpleERC20.abi,
-    '0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0'
+    '0xFE5f411481565fbF70D8D33D992C78196E014b90'
   )
 
   return contract
@@ -79,7 +79,7 @@ export function useRealEstateFacadeContract() {
   const web3 = getWeb3Instance()
   const contract = new web3.eth.Contract(
     RealEstateFacade.abi,
-    '0x68B1D87F95878fE05B998F19b66F4baba5De1aed'
+    '0xcE0066b1008237625dDDBE4a751827de037E53D2'
   )
 
   return contract
