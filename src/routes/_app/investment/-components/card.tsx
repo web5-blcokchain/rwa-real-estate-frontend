@@ -24,6 +24,7 @@ interface InvestmentCardProps {
     image_urls: string
     total_selling: number
     has_holdings: boolean
+    is_me: boolean
     order_type: InvestmentOrderType
     sell_order_id: string
     avatar: string
@@ -136,6 +137,7 @@ export const InvestmentCard: FC<InvestmentCardProps> = ({
                   type="primary"
                   size="large"
                   className="w-1/2 text-black!"
+                  disabled={item.is_me}
                   onClick={buy}
                 >
                   {t('action.payment')}
