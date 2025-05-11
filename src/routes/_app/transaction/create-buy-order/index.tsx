@@ -195,7 +195,7 @@ function RouteComponent() {
       await mutateAsync()
 
       toast.success(t('payment.messages.buy_order_created'))
-      navigate({ to: '/home' })
+      navigate({ to: '/investment' })
     }
     catch (error) {
       console.error(`执行买单失败:`, error)
