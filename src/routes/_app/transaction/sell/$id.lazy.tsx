@@ -4,13 +4,15 @@ import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
 import { PaymentMethod } from '@/components/common/payment-method'
-import { useTradingManagerContract } from '@/contract'
+import PropertyTokenABI from '@/contract/PropertyToken.json'
+import TradingManagerABI from '@/contract/TradingManager.json'
 import { useCommonDataStore } from '@/stores/common-data'
 import { joinImagesPath } from '@/utils/url'
 import { useWallets } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
+import { ethers } from 'ethers'
 import numeral from 'numeral'
 
 export const Route = createLazyFileRoute('/_app/transaction/sell/$id')({
@@ -23,7 +25,6 @@ function RouteComponent() {
   const navigate = useNavigate()
   const { ready, wallets } = useWallets()
   const [wallet, setWallet] = useState<ConnectedWallet | null>(null)
-  const tradingManagerContract = useTradingManagerContract()
 
   const { params } = useMatch({
     from: '/_app/transaction/sell/$id'
@@ -35,6 +36,7 @@ function RouteComponent() {
   const item = investmentItems.get(id)!
 
   const [tokens, setTokens] = useState(1)
+  const [sellLoading, setSellLoading] = useState(false) // 新增loading状态
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async () => {
@@ -58,39 +60,29 @@ function RouteComponent() {
       return
     }
 
+    setSellLoading(true) // 开始loading
     try {
-      // 确保用户钱包已连接
-      if (!window.ethereum) {
-        toast.error(t('payment.errors.no_ethereum'))
-        return
-      }
+      const ethProvider = await wallet.getEthereumProvider()
+      const provider = new ethers.BrowserProvider(ethProvider)
+      const signer = await provider.getSigner()
 
-      // 验证tradingManagerContract已经初始化
-      if (!tradingManagerContract || !tradingManagerContract.methods) {
-        toast.error(t('payment.errors.contract_not_initialized'))
-        return
-      }
+      const tradingManagerContract = new ethers.Contract(
+        TradingManagerABI.address,
+        TradingManagerABI.abi,
+        signer
+      )
 
       // 获取买单ID
-      const orderId = BigInt(23)
-      console.log('orderId', orderId)
-      // const orderId = `${assetDetail.id}`
+      const orderId = BigInt(item.sell_order_id)
       if (!orderId) {
         toast.error(t('payment.errors.invalid_order_id'))
         return
       }
 
       // 获取买单信息
+      let order
       try {
-        const order = await tradingManagerContract.methods.getOrder(orderId).call() as Record<string, any>
-        console.log('买单信息:', {
-          buyer: order.buyer,
-          token: order.token,
-          amount: order.amount.toString(),
-          price: order.price.toString(),
-          active: order.active
-        })
-
+        order = await tradingManagerContract.getOrder(orderId)
         if (!order.active) {
           toast.error(t('payment.errors.order_not_active'))
           return
@@ -102,17 +94,51 @@ function RouteComponent() {
         return
       }
 
+      // 检查当前用户代币余额
+      const propertyTokenAddress = order.token
+      const propertyTokenContract = new ethers.Contract(
+        propertyTokenAddress,
+        PropertyTokenABI.abi,
+        signer
+      )
+      const userAddress = await signer.getAddress()
+      const tokenBalance = await propertyTokenContract.balanceOf(userAddress)
+
+      console.log('用户代币余额:', tokenBalance)
+      console.log('订单金额:', order.amount)
+
+      if (tokenBalance < order.amount) {
+        toast.error(t('payment.errors.insufficient_token'))
+        return
+      }
+
+      // 检查代币授权额度
+      const currentAllowance = await propertyTokenContract.allowance(userAddress, TradingManagerABI.address)
+      if (currentAllowance < order.amount) {
+        toast.info(t('payment.info.authorizing')) // 授权提示
+        // 先清零授权
+        await propertyTokenContract.approve(TradingManagerABI.address, 0)
+        // 授权更大额度
+        const approveAmount = order.amount * BigInt(2)
+        await propertyTokenContract.approve(TradingManagerABI.address, approveAmount)
+        // 再次检查
+        const newAllowance = await propertyTokenContract.allowance(userAddress, TradingManagerABI.address)
+        if (newAllowance < order.amount) {
+          toast.error(t('payment.errors.token_approve_failed'))
+          return
+        }
+      }
+
       // 显示交易处理中
       toast.info(t('payment.info.creating_transaction'))
 
       try {
+        console.log('开始执行卖单交易...')
         // 执行卖单交易
-        const sellOrderTx = await tradingManagerContract.methods.sellOrder(orderId).send({
-          from: wallet.address
-        })
-
-        const hash = sellOrderTx.transactionHash
-        toast.success(t('payment.success.tx_sent'))
+        const sellOrderTx = await tradingManagerContract.sellOrder(orderId)
+        const receipt = await sellOrderTx.wait()
+        const hash = receipt.hash
+        toast.success(t('payment.success.tx_sent')) // 成功提示
 
         // 调用后端API记录交易
         mutateAsync()
@@ -127,11 +153,10 @@ function RouteComponent() {
 
         // 获取交易信息
         try {
-          const userTradesLength = await tradingManagerContract.methods.getUserTradesLength(wallet.address).call() as string
+          const userTradesLength = await tradingManagerContract.getUserTradesLength(wallet.address)
           const tradeId = Number.parseInt(userTradesLength) - 1
-
           if (tradeId >= 0) {
-            const trade = await tradingManagerContract.methods.getTrade(tradeId).call() as Record<string, any>
+            const trade = await tradingManagerContract.getTrade(tradeId)
             console.log('交易信息:', {
               buyer: trade.buyer,
               seller: trade.seller,
@@ -186,6 +211,9 @@ function RouteComponent() {
       else {
         toast.error(t('payment.errors.unknown'))
       }
+    }
+    finally {
+      setSellLoading(false) // 结束loading
     }
   }
 
@@ -328,12 +356,10 @@ function RouteComponent() {
               size="large"
               className="w-48 disabled:bg-gray-2 text-black!"
               onClick={sell}
-              loading={false}
-              disabled={isPending}
+              loading={isPending || sellLoading}
+              disabled={isPending || sellLoading}
             >
-              <Waiting for={!isPending}>
-                {t('action.confirm_sell')}
-              </Waiting>
+              {t('action.confirm_sell')}
             </Button>
           </div>
           <div></div>
