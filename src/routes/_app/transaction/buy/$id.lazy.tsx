@@ -35,6 +35,7 @@ function RouteComponent() {
   const item = investmentItems.get(id)!
 
   const [tokens, setTokens] = useState(1)
+  const [buyLoading, setBuyLoading] = useState(false) // 新增loading状态
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async () => {
@@ -52,102 +53,111 @@ function RouteComponent() {
       return
     }
 
-    const ethProvider = await wallet.getEthereumProvider()
-    const provider = new ethers.BrowserProvider(ethProvider)
-    const signer = await provider.getSigner()
-
-    const usdtContract = new ethers.Contract(
-      SimpleERC20ABI.address,
-      SimpleERC20ABI.abi,
-      signer
-    )
-
-    const tradingManagerContract = new ethers.Contract(
-      TradingManagerABI.address,
-      TradingManagerABI.abi,
-      signer
-    )
-
-    const orderId = BigInt(item.sell_order_id)
-
-    console.log('orderId', orderId)
-
-    // 买单交易流程
+    setBuyLoading(true) // 开始loading
     try {
-      // 获取订单信息
-      const order = await tradingManagerContract.getOrder(orderId)
+      const ethProvider = await wallet.getEthereumProvider()
+      const provider = new ethers.BrowserProvider(ethProvider)
+      const signer = await provider.getSigner()
 
-      const orderAmount = BigInt(order.amount)
-      // price 默认是以 wei 为单位的，不用转换
-      const orderPrice = BigInt(order.price)
+      const usdtContract = new ethers.Contract(
+        SimpleERC20ABI.address,
+        SimpleERC20ABI.abi,
+        signer
+      )
 
-      console.log(`卖单信息:
-          - 卖家: ${order.seller}
-          - 代币: ${order.token}
-          - 数量: ${orderAmount}
-          - 价格: ${orderPrice}
-          - 是否活跃: ${order.active}
-      `)
+      const tradingManagerContract = new ethers.Contract(
+        TradingManagerABI.address,
+        TradingManagerABI.abi,
+        signer
+      )
 
-      // 计算需要的USDT数量
-      const requiredUsdt = orderAmount * orderPrice
-      console.log(`需要的USDT数量: ${ethers.formatUnits(requiredUsdt, 18)}`)
+      const orderId = BigInt(item.sell_order_id)
 
-      // 检查USDT余额
-      const investorAddress = wallet.address
-      const usdtBalance = await usdtContract.balanceOf(investorAddress)
-      console.log(`当前USDT余额: ${ethers.formatUnits(usdtBalance, 18)}`)
+      console.log('orderId', orderId)
 
-      if (usdtBalance < requiredUsdt) {
-        throw new Error(`USDT余额不足，需要 ${ethers.formatUnits(requiredUsdt, 18)}，实际有 ${ethers.formatUnits(usdtBalance, 18)}`)
-      }
+      // 买单交易流程
+      try {
+        // 获取订单信息
+        const order = await tradingManagerContract.getOrder(orderId)
 
-      // 检查USDT授权额度
-      const currentAllowance = await usdtContract.allowance(investorAddress, TradingManagerABI.address)
-      console.log(`当前USDT授权额度: ${ethers.formatUnits(currentAllowance, 18)}`)
+        const orderAmount = BigInt(order.amount)
+        // price 默认是以 wei 为单位的，不用转换
+        const orderPrice = BigInt(order.price)
 
-      // 如果授权额度不足，进行授权
-      if (currentAllowance < requiredUsdt) {
-        console.log(`USDT授权额度不足，正在授权...`)
-        // 授权一个非常大的额度，避免后续交易再次授权
-        const approveAmount = requiredUsdt * BigInt(10)
+        console.log(`卖单信息:
+            - 卖家: ${order.seller}
+            - 代币: ${order.token}
+            - 数量: ${orderAmount}
+            - 价格: ${orderPrice}
+            - 是否活跃: ${order.active}
+        `)
 
-        // 先清零授权
-        console.log(`清零当前授权...`)
-        const resetTx = await usdtContract.approve(TradingManagerABI.address, 0)
-        await resetTx.wait()
+        // 计算需要的USDT数量
+        const requiredUsdt = orderAmount * orderPrice
+        console.log(`需要的USDT数量: ${ethers.formatUnits(requiredUsdt, 18)}`)
 
-        // 设置新的授权额度
-        console.log(`设置新的授权额度: ${ethers.formatUnits(approveAmount, 18)} USDT`)
-        const approveTx = await usdtContract.approve(TradingManagerABI.address, approveAmount)
-        await approveTx.wait()
+        // 检查USDT余额
+        const investorAddress = wallet.address
+        const usdtBalance = await usdtContract.balanceOf(investorAddress)
+        console.log(`当前USDT余额: ${ethers.formatUnits(usdtBalance, 18)}`)
 
-        // 再次检查授权额度
-        const newAllowance = await usdtContract.allowance(investorAddress, TradingManagerABI.address)
-        console.log(`新的USDT授权额度: ${ethers.formatUnits(newAllowance, 18)}`)
-
-        if (newAllowance < requiredUsdt) {
-          throw new Error(`USDT授权失败，当前授权额度 ${ethers.formatUnits(newAllowance, 18)} 小于需要的 ${ethers.formatUnits(requiredUsdt, 18)}`)
+        if (usdtBalance < requiredUsdt) {
+          throw new Error(`USDT余额不足，需要 ${ethers.formatUnits(requiredUsdt, 18)}，实际有 ${ethers.formatUnits(usdtBalance, 18)}`)
         }
+
+        // 检查USDT授权额度
+        const currentAllowance = await usdtContract.allowance(investorAddress, TradingManagerABI.address)
+        console.log(`当前USDT授权额度: ${ethers.formatUnits(currentAllowance, 18)}`)
+
+        // 如果授权额度不足，进行授权
+        if (currentAllowance < requiredUsdt) {
+          toast.info(t('payment.info.authorizing')) // 授权提示
+          console.log(`USDT授权额度不足，正在授权...`)
+          // 授权一个非常大的额度，避免后续交易再次授权
+          const approveAmount = requiredUsdt * BigInt(10)
+
+          // 先清零授权
+          console.log(`清零当前授权...`)
+          const resetTx = await usdtContract.approve(TradingManagerABI.address, 0)
+          await resetTx.wait()
+
+          // 设置新的授权额度
+          console.log(`设置新的授权额度: ${ethers.formatUnits(approveAmount, 18)} USDT`)
+          const approveTx = await usdtContract.approve(TradingManagerABI.address, approveAmount)
+          await approveTx.wait()
+
+          // 再次检查授权额度
+          const newAllowance = await usdtContract.allowance(investorAddress, TradingManagerABI.address)
+          console.log(`新的USDT授权额度: ${ethers.formatUnits(newAllowance, 18)}`)
+
+          if (newAllowance < requiredUsdt) {
+            throw new Error(`USDT授权失败，当前授权额度 ${ethers.formatUnits(newAllowance, 18)} 小于需要的 ${ethers.formatUnits(requiredUsdt, 18)}`)
+          }
+        }
+
+        // 执行买单
+        console.log(`准备执行买单，订单ID: ${orderId}`)
+        const tx = await tradingManagerContract.buyOrder(orderId)
+        console.log(`买单交易已发送，等待确认...`)
+        const receipt = await tx.wait()
+        console.log(`买单执行成功，交易哈希: ${receipt.hash}`)
+
+        // 获取最新的订单信息
+        const updatedOrder = await tradingManagerContract.getOrder(orderId)
+        console.log(`交易完成后订单信息:`, updatedOrder)
+
+        toast.success(t('payment.success.tx_sent')) // 成功提示
+
+        // 调用后端API记录购买信息
+        return await mutateAsync()
       }
-
-      // 执行买单
-      console.log(`准备执行买单，订单ID: ${orderId}`)
-      const tx = await tradingManagerContract.buyOrder(orderId)
-      console.log(`买单交易已发送，等待确认...`)
-      const receipt = await tx.wait()
-      console.log(`买单执行成功，交易哈希: ${receipt.hash}`)
-
-      // 获取最新的订单信息
-      const updatedOrder = await tradingManagerContract.getOrder(orderId)
-      console.log(`交易完成后订单信息:`, updatedOrder)
-
-      // 调用后端API记录购买信息
-      return await mutateAsync()
+      catch (error) {
+        console.error(`执行买单失败:`, error)
+        throw error
+      }
     }
-    catch (error) {
-      console.error(`执行买单失败:`, error)
-      throw error
+    finally {
+      setBuyLoading(false) // 结束loading
     }
   }
 
@@ -294,8 +304,8 @@ function RouteComponent() {
               size="large"
               className="w-48 disabled:bg-gray-2 text-black!"
               onClick={buy}
-              loading={isPending}
-              disabled={isPending}
+              loading={isPending || buyLoading}
+              disabled={isPending || buyLoading}
             >
               {t('properties.payment.confirm_payment')}
             </Button>
