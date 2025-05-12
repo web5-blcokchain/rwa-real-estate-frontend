@@ -12,8 +12,7 @@ const CONTRACTS = [
   'PropertyToken',
   'SimpleERC20',
   'RealEstateFacade',
-  'RewardManager',
-  'RealEstateSystem'
+  'RewardManager'
 ]
 
 const ADDRESS_MAP = {
