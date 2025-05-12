@@ -2,7 +2,6 @@ import { getWeb3Instance } from '@/utils/web3'
 import PropertyManager from './PropertyManager.json'
 import PropertyToken from './PropertyToken.json'
 import RealEstateFacade from './RealEstateFacade.json'
-import RealEstateSystem from './RealEstateSystem.json'
 import RewardManager from './RewardManager.json'
 import SimpleERC20 from './SimpleERC20.json'
 import TradingManager from './TradingManager.json'
@@ -96,20 +95,6 @@ export function useRewardManagerContract() {
   const contract = new web3.eth.Contract(
     RewardManager.abi,
     '0x3904b8f5b0F49cD206b7d5AABeE5D1F37eE15D8d'
-  )
-
-  return contract
-}
-
-/**
- * 获取 RealEstateSystem 合约实例
- * @returns RealEstateSystem 合约实例
- */
-export function useRealEstateSystemContract() {
-  const web3 = getWeb3Instance()
-  const contract = new web3.eth.Contract(
-    RealEstateSystem.abi,
-    '0xe039608E695D21aB11675EBBA00261A0e750526c'
   )
 
   return contract
