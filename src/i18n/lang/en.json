@@ -63,7 +63,9 @@
       "tokens_approved": "Tokens approved successfully",
       "property_token_not_initialized": "Property token contract not initialized or invalid address",
       "invalid_token_price": "Token price is invalid or undefined",
-      "invalid_property": "Invalid property ID"
+      "invalid_property": "Invalid property ID",
+      "token_approve_failed": "Token authorization failed",
+      "insufficient_token": "Insufficient token balance"
     },
     "info": {
       "eth_required": "Transaction requires sending ETH",
@@ -73,7 +75,8 @@
       "metamask_reset": "Attempting to reset MetaMask connection...",
       "min_tokens_required": "Minimum purchase: {{min}} tokens",
       "creating_transaction": "Creating transaction...",
-      "approving_tokens": "Approving tokens..."
+      "approving_tokens": "Approving tokens...",
+      "authorizing": "Tokens are being authorized"
     },
     "success": {
       "tx_sent": "Transaction sent successfully",
