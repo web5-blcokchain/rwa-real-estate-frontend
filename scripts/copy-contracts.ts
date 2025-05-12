@@ -11,7 +11,9 @@ const CONTRACTS = [
   'PropertyManager',
   'PropertyToken',
   'SimpleERC20',
-  'RealEstateFacade'
+  'RealEstateFacade',
+  'RewardManager',
+  'RealEstateSystem'
 ]
 
 const ADDRESS_MAP = {
@@ -19,7 +21,9 @@ const ADDRESS_MAP = {
   'PropertyManager': 'CONTRACT_PROPERTYMANAGER_ADDRESS',
   'PropertyToken': 'CONTRACT_PROPERTYTOKEN_ADDRESS',
   'SimpleERC20': 'CONTRACT_TESTTOKEN_ADDRESS',
-  'RealEstateFacade': 'CONTRACT_REALESTATEFACADE_ADDRESS'
+  'RealEstateFacade': 'CONTRACT_REALESTATEFACADE_ADDRESS',
+  'RewardManager': 'CONTRACT_REWARDMANAGER_ADDRESS',
+  'RealEstateSystem': 'CONTRACT_REALESTATESYSTEM_ADDRESS'
 }
 
 const needContractAddress = [
