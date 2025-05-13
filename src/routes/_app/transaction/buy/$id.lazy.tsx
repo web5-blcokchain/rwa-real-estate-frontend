@@ -243,7 +243,6 @@ function RouteComponent() {
                 value={tokens}
                 onChange={setTokens}
                 min={1}
-                max={100}
                 disabled={isPending}
               />
             </div>
