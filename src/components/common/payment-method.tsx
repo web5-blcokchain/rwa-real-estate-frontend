@@ -4,8 +4,10 @@ import { useWallets } from '@privy-io/react-auth'
 
 export const PaymentMethod: FC<{
   walletState: [ConnectedWallet | null, Dispatch<SetStateAction<ConnectedWallet | null>>]
+  message?: string
 }> = ({
-  walletState
+  walletState,
+  message
 }) => {
   const { ready, wallets } = useWallets()
 
@@ -14,7 +16,7 @@ export const PaymentMethod: FC<{
   return (
     <Waiting for={ready}>
       <div className="flex flex-col gap-2">
-        <div className="text-sm text-gray-500">Select Payment Method</div>
+        <div className="text-sm text-gray-500">{message || 'Select Payment Method'}</div>
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           {wallets.map(wallet => (
             <div

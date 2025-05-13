@@ -381,7 +381,13 @@
     "earnings": {
       "receive": "Receive",
       "available": "Available",
-      "received": "Received"
+      "received": "Received",
+      "select_wallet": "Choose a wallet",
+      "no_eligible_amount": "No eligible amount to claim",
+      "merkle_root_mismatch": "Merkle root mismatch",
+      "invalid_merkle_proof": "Invalid Merkle proof",
+      "receive_success": "Earnings claimed successfully",
+      "receive_failed": "Failed to claim earnings"
     }
   },
   "transaction": {

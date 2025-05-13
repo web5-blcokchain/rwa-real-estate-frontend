@@ -381,7 +381,13 @@
     "earnings": {
       "receive": "受け取り",
       "available": "受け取り可能",
-      "received": "完成"
+      "received": "完成",
+      "select_wallet": "財布を選ぶ",
+      "no_eligible_amount": "受け取れる金額がありません",
+      "merkle_root_mismatch": "Merkleルートが一致しません",
+      "invalid_merkle_proof": "Merkle証明が無効です",
+      "receive_success": "収益の受け取りに成功しました",
+      "receive_failed": "収益の受け取りに失敗しました"
     }
   },
   "transaction": {

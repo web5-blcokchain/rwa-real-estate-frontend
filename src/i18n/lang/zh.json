@@ -381,7 +381,13 @@
     "earnings": {
       "receive": "领取",
       "available": "可领取",
-      "received": "已领取"
+      "received": "已领取",
+      "select_wallet": "选择钱包",
+      "no_eligible_amount": "暂无可领取金额",
+      "merkle_root_mismatch": "Merkle 根不匹配",
+      "invalid_merkle_proof": "Merkle证明无效",
+      "receive_success": "收益领取成功",
+      "receive_failed": "收益领取失败"
     }
   },
   "transaction": {
