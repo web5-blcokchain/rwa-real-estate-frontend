@@ -96,8 +96,9 @@ export const Earnings: FC = () => {
           <div>
             <Button
               size="large"
-              className="w-1/2 bg-transparent! text-white!"
+              className="w-1/2 bg-transparent! text-white! disabled:text-gray-6!"
               loading={recivingId.includes(record.id)}
+              disabled={wallet?.address !== record.user_address}
               onClick={
                 () => recive(
                   record.id,
