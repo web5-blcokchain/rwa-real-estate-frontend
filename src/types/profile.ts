@@ -27,6 +27,9 @@ export interface TokenHeldItem {
 
   contract_address: string
 
+  token_number: number
+  total_selling: number
+
   address: string
   property_type: string
   bedrooms: 10
