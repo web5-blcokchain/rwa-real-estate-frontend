@@ -1,6 +1,6 @@
 import type { ConnectedWallet } from '@privy-io/react-auth'
 import type { TableProps } from 'antd'
-import { getEarningList } from '@/api/profile'
+import { getEarningList, reciveEarnings } from '@/api/profile'
 import { PaymentMethod } from '@/components/common/payment-method'
 import TableComponent from '@/components/common/table-component'
 import PropertyTokenABI from '@/contract/PropertyToken.json'
@@ -219,8 +219,18 @@ export const Earnings: FC = () => {
       )
       await tx.wait()
 
-      toast.success(t('profile.earnings.receive_success'))
-      refetch()
+      try {
+        setRecivingId(prev => [...prev, incomeId])
+        await reciveEarnings({
+          income_id: `${incomeId}`
+        })
+
+        toast.success(t('profile.earnings.receive_success'))
+      }
+      finally {
+        setRecivingId(prev => prev.filter(id => id !== incomeId))
+        refetch()
+      }
     }
     catch (error: any) {
       console.error(error)
