@@ -168,7 +168,7 @@ function RouteComponent() {
         <div className="fbc">
           <div>{t('properties.payment.total_amount')}</div>
           <div className="text-primary">
-            {`$${(tokens * Number(item.token_price)) + (tokens * Number(item.token_price) * 0.02)}`}
+            {`$${(tokens * Number(item.token_price)) - (tokens * Number(item.token_price) * 0.02)}`}
           </div>
         </div>
       </div>
