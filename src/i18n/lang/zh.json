@@ -261,7 +261,8 @@
       "tokens_held": "当前持有",
       "select_asset": "选择资产",
       "search_asset": "搜索资产",
-      "select_asset_prompt": "请选择一个资产来创建买单"
+      "select_asset_prompt": "请选择一个资产来创建买单",
+      "redemption_success": "赎回成功"
     }
   },
   "help": {
@@ -344,7 +345,8 @@
     "empty": "暂无数据",
     "all": "全部",
     "save_success": "保存成功",
-    "save_failed": "保存失败"
+    "save_failed": "保存失败",
+    "redemption_title": "赎回确认"
   },
   "action": {
     "sell": "卖出",

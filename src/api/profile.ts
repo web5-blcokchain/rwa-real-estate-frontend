@@ -33,3 +33,10 @@ export function updateProfile(data: {
 }) {
   return apiClient.post('/api/info/editUser', data)
 }
+
+export function redemption(data: {
+  id: string
+  number: string
+}) {
+  return apiClient.post('/api/assets/redemption', data)
+}

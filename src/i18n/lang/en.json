@@ -261,7 +261,8 @@
       "tokens_held": "Tokens held",
       "select_asset": "Select Asset",
       "search_asset": "Search Asset",
-      "select_asset_prompt": "Please select an asset to create a buy order"
+      "select_asset_prompt": "Please select an asset to create a buy order",
+      "redemption_success": "Redemption successful"
     }
   },
   "help": {
@@ -349,7 +350,8 @@
     "empty": "No data available",
     "all": "All",
     "save_success": "Save successfully",
-    "save_failed": "Saving failed"
+    "save_failed": "Saving failed",
+    "redemption_title": "Redemption confirmation"
   },
   "profile": {
     "transactions": {

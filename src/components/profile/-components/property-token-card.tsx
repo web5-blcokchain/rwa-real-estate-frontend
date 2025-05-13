@@ -31,6 +31,7 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
 
   const createSellOrder = (e: React.MouseEvent) => {
     e.stopPropagation()
+
     investmentItems.set(properties_id, {
       id: properties_id,
       name,
@@ -47,16 +48,37 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
       token_number,
       total_selling
     })
+
     navigate({
       to: '/transaction/create-sell-order/$id',
       params: { id: `${properties_id}` }
     })
   }
 
-  const onRedeemClick = (e: React.MouseEvent) => {
+  const redemption = (e: React.MouseEvent) => {
     e.stopPropagation()
-    // 这里处理 Redeem 按钮点击逻辑
-    console.log('Redeem clicked')
+
+    investmentItems.set(properties_id, {
+      id: properties_id,
+      name,
+      location: address,
+      property_type,
+      token_price: current_price,
+      tokens_held: number,
+      total_amount: total_current,
+      rental_yield: expected_annual_return,
+      image_urls,
+      sell_order_id,
+      order_type: InvestmentOrderType.Buy,
+      contract_address,
+      token_number,
+      total_selling
+    })
+
+    navigate({
+      to: '/transaction/redemption/$id',
+      params: { id: `${properties_id}` }
+    })
   }
 
   const [firstImage] = joinImagesPath(image_urls)
@@ -132,7 +154,7 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
           <Button
             size="large"
             className="w-1/2 border-[#9e9e9e] bg-[#202329] text-[#9e9e9e]!"
-            onClick={onRedeemClick}
+            onClick={redemption}
           >
             Redeem
           </Button>

@@ -261,7 +261,8 @@
       "tokens_held": "持っているトークン",
       "select_asset": "資産を選択",
       "search_asset": "資産を検索",
-      "select_asset_prompt": "購入注文を作成するには資産を選択してください"
+      "select_asset_prompt": "購入注文を作成するには資産を選択してください",
+      "redemption_success": "買い戻しに成功する"
     }
   },
   "help": {
@@ -349,7 +350,8 @@
     "empty": "データがありません",
     "all": "全部",
     "save_success": "保存に成功した",
-    "save_failed": "保存に失敗した"
+    "save_failed": "保存に失敗した",
+    "redemption_title": "買い戻し確認"
   },
   "profile": {
     "transactions": {

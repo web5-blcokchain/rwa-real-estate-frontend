@@ -39,6 +39,9 @@ const AppAccountCollectionsIndexLazyImport = createFileRoute(
 const AppTransactionSellIdLazyImport = createFileRoute(
   '/_app/transaction/sell/$id',
 )()
+const AppTransactionRedemptionIdLazyImport = createFileRoute(
+  '/_app/transaction/redemption/$id',
+)()
 const AppTransactionCreateSellOrderIdLazyImport = createFileRoute(
   '/_app/transaction/create-sell-order/$id',
 )()
@@ -155,6 +158,17 @@ const AppTransactionSellIdLazyRoute = AppTransactionSellIdLazyImport.update({
 } as any).lazy(() =>
   import('./routes/_app/transaction/sell/$id.lazy').then((d) => d.Route),
 )
+
+const AppTransactionRedemptionIdLazyRoute =
+  AppTransactionRedemptionIdLazyImport.update({
+    id: '/transaction/redemption/$id',
+    path: '/transaction/redemption/$id',
+    getParentRoute: () => AppRoute,
+  } as any).lazy(() =>
+    import('./routes/_app/transaction/redemption/$id.lazy').then(
+      (d) => d.Route,
+    ),
+  )
 
 const AppTransactionCreateSellOrderIdLazyRoute =
   AppTransactionCreateSellOrderIdLazyImport.update({
@@ -281,6 +295,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppTransactionCreateSellOrderIdLazyImport
       parentRoute: typeof AppImport
     }
+    '/_app/transaction/redemption/$id': {
+      id: '/_app/transaction/redemption/$id'
+      path: '/transaction/redemption/$id'
+      fullPath: '/transaction/redemption/$id'
+      preLoaderRoute: typeof AppTransactionRedemptionIdLazyImport
+      parentRoute: typeof AppImport
+    }
     '/_app/transaction/sell/$id': {
       id: '/_app/transaction/sell/$id'
       path: '/transaction/sell/$id'
@@ -333,6 +354,7 @@ interface AppRouteChildren {
   AppPropertiesPaymentIdLazyRoute: typeof AppPropertiesPaymentIdLazyRoute
   AppTransactionBuyIdLazyRoute: typeof AppTransactionBuyIdLazyRoute
   AppTransactionCreateSellOrderIdLazyRoute: typeof AppTransactionCreateSellOrderIdLazyRoute
+  AppTransactionRedemptionIdLazyRoute: typeof AppTransactionRedemptionIdLazyRoute
   AppTransactionSellIdLazyRoute: typeof AppTransactionSellIdLazyRoute
   AppTransactionCreateBuyOrderIndexRoute: typeof AppTransactionCreateBuyOrderIndexRoute
   AppAccountCollectionsIndexLazyRoute: typeof AppAccountCollectionsIndexLazyRoute
@@ -353,6 +375,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppTransactionBuyIdLazyRoute: AppTransactionBuyIdLazyRoute,
   AppTransactionCreateSellOrderIdLazyRoute:
     AppTransactionCreateSellOrderIdLazyRoute,
+  AppTransactionRedemptionIdLazyRoute: AppTransactionRedemptionIdLazyRoute,
   AppTransactionSellIdLazyRoute: AppTransactionSellIdLazyRoute,
   AppTransactionCreateBuyOrderIndexRoute:
     AppTransactionCreateBuyOrderIndexRoute,
@@ -377,6 +400,7 @@ export interface FileRoutesByFullPath {
   '/properties/payment/$id': typeof AppPropertiesPaymentIdLazyRoute
   '/transaction/buy/$id': typeof AppTransactionBuyIdLazyRoute
   '/transaction/create-sell-order/$id': typeof AppTransactionCreateSellOrderIdLazyRoute
+  '/transaction/redemption/$id': typeof AppTransactionRedemptionIdLazyRoute
   '/transaction/sell/$id': typeof AppTransactionSellIdLazyRoute
   '/transaction/create-buy-order': typeof AppTransactionCreateBuyOrderIndexRoute
   '/account/collections': typeof AppAccountCollectionsIndexLazyRoute
@@ -396,6 +420,7 @@ export interface FileRoutesByTo {
   '/properties/payment/$id': typeof AppPropertiesPaymentIdLazyRoute
   '/transaction/buy/$id': typeof AppTransactionBuyIdLazyRoute
   '/transaction/create-sell-order/$id': typeof AppTransactionCreateSellOrderIdLazyRoute
+  '/transaction/redemption/$id': typeof AppTransactionRedemptionIdLazyRoute
   '/transaction/sell/$id': typeof AppTransactionSellIdLazyRoute
   '/transaction/create-buy-order': typeof AppTransactionCreateBuyOrderIndexRoute
   '/account/collections': typeof AppAccountCollectionsIndexLazyRoute
@@ -417,6 +442,7 @@ export interface FileRoutesById {
   '/_app/properties/payment/$id': typeof AppPropertiesPaymentIdLazyRoute
   '/_app/transaction/buy/$id': typeof AppTransactionBuyIdLazyRoute
   '/_app/transaction/create-sell-order/$id': typeof AppTransactionCreateSellOrderIdLazyRoute
+  '/_app/transaction/redemption/$id': typeof AppTransactionRedemptionIdLazyRoute
   '/_app/transaction/sell/$id': typeof AppTransactionSellIdLazyRoute
   '/_app/transaction/create-buy-order/': typeof AppTransactionCreateBuyOrderIndexRoute
   '/_app/account/collections/': typeof AppAccountCollectionsIndexLazyRoute
@@ -439,6 +465,7 @@ export interface FileRouteTypes {
     | '/properties/payment/$id'
     | '/transaction/buy/$id'
     | '/transaction/create-sell-order/$id'
+    | '/transaction/redemption/$id'
     | '/transaction/sell/$id'
     | '/transaction/create-buy-order'
     | '/account/collections'
@@ -457,6 +484,7 @@ export interface FileRouteTypes {
     | '/properties/payment/$id'
     | '/transaction/buy/$id'
     | '/transaction/create-sell-order/$id'
+    | '/transaction/redemption/$id'
     | '/transaction/sell/$id'
     | '/transaction/create-buy-order'
     | '/account/collections'
@@ -476,6 +504,7 @@ export interface FileRouteTypes {
     | '/_app/properties/payment/$id'
     | '/_app/transaction/buy/$id'
     | '/_app/transaction/create-sell-order/$id'
+    | '/_app/transaction/redemption/$id'
     | '/_app/transaction/sell/$id'
     | '/_app/transaction/create-buy-order/'
     | '/_app/account/collections/'
@@ -519,6 +548,7 @@ export const routeTree = rootRoute
         "/_app/properties/payment/$id",
         "/_app/transaction/buy/$id",
         "/_app/transaction/create-sell-order/$id",
+        "/_app/transaction/redemption/$id",
         "/_app/transaction/sell/$id",
         "/_app/transaction/create-buy-order/",
         "/_app/account/collections/",
@@ -568,6 +598,10 @@ export const routeTree = rootRoute
     },
     "/_app/transaction/create-sell-order/$id": {
       "filePath": "_app/transaction/create-sell-order/$id.lazy.tsx",
+      "parent": "/_app"
+    },
+    "/_app/transaction/redemption/$id": {
+      "filePath": "_app/transaction/redemption/$id.lazy.tsx",
       "parent": "/_app"
     },
     "/_app/transaction/sell/$id": {
