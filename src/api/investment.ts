@@ -32,3 +32,12 @@ export function createBuyOrder(data: {
 }) {
   return apiClient.post('/api/market/confirmBuyOrder', data)
 }
+
+export function sellOrder(data: {
+  order_market_id: string
+  token_number: string
+  token_price: string
+  sell_order_id: string
+}) {
+  return apiClient.post('/api/market/confirmSellToBuyOrder', data)
+}

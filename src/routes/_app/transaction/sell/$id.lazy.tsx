@@ -1,5 +1,5 @@
 import type { ConnectedWallet } from '@privy-io/react-auth'
-import { sellAsset } from '@/api/investment'
+import { sellOrder } from '@/api/investment'
 import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
@@ -40,9 +40,11 @@ function RouteComponent() {
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async () => {
-      const res = await sellAsset({
-        id: `${item.id}`,
-        token_number: `${tokens}`
+      const res = await sellOrder({
+        order_market_id: `${item.id}`,
+        token_number: `${tokens}`,
+        token_price: `${item.token_price}`,
+        sell_order_id: `${item.sell_order_id}`
       })
       return res.data
     }
@@ -137,17 +139,14 @@ function RouteComponent() {
         // 执行卖单交易
         const sellOrderTx = await tradingManagerContract.sellOrder(orderId)
         const receipt = await sellOrderTx.wait()
-        const hash = receipt.hash
+        console.log('receipt', receipt)
         toast.success(t('payment.success.tx_sent')) // 成功提示
 
         // 调用后端API记录交易
         mutateAsync()
           .then(() => {
             navigate({
-              to: '/transaction/$hash',
-              params: {
-                hash
-              }
+              to: '/investment'
             })
           })
       }
