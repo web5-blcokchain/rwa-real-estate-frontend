@@ -29,7 +29,7 @@ function RouteComponent() {
   const { ready, wallets } = useWallets()
   const [wallet, setWallet] = useState<ConnectedWallet | null>(null)
 
-  const [id, setId] = useState<number | null>(null)
+  const [propertyId, setPropertyId] = useState<string | null>(null)
   const [item, setItem] = useState<any>(null)
   const [tokens, setTokens] = useState(MIN_TOKEN_PURCHASE)
   const [minTokenAmount] = useState(MIN_TOKEN_PURCHASE)
@@ -47,7 +47,7 @@ function RouteComponent() {
 
   // 资产选择处理
   const handleAssetSelect = (value: number) => {
-    setId(value)
+    setPropertyId(`${value}-${new Date().getTime()}`)
     const selectedItem = data?.find((asset: any) => asset.id === value)
     console.log(selectedItem)
     if (selectedItem) {
@@ -71,7 +71,7 @@ function RouteComponent() {
         id: `${item.id}`,
         token_number: `${tokens}`,
         token_price: item.price,
-        sell_order_id: `${id}`
+        sell_order_id: propertyId!
       })
       return res.data
     }
@@ -183,7 +183,7 @@ function RouteComponent() {
       toast.info(t('payment.messages.creating_buy_order'))
       const buyTx = await tradingManagerContract.createBuyOrder(
         item.contract_address,
-        `${item.id}`,
+        propertyId,
         tokenAmount,
         tokenPrice
       )
