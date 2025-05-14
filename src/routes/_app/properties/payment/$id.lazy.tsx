@@ -5,7 +5,7 @@ import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
 import { PaymentMethod } from '@/components/common/payment-method'
 import QuantitySelector from '@/components/common/quantity-selector'
-import { usePropertyManagerContract, useTradingManagerContract } from '@/contract'
+import PropertyManagerABI from '@/contract/PropertyManager.json'
 import SimpleERC20ABI from '@/contract/SimpleERC20.json'
 import { useCommonDataStore } from '@/stores/common-data'
 import { joinImagesPath } from '@/utils/url'
@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next'
 import { isAddress } from 'web3-validator'
 
 // 最小购买数量常量
-const MIN_TOKEN_PURCHASE = 2 // 设置最小购买量为2个代币，根据合约要求调整
+const MIN_TOKEN_PURCHASE = 1 // 设置最小购买量为2个代币，根据合约要求调整
 
 export const Route = createLazyFileRoute('/_app/properties/payment/$id')({
   component: RouteComponent
@@ -30,11 +30,8 @@ function RouteComponent() {
   const router = useRouter()
   const navigate = useNavigate()
   const { ready, wallets } = useWallets()
-  const tradingManagerContract = useTradingManagerContract()
-  const propertyManagerContract = usePropertyManagerContract()
 
   const [wallet, setWallet] = useState<ConnectedWallet | null>(null)
-  const [minTokenAmount, setMinTokenAmount] = useState(MIN_TOKEN_PURCHASE)
 
   const { params } = useMatch({
     from: '/_app/properties/payment/$id'
@@ -47,6 +44,7 @@ function RouteComponent() {
 
   // 默认购买量设置为最小值
   const [tokens, setTokens] = useState(MIN_TOKEN_PURCHASE)
+  const [btnLoading, setBtnLoading] = useState(false) // 新增loading状态
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async (hash: string) => {
@@ -59,163 +57,101 @@ function RouteComponent() {
     }
   })
 
-  // 获取最小购买量
-  useEffect(() => {
-    const fetchMinAmount = async () => {
-      if (tradingManagerContract && item?.contract_address) {
-        try {
-          // 如果合约有提供获取最小购买量的方法
-          // const minAmount = await tradingManagerContract.methods.getMinimumTokenAmount().call();
-          // setMinTokenAmount(Number(minAmount));
-
-          // 如果没有相关方法，则使用默认值
-          setMinTokenAmount(MIN_TOKEN_PURCHASE)
-        }
-        catch (error) {
-          console.error('获取最小购买量失败:', error)
-          setMinTokenAmount(MIN_TOKEN_PURCHASE)
-        }
-      }
-    }
-
-    fetchMinAmount()
-  }, [tradingManagerContract, item])
-
   async function payment() {
     if (!wallet) {
       toast.error(t('payment.errors.no_wallet'))
       return
     }
-
-    // 检查购买数量是否达到最小要求
-    if (tokens < minTokenAmount) {
-      toast.error(t('payment.errors.amount_below_minimum', { min: minTokenAmount }))
-      return
-    }
-
+    setBtnLoading(true)
     try {
-      // 确保用户钱包已连接
       if (!window.ethereum) {
         toast.error(t('payment.errors.no_ethereum'))
         return
       }
 
-      // 检查房产合约地址
-      if (!item.contract_address || !isAddress(item.contract_address)) {
+      // PropertyManager 合约地址应从配置或 item 里获取，不能用 propertyToken 地址
+      const propertyManagerAddress = PropertyManagerABI.address || process.env.REACT_APP_PROPERTY_MANAGER_ADDRESS
+      if (!propertyManagerAddress || !isAddress(propertyManagerAddress)) {
         toast.error(t('payment.errors.invalid_contract'))
         return
       }
 
-      const contractAddress = item.contract_address
-      const investorAddress = wallet.address
-
-      // 准备Provider和Signer
+      // Provider & Signer
       const ethProvider = await wallet.getEthereumProvider()
       const provider = new ethers.BrowserProvider(ethProvider)
       const signer = await provider.getSigner()
+      const signerAddress = await signer.getAddress()
 
-      // 获取USDT合约
+      // USDT合约
       const usdtContract = new ethers.Contract(
         SimpleERC20ABI.address,
         SimpleERC20ABI.abi,
         signer
       )
+      // PropertyManager合约
+      const propertyManagerContract = new ethers.Contract(
+        propertyManagerAddress,
+        PropertyManagerABI.abi,
+        signer
+      )
+
+      // 获取USDT精度
+      const usdtDecimals = await usdtContract.decimals()
+      // 计算所需USDT金额
+      const tokenPrice = ethers.parseUnits(String(item.price), usdtDecimals)
+      const requiredUsdtAmount = tokenPrice * BigInt(tokens)
 
       // 检查USDT余额
-      const signerAddress = await signer.getAddress()
       const usdtBalance = await usdtContract.balanceOf(signerAddress)
-      const requiredBalance = ethers.parseUnits('0.01', 18) // 最小要求的USDT余额
-
-      console.log('用户的USDT余额:', ethers.formatUnits(usdtBalance, 18))
-
-      if (usdtBalance < requiredBalance) {
+      if (usdtBalance < requiredUsdtAmount) {
         toast.error(t('payment.errors.insufficient_eth'))
         return
       }
 
-      // 展示购买信息
-      console.log('初始购买信息:')
-      console.log(`- 房产ID: ${item.id}`)
-      console.log(`- 代币合约地址: ${contractAddress}`)
-      console.log(`- 数量: ${tokens}`)
-      console.log(`- 代币价格: ${item.price}`)
-
-      // 执行初始购买
-      toast.info(t('payment.info.creating_transaction'))
-
-      // 验证propertyManagerContract已经初始化
-      if (!propertyManagerContract || !propertyManagerContract.methods) {
-        toast.error(t('payment.errors.contract_not_initialized'))
-        return
+      // 检查USDT授权额度（授权给 PropertyManager 合约地址）
+      const usdtAllowance = await usdtContract.allowance(signerAddress, propertyManagerAddress)
+      if (usdtAllowance < requiredUsdtAmount) {
+        // 先清零授权
+        const resetTx = await usdtContract.approve(propertyManagerAddress, 0)
+        await resetTx.wait()
+        // 再授权
+        const approveTx = await usdtContract.approve(propertyManagerAddress, requiredUsdtAmount)
+        await approveTx.wait()
       }
 
+      toast.info(t('payment.info.creating_transaction'))
+
       try {
-        // 使用房产ID作为标识符
-        const propertyId = item.id.toString()
-
-        console.log('准备调用合约:')
-        console.log(`- 房产ID: ${propertyId}`)
-        console.log(`- 代币数量: ${tokens}`)
-        console.log(`- 投资者地址: ${investorAddress}`)
-
-        // 估算gas
-        const gasEstimate = await propertyManagerContract.methods.initialBuyPropertyToken(
-          propertyId,
+        // propertyId 类型要与合约一致（通常为 string 或 bytes32）
+        const tx = await propertyManagerContract.initialBuyPropertyToken(
+          String(id),
           tokens
-        ).estimateGas({ from: investorAddress })
-
-        console.log('预估的gas用量:', gasEstimate)
-
-        // 增加20%的gas以避免gas不足
-        const gasLimit = Math.floor(Number(gasEstimate) * 1.2).toString()
-
-        // 执行交易
-        const initialBuyTx = await propertyManagerContract.methods.initialBuyPropertyToken(
-          propertyId,
-          tokens
-        ).send({
-          from: investorAddress,
-          gas: gasLimit
-        })
-
+        )
+        const receipt = await tx.wait()
         toast.success(t('payment.success.tx_sent'))
-        const hash = initialBuyTx.transactionHash
+        const hash = receipt.hash
 
-        console.log('交易哈希:', hash)
-        console.log('购买后余额', await usdtContract.balanceOf(signerAddress))
-
-        // 调用后端API记录交易
+        // 后端同步
         mutateAsync(hash)
           .then(() => {
             navigate({
               to: '/transaction/$hash',
-              params: {
-                hash
-              }
+              params: { hash }
             })
           })
       }
-      catch (estimateError: any) {
-        console.error('Gas估算或交易错误:', estimateError)
-
-        // 提取错误消息
-        const errorMessage = estimateError.message || ''
-
-        // 分析错误类型并提供相应反馈
-        if (errorMessage.includes('Amount below minimum')) {
-          toast.error(t('payment.errors.amount_below_minimum', { min: minTokenAmount }))
-        }
-        else if (errorMessage.includes('insufficient funds')) {
+      catch (err: any) {
+        console.error('initialBuyPropertyToken error:', err)
+        const errorMessage = err.message || ''
+        if (errorMessage.includes('insufficient funds')) {
           toast.error(t('payment.errors.insufficient_eth'))
         }
         else if (errorMessage.includes('User denied')) {
           toast.error(t('payment.errors.rejected'))
         }
         else {
-          // 尝试提取更详细的错误信息
           const innerErrorMatch = errorMessage.match(/reverted with reason string '(.+?)'/i)
           const innerError = innerErrorMatch ? innerErrorMatch[1] : ''
-
           if (innerError) {
             toast.error(t('payment.errors.contract_revert_with_reason', { reason: innerError }))
           }
@@ -227,7 +163,6 @@ function RouteComponent() {
     }
     catch (error) {
       console.error('Payment error:', error)
-
       if (error instanceof Error) {
         if (error.message.includes('rejected')) {
           toast.error(t('payment.errors.rejected'))
@@ -239,6 +174,9 @@ function RouteComponent() {
       else {
         toast.error(t('payment.errors.unknown'))
       }
+    }
+    finally {
+      setBtnLoading(false)
     }
   }
 
@@ -324,7 +262,7 @@ function RouteComponent() {
               <QuantitySelector
                 value={tokens}
                 onChange={setTokens}
-                min={minTokenAmount}
+                min={1}
                 disabled={isPending}
               />
             </div>
@@ -348,11 +286,6 @@ function RouteComponent() {
             $
             {(tokens * Number(item.price) * 1.02).toFixed(2)}
           </div>
-        </div>
-
-        {/* 添加最小购买量提示 */}
-        <div className="text-xs text-[#f59e0b]">
-          {t('payment.info.min_tokens_required', { min: minTokenAmount })}
         </div>
       </div>
 
@@ -393,12 +326,10 @@ function RouteComponent() {
               size="large"
               className="w-48 disabled:bg-gray-2 text-black!"
               onClick={payment}
-              loading={isPending}
-              disabled={isPending || tokens < minTokenAmount}
+              loading={btnLoading || isPending}
+              disabled={btnLoading || isPending}
             >
-              <Waiting for={!isPending}>
-                {t('properties.payment.confirm_payment')}
-              </Waiting>
+              {t('properties.payment.confirm_payment')}
             </Button>
           </div>
           <div></div>
