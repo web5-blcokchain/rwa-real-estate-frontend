@@ -29,7 +29,6 @@ function RouteComponent() {
   const { ready, wallets } = useWallets()
   const [wallet, setWallet] = useState<ConnectedWallet | null>(null)
 
-  const [propertyId, setPropertyId] = useState<string | null>(null)
   const [item, setItem] = useState<any>(null)
   const [tokens, setTokens] = useState(MIN_TOKEN_PURCHASE)
   const [minTokenAmount] = useState(MIN_TOKEN_PURCHASE)
@@ -47,7 +46,6 @@ function RouteComponent() {
 
   // 资产选择处理
   const handleAssetSelect = (value: number) => {
-    setPropertyId(`${value}-${new Date().getTime()}`)
     const selectedItem = data?.find((asset: any) => asset.id === value)
     console.log(selectedItem)
     if (selectedItem) {
@@ -66,12 +64,12 @@ function RouteComponent() {
   }
 
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (sell_order_id: number) => {
       const res = await createBuyOrderApi({
         id: `${item.id}`,
         token_number: `${tokens}`,
         token_price: item.price,
-        sell_order_id: propertyId!
+        sell_order_id: `${sell_order_id}`
       })
       return res.data
     }
@@ -183,7 +181,7 @@ function RouteComponent() {
       toast.info(t('payment.messages.creating_buy_order'))
       const buyTx = await tradingManagerContract.createBuyOrder(
         item.contract_address,
-        propertyId,
+        `${item.id}`,
         tokenAmount,
         tokenPrice
       )
@@ -191,8 +189,14 @@ function RouteComponent() {
       toast.info(t('payment.messages.waiting_for_confirmation'))
       await buyTx.wait()
 
+      const orders = await tradingManagerContract.getUserOrders(wallet.address)
+
+      console.log('orders', orders)
+
+      const lastOrderId = orders[orders.length - 1]
+
       // 调用后端API记录购买信息
-      await mutateAsync()
+      await mutateAsync(lastOrderId)
 
       toast.success(t('payment.messages.buy_order_created'))
       navigate({ to: '/investment' })
