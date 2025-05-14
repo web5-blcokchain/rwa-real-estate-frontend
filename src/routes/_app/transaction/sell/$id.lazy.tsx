@@ -150,25 +150,6 @@ function RouteComponent() {
               }
             })
           })
-
-        // 获取交易信息
-        try {
-          const userTradesLength = await tradingManagerContract.getUserTradesLength(wallet.address)
-          const tradeId = Number.parseInt(userTradesLength) - 1
-          if (tradeId >= 0) {
-            const trade = await tradingManagerContract.getTrade(tradeId)
-            console.log('交易信息:', {
-              buyer: trade.buyer,
-              seller: trade.seller,
-              token: trade.token,
-              amount: `${trade.amount}`,
-              price: `${trade.price}`
-            })
-          }
-        }
-        catch (tradeError) {
-          console.error('获取交易信息失败:', tradeError)
-        }
       }
       catch (contractError: any) {
         console.error('合约交易错误:', contractError)
