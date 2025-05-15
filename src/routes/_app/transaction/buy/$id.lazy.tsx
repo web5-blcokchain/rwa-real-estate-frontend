@@ -149,7 +149,11 @@ function RouteComponent() {
         toast.success(t('payment.success.tx_sent')) // 成功提示
 
         // 调用后端API记录购买信息
-        return await mutateAsync()
+        await mutateAsync()
+
+        navigate({
+          to: '/investment'
+        })
       }
       catch (error) {
         console.error(`执行买单失败:`, error)
