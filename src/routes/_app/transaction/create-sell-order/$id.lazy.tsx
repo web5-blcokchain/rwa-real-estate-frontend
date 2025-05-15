@@ -128,7 +128,12 @@ function RouteComponent() {
         console.log(`操作者代币余额: ${ethers.formatUnits(operatorTokenBalance, tokenDecimals)} 个代币`)
 
         if (operatorTokenBalance < tokenAmount) {
-          toast.error(`代币余额不足: ${ethers.formatUnits(operatorTokenBalance, tokenDecimals)} < ${ethers.formatUnits(tokenAmount, tokenDecimals)}`)
+          toast.error(
+            t('payment.errors.insufficient_token', {
+              balance: ethers.formatUnits(operatorTokenBalance, tokenDecimals),
+              required: ethers.formatUnits(tokenAmount, tokenDecimals)
+            })
+          )
           setIsProcessing(false)
           return
         }
@@ -144,7 +149,7 @@ function RouteComponent() {
         // 8. 如果授权不足则进行授权
         if (currentTokenAllowance < tokenAmount) {
           setIsApproving(true)
-          toast.info('正在授权代币...')
+          toast.info(t('payment.errors.approving_tokens'))
 
           try {
             const tokenApproveTx = await propertyTokenContract.approve(
@@ -153,11 +158,11 @@ function RouteComponent() {
             )
 
             console.log(`授权交易已发送: ${tokenApproveTx.hash}`)
-            toast.info(`授权交易已发送，等待确认...`)
+            toast.info(t('payment.info.tx_pending'))
 
             await tokenApproveTx.wait()
             console.log('授权交易已确认')
-            toast.success('代币授权成功')
+            toast.success(t('payment.success.tokens_approved'))
 
             // 验证授权是否成功
             const newAllowance = await propertyTokenContract.allowance(
@@ -168,7 +173,7 @@ function RouteComponent() {
 
             // 确保授权成功
             if (newAllowance < tokenAmount) {
-              toast.error('授权失败，请重试')
+              toast.error(t('payment.errors.token_approve_failed'))
               setIsApproving(false)
               setIsProcessing(false)
               return
@@ -176,7 +181,10 @@ function RouteComponent() {
           }
           catch (error: any) {
             console.error('授权失败:', error)
-            toast.error(`授权失败: ${error.message}`)
+            toast.error(
+              t('payment.errors.token_approve_failed')
+              + (error.message ? `: ${error.message}` : '')
+            )
             setIsApproving(false)
             setIsProcessing(false)
             return
@@ -185,7 +193,7 @@ function RouteComponent() {
         }
 
         // 9. 创建卖单
-        toast.info('正在创建卖单...')
+        toast.info(t('payment.messages.creating_buy_order'))
         console.log('发送createSellOrder交易')
 
         try {
@@ -207,11 +215,11 @@ function RouteComponent() {
 
           console.log(`交易已发送: ${tx.hash}`)
           console.log('tx', tx)
-          toast.success('交易已发送')
+          toast.success(t('payment.success.tx_sent'))
 
           const receipt = await tx.wait()
           console.log('交易已确认', receipt)
-          toast.success('卖单创建成功')
+          toast.success(t('payment.messages.sell_order_created'))
 
           const orders = await tradingManagerContract.getUserOrders(wallet.address)
           console.log('用户订单:', orders)
@@ -239,16 +247,16 @@ function RouteComponent() {
           }, null, 2))
 
           if (error.code === 'ACTION_REJECTED' || error.code === 4001) {
-            toast.error('交易已被拒绝')
+            toast.error(t('payment.errors.rejected'))
           }
           else if (error.message && error.message.includes('user rejected transaction')) {
-            toast.error('用户拒绝了交易')
+            toast.error(t('payment.errors.rejected'))
           }
           else if (error.message && error.message.includes('insufficient funds')) {
-            toast.error('账户余额不足，无法支付 gas 费用')
+            toast.error(t('payment.errors.insufficient_eth'))
           }
           else {
-            toast.error('创建卖单失败')
+            toast.error(t('payment.errors.transaction_failed'))
           }
 
           setIsProcessing(false)
@@ -256,13 +264,17 @@ function RouteComponent() {
       }
       catch (error: any) {
         console.error('获取钱包失败:', error)
-        toast.error(`获取钱包失败: ${error.message || '未知错误'}`)
+        toast.error(
+          t('payment.errors.general', { error: error.message || t('payment.errors.unknown') })
+        )
         setIsProcessing(false)
       }
     }
     catch (error: any) {
       console.error('交易过程中出现错误:', error)
-      toast.error(`交易过程中出现错误: ${error.message || '未知错误'}`)
+      toast.error(
+        t('payment.errors.general', { error: error.message || t('payment.errors.unknown') })
+      )
       setIsProcessing(false)
     }
     finally {
