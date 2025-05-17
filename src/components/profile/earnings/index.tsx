@@ -251,7 +251,6 @@ export const Earnings: FC = () => {
       >
         <PaymentMethod
           walletState={[wallet, setWallet]}
-          message={t('profile.earnings.select_wallet')}
         />
 
         <TableComponent
