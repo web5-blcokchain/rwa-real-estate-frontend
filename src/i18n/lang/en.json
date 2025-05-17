@@ -408,5 +408,9 @@
     "buy": "Wanted",
     "hold": "Hold",
     "not-held": "Not held"
+  },
+  "payment_method": {
+    "user_bound_wallet": "Bound wallet",
+    "not_connected_wallet": "Unconnected wallet"
   }
 }

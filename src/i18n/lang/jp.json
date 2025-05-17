@@ -408,5 +408,9 @@
     "buy": "購入希望",
     "hold": "持っている",
     "not-held": "持っていない"
+  },
+  "payment_method": {
+    "user_bound_wallet": "バインドされた財布",
+    "not_connected_wallet": "バインドされていないウォレット"
   }
 }

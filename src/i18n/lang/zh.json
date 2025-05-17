@@ -408,5 +408,9 @@
     "buy": "求购",
     "hold": "持有",
     "not-held": "未持有"
+  },
+  "payment_method": {
+    "user_bound_wallet": "绑定钱包",
+    "not_connected_wallet": "未连接绑定钱包"
   }
 }

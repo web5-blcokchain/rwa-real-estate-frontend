@@ -161,6 +161,7 @@ export interface UserResponse {
   audit_status: number
   audit_date: number
   type: number
+  wallet_address: string
   last_login_time: number
   last_login_ip: number
 }
