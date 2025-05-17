@@ -5,8 +5,9 @@ import { useWallets } from '@privy-io/react-auth'
 
 export const PaymentMethod: FC<{
   walletState: [ConnectedWallet | null, Dispatch<SetStateAction<ConnectedWallet | null>>]
-}> = ({
-  walletState
+} & React.HTMLAttributes<HTMLDivElement>> = ({
+  walletState,
+  className
 }) => {
   const { ready, wallets } = useWallets()
   const { userData } = useUserStore()
@@ -29,7 +30,11 @@ export const PaymentMethod: FC<{
   }, [userData, wallets])
 
   return (
-    <div className="rounded-md bg-[#333947] p-2">
+    <div className={cn(
+      'rounded-md bg-[#333947] p-2',
+      className
+    )}
+    >
       <Waiting
         for={ready}
         className="fcc"

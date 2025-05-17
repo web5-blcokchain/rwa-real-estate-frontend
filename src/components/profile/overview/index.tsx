@@ -1,11 +1,12 @@
 import type { historyResponse, PropertieItem } from '@/api/apiMyInfoApi'
+import type { ConnectedWallet } from '@privy-io/react-auth'
 import type { TableProps } from 'antd'
 import apiMyInfo from '@/api/apiMyInfoApi'
 import button2 from '@/assets/icons/BUTTON2-2.png'
 import button3 from '@/assets/icons/BUTTON3.png'
 import frame115 from '@/assets/icons/Frame115.png'
 import group272Icon from '@/assets/icons/group272.png'
-import { usePrivy } from '@privy-io/react-auth'
+import { PaymentMethod } from '@/components/common/payment-method'
 import { useQuery } from '@tanstack/react-query'
 import { Space } from 'antd'
 import DataCount from '../-components/data-count'
@@ -117,11 +118,7 @@ const columnsTwo: TableProps<historyResponse>['columns'] = [
 ]
 
 function Overview() {
-  // const [keyword, setKeyword] = useState<string>('')
-  // const [page, setPage] = useState<number>(1)
-  // const [pageSize, setPageSize] = useState<number>(20)
-
-  const { ready, authenticated, user } = usePrivy()
+  const [wallet, setWallet] = useState<ConnectedWallet | null>(null)
 
   const { data: overviewData, isLoading } = useQuery({
     queryKey: ['overview'],
@@ -153,14 +150,10 @@ function Overview() {
     <div className="space-y-8">
       <DataCount />
 
-      <Waiting for={ready && authenticated} className="h-16 fcc">
-        <div className="rounded-xl bg-[#1e2024] p-4">
-          <div className="fbc text-4">
-            <div>Wallet Address</div>
-            <div>{user?.wallet?.address}</div>
-          </div>
-        </div>
-      </Waiting>
+      <PaymentMethod
+        walletState={[wallet, setWallet]}
+        className="bg-[#202329]"
+      />
 
       <TableComponent
         columns={columns}
