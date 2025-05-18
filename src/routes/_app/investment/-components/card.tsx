@@ -151,7 +151,7 @@ export const InvestmentCard: FC<InvestmentCardProps> = ({
                 <Button
                   size="large"
                   className="w-1/2 bg-transparent! text-white! disabled:text-gray-5!"
-                  disabled={!item.has_holdings}
+                  disabled={!item.has_holdings || item.is_me}
                   onClick={sell}
                 >
                   {t('action.sell')}
