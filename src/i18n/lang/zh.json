@@ -166,7 +166,6 @@
       "next": "下一步",
       "link_email": "绑定邮箱"
     },
-    "step2": "身份验证",
     "step1": "登陆 Privy",
     "logged_in_privy": "已登陆 Privy",
     "message": {
@@ -177,7 +176,12 @@
     "upload_id_card_back": "上传身份证反面",
     "id_card_front": "身份证正面",
     "id_card_back": "身份证反面",
-    "reupload": "重新上传"
+    "reupload": "重新上传",
+    "step3": "身份验证",
+    "step2": "绑定钱包",
+    "bind-wallet": {
+      "error": "请选择绑定钱包"
+    }
   },
   "home": {
     "banner": {

@@ -166,7 +166,6 @@
       "next": "つぎ",
       "link_email": "Bind the email"
     },
-    "step2": "ID検証",
     "step1": "Log in to Privy",
     "logged_in_privy": "Logged in Privy",
     "message": {
@@ -177,7 +176,12 @@
     "upload_id_card_back": "Upload ID card back",
     "id_card_front": "身分証明書の表面",
     "id_card_back": "身分証明書の裏面",
-    "reupload": "再アップロード"
+    "reupload": "再アップロード",
+    "step3": "ID検証",
+    "step2": "財布をバインドする",
+    "bind-wallet": {
+      "error": "バインドウォレットを選択してください"
+    }
   },
   "home": {
     "banner": {
