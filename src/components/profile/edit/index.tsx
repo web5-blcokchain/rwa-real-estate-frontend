@@ -1,8 +1,11 @@
+import type { ConnectedWallet } from '@privy-io/react-auth'
 import { uploadFile } from '@/api/apiMyInfoApi'
 import { updateProfile } from '@/api/profile'
 import { IImage } from '@/components/common/i-image'
+import { WalletSelector } from '@/components/common/wallet-selector'
 import { useUserStore } from '@/stores/user'
 import { joinImagePath } from '@/utils/url'
+import { useWallets } from '@privy-io/react-auth'
 import { Button, Form, Input, message } from 'antd'
 import { useTranslation } from 'react-i18next'
 
@@ -10,8 +13,12 @@ export const ProfileEdit: FC = () => {
   const { userData, setUserData } = useUserStore()
   const [form] = Form.useForm()
   const { t } = useTranslation()
+  const { wallets } = useWallets()
+
   const fileInputRef = useRef<HTMLInputElement>(null)
+
   const [saving, setSaving] = useState(false)
+  const [wallet, setWallet] = useState<ConnectedWallet | null>(null)
 
   useEffect(() => {
     if (userData) {
@@ -25,6 +32,16 @@ export const ProfileEdit: FC = () => {
     }
   }, [userData, form])
 
+  useEffect(() => {
+    if (wallets.length > 0) {
+      const boundWallet = wallets.find(w => w.address === userData.wallet_address)
+
+      if (boundWallet) {
+        setWallet(boundWallet)
+      }
+    }
+  }, [userData, wallets])
+
   const onFinish = async (values: any) => {
     try {
       setSaving(true)
@@ -34,7 +51,8 @@ export const ProfileEdit: FC = () => {
         email: values.email,
         mobile: values.mobile,
         address: values.address,
-        avatar: userData.avatar
+        avatar: userData.avatar,
+        wallet_address: wallet!.address
       }
 
       await updateProfile(profileData)
@@ -203,6 +221,13 @@ export const ProfileEdit: FC = () => {
                 placeholder={t('profile.edit.location_placeholder')}
               />
             </Form.Item>
+          </div>
+
+          <div>
+            <WalletSelector
+              walletState={[wallet, setWallet]}
+              title={t('profile.edit.bind_wallet')}
+            />
           </div>
 
           <div className="mt-6 flex justify-end">

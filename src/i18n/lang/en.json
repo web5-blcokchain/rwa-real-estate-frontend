@@ -378,7 +378,8 @@
       "location": "Location",
       "location_placeholder": "City, Country",
       "upload_failed": "Upload failed",
-      "upload_success": "Upload successfully"
+      "upload_success": "Upload successfully",
+      "bind_wallet": "Bond the wallet"
     },
     "earnings": {
       "receive": "Receive",

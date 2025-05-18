@@ -378,7 +378,8 @@
       "location": "場所",
       "location_placeholder": "都市、国",
       "upload_failed": "アップロード失敗",
-      "upload_success": "アップロード成功"
+      "upload_success": "アップロード成功",
+      "bind_wallet": "財布をバインドする"
     },
     "earnings": {
       "receive": "受け取り",

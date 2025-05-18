@@ -378,7 +378,8 @@
       "location": "位置",
       "location_placeholder": "城市，国家",
       "upload_failed": "上传失败",
-      "upload_success": "上传成功"
+      "upload_success": "上传成功",
+      "bind_wallet": "绑定钱包"
     },
     "earnings": {
       "receive": "领取",
