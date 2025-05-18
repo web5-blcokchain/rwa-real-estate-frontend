@@ -19,13 +19,14 @@ export function useRouteGuard() {
   const token = getToken()
 
   useEffect(() => {
-    // 白名单路径列表
-    const whiteList = [
+    // 白名单路径列表，支持字符串和正则
+    const whiteList: (string | RegExp)[] = [
       '/',
       '/home',
       '/about',
       '/account/create',
       '/properties',
+      /^\/properties\/detail\/\d+$/,
       '/investment'
     ]
 
@@ -48,7 +49,14 @@ export function useRouteGuard() {
       })
     }
 
-    const isWhiteListed = whiteList.includes(currentPath)
+    // 支持字符串和正则的白名单判断
+    const isWhiteListed = whiteList.some(item =>
+      typeof item === 'string'
+        ? item === currentPath
+        : item instanceof RegExp
+          ? item.test(currentPath)
+          : false
+    )
 
     if (isWhiteListed) {
       return
