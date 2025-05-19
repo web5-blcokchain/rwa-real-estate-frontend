@@ -180,7 +180,9 @@
     "step3": "Identity Verification",
     "step2": "Bond the wallet",
     "bind-wallet": {
-      "error": "Please select bind wallet"
+      "error": "Please select bind wallet",
+      "connect": "Link wallet",
+      "empty": "Please connect or unlock your wallet first"
     }
   },
   "home": {

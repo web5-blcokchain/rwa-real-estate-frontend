@@ -4,16 +4,19 @@ import { useWallets } from '@privy-io/react-auth'
 
 export const WalletSelector: FC<{
   walletState: [ConnectedWallet | null, Dispatch<SetStateAction<ConnectedWallet | null>>]
+  walletListState?: [ConnectedWallet[], Dispatch<SetStateAction<ConnectedWallet[]>>]
   title?: string
 }> = ({
   walletState,
+  walletListState,
   title
 }) => {
   const { ready, wallets } = useWallets()
 
   const [selectedWallet, setSelectedWallet] = walletState
 
-  const [walletList, setWalletList] = useState<ConnectedWallet[]>([])
+  const [localWalletList, setLocalWalletList] = useState<ConnectedWallet[]>([])
+  const [walletList, setWalletList] = walletListState ?? [localWalletList, setLocalWalletList]
 
   useEffect(() => {
     if (wallets.length === 0) {
