@@ -6,6 +6,7 @@ import TableComponent from '@/components/common/table-component'
 import PropertyTokenABI from '@/contract/PropertyToken.json'
 import RewardManagerABI from '@/contract/RewardManager.json'
 import { MerkleTree } from '@/utils/merkle-tree'
+import { shortAddress } from '@/utils/wallet'
 import { useWallets } from '@privy-io/react-auth'
 import { useQuery } from '@tanstack/react-query'
 import { Button, Pagination } from 'antd'
@@ -90,13 +91,29 @@ export const Earnings: FC = () => {
       }
     },
     {
+      title: 'Wallet Address',
+      key: 'user_address',
+      dataIndex: 'user_address',
+      render(value: string) {
+        return (
+          <div className="fyc gap-2">
+            <div>{shortAddress(value)}</div>
+            <div
+              className="i-mingcute-copy-2-fill bg-[#b5b5b5] clickable"
+              onClick={() => copy(value)}
+            />
+          </div>
+        )
+      }
+    },
+    {
       title: '',
       render(_, record) {
         return record.status === 0 && (
           <div>
             <Button
               size="large"
-              className="w-1/2 bg-transparent! text-white! disabled:text-gray-6!"
+              className="bg-transparent! text-white! disabled:text-gray-6!"
               loading={recivingId.includes(record.id)}
               disabled={wallet?.address !== record.user_address}
               onClick={
