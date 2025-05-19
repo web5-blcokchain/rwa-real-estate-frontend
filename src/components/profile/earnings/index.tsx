@@ -118,9 +118,10 @@ export const Earnings: FC = () => {
               disabled={wallet?.address !== record.user_address}
               onClick={
                 () => recive(
-                  record.id,
-                  record.distribution_id,
-                  record.contract_address
+                  record
+                  // record.id,
+                  // record.distribution_id,
+                  // record.contract_address
                 )
               }
             >
@@ -142,11 +143,9 @@ export const Earnings: FC = () => {
   }, [ready, wallets])
 
   async function recive(
-    incomeId: number,
-    distributionId: string,
-    contractAddress: string
+    item: Record<string, any>
   ) {
-    if (!incomeId)
+    if (!item.id)
       return
 
     if (!wallet) {
@@ -155,7 +154,7 @@ export const Earnings: FC = () => {
     }
 
     try {
-      setRecivingId(prev => [...prev, incomeId])
+      setRecivingId(prev => [...prev, item.id])
 
       // 获取 provider、signer、合约
       const ethProvider = await wallet.getEthereumProvider()
@@ -168,7 +167,7 @@ export const Earnings: FC = () => {
         signer
       )
       const propertyTokenContract = new ethers.Contract(
-        contractAddress,
+        item.contract_address,
         PropertyTokenABI.abi,
         signer
       )
@@ -177,7 +176,7 @@ export const Earnings: FC = () => {
       const userAddress = await signer.getAddress()
 
       // 获取分配信息
-      const distribution = await rewardManager.getDistribution(distributionId)
+      const distribution = await rewardManager.getDistribution(item.distribution_id)
       console.log('[INFO] 分配信息:', distribution)
 
       // 获取代币余额和总供应量
@@ -210,13 +209,12 @@ export const Earnings: FC = () => {
       console.log('[INFO] 生成的默克尔根:', merkleRoot)
       console.log('[INFO] 合约中的默克尔根:', distribution[9])
 
-      // 生成默克尔证明
-      const merkleProof = merkleTree.getProof(merkleData)
-      console.log('[INFO] 生成的默克尔证明:', merkleProof)
+      const merkleProof = JSON.parse(item.merkle_proof)
+      console.log('[INFO] 接口 merkle proof:', merkleProof)
 
       // 8. 验证 Merkle 证明
       const isValid = await rewardManager.verifyMerkleProof(
-        distributionId,
+        item.distribution_id,
         userAddress,
         eligibleAmount,
         merkleProof
@@ -229,7 +227,7 @@ export const Earnings: FC = () => {
 
       // 调用 withdraw 领取收益
       const tx = await rewardManager.withdraw(
-        distributionId,
+        item.distribution_id,
         userAddress,
         eligibleAmount,
         totalAmount,
@@ -238,15 +236,15 @@ export const Earnings: FC = () => {
       await tx.wait()
 
       try {
-        setRecivingId(prev => [...prev, incomeId])
+        setRecivingId(prev => [...prev, item.id])
         await reciveEarnings({
-          income_id: `${incomeId}`
+          income_id: `${item.id}`
         })
 
         toast.success(t('profile.earnings.receive_success'))
       }
       finally {
-        setRecivingId(prev => prev.filter(id => id !== incomeId))
+        setRecivingId(prev => prev.filter(id => id !== item.id))
         refetch()
       }
     }
@@ -256,7 +254,7 @@ export const Earnings: FC = () => {
       toast.error(errorLength < 100 ? error?.message : t('profile.earnings.receive_failed'))
     }
     finally {
-      setRecivingId(prev => prev.filter(id => id !== incomeId))
+      setRecivingId(prev => prev.filter(id => id !== item.id))
     }
   }
 
