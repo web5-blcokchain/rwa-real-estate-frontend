@@ -11,6 +11,7 @@ import { ProfileTab } from '@/enums/profile'
 import { useProfileStore } from '@/stores/profile'
 import { useUserStore } from '@/stores/user'
 import { joinImagePath } from '@/utils/url'
+import { shortAddress } from '@/utils/wallet'
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { Layout, Menu } from 'antd'
 import React from 'react'
@@ -93,7 +94,7 @@ function RouteComponent() {
           </div>
           <div className="justify-space-between ml-3 mt-1 flex flex-col">
             <div className="text-[#b5b5b5]">{t('aboutMe.welcome')}</div>
-            <div className="mt-2 text-4 font-bold">{userData?.nickname || ''}</div>
+            <div className="mt-2 text-4 font-bold">{shortAddress(_get(userData, 'wallet_address', ''))}</div>
           </div>
         </div>
         <Menu
