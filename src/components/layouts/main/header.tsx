@@ -32,7 +32,7 @@ export default function MainHeader() {
     <header className="sticky left-0 top-0 z-10 h-32 fbc bg-background px-8 text-text">
       <div className="fyc gap-8">
         <div className="text-5 text-primary">
-          <img src={logo} className="h-8" />
+          <img src={logo} className="h-12" />
         </div>
         <NavMenu className="fyc gap-8 lt-md:hidden" />
       </div>
