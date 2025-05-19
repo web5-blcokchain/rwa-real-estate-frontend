@@ -1,5 +1,6 @@
 import type { MenuProps } from 'antd'
 import apiMyInfoApi from '@/api/apiMyInfoApi'
+import logo from '@/assets/images/logo.png'
 import { LoginDialog } from '@/components/dialog/login'
 import { UserCode } from '@/enums/user'
 import { useGlobalDialogStore } from '@/stores/chat-help-dialog'
@@ -13,7 +14,6 @@ import { Button, Drawer, Dropdown } from 'antd'
 
 export default function MainHeader() {
   const [open, setOpen] = useState(false)
-  const { t } = useTranslation()
   const { pathname } = useLocation()
 
   const showDrawer = () => {
@@ -31,7 +31,9 @@ export default function MainHeader() {
   return (
     <header className="sticky left-0 top-0 z-10 h-32 fbc bg-background px-8 text-text">
       <div className="fyc gap-8">
-        <div className="text-5 text-primary">{t('header.title')}</div>
+        <div className="text-5 text-primary">
+          <img src={logo} className="h-8" />
+        </div>
         <NavMenu className="fyc gap-8 lt-md:hidden" />
       </div>
 
