@@ -13,12 +13,32 @@ export const WalletSelector: FC<{
 
   const [selectedWallet, setSelectedWallet] = walletState
 
+  const [walletList, setWalletList] = useState<ConnectedWallet[]>([])
+
+  useEffect(() => {
+    if (wallets.length === 0) {
+      return
+    }
+
+    const allowWallets = wallets.filter((wallet) => {
+      return wallet.connectorType !== 'embedded'
+    })
+
+    if (allowWallets.length === 0) {
+      return
+    }
+
+    setWalletList(allowWallets)
+
+    setSelectedWallet(allowWallets[0])
+  }, [wallets])
+
   return (
     <Waiting for={ready}>
       <div className="flex flex-col gap-2">
         <div className="text-sm text-gray-500">{title}</div>
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-          {wallets.map(wallet => (
+          {walletList.map(wallet => (
             <div
               key={wallet.address}
               className={cn(
