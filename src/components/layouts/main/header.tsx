@@ -221,9 +221,9 @@ function RightMenu() {
 
 const UserMenu: FC = () => {
   const navigate = useNavigate()
-  const { user, logout, linkWallet } = usePrivy()
+  const { logout, linkWallet } = usePrivy()
   const { t } = useTranslation()
-  const { setCode, setUserData } = useUserStore()
+  const { userData, setCode, setUserData } = useUserStore()
 
   async function handleLogout() {
     logout()
@@ -279,7 +279,7 @@ const UserMenu: FC = () => {
       <div className="fyc gap-1 clickable">
         <div className="i-material-symbols-account-circle-outline size-5 bg-white"></div>
         <div className="text-4 text-white">
-          {shortAddress(_get(user?.wallet, 'address', ''))}
+          {shortAddress(_get(userData, 'wallet_address', ''))}
         </div>
         <div className="i-ic-round-keyboard-arrow-down size-5 bg-white"></div>
       </div>
