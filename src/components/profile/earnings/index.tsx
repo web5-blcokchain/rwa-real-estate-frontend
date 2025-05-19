@@ -235,7 +235,8 @@ export const Earnings: FC = () => {
     }
     catch (error: any) {
       console.error(error)
-      toast.error(error?.message || t('profile.earnings.receive_failed'))
+      const errorLength = _get(error?.message, 'length', 0)
+      toast.error(errorLength < 100 ? error?.message : t('profile.earnings.receive_failed'))
     }
     finally {
       setRecivingId(prev => prev.filter(id => id !== incomeId))
