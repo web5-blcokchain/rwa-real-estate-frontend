@@ -26,7 +26,7 @@ export default function LoginPrivyPanel() {
       token: token!,
       email: user.email?.address
     })
-  }, [user?.email?.address, user?.wallet?.address, token])
+  }, [user?.email?.address, token])
 
   if (!ready) {
     return (
