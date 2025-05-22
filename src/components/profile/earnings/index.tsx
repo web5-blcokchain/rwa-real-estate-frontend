@@ -37,7 +37,7 @@ export const Earnings: FC = () => {
   const columns: TableProps['columns'] = [
     {
       title: 'Date',
-      dataIndex: 'create_date',
+      dataIndex: 'income_date',
       render(value) {
         return (
           <div>
