@@ -9,7 +9,6 @@ import PropertyTokenABI from '@/contract/PropertyToken.json'
 import TradingManagerABI, { address as TradingManagerAddress } from '@/contract/TradingManager.json'
 import { useCommonDataStore } from '@/stores/common-data'
 import { joinImagesPath } from '@/utils/url'
-import { useWallets } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
@@ -24,7 +23,6 @@ function RouteComponent() {
   const { t } = useTranslation()
   const router = useRouter()
   const navigate = useNavigate()
-  const { ready, wallets } = useWallets()
   const [wallet, setWallet] = useState<ConnectedWallet | null>(null)
   const [isApproving, setIsApproving] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
@@ -283,20 +281,13 @@ function RouteComponent() {
   }
 
   useEffect(() => {
-    if (ready) {
-      const [firstWallet] = wallets
-      if (firstWallet) {
-        setWallet(firstWallet)
-      }
-    }
-
     if (!item) {
       toast.error(t('properties.payment.asset_not_found'))
       navigate({
         to: '/profile'
       })
     }
-  }, [item, navigate, params, t, ready, wallets])
+  }, [item, navigate, params, t])
 
   if (!item) {
     return null

@@ -9,7 +9,6 @@ import QuantitySelector from '@/components/common/quantity-selector'
 import SimpleERC20ABI from '@/contract/SimpleERC20.json'
 import TradingManagerABI from '@/contract/TradingManager.json'
 import { joinImagesPath } from '@/utils/url'
-import { useWallets } from '@privy-io/react-auth'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { createFileRoute, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button, Select, Spin } from 'antd'
@@ -26,7 +25,6 @@ function RouteComponent() {
   const { t } = useTranslation()
   const router = useRouter()
   const navigate = useNavigate()
-  const { ready, wallets } = useWallets()
   const [wallet, setWallet] = useState<ConnectedWallet | null>(null)
 
   const [item, setItem] = useState<any>(null)
@@ -210,15 +208,6 @@ function RouteComponent() {
       setIsProcessing(false) // 无论成功或失败，最终都设置为 false
     }
   }
-
-  useEffect(() => {
-    if (ready) {
-      const [firstWallet] = wallets
-      if (firstWallet) {
-        setWallet(firstWallet)
-      }
-    }
-  }, [navigate, t, ready, wallets])
 
   const renderAssetSelection = () => (
     <div className="rounded-xl bg-[#202329] p-6 space-y-4">
