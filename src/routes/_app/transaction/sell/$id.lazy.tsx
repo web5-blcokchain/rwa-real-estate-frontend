@@ -122,11 +122,7 @@ function RouteComponent() {
         const approveAmount = order.amount * BigInt(2)
         await propertyTokenContract.approve(TradingManagerABI.address, approveAmount)
         // 再次检查
-        const newAllowance = await propertyTokenContract.allowance(userAddress, TradingManagerABI.address)
-        if (newAllowance < order.amount) {
-          toast.error(t('payment.errors.token_approve_failed'))
-          return
-        }
+        await propertyTokenContract.allowance(userAddress, TradingManagerABI.address)
       }
 
       // 显示交易处理中
