@@ -397,6 +397,12 @@
       "invalid_merkle_proof": "Invalid Merkle proof",
       "receive_success": "Earnings claimed successfully",
       "receive_failed": "Failed to claim earnings"
+    },
+    "recording": {
+      "primary_subscription": "Invest",
+      "asset_redemption": "Redemption",
+      "sell_order": "Sell",
+      "buy_order": "Buy"
     }
   },
   "transaction": {

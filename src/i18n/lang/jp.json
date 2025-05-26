@@ -397,6 +397,12 @@
       "invalid_merkle_proof": "Merkle証明が無効です",
       "receive_success": "収益の受け取りに成功しました",
       "receive_failed": "収益の受け取りに失敗しました"
+    },
+    "recording": {
+      "primary_subscription": "投資",
+      "asset_redemption": "買い戻す",
+      "sell_order": "売ります",
+      "buy_order": "買います"
     }
   },
   "transaction": {

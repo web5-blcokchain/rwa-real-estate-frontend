@@ -397,6 +397,12 @@
       "invalid_merkle_proof": "Merkle证明无效",
       "receive_success": "收益领取成功",
       "receive_failed": "收益领取失败"
+    },
+    "recording": {
+      "primary_subscription": "投资",
+      "asset_redemption": "赎回",
+      "sell_order": "卖出",
+      "buy_order": "买入"
     }
   },
   "transaction": {

@@ -53,10 +53,16 @@ function Recording() {
         let typeName
         switch (value) {
           case 1:
-            typeName = 'Property Investment'
+            typeName = t('profile.recording.primary_subscription')
             break
           case 2:
-            typeName = 'Property Sell'
+            typeName = t('profile.recording.asset_redemption')
+            break
+          case 3:
+            typeName = t('profile.recording.sell_order')
+            break
+          case 4:
+            typeName = t('profile.recording.buy_order')
             break
         }
 
