@@ -36,6 +36,13 @@ function RouteComponent() {
   const isFirstCheck = useRef(true)
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }, [])
+
+  useEffect(() => {
     if (!data || isLoading)
       return
 
