@@ -9,24 +9,75 @@ let ethersSigner: ethers.Signer | null = null
  * 获取 Ethers Provider 实例（单例模式）
  * @returns ethers.JsonRpcProvider 实例
  */
-export function getEthersProvider(): ethers.JsonRpcProvider {
+export async function getEthersProvider(): Promise<ethers.JsonRpcProvider> {
   if (!ethersProviderInstance) {
     // 修复: 使用正确的构造方式创建 JsonRpcProvider
     ethersProviderInstance = new ethers.JsonRpcProvider(Env.web3.rpc)
 
-    // 如果有设置链 ID，确保当前网络是正确的链
-    if (Env.web3.chainId) {
-      const targetChainId = Number.parseInt(Env.web3.chainId, 10)
-      ethersProviderInstance.getNetwork().then((network) => {
-        if (Number(network.chainId) !== targetChainId) {
-          console.warn(`当前连接的链 ID (${network.chainId}) 与目标链 ID (${targetChainId}) 不匹配`)
-        }
-      }).catch((error) => {
-        console.error('获取网络信息失败:', error)
-      })
+    const network = await ethersProviderInstance.getNetwork()
+    console.log('当前网络', network)
+
+    const targetChainId = Number.parseInt(Env.web3.chainId, 10)
+    if (Number(network.chainId) !== targetChainId) {
+      console.warn(`当前连接的链 ID (${network.chainId}) 与目标链 ID (${targetChainId}) 不匹配`)
     }
   }
+
   return ethersProviderInstance
+}
+
+export async function ensureEthersNetwork() {
+  if (typeof window.ethereum === 'undefined') {
+    console.error('未检测到 Web3 钱包（如 MetaMask）')
+    return
+  }
+
+  const targetChainId = Number.parseInt(Env.web3.chainId, 10)
+
+  try {
+    const currentChainId = await window.ethereum.request({ method: 'eth_chainId' })
+
+    if (currentChainId === targetChainId) {
+      console.log('已连接到目标网络')
+      return
+    }
+
+    // 尝试切换到目标网络
+    await window.ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: targetChainId }]
+    })
+    console.log('成功切换到目标网络')
+  }
+  catch (switchError: any) {
+    // 错误代码 4902 表示钱包中未添加该网络
+    if (switchError.code === 4902) {
+      try {
+        // 尝试添加目标网络
+        await window.ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [{
+            chainId: targetChainId,
+            chainName: 'Hardhat Testnet',
+            rpcUrls: [Env.web3.rpc],
+            nativeCurrency: {
+              name: 'ETH',
+              symbol: 'ETH',
+              decimals: 18
+            },
+            blockExplorerUrls: []
+          }]
+        })
+        console.log('成功添加并切换到目标网络')
+      }
+      catch (addError) {
+        console.error('添加网络失败:', addError)
+      }
+    }
+    else {
+      console.error('切换网络失败:', switchError)
+    }
+  }
 }
 
 /**
@@ -37,7 +88,7 @@ export async function getEthersSigner(): Promise<ethers.Signer> {
   if (!ethersSigner) {
     try {
       // 使用已经创建的 provider
-      const provider = getEthersProvider()
+      const provider = await getEthersProvider()
       // 对于 JsonRpcProvider，我们不能直接获取 signer，需要配置一个默认账户
       if (!provider) {
         throw new Error('Provider 未初始化')
@@ -70,7 +121,7 @@ export function resetEthersInstances(): void {
  */
 export async function getContractBalanceEthers(contractAddress: string): Promise<string> {
   try {
-    const provider = getEthersProvider()
+    const provider = await getEthersProvider()
     const balance = await provider.getBalance(contractAddress)
     return ethers.formatEther(balance)
   }
@@ -87,10 +138,10 @@ export async function getContractBalanceEthers(contractAddress: string): Promise
  * @param signerOrProvider Signer或Provider
  * @returns ethers.Contract
  */
-export function getEthersContract(address: string, abi: any, signerOrProvider: ethers.Signer | ethers.Provider | null = null) {
+export async function getEthersContract(address: string, abi: any, signerOrProvider: ethers.Signer | ethers.Provider | null = null) {
   try {
     if (!signerOrProvider) {
-      signerOrProvider = getEthersProvider()
+      signerOrProvider = await getEthersProvider()
     }
     return new ethers.Contract(address, abi, signerOrProvider)
   }
