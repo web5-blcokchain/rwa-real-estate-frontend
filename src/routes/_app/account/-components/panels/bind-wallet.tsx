@@ -1,6 +1,7 @@
 import type { ConnectedWallet } from '@privy-io/react-auth'
 import { WalletSelector } from '@/components/common/wallet-selector'
 import { useUserStore } from '@/stores/user'
+import { ensurePrivyNetwork } from '@/utils/privy'
 import { usePrivy } from '@privy-io/react-auth'
 import { Button } from 'antd'
 import { useSteps } from '../steps-provider'
@@ -19,6 +20,8 @@ export default function BindWalletPanel() {
     if (!wallet) {
       return
     }
+
+    ensurePrivyNetwork(wallet)
 
     setRegisterData({
       wallet_address: wallet.address

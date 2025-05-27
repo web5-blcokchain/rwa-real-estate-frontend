@@ -4,13 +4,13 @@ import { PrivyProvider } from '@privy-io/react-auth'
 import { mainnet } from 'viem/chains'
 
 // 定义本地Hardhat网络
-const hardhatLocal: Chain = {
+export const goChain: Chain = {
   id: Number.parseInt(Env.web3.chainId),
-  name: 'Hardhat Local',
+  name: 'GoChain Testnet',
   nativeCurrency: {
     decimals: 18,
-    name: 'Ethereum',
-    symbol: 'ETH'
+    name: 'GO',
+    symbol: 'GO'
   },
   rpcUrls: {
     default: { http: [Env.web3.rpc] }
@@ -27,7 +27,8 @@ export const AppPrivyProvider: FC = ({ children }) => {
             createOnLogin: 'all-users'
           }
         },
-        supportedChains: [mainnet, hardhatLocal]
+        supportedChains: [mainnet, goChain],
+        defaultChain: goChain
       }}
     >
       {children}

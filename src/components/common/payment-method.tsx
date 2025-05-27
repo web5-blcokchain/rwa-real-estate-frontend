@@ -1,6 +1,7 @@
 import type { ConnectedWallet } from '@privy-io/react-auth'
 import type { Dispatch, SetStateAction } from 'react'
 import { useUserStore } from '@/stores/user'
+import { ensurePrivyNetwork } from '@/utils/privy'
 import { useWallets } from '@privy-io/react-auth'
 
 export const PaymentMethod: FC<{
@@ -23,6 +24,7 @@ export const PaymentMethod: FC<{
     const wallet = wallets.find(wallet => wallet.address === userData.wallet_address)
     if (wallet) {
       setSelectedWallet(wallet)
+      ensurePrivyNetwork(wallet)
     }
     else {
       setSelectedWallet(null)
