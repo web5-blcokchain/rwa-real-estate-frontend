@@ -275,39 +275,10 @@ function RouteComponent() {
 
 const Request: FC = () => {
   return (
-    <>
-      <div className="fbc">
-        <div className="fyc gap-4">
-          <SvgIcon name="token" className="size-6" />
-          <div>
-            <div className="text-3.5 text-[#b5b5b5]">Token Type</div>
-            <div className="text-4 font-medium">RWA Token</div>
-          </div>
-        </div>
-        <div>
-          <div className="text-right text-3.5">Receiving Amount</div>
-          <div className="text-right text-4 font-medium">1000 RWA</div>
-        </div>
-      </div>
-
-      <div className="space-y-4">
-        <IInfoField
-          horizontal
-          label="Transaction Status"
-          value="Payment Successful"
-          labelClass="text-3.5"
-          valueClass="text-green! text-3.5"
-        />
-
-        <IInfoField
-          horizontal
-          label="Payment Amount"
-          value="0.2 ETH"
-          labelClass="text-3.5"
-          valueClass="text-3.5"
-        />
-      </div>
-    </>
+    <Waiting
+      className="fcc"
+      iconClass="size-8"
+    />
   )
 }
 
