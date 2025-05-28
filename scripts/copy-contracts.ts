@@ -1,8 +1,9 @@
-import process from "process"
+import process from 'node:process'
+import { fileURLToPath } from 'node:url'
 import { resolve } from 'pathe'
 import fs from 'fs-extra'
 import { config } from 'dotenv'
-import { fileURLToPath } from "url"
+import { select } from '@inquirer/prompts'
 
 const r = (path: string) => fileURLToPath(new URL(path, import.meta.url))
 
@@ -24,10 +25,6 @@ const ADDRESS_MAP = {
   'RewardManager': 'CONTRACT_REWARDMANAGER_ADDRESS'
 }
 
-const needContractAddress = [
-  'PropertyToken'
-]
-
 const [, , root] = process.argv
 
 if (!root) {
@@ -36,7 +33,15 @@ if (!root) {
 }
 
 const rootPath = resolve(root)
-const targetPath = r('../src/contract')
+const mode = await select({
+  message: '请选择合约 ABI 生成模式',
+  choices: [
+    { name: '开发模式', value: 'dev' },
+    { name: '生产模式', value: 'prod' }
+  ]
+})
+
+const targetPath = r(`../src/contract/${mode}`)
 
 config({
   path: resolve(rootPath, '.env.example')
@@ -49,14 +54,14 @@ if (!fs.existsSync(contractsPath)) {
   process.exit(1)
 }
 
-const contractList = CONTRACTS.map(contractName => {
+const contractList = CONTRACTS.map((contractName) => {
   const filePath = resolve(contractsPath, `${contractName}.sol`, `${contractName}.json`)
 
   try {
     const content = fs.readJsonSync(filePath)
     return {
       name: contractName,
-      address: process.env[ADDRESS_MAP[contractName]],
+      address: process.env[ADDRESS_MAP[contractName as keyof typeof ADDRESS_MAP]],
       abi: content.abi
     }
   } catch (error) {
@@ -71,6 +76,7 @@ fs.ensureDirSync(targetPath)
 // 生成 ABI JSON 文件
 contractList.forEach(contract => {
   const abiFilePath = resolve(targetPath, `${contract.name}.json`)
+  fs.ensureDirSync(targetPath)
   fs.writeJsonSync(abiFilePath, {
     abi: contract.abi,
     address: contract.address
@@ -79,55 +85,30 @@ contractList.forEach(contract => {
 })
 
 // 生成 index.ts 文件
-const indexContent = `import { getWeb3Instance } from '@/utils/web3'
-${contractList.map(contract => `import ${contract.name} from './${contract.name}.json'`).join('\n')}
+const indexContent = `
+// 此文件由脚本自动生成
+const devModules = import.meta.glob('./dev/*.json', { eager: true })
+const prodModules = import.meta.glob('./prod/*.json', { eager: true })
 
-${contractList.map(contract => {
-  // 如果合约需要动态地址
-  if (needContractAddress.includes(contract.name)) {
-    return `
 /**
- * 获取 ${contract.name} 合约实例
- * @param contractAddress ${contract.name} 合约地址，每个房产都有自己的 ${contract.name} 合约
- * @returns ${contract.name} 合约实例
+ * 获取合约 ABI 和地址
+ * @param contractName 合约文件名（如 PropertyToken）
  */
-export function use${contract.name}Contract(contractAddress?: string) {
-  if (!contractAddress) return null
-
-  try {
-    const web3 = getWeb3Instance()
-    const contract = new web3.eth.Contract(
-      ${contract.name}.abi,
-      contractAddress
-    )
-
-    return contract
-  } catch (error) {
-    console.error('Failed to get ${contract.name} contract:', error)
+export function getContracts(contractName: string) {
+  const mode = import.meta.env.MODE === 'production' ? 'prod' : 'dev'
+  const modules = mode === 'prod' ? prodModules : devModules
+  const fileKey = \`./\${mode}/\${contractName}.json\`
+  const mod = modules[fileKey] as Record<string, any>
+  if (!mod) {
+    console.error(\`未找到合约 \${contractName} 的 ABI 文件\`)
     return null
   }
-}`
-  } 
-  // 常规合约使用固定地址
-  else {
-    return `
-/**
- * 获取 ${contract.name} 合约实例
- * @returns ${contract.name} 合约实例
- */
-export function use${contract.name}Contract() {
-  const web3 = getWeb3Instance()
-  const contract = new web3.eth.Contract(
-    ${contract.name}.abi,
-    '${contract.address}'
-  )
-
-  return contract
-}`
-  }
-}).join('\n')}
+  // Vite eager glob 导入的 json 结构
+  return mod.default || mod
+}
 `
 
-const indexFilePath = resolve(targetPath, 'index.ts')
+const indexFilePath = resolve(r('../src/contract'), 'index.ts')
+fs.ensureDirSync(r('../src/contract'))
 fs.writeFileSync(indexFilePath, indexContent)
 console.log(`已生成 index.ts 文件: ${indexFilePath}`)

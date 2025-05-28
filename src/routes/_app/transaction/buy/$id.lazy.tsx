@@ -5,8 +5,7 @@ import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
 import { PaymentMethod } from '@/components/common/payment-method'
 import QuantitySelector from '@/components/common/quantity-selector'
-import SimpleERC20ABI from '@/contract/SimpleERC20.json'
-import TradingManagerABI from '@/contract/TradingManager.json'
+import { getContracts } from '@/contract'
 import { useCommonDataStore } from '@/stores/common-data'
 import { joinImagesPath } from '@/utils/url'
 import { useMutation } from '@tanstack/react-query'
@@ -53,19 +52,22 @@ function RouteComponent() {
 
     setBuyLoading(true) // 开始loading
     try {
+      const SimpleERC20 = getContracts('SimpleERC20')
+      const TradingManager = getContracts('TradingManager')
+
       const ethProvider = await wallet.getEthereumProvider()
       const provider = new ethers.BrowserProvider(ethProvider)
       const signer = await provider.getSigner()
 
       const usdtContract = new ethers.Contract(
-        SimpleERC20ABI.address,
-        SimpleERC20ABI.abi,
+        SimpleERC20.address,
+        SimpleERC20.abi,
         signer
       )
 
       const tradingManagerContract = new ethers.Contract(
-        TradingManagerABI.address,
-        TradingManagerABI.abi,
+        TradingManager.address,
+        TradingManager.abi,
         signer
       )
 
@@ -104,7 +106,7 @@ function RouteComponent() {
         }
 
         // 检查USDT授权额度
-        const currentAllowance = await usdtContract.allowance(investorAddress, TradingManagerABI.address)
+        const currentAllowance = await usdtContract.allowance(investorAddress, TradingManager.address)
         console.log(`当前USDT授权额度: ${ethers.formatUnits(currentAllowance, 18)}`)
 
         // 如果授权额度不足，进行授权
@@ -116,16 +118,16 @@ function RouteComponent() {
 
           // 先清零授权
           console.log(`清零当前授权...`)
-          const resetTx = await usdtContract.approve(TradingManagerABI.address, 0)
+          const resetTx = await usdtContract.approve(TradingManager.address, 0)
           await resetTx.wait()
 
           // 设置新的授权额度
           console.log(`设置新的授权额度: ${ethers.formatUnits(approveAmount, 18)} USDT`)
-          const approveTx = await usdtContract.approve(TradingManagerABI.address, approveAmount)
+          const approveTx = await usdtContract.approve(TradingManager.address, approveAmount)
           await approveTx.wait()
 
           // 再次检查授权额度
-          const newAllowance = await usdtContract.allowance(investorAddress, TradingManagerABI.address)
+          const newAllowance = await usdtContract.allowance(investorAddress, TradingManager.address)
           console.log(`新的USDT授权额度: ${ethers.formatUnits(newAllowance, 18)}`)
 
           if (newAllowance < requiredUsdt) {

@@ -3,8 +3,7 @@ import type { TableProps } from 'antd'
 import { getEarningList, reciveEarnings } from '@/api/profile'
 import { PaymentMethod } from '@/components/common/payment-method'
 import TableComponent from '@/components/common/table-component'
-import PropertyTokenABI from '@/contract/PropertyToken.json'
-import RewardManagerABI from '@/contract/RewardManager.json'
+import { getContracts } from '@/contract'
 import { MerkleTree } from '@/utils/merkle-tree'
 import { shortAddress } from '@/utils/wallet'
 import { useWallets } from '@privy-io/react-auth'
@@ -156,19 +155,22 @@ export const Earnings: FC = () => {
     try {
       setRecivingId(prev => [...prev, item.id])
 
+      const PropertyToken = getContracts('PropertyToken')
+      const RewardManager = getContracts('RewardManager')
+
       // 获取 provider、signer、合约
       const ethProvider = await wallet.getEthereumProvider()
       const provider = new ethers.BrowserProvider(ethProvider)
       const signer = await provider.getSigner()
 
       const rewardManager = new ethers.Contract(
-        RewardManagerABI.address,
-        RewardManagerABI.abi,
+        RewardManager.address,
+        RewardManager.abi,
         signer
       )
       const propertyTokenContract = new ethers.Contract(
         item.contract_address,
-        PropertyTokenABI.abi,
+        PropertyToken.abi,
         signer
       )
 

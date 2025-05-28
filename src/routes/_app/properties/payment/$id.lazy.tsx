@@ -5,8 +5,7 @@ import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
 import { PaymentMethod } from '@/components/common/payment-method'
 import QuantitySelector from '@/components/common/quantity-selector'
-import PropertyManagerABI from '@/contract/PropertyManager.json'
-import SimpleERC20ABI from '@/contract/SimpleERC20.json'
+import { getContracts } from '@/contract'
 import { useCommonDataStore } from '@/stores/common-data'
 import { joinImagesPath } from '@/utils/url'
 import { useMutation } from '@tanstack/react-query'
@@ -67,8 +66,11 @@ function RouteComponent() {
         return
       }
 
+      const PropertyManager = getContracts('PropertyManager')
+      const SimpleERC20 = getContracts('SimpleERC20')
+
       // PropertyManager 合约地址应从配置或 item 里获取，不能用 propertyToken 地址
-      const propertyManagerAddress = PropertyManagerABI.address || process.env.REACT_APP_PROPERTY_MANAGER_ADDRESS
+      const propertyManagerAddress = PropertyManager.address || process.env.REACT_APP_PROPERTY_MANAGER_ADDRESS
       if (!propertyManagerAddress || !isAddress(propertyManagerAddress)) {
         toast.error(t('payment.errors.invalid_contract'))
         return
@@ -82,14 +84,14 @@ function RouteComponent() {
 
       // USDT合约
       const usdtContract = new ethers.Contract(
-        SimpleERC20ABI.address,
-        SimpleERC20ABI.abi,
+        SimpleERC20.address,
+        SimpleERC20.abi,
         signer
       )
       // PropertyManager合约
       const propertyManagerContract = new ethers.Contract(
         propertyManagerAddress,
-        PropertyManagerABI.abi,
+        PropertyManager.abi,
         signer
       )
 

@@ -4,8 +4,7 @@ import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
 import { PaymentMethod } from '@/components/common/payment-method'
-import PropertyTokenABI from '@/contract/PropertyToken.json'
-import TradingManagerABI from '@/contract/TradingManager.json'
+import { getContracts } from '@/contract'
 import { useCommonDataStore } from '@/stores/common-data'
 import { joinImagesPath } from '@/utils/url'
 import { useMutation } from '@tanstack/react-query'
@@ -62,13 +61,16 @@ function RouteComponent() {
 
     setSellLoading(true) // 开始loading
     try {
+      const PropertyToken = getContracts('PropertyToken')
+      const TradingManager = getContracts('TradingManager')
+
       const ethProvider = await wallet.getEthereumProvider()
       const provider = new ethers.BrowserProvider(ethProvider)
       const signer = await provider.getSigner()
 
       const tradingManagerContract = new ethers.Contract(
-        TradingManagerABI.address,
-        TradingManagerABI.abi,
+        TradingManager.address,
+        TradingManager.abi,
         signer
       )
 
@@ -98,7 +100,7 @@ function RouteComponent() {
       const propertyTokenAddress = order.token
       const propertyTokenContract = new ethers.Contract(
         propertyTokenAddress,
-        PropertyTokenABI.abi,
+        PropertyToken.abi,
         signer
       )
       const userAddress = await signer.getAddress()
@@ -113,16 +115,16 @@ function RouteComponent() {
       }
 
       // 检查代币授权额度
-      const currentAllowance = await propertyTokenContract.allowance(userAddress, TradingManagerABI.address)
+      const currentAllowance = await propertyTokenContract.allowance(userAddress, TradingManager.address)
       if (currentAllowance < order.amount) {
         toast.info(t('payment.info.authorizing')) // 授权提示
         // 先清零授权
-        await propertyTokenContract.approve(TradingManagerABI.address, 0)
+        await propertyTokenContract.approve(TradingManager.address, 0)
         // 授权更大额度
         const approveAmount = order.amount * BigInt(2)
-        await propertyTokenContract.approve(TradingManagerABI.address, approveAmount)
+        await propertyTokenContract.approve(TradingManager.address, approveAmount)
         // 再次检查
-        await propertyTokenContract.allowance(userAddress, TradingManagerABI.address)
+        await propertyTokenContract.allowance(userAddress, TradingManager.address)
       }
 
       // 显示交易处理中

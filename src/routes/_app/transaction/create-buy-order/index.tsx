@@ -6,8 +6,7 @@ import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
 import { PaymentMethod } from '@/components/common/payment-method'
 import QuantitySelector from '@/components/common/quantity-selector'
-import SimpleERC20ABI from '@/contract/SimpleERC20.json'
-import TradingManagerABI from '@/contract/TradingManager.json'
+import { getContracts } from '@/contract'
 import { joinImagesPath } from '@/utils/url'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { createFileRoute, useNavigate, useRouter } from '@tanstack/react-router'
@@ -107,19 +106,22 @@ function RouteComponent() {
         return
       }
 
+      const SimpleERC20 = getContracts('SimpleERC20')
+      const TradingManager = getContracts('TradingManager')
+
       const ethProvider = await wallet.getEthereumProvider()
       const provider = new ethers.BrowserProvider(ethProvider)
       const signer = await provider.getSigner()
 
       const usdtContract = new ethers.Contract(
-        SimpleERC20ABI.address,
-        SimpleERC20ABI.abi,
+        SimpleERC20.address,
+        SimpleERC20.abi,
         signer
       )
 
       const tradingManagerContract = new ethers.Contract(
-        TradingManagerABI.address,
-        TradingManagerABI.abi,
+        TradingManager.address,
+        TradingManager.abi,
         signer
       )
 
@@ -147,7 +149,7 @@ function RouteComponent() {
       // 检查USDT授权额度
       const currentAllowance = await usdtContract.allowance(
         signerAddress,
-        TradingManagerABI.address
+        TradingManager.address
       )
 
       // 如果授权额度不足，进行授权
@@ -156,7 +158,7 @@ function RouteComponent() {
 
         // 授权一个足够大的额度
         const approveTx = await usdtContract.approve(
-          TradingManagerABI.address,
+          TradingManager.address,
           requiredUsdt
         )
 
@@ -166,7 +168,7 @@ function RouteComponent() {
         // 再次检查授权额度
         const newAllowance = await usdtContract.allowance(
           signerAddress,
-          TradingManagerABI.address
+          TradingManager.address
         )
 
         if (newAllowance < requiredUsdt) {

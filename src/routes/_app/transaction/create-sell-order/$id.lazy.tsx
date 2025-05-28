@@ -5,8 +5,7 @@ import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
 import { PaymentMethod } from '@/components/common/payment-method'
 import QuantitySelector from '@/components/common/quantity-selector'
-import PropertyTokenABI from '@/contract/PropertyToken.json'
-import TradingManagerABI, { address as TradingManagerAddress } from '@/contract/TradingManager.json'
+import { getContracts } from '@/contract'
 import { useCommonDataStore } from '@/stores/common-data'
 import { joinImagesPath } from '@/utils/url'
 import { useMutation } from '@tanstack/react-query'
@@ -64,6 +63,9 @@ function RouteComponent() {
     // wallet.address = '0xA5922D51BfD5b9381f1FF32418FddFdE35582cAC'
 
     try {
+      const PropertyToken = getContracts('PropertyToken')
+      const TradingManager = getContracts('TradingManager')
+
       // 获取以太坊提供者并创建签名者
       const ethProvider = await wallet.getEthereumProvider()
       const provider = new ethers.BrowserProvider(ethProvider)
@@ -82,17 +84,17 @@ function RouteComponent() {
       try {
         // 打印合约地址以便检查
         console.log(`PropertyToken 合约地址: ${item.contract_address}`)
-        console.log(`TradingManager 合约地址: ${TradingManagerAddress}`)
+        console.log(`TradingManager 合约地址: ${TradingManager.address}`)
 
         const propertyTokenContract = new ethers.Contract(
           item.contract_address,
-          PropertyTokenABI.abi,
+          PropertyToken.abi,
           signer
         )
 
         const tradingManagerContract = new ethers.Contract(
-          TradingManagerABI.address,
-          TradingManagerABI.abi,
+          TradingManager.address,
+          TradingManager.abi,
           signer
         )
 
@@ -139,7 +141,7 @@ function RouteComponent() {
         // 7. 检查授权
         const currentTokenAllowance = await propertyTokenContract.allowance(
           wallet.address,
-          TradingManagerAddress
+          TradingManager.address
         )
 
         console.log(`当前代币授权额度: ${ethers.formatUnits(currentTokenAllowance, 18)}`)
@@ -151,7 +153,7 @@ function RouteComponent() {
 
           try {
             const tokenApproveTx = await propertyTokenContract.approve(
-              TradingManagerAddress,
+              TradingManager.address,
               tokenAmount
             )
 
@@ -165,7 +167,7 @@ function RouteComponent() {
             // 验证授权是否成功
             const newAllowance = await propertyTokenContract.allowance(
               wallet.address,
-              TradingManagerAddress
+              TradingManager.address
             )
             console.log(`新的授权额度: ${ethers.formatUnits(newAllowance, 18)}`)
 
