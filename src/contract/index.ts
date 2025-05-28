@@ -2,9 +2,6 @@
 const devModules = import.meta.glob('./dev/*.json', { eager: true })
 const prodModules = import.meta.glob('./prod/*.json', { eager: true })
 
-console.log(devModules)
-console.log(prodModules)
-
 /**
  * 获取合约 ABI 和地址
  * @param contractName 合约文件名（如 PropertyToken）
