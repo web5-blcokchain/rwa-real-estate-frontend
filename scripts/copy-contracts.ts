@@ -106,7 +106,7 @@ export function getContracts(contractName: string) {
   // Vite eager glob 导入的 json 结构
   return mod.default || mod
 }
-`
+`.trimStart()
 
 const indexFilePath = resolve(r('../src/contract'), 'index.ts')
 fs.ensureDirSync(r('../src/contract'))
