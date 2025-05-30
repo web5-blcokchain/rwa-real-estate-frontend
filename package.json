@@ -8,6 +8,7 @@
     "prepare": "simple-git-hooks",
     "dev": "vite",
     "build": "vite build",
+    "build:preview": "vite build --mode development",
     "lint": "eslint --cache",
     "preview": "vite preview",
     "copy-contracts": "esno scripts/copy-contracts.ts"
