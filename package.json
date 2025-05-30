@@ -10,6 +10,7 @@
     "build": "esno scripts/build.ts",
     "lint": "eslint --cache",
     "preview": "vite preview",
+    "rebase": "esno scripts/rebase.ts",
     "copy-contracts": "esno scripts/copy-contracts.ts"
   },
   "dependencies": {
