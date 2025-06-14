@@ -13,6 +13,7 @@ interface StepsContextType {
 
 const StepsContext = createContext<StepsContextType | undefined>(undefined)
 
+// 取消第二个步骤
 export enum CreateAccountStep {
   LoginPrivy,
   // BindWallet,
