@@ -3,14 +3,13 @@ import apiMyInfoApi from '@/api/apiMyInfoApi'
 import logo from '@/assets/images/logo.png'
 import { LoginDialog } from '@/components/dialog/login'
 import { UserCode } from '@/enums/user'
-import { useGlobalDialogStore } from '@/stores/chat-help-dialog'
 import { useUserStore } from '@/stores/user'
 import { clearToken, setToken } from '@/utils/user'
 import { shortAddress } from '@/utils/wallet'
 import { usePrivy } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
 import { Link, useLocation, useNavigate } from '@tanstack/react-router'
-import { Button, Drawer, Dropdown } from 'antd'
+import { Drawer, Dropdown } from 'antd'
 
 export default function MainHeader() {
   const [open, setOpen] = useState(false)
@@ -29,20 +28,19 @@ export default function MainHeader() {
   }, [pathname])
 
   return (
-    <header className="sticky left-0 top-0 z-10 h-32 fbc bg-background px-8 text-text">
+    <header className="sticky left-0 top-0 z-10 fbc bg-background px-107px py-6px text-text max-md:px-8px max-md:py-1">
       <div className="fyc gap-8">
         <div className="text-5 text-primary">
-          <img src={logo} className="h-12" />
+          <img src={logo} className="h-18 transform max-md:h-10 -translate-y-6%" />
         </div>
         <NavMenu className="fyc gap-8 lt-md:hidden" />
       </div>
-
       <div className="fyc gap-4 lt-lg:hidden">
         <RightMenu />
       </div>
 
       <div className="hidden lt-lg:flex">
-        <div className="i-material-symbols-menu-rounded size-10" onClick={showDrawer}></div>
+        <div className="i-material-symbols-menu-rounded size-10 max-md:h-6 max-md:w-6" onClick={showDrawer}></div>
       </div>
 
       <Drawer
@@ -66,7 +64,7 @@ export default function MainHeader() {
 
           <NavMenu
             className={cn(
-              'flex flex-col items-end justify-center gap-6',
+              'flex flex-col items-end justify-center gap-6 ',
               'text-6'
             )}
           />
@@ -116,8 +114,8 @@ function RightMenu() {
   const { t } = useTranslation()
   const [, setUserObj] = useState<Record<string, any>>()
   const setUserData = useUserStore(state => state.setUserData)
-  const { open } = useGlobalDialogStore()
-  const navigate = useNavigate()
+  // const { open } = useGlobalDialogStore()
+  // const navigate = useNavigate()
   const { setCode } = useUserStore()
 
   const [openLoginDialog, setOpenLoginDialog] = useState(false)
@@ -163,11 +161,11 @@ function RightMenu() {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-end gap-4 md:flex-row">
-        <div className="fyc gap-4">
+      <div className="flex flex-col items-center justify-end gap-29px md:flex-row">
+        <div className="fyc gap-29px">
           <LanguageSelect />
 
-          <div className="fyc gap-4">
+          {/* <div className="fyc gap-4">
             <div
               className="i-material-symbols-help-outline size-5 bg-white clickable"
               onClick={() => open('help')}
@@ -183,7 +181,8 @@ function RightMenu() {
               }
             >
             </div>
-          </div>
+          </div> */}
+          <div className="w-max">{t('footer.news')}</div>
         </div>
 
         <Waiting for={ready}>
@@ -194,8 +193,8 @@ function RightMenu() {
                     <UserMenu />
                   )
                 : (
-                    <div className="w-full fec space-x-4">
-                      <Button
+                    <div className="w-full fec cursor-pointer space-x-4">
+                      {/* <Button
                         className="text-white bg-transparent!"
                         onClick={() => setOpenLoginDialog(true)}
                       >
@@ -208,7 +207,10 @@ function RightMenu() {
                         })}
                       >
                         {t('header.register')}
-                      </Button>
+                      </Button> */}
+                      {t('header.login')}
+                      /
+                      {t('header.register')}
                     </div>
                   )
             }
@@ -353,10 +355,10 @@ function LanguageSelect() {
     <Dropdown menu={{ items }} placement="bottomRight">
       <div className="fyc gap-1">
         <div className="i-majesticons-globe-line size-5 bg-white"></div>
-        <div className="w-[50px] cursor-pointer text-4 text-white">
+        <div className="w-max cursor-pointer text-4 text-white">
           {lang === 'zh' ? '中文' : lang === 'en' ? 'English' : '日本語'}
         </div>
-        <div className="i-ic-round-keyboard-arrow-down size-5 bg-white"></div>
+        {/* <div className="i-ic-round-keyboard-arrow-down size-5 bg-white"></div> */}
       </div>
     </Dropdown>
   )

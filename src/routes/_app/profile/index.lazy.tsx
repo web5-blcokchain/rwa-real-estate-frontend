@@ -83,7 +83,7 @@ function RouteComponent() {
 
   return (
     <Layout className="aboutMe">
-      <Sider className="sider bg-[#181a1e]">
+      <Sider className="sider bg-[#191a1f]">
         <div className="flex justify-start pb-4 pr-4 pt-4">
           <div className="img-wrap size-16 shrink-0">
             <IImage
@@ -103,12 +103,12 @@ function RouteComponent() {
           selectedKeys={[selectedTab]}
           mode="inline"
           items={items}
-          className="bg-[#181a1e]"
+          className="bg-[#191a1f]"
           onClick={handleMenuClick}
         />
       </Sider>
 
-      <Layout className="page-layout-wrap bg-[#181a1e]">
+      <Layout className="page-layout-wrap bg-[#191a1f]">
         <Content>
           {renderContent()}
         </Content>
