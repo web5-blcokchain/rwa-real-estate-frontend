@@ -31,7 +31,7 @@ export default function MainHeader() {
     <header className="sticky left-0 top-0 z-10 fbc bg-background px-107px py-6px text-text max-md:px-8px max-md:py-1">
       <div className="fyc gap-8">
         <div className="text-5 text-primary">
-          <img src={logo} className="h-18 transform max-md:h-10 -translate-y-6%" />
+          <Link to="/home"><img src={logo} className="h-18 transform max-md:h-10 -translate-y-6%" /></Link>
         </div>
         <NavMenu className="fyc gap-8 lt-md:hidden" />
       </div>
@@ -193,7 +193,7 @@ function RightMenu() {
                     <UserMenu />
                   )
                 : (
-                    <div className="w-full fec cursor-pointer space-x-4">
+                    <div onClick={() => setOpenLoginDialog(true)} className="w-full fec cursor-pointer space-x-4">
                       {/* <Button
                         className="text-white bg-transparent!"
                         onClick={() => setOpenLoginDialog(true)}

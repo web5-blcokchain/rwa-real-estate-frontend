@@ -221,6 +221,65 @@
       "content": "加入我们的房地产投资者社区，开始您迈向财务自由的旅程。",
       "button": "开始投资",
       "button2": "了解更多"
+    },
+    "explanation": {
+      "title": "重新定义房地产的投资未来",
+      "content": "将资产转化为全球可访问的金融工具，具有真正的加密原生效用",
+      "button": "了解更多"
+    },
+    "rwaType": {
+      "rwaTitle": "真实世界资产代币新模式",
+      "rwaDesc": "从机构级资产中交换、借出、借入、循环和赚取真实收益",
+      "coinTypes": {
+        "title-1": "RWA铸稳系统",
+        "content-1": "真实世界资产抵押型稳定币发行机制",
+        "title-2": "RWA Coin领取收益",
+        "content-2": "将RWA资产产生的现金流自动或手动分配给代币持有者",
+        "title-3": "RWA Coin交易",
+        "content-3": "把现实世界的东西(比如国债、房子、黄金)变成区块链上的代币"
+      }
+    },
+    "statistics": {
+      "totalVolume": "总交易量",
+      "activeInvestors": "积极投资者",
+      "tokenizedProperties": "标记化属性",
+      "annualYield": "年回报率"
+    },
+    "investmentFeature": {
+      "frictionless": "零碎和无摩擦的房地产投资",
+      "anyone": "任何人都可以投资房地产-简单、实惠且无忧",
+      "ownership": "部分所有权",
+      "lowEntry": "以低至 100 美元的价格投资优质房地产在全球拥有一处高价值房产。",
+      "compliance": "法规遵从性",
+      "kyc": "具有强大 KYC/AML 程序的完全监管平台您的投资是安全且合规的。",
+      "liquidity": "流动性投资",
+      "secondaryMarket": "在我们的二级市场上 24/7 全天候交易您的财产代币。房地产从来没有过的流动性。",
+      "video": "视频播放",
+      "videoDesc": "观看我们的视频，了解如何投资和赚取收益。"
+    },
+    "earn": {
+      "title": "从RWA中赚取收益",
+      "content": "真实世界的资产仍然是您可以进行的最佳投资。"
+    },
+    "investorGuide": {
+      "newbieInvest": "就算你是新手，也能学老手那样投资",
+      "getInfo": "马上获取超划算的房产买卖信息、专业分析，还能加入全球投资高手的交流圈子",
+      "zeroDown": "0首付入股",
+      "groupBuy": "和别人一起合伙买房收租",
+      "rentAndAppreciate": "躺着收租，转手涨价",
+      "dailyRent": "租金日结(不是每月或每季度)，卖房赚差价",
+      "rentNoWorry": "躺着收租，还不用管琐事",
+      "autoManage": "零操心当房东， 重要决定你来做，日常管理交给我",
+      "control": "投资方向盘，永远在你手里",
+      "flexibleInvest": "租金想继续投资就投资，想卖房随时都能卖"
+    },
+    "document": {
+      "blog": "博客",
+      "resource": "资源",
+      "community": "社区",
+      "doc": "文档",
+      "upgrade": "智能合约升级:更灵活的订阅",
+      "upgradeDesc": "SuperstateTokenV5增加了新的智能合约功能，以简化定向订阅和赎回，以及改进的事件跟踪。"
     }
   },
   "properties": {
@@ -320,12 +379,13 @@
     "products": "产品",
     "properties": "属性",
     "token_market": "代币市场",
-    "deFi_services": "去中心化金融服务",
+    "deFi_services": "DEFI服务",
     "support": "支持",
     "help_center": "帮助中心",
     "contact_us": "联系我们",
     "legal": "法律",
-    "follow_us": "关注我们"
+    "follow_us": "关注我们",
+    "reserved": "保留所有权利"
   },
   "system": {
     "confirm": "确认",
@@ -352,7 +412,8 @@
     "all": "全部",
     "save_success": "保存成功",
     "save_failed": "保存失败",
-    "redemption_title": "赎回确认"
+    "redemption_title": "赎回确认",
+    "month": "月"
   },
   "action": {
     "sell": "卖出",
@@ -425,5 +486,16 @@
   "payment_method": {
     "user_bound_wallet": "绑定钱包",
     "not_connected_wallet": "未连接绑定钱包"
+  },
+  "help-content": {
+    "title": "我们能帮您什么？",
+    "placeholder": "请输入您的问题",
+    "selfService": "自助服务",
+    "resetLoginPassword": "重置登录密码",
+    "changeFundPassword": "修改资金密码",
+    "changePhoneNumber": "更换手机号",
+    "bindEmail": "邮箱绑定",
+    "changeGoogleAuthenticator": "修改谷歌验证器",
+    "recoveryRequest": "找回申请"
   }
 }

@@ -5,6 +5,7 @@ import {
   presetAttributify,
   presetIcons,
   presetTypography,
+  presetUno,
   presetWind3,
   transformerDirectives,
   transformerVariantGroup
@@ -72,7 +73,8 @@ export default defineConfig({
     presetIcons({
       scale: 1.2
     }),
-    presetTypography()
+    presetTypography(),
+    presetUno()
   ],
   transformers: [
     transformerDirectives(),

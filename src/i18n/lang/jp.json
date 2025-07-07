@@ -221,6 +221,65 @@
       "content": "私たちの不動産投資家コミュニティに参加して、あなたの財務自由の旅を始めます。",
       "button": "投資を開始する",
       "button2": "学習の詳細"
+    },
+    "explanation": {
+      "title": "不動産投資の未来を再定義する",
+      "content": "資産をグローバルにアクセス可能な金融商品へ、本物の暗号ネイティブなユーティリティを実現",
+      "button": "もっと詳しく"
+    },
+    "rwaType": {
+      "rwaTitle": "実世界資産トークンの新しいモデル",
+      "rwaDesc": "機関投資家向け資産で交換・貸出・借入・循環・実収益を獲得",
+      "coinTypes": {
+        "title-1": "RWA鋳造システム",
+        "content-1": "実世界資産担保型ステーブルコイン発行メカニズム",
+        "title-2": "RWAコイン収益受取",
+        "content-2": "RWA資産が生み出すキャッシュフローを自動または手動でトークン保有者に分配",
+        "title-3": "RWAコイン取引",
+        "content-3": "現実世界のもの（国債・住宅・金など）をブロックチェーン上でトークン化"
+      }
+    },
+    "statistics": {
+      "totalVolume": "総取引量",
+      "activeInvestors": "アクティブ投資家",
+      "tokenizedProperties": "トークン化資産",
+      "annualYield": "年間利回り"
+    },
+    "investmentFeature": {
+      "frictionless": "断片的かつ摩擦のない不動産投資",
+      "anyone": "誰でも不動産投資ができる－シンプル・手頃・安心",
+      "ownership": "部分所有権",
+      "lowEntry": "100ドルから世界中の優良不動産に投資可能。",
+      "compliance": "規制遵守",
+      "kyc": "強力なKYC/AML手続きによる完全規制プラットフォーム。あなたの投資は安全かつコンプライアンス遵守。",
+      "liquidity": "流動性投資",
+      "secondaryMarket": "当社のセカンダリーマーケットで24時間365日トークン取引。不動産史上初の流動性。",
+      "video": "動画再生",
+      "videoDesc": "動画で投資方法と収益獲得方法を学びましょう。"
+    },
+    "earn": {
+      "title": "RWAで収益を得る",
+      "content": "実世界資産は今でも最良の投資先です。"
+    },
+    "investorGuide": {
+      "newbieInvest": "初心者でもプロのように投資できる",
+      "getInfo": "お得な不動産情報・専門分析・世界の投資家コミュニティにすぐ参加",
+      "zeroDown": "頭金ゼロで参入",
+      "groupBuy": "他の人と共同で物件を購入し家賃収入を得る",
+      "rentAndAppreciate": "家賃を得ながら物件価値も上昇",
+      "dailyRent": "家賃は日次精算（毎月や四半期ではなく）、売却益も獲得",
+      "rentNoWorry": "家賃収入を得ても手間いらず",
+      "autoManage": "大家業も手間なし、重要な決定はあなた、日常管理はお任せ",
+      "control": "投資のハンドルは常にあなたの手に",
+      "flexibleInvest": "家賃を再投資も売却も自由自在"
+    },
+    "document": {
+      "blog": "ブログ",
+      "resource": "リソース",
+      "community": "コミュニティ",
+      "doc": "ドキュメント",
+      "upgrade": "スマートコントラクトアップグレード：より柔軟なサブスクリプション",
+      "upgradeDesc": "SuperstateTokenV5は、ターゲット型サブスクリプションと償還の簡素化、イベント追跡の強化など新機能を追加しました。"
     }
   },
   "properties": {
@@ -325,7 +384,8 @@
     "help_center": "ヘルプセンター",
     "contact_us": "連絡先",
     "legal": "合法的",
-    "follow_us": "私たちに注目"
+    "follow_us": "私たちに注目",
+    "reserved": "すべての権利を留保します"
   },
   "system": {
     "confirm": "確認",
@@ -357,7 +417,8 @@
     "all": "全部",
     "save_success": "保存に成功した",
     "save_failed": "保存に失敗した",
-    "redemption_title": "買い戻し確認"
+    "redemption_title": "買い戻し確認",
+    "month": "げつ"
   },
   "profile": {
     "transactions": {
@@ -425,5 +486,17 @@
   "payment_method": {
     "user_bound_wallet": "バインドされた財布",
     "not_connected_wallet": "バインドされていないウォレット"
+  },
+  "help-content": {
+    "title": "どのようなご用件でしょうか？",
+    "placeholder": "ご質問を入力してください",
+    "selfService": "セルフサービス",
+    "resetLoginPassword": "ログインパスワードをリセット",
+    "changeFundPassword": "資金パスワードを変更",
+    "changePhoneNumber": "電話番号を変更",
+    "bindEmail": "メールアドレスを紐付ける",
+    "changeGoogleAuthenticator": "Google認証を変更",
+    "recoveryRequest": "復旧申請"
   }
+
 }

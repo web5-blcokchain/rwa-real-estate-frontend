@@ -14,7 +14,7 @@ function AppLayoutComponent() {
   useRouteGuard()
 
   return (
-    <div className="h-100vh overflow-hidden overflow-y-scroll">
+    <div className="app-content h-100vh overflow-hidden overflow-y-scroll">
       <GlobalDialog />
       <PortalToast />
       <div className="bg-background text-text">

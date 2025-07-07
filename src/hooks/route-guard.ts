@@ -24,6 +24,9 @@ export function useRouteGuard() {
       '/',
       '/home',
       '/about',
+      '/article',
+      '/help',
+      /^\/article\/detail\/\d+$/,
       '/account/create',
       '/properties',
       /^\/properties\/detail\/\d+$/,
@@ -59,6 +62,10 @@ export function useRouteGuard() {
     )
 
     if (isWhiteListed) {
+      // 跳转路由后，返回页面顶部
+      setTimeout(() => {
+        document.querySelector('.app-content')?.scrollTo(0, 0)
+      }, 100)
       return
     }
 
@@ -76,6 +83,10 @@ export function useRouteGuard() {
         to: '/account/create'
       })
     }
+    // 跳转路由后，返回页面顶部
+    setTimeout(() => {
+      document.querySelector('.app-content')?.scrollTo(0, 0)
+    }, 100)
   }, [
     code,
     location.pathname, // 使用location.pathname替换router.latestLocation.pathname

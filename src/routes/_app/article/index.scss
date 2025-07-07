@@ -1,15 +1,3 @@
-.home-content {
-  --conent-h: 0px;
-  height: calc(100vh - var(--conent-h));
-  background: url('/src/assets/images/home-content-bg.png') no-repeat center center;
-  background-size: cover;
-}
-
-.home-explanation {
-  background: url('/src/assets/images/home/home-explanation-bg.png') no-repeat center center;
-  background-size: cover;
-}
-
 .ant-tabs-tab {
   width: fit-content;
 }
