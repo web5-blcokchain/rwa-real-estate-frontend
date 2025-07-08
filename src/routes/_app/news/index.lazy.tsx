@@ -6,7 +6,7 @@ import { createLazyFileRoute } from '@tanstack/react-router'
 import { ConfigProvider, Pagination, Tabs } from 'antd'
 import './index.scss'
 
-export const Route = createLazyFileRoute('/_app/article/')({
+export const Route = createLazyFileRoute('/_app/news/')({
   component: RouteComponent
 })
 

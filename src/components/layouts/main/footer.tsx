@@ -19,7 +19,7 @@ export default function MainFooter() {
             <ul className="mt-4 text-4 text-[#b5b5b5] space-y-2">
               <li>{t('footer.company')}</li>
               <li>{t('footer.careers')}</li>
-              <li><Link to="/article">{t('footer.news')}</Link></li>
+              <li><Link to="/news">{t('footer.news')}</Link></li>
             </ul>
           </div>
 

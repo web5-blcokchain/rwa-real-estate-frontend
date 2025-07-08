@@ -115,7 +115,7 @@ function RightMenu() {
   const [, setUserObj] = useState<Record<string, any>>()
   const setUserData = useUserStore(state => state.setUserData)
   // const { open } = useGlobalDialogStore()
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
   const { setCode } = useUserStore()
 
   const [openLoginDialog, setOpenLoginDialog] = useState(false)
@@ -165,24 +165,26 @@ function RightMenu() {
         <div className="fyc gap-29px">
           <LanguageSelect />
 
-          {/* <div className="fyc gap-4">
-            <div
-              className="i-material-symbols-help-outline size-5 bg-white clickable"
-              onClick={() => open('help')}
-            >
+          {authenticated && (
+            <div className="fyc gap-4">
+              <div
+                className="i-material-symbols-help-outline size-5 bg-white clickable"
+                onClick={() => open('help')}
+              >
+              </div>
+              <div className="i-material-symbols-notifications-outline size-5 bg-white"></div>
+              <div
+                className="i-material-symbols-favorite-outline-rounded size-5 bg-white clickable"
+                onClick={
+                  () => navigate({
+                    to: '/account/collections'
+                  })
+                }
+              >
+              </div>
             </div>
-            <div className="i-material-symbols-notifications-outline size-5 bg-white"></div>
-            <div
-              className="i-material-symbols-favorite-outline-rounded size-5 bg-white clickable"
-              onClick={
-                () => navigate({
-                  to: '/account/collections'
-                })
-              }
-            >
-            </div>
-          </div> */}
-          <div className="w-max">{t('footer.news')}</div>
+          )}
+          <Link to="/news"><div className="w-max">{t('footer.news')}</div></Link>
         </div>
 
         <Waiting for={ready}>

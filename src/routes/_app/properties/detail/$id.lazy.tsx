@@ -6,11 +6,13 @@ import { ImageSwiper } from '@/components/common/image-swiper'
 import { useCommonDataStore } from '@/stores/common-data'
 import { joinImagesPath } from '@/utils/url'
 import { getContractBalance } from '@/utils/web3'
+import { usePrivy } from '@privy-io/react-auth'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate } from '@tanstack/react-router'
 import { Button } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 import { LocationCard } from './-cards/location'
 import { PropertyDescriptionCard } from './-cards/property-description'
 import { RegionalPriceTrendsCard } from './-cards/regional-price-trends'
@@ -72,6 +74,18 @@ function RouteComponent() {
   }, [assetDetail])
 
   const imageList = joinImagesPath(assetDetail?.image_urls)
+  const { authenticated } = usePrivy()
+  function toInvest(assetId: number, assetDetail: DetailResponse | undefined) {
+    if (!authenticated) {
+      toast.error(t('header.error.login_required'))
+      return
+    }
+    assets.set(assetId, assetDetail!)
+    navigate({
+      to: '/properties/payment/$id',
+      params: { id: `${assetId}` }
+    })
+  }
 
   return (
     <div className="px-8 space-y-8">
@@ -149,11 +163,7 @@ function RouteComponent() {
                   size="large"
                   className="w-full text-black!"
                   onClick={() => {
-                    assets.set(assetId, assetDetail!)
-                    navigate({
-                      to: '/properties/payment/$id',
-                      params: { id: `${assetId}` }
-                    })
+                    toInvest(assetId, assetDetail!)
                   }}
                 >
                   {t('properties.detail.invest')}

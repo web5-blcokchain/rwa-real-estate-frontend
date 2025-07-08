@@ -1,5 +1,7 @@
 import basicApi from '@/api/basicApi'
+import { usePrivy } from '@privy-io/react-auth'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { toast } from 'react-toastify'
 
 export const CollectButton: FC<{
   houseId: number
@@ -13,7 +15,8 @@ export const CollectButton: FC<{
 }) => {
   const queryClient = useQueryClient()
   const [defaultValue, setDefaultValue] = useState(collect)
-
+  const { authenticated } = usePrivy()
+  const { t } = useTranslation()
   // 监听外部传入的collect属性变化
   useEffect(() => {
     setDefaultValue(collect)
@@ -28,7 +31,7 @@ export const CollectButton: FC<{
       if (queryKey) {
         await queryClient.refetchQueries({ queryKey })
       }
-      return res.data
+      return res
     }
   })
   const {
@@ -40,7 +43,7 @@ export const CollectButton: FC<{
       if (queryKey) {
         await queryClient.refetchQueries({ queryKey })
       }
-      return res.data
+      return res
     }
   })
 
@@ -72,19 +75,22 @@ export const CollectButton: FC<{
           onClick={async (e) => {
             e.stopPropagation()
             e.preventDefault()
-
+            if (!authenticated) {
+              toast.error(t('header.error.login_required'))
+              return
+            }
             if (isLoading) {
               return
             }
-
+            let resopnse
             if (defaultValue) {
-              await unCollectMutate()
+              resopnse = await unCollectMutate()
             }
             else {
-              await collectMutate()
+              resopnse = await collectMutate()
             }
-
-            setDefaultValue(defaultValue ? 0 : 1)
+            if (resopnse.code === 200)
+              setDefaultValue(defaultValue ? 0 : 1)
           }}
         >
         </div>
