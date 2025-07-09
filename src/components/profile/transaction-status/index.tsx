@@ -31,16 +31,16 @@ export const TransactionStatus: FC = () => {
   })
 
   const assetTypeOptions = [
-    { label: 'All', value: 'all' },
-    { label: 'Apartment', value: 'apartment' },
-    { label: 'House', value: 'house' },
-    { label: 'Land', value: 'land' },
-    { label: 'Commercial', value: 'commercial' }
+    { label: <div>{t('profile.transaction_status.all')}</div>, value: 'all' },
+    { label: <div>{t('profile.transaction_status.apartment')}</div>, value: 'apartment' },
+    { label: <div>{t('profile.transaction_status.house')}</div>, value: 'house' },
+    { label: <div>{t('profile.transaction_status.land')}</div>, value: 'land' },
+    { label: <div>{t('profile.transaction_status.commercial')}</div>, value: 'commercial' }
   ]
 
   const columns: TableProps['columns'] = [
     {
-      title: 'Date',
+      title: <div>{t('profile.common.date')}</div>,
       dataIndex: 'create_date',
       render(value) {
         return (
@@ -51,17 +51,17 @@ export const TransactionStatus: FC = () => {
       }
     },
     {
-      title: 'Asset',
+      title: <div>{t('profile.common.asset')}</div>,
       key: 'asset_name',
       dataIndex: 'asset_name'
     },
     {
-      title: 'Number of Tokens',
+      title: <div>{t('profile.common.number_of_tokens')}</div>,
       key: 'token_info',
       dataIndex: 'token_info'
     },
     {
-      title: 'Status',
+      title: <div>{t('profile.common.status')}</div>,
       key: 'status',
       dataIndex: 'status',
       render(value) {
@@ -148,7 +148,7 @@ export const TransactionStatus: FC = () => {
 
         <SelectComponent
           size="large"
-          placeholder="Asset Type"
+          placeholder={<div>{t('profile.transaction_status.asset_type')}</div>}
           className={cn(
             'b b-solid b-white rounded-xl of-hidden',
             '[&_.ant-select-selector]:(bg-transparent! text-white!)',

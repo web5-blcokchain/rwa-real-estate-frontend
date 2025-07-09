@@ -1,7 +1,7 @@
 import React from 'react'
 
 export const TitleCard: FC<{
-  title: string
+  title: string | React.ReactNode
   selectSlot?: React.ReactNode
 }> = ({
   children,

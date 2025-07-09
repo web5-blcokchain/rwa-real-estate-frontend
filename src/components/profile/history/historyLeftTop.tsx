@@ -1,7 +1,8 @@
 function HistoryLeftTop() {
+  const { t } = useTranslation()
   const [carList] = useState([
     {
-      title: 'Total Transactions',
+      title: 'profile.history.totalTransactions',
       field: '¥ 123,456',
       fieldTwo: '12.5%',
       picture: new URL('@/assets/icons/arrow-up.png', import.meta.url).href,
@@ -9,7 +10,7 @@ function HistoryLeftTop() {
     },
 
     {
-      title: 'Number of Transactions',
+      title: 'profile.history.transactionCount',
       field: '89',
       fieldTwo: '8.3%',
       picture: new URL('@/assets/icons/arrow-up.png', import.meta.url).href,
@@ -17,7 +18,7 @@ function HistoryLeftTop() {
     },
 
     {
-      title: 'Average Transaction',
+      title: 'profile.history.transactionVolume',
       field: '¥ 1,387',
       fieldTwo: '8.3%',
       picture: new URL('@/assets/icons/arrow-up.png', import.meta.url).href,
@@ -25,7 +26,7 @@ function HistoryLeftTop() {
     },
 
     {
-      title: 'Success Rate',
+      title: 'profile.history.successRate',
       field: '98.2%',
       fieldTwo: '1.5%',
       picture: new URL('@/assets/icons/arrow-up.png', import.meta.url).href,
@@ -39,7 +40,7 @@ function HistoryLeftTop() {
         {
           carList.map(item => (
             <div key={item.title} className="rounded-2 bg-[#242933] p-4">
-              <div className="text-[#8d909a]">{item.title}</div>
+              <div className="text-[#8d909a]">{t(item.title)}</div>
               <div className="text-4">{item.field}</div>
               <div className="box-item flex items-center justify-start">
                 {item.picture && (
@@ -51,7 +52,7 @@ function HistoryLeftTop() {
           ))
         }
       </div>
-      <div className="mt-4 text-[#8d909a]">View Detailed Analysis Report</div>
+      <div className="mt-4 text-[#8d909a]">{t('profile.history.view_detailed')}</div>
     </div>
   )
 }

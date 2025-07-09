@@ -402,7 +402,9 @@
     "sign_in_with_wallet": "使用钱包注册",
     "sign_in_with_apple": "使用 Apple 账号",
     "sign_in_with_google": "使用 Google 账号",
-    "login_with_email": "使用邮箱登陆"
+    "login_with_email": "使用邮箱登陆",
+    "login_title": "很高兴你回来了！",
+    "login_content": "开启你的数字资产之旅"
   },
   "common": {
     "click_to_change": "点击更换图片",
@@ -413,7 +415,10 @@
     "save_success": "保存成功",
     "save_failed": "保存失败",
     "redemption_title": "赎回确认",
-    "month": "月"
+    "month": "月",
+    "no_data": "暂无数据",
+    "search": "搜索",
+    "load_more": "加载更多"
   },
   "action": {
     "sell": "卖出",
@@ -457,13 +462,81 @@
       "merkle_root_mismatch": "Merkle 根不匹配",
       "invalid_merkle_proof": "Merkle证明无效",
       "receive_success": "收益领取成功",
-      "receive_failed": "收益领取失败"
+      "receive_failed": "收益领取失败",
+      "date": "日期",
+      "asset": "资产",
+      "amount": "金额",
+      "tokens": "代币",
+      "status": "状态",
+      "wallet_address": "钱包地址"
     },
     "recording": {
       "primary_subscription": "投资",
       "asset_redemption": "赎回",
       "sell_order": "卖出",
       "buy_order": "买入"
+    },
+    "data_count": {
+      "totalAssetValue": "总资产价值",
+      "expectedIncomeThisMonth": "本月预期收益",
+      "averageMonthlyIncome": "平均每月收入（日元）",
+      "yieldPerformance": "收益表现",
+      "vsLastMonth": "较上月",
+      "industryAverage": "行业平均",
+      "tokenHoldings": "代币持仓",
+      "asset": "资产",
+      "amount": "数量",
+      "valueJpy": "价值（日元）",
+      "share": "占比",
+      "change24h": "24小时变化",
+      "action": "操作",
+      "earningsHistory": "收益记录",
+      "time": "时间",
+      "type": "类型",
+      "amountJpy": "金额（日元）",
+      "status": "状态"
+    },
+    "propertyTokens": {
+      "title": "持有的代币"
+    },
+    "history": {
+      "incomeRecords": "历史收入记录",
+      "totalTransactions": "交易总数",
+      "transactionCount": "交易笔数",
+      "transactionVolume": "平均交易",
+      "successRate": "成功率",
+      "recentTransactions": "最近交易",
+      "incomeHistory": "历史收入记录",
+      "thisMonth": "本月",
+      "lastMonth": "上月",
+      "decemberBudget": "十二月预算",
+      "income": "收入",
+      "received": "已接收",
+      "budget": "预算",
+      "expenses": "支出",
+      "spent": "已支出",
+      "monthComparison": "本月 vs 上月",
+      "last30Days": "过去30天",
+      "usernameExample": "yiminghe",
+      "disabledStatus": "已禁用",
+      "view_detailed": "查看详细分析报表"
+    },
+    "transaction_status": {
+      "all": "全部",
+      "apartment": "公寓",
+      "house": "住宅",
+      "land": "土地",
+      "commercial": "商业地产",
+      "asset_type": "资产类型"
+    },
+    "common": {
+      "date": "日期",
+      "asset": "资产",
+      "type": "类型",
+      "price": "价格",
+      "total_money": "总金额",
+      "number_of_tokens": "代币数量",
+      "status": "状态"
     }
   },
   "transaction": {

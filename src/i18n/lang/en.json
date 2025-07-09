@@ -402,7 +402,9 @@
     "sign_in_with_wallet": "Sign in with your wallet",
     "sign_in_with_apple": "Sign in with Apple",
     "sign_in_with_google": "Sign in with Google",
-    "login_with_email": "Login with Email"
+    "login_with_email": "Login with Email",
+    "login_title": "Great to have you back!",
+    "login_content": "Start your digital asset journey"
   },
   "action": {
     "sell": "Sell",
@@ -414,11 +416,14 @@
     "sell_title": "Sell Confirmation",
     "click_to_change": "Click to change image",
     "empty": "No data available",
+    "no_data": "No Data",
     "all": "All",
     "save_success": "Save successfully",
     "save_failed": "Saving failed",
     "redemption_title": "Redemption confirmation",
-    "month": "[Month]"
+    "month": "[Month]",
+    "search": "Search",
+    "load_more": "Load More"
   },
   "profile": {
     "transactions": {
@@ -457,13 +462,81 @@
       "merkle_root_mismatch": "Merkle root mismatch",
       "invalid_merkle_proof": "Invalid Merkle proof",
       "receive_success": "Earnings claimed successfully",
-      "receive_failed": "Failed to claim earnings"
+      "receive_failed": "Failed to claim earnings",
+      "date": "Date",
+      "asset": "Asset",
+      "amount": "Amount",
+      "tokens": "Tokens",
+      "status": "Status",
+      "wallet_address": "Wallet Address"
     },
     "recording": {
       "primary_subscription": "Invest",
       "asset_redemption": "Redemption",
       "sell_order": "Sell",
       "buy_order": "Buy"
+    },
+    "data_count": {
+      "totalAssetValue": "Total Asset Value",
+      "expectedIncomeThisMonth": "Expected Income This Month",
+      "averageMonthlyIncome": "Average Monthly Income (JPY)",
+      "yieldPerformance": "Yield Performance",
+      "vsLastMonth": "vs last month",
+      "industryAverage": "Industry avg",
+      "tokenHoldings": "Token Holdings",
+      "asset": "Asset",
+      "amount": "Amount",
+      "valueJpy": "Value (JPY)",
+      "share": "Share",
+      "change24h": "24h Change",
+      "action": "Action",
+      "earningsHistory": "Earnings History",
+      "time": "Time",
+      "type": "Type",
+      "amountJpy": "Amount (JPY)",
+      "status": "Status"
+    },
+    "propertyTokens": {
+      "title": "Tokens Held"
+    },
+    "history": {
+      "incomeRecords": "Historical Income Records",
+      "totalTransactions": "Total Transactions",
+      "transactionCount": "Number of Transactions",
+      "transactionVolume": "Average Transaction",
+      "successRate": "Success Rate",
+      "recentTransactions": "Recent Transactions",
+      "incomeHistory": "Historical Income Records",
+      "thisMonth": "This Month",
+      "lastMonth": "Last Month",
+      "decemberBudget": "December Budget",
+      "income": "Income",
+      "received": "Received",
+      "budget": "Budget",
+      "expenses": "Expenses",
+      "spent": "Spent",
+      "monthComparison": "This Month Vs Last Month",
+      "last30Days": "Last 30 Days",
+      "usernameExample": "yiminghe",
+      "disabledStatus": "Disabled",
+      "view_detailed": "View Detailed Analysis Report"
+    },
+    "transaction_status": {
+      "all": "All",
+      "apartment": "Apartment",
+      "house": "House",
+      "land": "Land",
+      "commercial": "Commercial",
+      "asset_type": "Asset Type"
+    },
+    "common": {
+      "date": "Date",
+      "asset": "Asset",
+      "type": "Type",
+      "price": "Price",
+      "total_money": "Total Money",
+      "number_of_tokens": "Number of Tokens",
+      "status": "Status"
     }
   },
   "transaction": {

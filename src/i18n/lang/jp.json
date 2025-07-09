@@ -402,7 +402,9 @@
     "sign_in_with_wallet": "Sign in with your wallet",
     "sign_in_with_apple": "Sign in with Apple",
     "sign_in_with_google": "Sign in with Google",
-    "login_with_email": "Login with Email"
+    "login_with_email": "Login with Email",
+    "login_title": "帰ってきてくれて嬉しいです!",
+    "login_content": "デジタルアセットの旅を始める"
   },
   "action": {
     "sell": "販売",
@@ -418,7 +420,10 @@
     "save_success": "保存に成功した",
     "save_failed": "保存に失敗した",
     "redemption_title": "買い戻し確認",
-    "month": "げつ"
+    "month": "げつ",
+    "no_data": "仮無数の根拠です",
+    "search": "検索します",
+    "load_more": "もっとロードします"
   },
   "profile": {
     "transactions": {
@@ -457,13 +462,81 @@
       "merkle_root_mismatch": "Merkleルートが一致しません",
       "invalid_merkle_proof": "Merkle証明が無効です",
       "receive_success": "収益の受け取りに成功しました",
-      "receive_failed": "収益の受け取りに失敗しました"
+      "receive_failed": "収益の受け取りに失敗しました",
+      "date": "日付",
+      "asset": "資産",
+      "amount": "金額",
+      "tokens": "トークン",
+      "status": "ステータス",
+      "wallet_address": "ウォレットアドレス"
     },
     "recording": {
       "primary_subscription": "投資",
       "asset_redemption": "買い戻す",
       "sell_order": "売ります",
       "buy_order": "買います"
+    },
+    "data_count": {
+      "totalAssetValue": "総資産価値",
+      "expectedIncomeThisMonth": "今月の予想収益",
+      "averageMonthlyIncome": "月平均収入（円）",
+      "yieldPerformance": "利回り実績",
+      "vsLastMonth": "前月比",
+      "industryAverage": "業界平均",
+      "tokenHoldings": "トークン保有",
+      "asset": "資産",
+      "amount": "数量",
+      "valueJpy": "価値（円）",
+      "share": "割合",
+      "change24h": "24時間変動",
+      "action": "操作",
+      "earningsHistory": "収益履歴",
+      "time": "時間",
+      "type": "タイプ",
+      "amountJpy": "金額（円）",
+      "status": "ステータス"
+    },
+    "propertyTokens": {
+      "title": "保有しているトークンです"
+    },
+    "history": {
+      "incomeRecords": "過去の収益記録",
+      "totalTransactions": "総取引数",
+      "transactionCount": "取引件数",
+      "transactionVolume": "平均取引です",
+      "successRate": "成功率",
+      "recentTransactions": "最近の取引",
+      "incomeHistory": "過去の収益記録",
+      "thisMonth": "今月",
+      "lastMonth": "先月",
+      "decemberBudget": "12月予算",
+      "income": "収入",
+      "received": "受取済み",
+      "budget": "予算",
+      "expenses": "支出",
+      "spent": "使用済み",
+      "monthComparison": "今月と先月の比較",
+      "last30Days": "過去30日間",
+      "usernameExample": "yiminghe",
+      "disabledStatus": "無効",
+      "view_detailed": "詳細分析レポートを見ます"
+    },
+    "transaction_status": {
+      "all": "すべて",
+      "apartment": "アパート",
+      "house": "一戸建て",
+      "land": "土地",
+      "commercial": "商業用不動産",
+      "asset_type": "資産タイプ"
+    },
+    "common": {
+      "date": "日付",
+      "asset": "資産",
+      "type": "タイプ",
+      "price": "価格",
+      "total_money": "合計金額",
+      "number_of_tokens": "トークン数",
+      "status": "ステータス"
     }
   },
   "transaction": {
@@ -498,5 +571,4 @@
     "changeGoogleAuthenticator": "Google認証を変更",
     "recoveryRequest": "復旧申請"
   }
-
 }

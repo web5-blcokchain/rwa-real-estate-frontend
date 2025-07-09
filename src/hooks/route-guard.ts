@@ -26,6 +26,7 @@ export function useRouteGuard() {
       '/about',
       '/news',
       '/help',
+      '/guidance',
       /^\/news\/detail\/\d+$/,
       '/account/create',
       '/properties',
@@ -68,6 +69,8 @@ export function useRouteGuard() {
       }, 100)
       return
     }
+
+    // TODO 判断当前用户是否审核通过
 
     if (!token) {
       navigate({

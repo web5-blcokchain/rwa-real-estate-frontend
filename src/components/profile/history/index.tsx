@@ -7,19 +7,20 @@ import HistoryLeftTop from './historyLeftTop'
 import HistoryRightTop from './historyRightTop'
 
 function History() {
+  const { t } = useTranslation()
   return (
     <div className="flex justify-start text-white">
       <div className="mr-3 w-1/2">
         <TitleCard
-          title="Historical Income Records"
+          title={<div>{t('profile.history.incomeRecords')}</div>}
           selectSlot={(
             <SelectComponent
               defaultValue="lucy"
               options={[
-                { value: 'jack', label: 'This Month Vs Last Month' },
-                { value: 'lucy', label: 'Last 30 Days' },
-                { value: 'Yiminghe', label: 'yiminghe' },
-                { value: 'disabled', label: 'Disabled', disabled: true }
+                { value: 'jack', label: <div>{t('profile.history.monthComparison')}</div> },
+                { value: 'lucy', label: <div>{t('profile.history.last30Days')}</div> },
+                { value: 'Yiminghe', label: <div>{t('profile.history.usernameExample')}</div> },
+                { value: 'disabled', label: <div>{t('profile.history.disabledStatus')}</div>, disabled: true }
               ]}
             />
           )}
@@ -28,16 +29,16 @@ function History() {
         </TitleCard>
 
         <TitleCard
-          title="Historical Income Records"
+          title={<div>{t('profile.history.incomeHistory')}</div>}
           className="mt-6"
           selectSlot={(
             <SelectComponent
               defaultValue="jack"
               options={[
-                { value: 'jack', label: 'This Month Vs Last Month' },
-                { value: 'lucy', label: 'Last 30 Days' },
-                { value: 'Yiminghe', label: 'yiminghe' },
-                { value: 'disabled', label: 'Disabled', disabled: true }
+                { value: 'jack', label: <div>{t('profile.history.monthComparison')}</div> },
+                { value: 'lucy', label: <div>{t('profile.history.last30Days')}</div> },
+                { value: 'Yiminghe', label: <div>{t('profile.history.usernameExample')}</div> },
+                { value: 'disabled', label: <div>{t('profile.history.disabledStatus')}</div>, disabled: true }
               ]}
             />
           )}
@@ -48,15 +49,15 @@ function History() {
 
       <div className="ml-3 w-1/2">
         <TitleCard
-          title="Recent Transactions"
+          title={<div>{t('profile.history.recentTransactions')}</div>}
           selectSlot={(
             <SelectComponent
               defaultValue="Yiminghe"
               options={[
-                { value: 'jack', label: 'This Month Vs Last Month' },
-                { value: 'lucy', label: 'Last 30 Days' },
-                { value: 'Yiminghe', label: 'All Transactions' },
-                { value: 'disabled', label: 'Disabled', disabled: true }
+                { value: 'jack', label: <div>{t('profile.history.monthComparison')}</div> },
+                { value: 'lucy', label: <div>{t('profile.history.last30Days')}</div> },
+                { value: 'Yiminghe', label: <div>{t('profile.history.usernameExample')}</div> },
+                { value: 'disabled', label: <div>{t('profile.history.disabledStatus')}</div>, disabled: true }
               ]}
             />
           )}
@@ -64,7 +65,7 @@ function History() {
           <HistoryRightTop />
         </TitleCard>
 
-        <TitleCard title="December Budget" className="mt-6">
+        <TitleCard title={<div>{t('profile.history.decemberBudget')}</div>} className="mt-6">
           <HistoryDecmber />
         </TitleCard>
       </div>

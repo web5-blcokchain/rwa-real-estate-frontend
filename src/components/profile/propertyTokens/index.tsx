@@ -10,6 +10,7 @@ function PropertyTokens() {
   const navigate = useNavigate()
   const [page, setPage] = useState(1)
   const [keyword, setKeyword] = useState('')
+  const { t } = useTranslation()
 
   const { data: tokenData, isLoading } = useQuery({
     queryKey: ['PropertyTokens', page, keyword],
@@ -20,7 +21,7 @@ function PropertyTokens() {
   })
   if (isLoading) {
     return (
-      <div className="w-full p-8 h-dvh">
+      <div className="w-full fcc p-8 h-dvh">
         <Spin />
       </div>
     )
@@ -33,7 +34,7 @@ function PropertyTokens() {
       <div className="p-8 text-white">
         <div className="flex items-center justify-between">
           <div className="text-8 text-[#fff] font-medium">
-            Tokens Held
+            {t('profile.propertyTokens.title')}
           </div>
 
           <div>
@@ -41,7 +42,7 @@ function PropertyTokens() {
               <div className="i-iconamoon-search size-5 bg-[#b5b5b5]"></div>
               <input
                 type="text"
-                placeholder="Search"
+                placeholder={t('common.search')}
                 className="w-88 b-none bg-transparent outline-none"
                 onChange={e => setKeyword(e.target.value)}
                 value={keyword}
@@ -75,7 +76,7 @@ function PropertyTokens() {
               onClick={() =>
                 setPage(page + 1)}
             >
-              Load More
+              {t('common.load_more')}
             </Button>
           </div>
         )}

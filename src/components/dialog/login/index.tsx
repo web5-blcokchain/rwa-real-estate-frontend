@@ -1,7 +1,6 @@
-import type { PrivyClientConfig } from '@privy-io/react-auth'
 import type { Dispatch, SetStateAction } from 'react'
-import ISeparator from '@/components/common/i-separator'
-import { LoginButton } from '@/components/common/login-button'
+// import ISeparator from '@/components/common/i-separator'
+// import { LoginButton } from '@/components/common/login-button'
 import { usePrivy } from '@privy-io/react-auth'
 import { Button, Modal } from 'antd'
 import './styles.scss'
@@ -25,16 +24,16 @@ export const LoginDialog: FC<{
     }
   }, [authenticated, isLoggingIn, setOpen])
 
-  function handlePrivyLogin(method: PrivyClientConfig['loginMethods']) {
-    try {
-      setIsLoggingIn(true) // 标记正在登录
-      login({ loginMethods: method })
-    }
-    catch (error) {
-      setIsLoggingIn(false)
-      console.error('Unexpected error during login', error)
-    }
-  }
+  // function handlePrivyLogin(method: PrivyClientConfig['loginMethods']) {
+  //   try {
+  //     setIsLoggingIn(true) // 标记正在登录
+  //     login({ loginMethods: method })
+  //   }
+  //   catch (error) {
+  //     setIsLoggingIn(false)
+  //     console.error('Unexpected error during login', error)
+  //   }
+  // }
 
   return (
     <Modal
@@ -46,8 +45,8 @@ export const LoginDialog: FC<{
       onCancel={() => setOpen(false)}
     >
       <div className="mx-a max-w-128 w-full py-16">
-        <div className="text-center text-8 font-medium">Great to have you back!</div>
-        <div className="text-center text-4 text-[#898989]">Start your digital asset journey</div>
+        <div className="text-center text-8 font-medium">{ t('login.login_title') }</div>
+        <div className="text-center text-4 text-[#898989]">{ t('login.login_content') }</div>
 
         <div className="py-12 text-center">
           <Button
@@ -65,9 +64,9 @@ export const LoginDialog: FC<{
           </Button>
         </div>
 
-        <ISeparator text="or" className="my-4" />
+        {/* <ISeparator text="or" className="my-4" /> */}
 
-        <div className="space-y-6">
+        {/* <div className="space-y-6">
           <LoginButton
             icon="i-mingcute-wallet-4-fill"
             className="w-full"
@@ -91,7 +90,7 @@ export const LoginDialog: FC<{
           >
             {t('login.sign_in_with_apple')}
           </LoginButton>
-        </div>
+        </div> */}
       </div>
     </Modal>
   )
