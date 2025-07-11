@@ -25,7 +25,7 @@ export const Route = createLazyFileRoute('/_app/home/')({
 })
 
 function RouteComponent() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const navigate = useNavigate()
 
   const {
@@ -96,11 +96,11 @@ function RouteComponent() {
   return (
     <div className="">
       <div
-        style={{ '--conent-h': `${headerH}px` } as any}
+        style={{ '--conent-h': `${headerH || 80}px` } as any}
         className="home-content fxc flex-col pl-[118px] max-md:py-9 max-lg:pl-[24px] max-md:pl-2 max-xl:pl-[60px] max-md:!h-fit"
       >
         <div
-          className="w-[700px] text-[100px] leading-[120px] max-lg:w-[500px] max-md:w-196px max-xl:w-[600px] max-lg:text-[48px] max-md:text-28px max-xl:text-[72px] max-lg:leading-[64px] max-md:leading-38px max-xl:leading-[90px]"
+          className={cn(i18n.language === 'en' ? 'text-[82px] leading-[100px]' : 'text-[100px] leading-[120px]', 'w-[700px]   max-lg:w-[500px] max-md:w-196px max-xl:w-[600px] max-lg:text-[48px] max-md:text-28px max-xl:text-[62px] max-lg:leading-[64px] max-md:leading-38px max-xl:leading-[90px]')}
         >
           {t('home.explanation.title')}
         </div>

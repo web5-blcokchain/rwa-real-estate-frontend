@@ -33,7 +33,7 @@ export const PaymentMethod: FC<{
 
   return (
     <div className={cn(
-      'rounded-md bg-[#333947] p-2',
+      'rounded-md bg-[#333947] p-2 hidden',
       className
     )}
     >

@@ -30,6 +30,7 @@ const AppAboutIndexLazyImport = createFileRoute('/_app/about/')()
 const AppTransactionHashLazyImport = createFileRoute(
   '/_app/transaction/$hash',
 )()
+const AppBuyIdLazyImport = createFileRoute('/_app/buy/$id')()
 const AppPropertiesInstitutionalIndexLazyImport = createFileRoute(
   '/_app/properties/institutional/',
 )()
@@ -143,6 +144,12 @@ const AppTransactionHashLazyRoute = AppTransactionHashLazyImport.update({
 } as any).lazy(() =>
   import('./routes/_app/transaction/$hash.lazy').then((d) => d.Route),
 )
+
+const AppBuyIdLazyRoute = AppBuyIdLazyImport.update({
+  id: '/buy/$id',
+  path: '/buy/$id',
+  getParentRoute: () => AppRoute,
+} as any).lazy(() => import('./routes/_app/buy/$id.lazy').then((d) => d.Route))
 
 const AppPropertiesInstitutionalIndexLazyRoute =
   AppPropertiesInstitutionalIndexLazyImport.update({
@@ -259,6 +266,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof AppIndexLazyImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/buy/$id': {
+      id: '/_app/buy/$id'
+      path: '/buy/$id'
+      fullPath: '/buy/$id'
+      preLoaderRoute: typeof AppBuyIdLazyImport
       parentRoute: typeof AppImport
     }
     '/_app/transaction/$hash': {
@@ -408,6 +422,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppIndexLazyRoute: typeof AppIndexLazyRoute
+  AppBuyIdLazyRoute: typeof AppBuyIdLazyRoute
   AppTransactionHashLazyRoute: typeof AppTransactionHashLazyRoute
   AppAboutIndexLazyRoute: typeof AppAboutIndexLazyRoute
   AppGuidanceIndexLazyRoute: typeof AppGuidanceIndexLazyRoute
@@ -432,6 +447,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppIndexLazyRoute: AppIndexLazyRoute,
+  AppBuyIdLazyRoute: AppBuyIdLazyRoute,
   AppTransactionHashLazyRoute: AppTransactionHashLazyRoute,
   AppAboutIndexLazyRoute: AppAboutIndexLazyRoute,
   AppGuidanceIndexLazyRoute: AppGuidanceIndexLazyRoute,
@@ -462,6 +478,7 @@ const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 export interface FileRoutesByFullPath {
   '': typeof AppRouteWithChildren
   '/': typeof AppIndexLazyRoute
+  '/buy/$id': typeof AppBuyIdLazyRoute
   '/transaction/$hash': typeof AppTransactionHashLazyRoute
   '/about': typeof AppAboutIndexLazyRoute
   '/guidance': typeof AppGuidanceIndexLazyRoute
@@ -486,6 +503,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof AppIndexLazyRoute
+  '/buy/$id': typeof AppBuyIdLazyRoute
   '/transaction/$hash': typeof AppTransactionHashLazyRoute
   '/about': typeof AppAboutIndexLazyRoute
   '/guidance': typeof AppGuidanceIndexLazyRoute
@@ -512,6 +530,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_app': typeof AppRouteWithChildren
   '/_app/': typeof AppIndexLazyRoute
+  '/_app/buy/$id': typeof AppBuyIdLazyRoute
   '/_app/transaction/$hash': typeof AppTransactionHashLazyRoute
   '/_app/about/': typeof AppAboutIndexLazyRoute
   '/_app/guidance/': typeof AppGuidanceIndexLazyRoute
@@ -539,6 +558,7 @@ export interface FileRouteTypes {
   fullPaths:
     | ''
     | '/'
+    | '/buy/$id'
     | '/transaction/$hash'
     | '/about'
     | '/guidance'
@@ -562,6 +582,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/buy/$id'
     | '/transaction/$hash'
     | '/about'
     | '/guidance'
@@ -586,6 +607,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_app'
     | '/_app/'
+    | '/_app/buy/$id'
     | '/_app/transaction/$hash'
     | '/_app/about/'
     | '/_app/guidance/'
@@ -634,6 +656,7 @@ export const routeTree = rootRoute
       "filePath": "_app.tsx",
       "children": [
         "/_app/",
+        "/_app/buy/$id",
         "/_app/transaction/$hash",
         "/_app/about/",
         "/_app/guidance/",
@@ -658,6 +681,10 @@ export const routeTree = rootRoute
     },
     "/_app/": {
       "filePath": "_app/index.lazy.tsx",
+      "parent": "/_app"
+    },
+    "/_app/buy/$id": {
+      "filePath": "_app/buy/$id.lazy.tsx",
       "parent": "/_app"
     },
     "/_app/transaction/$hash": {

@@ -1,0 +1,19 @@
+.buy-content{
+ .ant-tabs-nav-list .ant-tabs-ink-bar{
+    height: 6px;
+  }
+
+  .ant-input-number .ant-input-number-input-wrap,input{
+    height: 100%;
+  }
+  .ant-input-number .ant-input-number-input{
+    text-align: right;
+    font-size: 36px;
+  }
+  .ant-input-number-outlined:focus-within {
+    background-color: transparent;
+  }
+  .ant-input-number-outlined:hover{
+    background-color: transparent;
+  }
+}

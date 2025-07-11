@@ -83,8 +83,8 @@ function RouteComponent() {
 
   return (
     <Layout className="aboutMe">
-      <Sider className="sider bg-[#191a1f]">
-        <div className="flex justify-start pb-4 pr-4 pt-4">
+      <Sider className="sider w-fit bg-[#191a1f]" width={256}>
+        <div className="flex justify-start px-4 pb-6 pt-34px">
           <div className="img-wrap size-16 shrink-0">
             <IImage
               src={joinImagePath(userData?.avatar)}
