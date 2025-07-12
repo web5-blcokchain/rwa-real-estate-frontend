@@ -1,6 +1,5 @@
 import type { PriceTrendResponse } from '@/api/basicApi'
 import apiBasic from '@/api/basicApi'
-import { TitleCard } from '@/components/common/title-card'
 import { useQuery } from '@tanstack/react-query'
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
@@ -9,8 +8,10 @@ interface trendDataResponse {
   price: number
 }
 
-export const RegionalPriceTrendsCard: FC = () => {
-  const { t } = useTranslation()
+export const RegionalPriceTrendsCard: FC<{
+  className?: string
+}> = ({ className }) => {
+  // const { t } = useTranslation()
 
   const { data: trendData = [] } = useQuery<trendDataResponse[]>({
     queryKey: ['PriceTrend'],
@@ -27,21 +28,19 @@ export const RegionalPriceTrendsCard: FC = () => {
   })
 
   return (
-    <TitleCard title={t('properties.detail.trends')}>
-      <div className="h-32">
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart
-            data={trendData}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line type="linear" dataKey="price" stroke="#f0b90b" />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
-    </TitleCard>
+    <div className={cn('h-320px max-lg:h-280px', className)}>
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart
+          data={trendData}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Line type="linear" dataKey="price" stroke="#f0b90b" />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
   )
 }

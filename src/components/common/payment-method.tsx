@@ -41,13 +41,13 @@ export const PaymentMethod: FC<{
   const handleBindWallet = () => {
     // navigate({ to: '/profile/bind-wallet' })
     if (!selectedWallet || !selectedWallet.address) {
-      toast.warning('请连接钱包')
+      toast.warning(t('wallet.please_bind_wallet'))
       return
     }
     setBindWalletLoading(true)
     bindWallet({ wallet_address: selectedWallet.address }).then((res) => {
       if (res.code === 200) {
-        toast.success('绑定成功')
+        toast.success(t('wallet.bind_wallet_success'))
         userData.wallet_address = selectedWallet.address
       }
     })

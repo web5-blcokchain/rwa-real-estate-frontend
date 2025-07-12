@@ -52,7 +52,7 @@ export default function InstitutionalVerification() {
       setExist(UserCode.LoggedIn)
       clearRegisterData()
       navigate({
-        to: '/profile'
+        to: '/home'
       })
     }
   })

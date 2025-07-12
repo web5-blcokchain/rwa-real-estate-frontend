@@ -16,7 +16,11 @@
     "profile": "Profile",
     "error": {
       "user_not_found": "Please complete user information",
-      "login_required": "Please log in first"
+      "login_required": "Please log in first",
+      "centralized_database_review_rejection": "Centralized database review rejection",
+      "wallet_already_bound": "KYC audit in progress",
+      "kyc_audit_passed": "KYC audit passed",
+      "kyc_audit_rejected": "KYC audit rejected"
     },
     "link_wallet": "Link wallet"
   },
@@ -117,7 +121,9 @@
       "walletConnect": "WalletConnect",
       "walletContent": "Connect using WalletConnect",
       "coinbase": "Coinbase Wallet",
-      "coinbaseContent": "Connect to your Coinbase wallet"
+      "coinbaseContent": "Connect to your Coinbase wallet",
+      "please_bind_wallet": "Please bind wallet",
+      "bind_wallet_success": "Bind wallet successfully"
     },
     "verification": {
       "title": "Choose Your Identity Type",
@@ -423,7 +429,9 @@
     "redemption_title": "Redemption confirmation",
     "month": "[Month]",
     "search": "Search",
-    "load_more": "Load More"
+    "load_more": "Load More",
+    "search_placeholder": "Search address, type",
+    "asset_type": "Asset Type"
   },
   "profile": {
     "transactions": {
@@ -527,7 +535,11 @@
       "house": "House",
       "land": "Land",
       "commercial": "Commercial",
-      "asset_type": "Asset Type"
+      "asset_type": "Asset Type",
+      "small": "Small",
+      "medium": "Medium",
+      "large": "Large",
+      "high": "High"
     },
     "common": {
       "date": "Date",

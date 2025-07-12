@@ -14,19 +14,19 @@ export const IInfoField: FC<{
 }) => {
   return (
     <div className={cn(
-      horizontal ? 'flex items-center justify-between' : 'space-y-4 py-4',
+      horizontal ? 'flex items-center ' : 'space-y-4 py-4',
       className
     )}
     >
       <div className={cn(
-        'text-3.5 text-[#d9d9d9]',
+        ' text-[#d9d9d9]',
         labelClass
       )}
       >
         {label}
       </div>
       <div className={cn(
-        'text-4',
+        '',
         valueClass
       )}
       >

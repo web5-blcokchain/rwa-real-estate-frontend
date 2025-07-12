@@ -13,7 +13,7 @@ import { toast } from 'react-toastify'
 export function useRouteGuard() {
   const navigate = useNavigate()
   const location = useLocation()
-  const { code } = useUserStore()
+  const { code, userData } = useUserStore()
   const { t } = useTranslation()
 
   const token = getToken()
@@ -71,13 +71,20 @@ export function useRouteGuard() {
     }
 
     // TODO 判断当前用户是否审核通过
-
-    if (!token) {
-      navigate({
-        to: '/home'
-      })
-      toast.error(t('header.error.login_required'))
-      return
+    // 1的时候表示已审核 2:中心化数据库审核拒绝 3.钱包已绑走4 kyc审核通过 5 kyc审核拒绝
+    if (loggedInBlackList.includes(currentPath)) {
+      if (userData.audit_status === 2) {
+        toast.error(t('header.error.centralized_database_review_rejection'))
+        navigate({
+          to: '/account/create'
+        })
+      }
+      else if (userData.audit_status === 0) {
+        toast.error(t('header.error.wallet_already_bound'))
+        navigate({
+          to: '/home'
+        })
+      }
     }
 
     if (code === UserCode.NotExist) {

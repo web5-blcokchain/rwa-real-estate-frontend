@@ -1,26 +1,27 @@
 import { Input, Select } from 'antd'
 
 export const FilterCard: FC = () => {
+  const { t } = useTranslation()
   const assetTypeOptions = [
-    { label: 'All', value: 'all' },
-    { label: 'Apartment', value: 'apartment' },
-    { label: 'House', value: 'house' },
-    { label: 'Land', value: 'land' },
-    { label: 'Commercial', value: 'commercial' }
+    { label: <div>{t('profile.transaction_status.all')}</div>, value: 'all' },
+    { label: <div>{t('profile.transaction_status.apartment')}</div>, value: 'apartment' },
+    { label: <div>{t('profile.transaction_status.house')}</div>, value: 'house' },
+    { label: <div>{t('profile.transaction_status.land')}</div>, value: 'land' },
+    { label: <div>{t('profile.transaction_status.commercial')}</div>, value: 'commercial' }
   ]
 
   const investmentScaleOptions = [
-    { label: 'All', value: 'all' },
-    { label: 'Small', value: 'small' },
-    { label: 'Medium', value: 'medium' },
-    { label: 'Large', value: 'large' }
+    { label: <div>{t('profile.transaction_status.all')}</div>, value: 'all' },
+    { label: <div>{t('profile.transaction_status.small')}</div>, value: 'small' },
+    { label: <div>{t('profile.transaction_status.medium')}</div>, value: 'medium' },
+    { label: <div>{t('profile.transaction_status.large')}</div>, value: 'large' }
   ]
 
   const riskLevelOptions = [
-    { label: 'All', value: 'all' },
-    { label: 'Low', value: 'low' },
-    { label: 'Medium', value: 'medium' },
-    { label: 'High', value: 'high' }
+    { label: <div>{t('profile.transaction_status.all')}</div>, value: 'all' },
+    { label: <div>{t('profile.transaction_status.low')}</div>, value: 'low' },
+    { label: <div>{t('profile.transaction_status.medium')}</div>, value: 'medium' },
+    { label: <div>{t('profile.transaction_status.high')}</div>, value: 'high' }
   ]
 
   return (
@@ -31,7 +32,7 @@ export const FilterCard: FC = () => {
     >
       <Input
         size="large"
-        placeholder="Search address, type"
+        placeholder={t('common.search_placeholder')}
         className={cn(
           'bg-transparent! text-white!',
           '[&>input]:(placeholder-text-[#898989])'
@@ -45,7 +46,7 @@ export const FilterCard: FC = () => {
 
       <Select
         size="large"
-        placeholder="Asset Type"
+        placeholder={t('common.asset_type')}
         className={cn(
           '[&_.ant-select-selector]:(bg-transparent! text-white!)',
           '[&_.ant-select-selection-placeholder]:(text-[#898989]!)',

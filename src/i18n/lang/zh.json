@@ -16,7 +16,11 @@
     "profile": "个人资料",
     "error": {
       "user_not_found": "请完善用户信息",
-      "login_required": "请先登陆"
+      "login_required": "请先登陆",
+      "centralized_database_review_rejection": "中心化数据库审核拒绝",
+      "wallet_already_bound": "kyc审核中",
+      "kyc_audit_passed": "KYC审核通过",
+      "kyc_audit_rejected": "KYC审核拒绝"
     },
     "link_wallet": "连接钱包"
   },
@@ -117,7 +121,9 @@
       "walletConnect": "WalletConnect",
       "walletContent": "使用 WalletConnect 连接",
       "coinbase": "Coinbase Wallet",
-      "coinbaseContent": "连接到您的Coinbase钱包"
+      "coinbaseContent": "连接到您的Coinbase钱包",
+      "please_bind_wallet": "请绑定钱包",
+      "bind_wallet_success": "绑定钱包成功"
     },
     "verification": {
       "title": "选择您的身份类型",
@@ -418,7 +424,9 @@
     "month": "月",
     "no_data": "暂无数据",
     "search": "搜索",
-    "load_more": "加载更多"
+    "load_more": "加载更多",
+    "search_placeholder": "搜索地址,类型",
+    "asset_type": "资产类型"
   },
   "action": {
     "sell": "卖出",
@@ -537,6 +545,7 @@
       "total_money": "总金额",
       "number_of_tokens": "代币数量",
       "status": "状态"
+
     }
   },
   "transaction": {

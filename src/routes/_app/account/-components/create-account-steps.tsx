@@ -22,7 +22,7 @@ export default function CreateAccountSteps() {
 
   return (
     <div className="w-full">
-      <div className="w-full flex items-start gap-8">
+      <div className="w-full flex items-start gap-8 px-4 max-lg:px-3">
         <div className="fcc">
           <div className="i-tabler-arrow-left size-8 bg-gray clickable" onClick={prev}></div>
         </div>

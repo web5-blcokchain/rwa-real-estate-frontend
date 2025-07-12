@@ -51,7 +51,7 @@ export default function IndividualVerification() {
       setExist(UserCode.LoggedIn)
       clearRegisterData()
       navigate({
-        to: '/profile'
+        to: '/home'
       })
     }
   })

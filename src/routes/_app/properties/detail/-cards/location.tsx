@@ -1,11 +1,11 @@
 import { TitleCard } from '@/components/common/title-card'
 
-export const LocationCard: FC = () => {
+export const LocationCard: FC = ({ className }) => {
   const { t } = useTranslation()
   const [loading, setLoading] = useState(true)
 
   return (
-    <TitleCard title={t('properties.detail.location')}>
+    <TitleCard className={className} title={t('properties.detail.location')}>
       <div className="text-4 space-y-4">
         <div className="h-48 fcc of-hidden rounded-xl bg-background">
           {
@@ -29,12 +29,12 @@ export const LocationCard: FC = () => {
           </iframe>
         </div>
 
-        <ul className="list-none [&>li]:(pl-4)">
+        {/* <ul className="list-none [&>li]:(pl-4)">
           <li>500m from subway station</li>
           <li>3 minutes walk to bus stop</li>
           <li>3 major supermarkets nearby</li>
           <li>General hospital within 1km</li>
-        </ul>
+        </ul> */}
       </div>
     </TitleCard>
   )

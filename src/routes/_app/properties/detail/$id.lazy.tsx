@@ -2,7 +2,6 @@ import type { DetailResponse } from '@/api/basicApi'
 import apiBasic from '@/api/basicApi'
 import { CollectButton } from '@/components/common/collect-button'
 import { IInfoField } from '@/components/common/i-info-field'
-import { ImageSwiper } from '@/components/common/image-swiper'
 import { useCommonDataStore } from '@/stores/common-data'
 import { joinImagesPath } from '@/utils/url'
 import { getContractBalance } from '@/utils/web3'
@@ -88,40 +87,66 @@ function RouteComponent() {
   }
 
   return (
-    <div className="px-8 space-y-8">
+    <div className="px-8 space-y-8 max-lg:px-4">
       <Waiting
         for={!isLoading}
         className="h-32 fcc"
         iconClass="size-8"
       >
 
-        <div className="grid grid-cols-1 w-full gap-8 md:grid-cols-2">
+        <div className="w-full flex flex-col gap-8">
           {imageList.length > 0 && (
-            <div>
-              <ImageSwiper list={imageList} />
-            </div>
-          )}
-
-          <div>
-            <div className="fb gap-4 px-6">
-              <div className="space-y-4">
-                <div className="text-6">{assetDetail?.name}</div>
-                <div className="text-4 text-[#d9d9d9]">{assetDetail?.address}</div>
-              </div>
-
-              <div className="pr">
+            <div className="relative w-full">
+              <button className="absolute left-4 top-4 rounded-5 bg-#181A20 px-2.5 text-base">
+                查看全部图片
+              </button>
+              {/* <ImageSwiper list={imageList} /> */}
+              <img className="max-h-128 w-full" src={imageList[0]} alt="" />
+              <div className="absolute right-4 top-4">
                 <CollectButton
+                  className="!bg-transparent"
                   houseId={assetId}
                   collect={isCollect}
                 />
               </div>
             </div>
+          )}
 
-            <div className="grid grid-cols-2 my-4 px-6">
-              <IInfoField label={t('properties.detail.property_type')} value={assetDetail?.property_type || ''} />
-              <IInfoField label={t('properties.detail.bedrooms')} value={assetDetail?.bedrooms || ''} />
-              <IInfoField label={t('properties.detail.market_value')} value={assetDetail?.price || ''} valueClass="text-primary" />
-              <IInfoField label={t('properties.detail.monthly_rent')} value={assetDetail?.monthly_rent || ''} />
+          <div>
+            <div className="fb gap-4">
+              <div className="space-y-4">
+                <div className="text-6">{assetDetail?.name}</div>
+                <div className="text-4">{assetDetail?.address}</div>
+              </div>
+
+              <div className="pr">
+
+              </div>
+            </div>
+
+            <div className="my-4 flex gap-2 overflow-hidden max-lg:flex-col">
+              <div className="w-fit truncate rounded-6px bg-#848E9C px-2.5 text-18px max-lg:max-w-full">
+                {t('properties.detail.property_type')}
+                :
+                {assetDetail?.property_type || ''}
+              </div>
+              <div className="w-fit truncate rounded-6px bg-#848E9C px-2.5 text-18px max-lg:max-w-full">
+                {t('properties.detail.bedrooms')}
+                :
+                {assetDetail?.bedrooms || ''}
+              </div>
+            </div>
+
+            <div className="mb-4 w-fit flex flex-col text-16px max-lg:text-14px">
+              {/* <IInfoField label={t('properties.detail.property_type')} value={assetDetail?.property_type || ''} />
+              <IInfoField label={t('properties.detail.bedrooms')} value={assetDetail?.bedrooms || ''} /> */}
+              <IInfoField
+                horizontal
+                label={t('properties.detail.market_value')}
+                value={assetDetail?.price || ''}
+                className="gap-4"
+              />
+              <IInfoField className="gap-4" horizontal label={t('properties.detail.monthly_rent')} value={assetDetail?.monthly_rent || ''} />
             </div>
 
             <div className="rounded-lg bg-background-secondary p-6 space-y-2">
@@ -172,9 +197,9 @@ function RouteComponent() {
             </div>
           </div>
 
-          <PropertyDescriptionCard location={assetDetail?.location || ''} />
+          <PropertyDescriptionCard className="!bg-transparent max-lg:px-0" location={assetDetail?.location || ''} />
 
-          <LocationCard />
+          <LocationCard className="w-529px max-lg:w-full !bg-transparent max-lg:px-0" />
         </div>
 
         <div className="space-y-4">
@@ -182,10 +207,10 @@ function RouteComponent() {
 
           <div className="grid grid-cols-1 w-full gap-8 md:grid-cols-2">
             <div>
-              <RegionalPriceTrendsCard />
+              <RegionalPriceTrendsCard className="!bg-transparent" />
             </div>
             <div>
-              <RentalIncomeAnalysisCard />
+              <RentalIncomeAnalysisCard className="!bg-transparent" />
             </div>
           </div>
         </div>
