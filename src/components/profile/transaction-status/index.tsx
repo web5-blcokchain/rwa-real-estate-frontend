@@ -134,7 +134,7 @@ export const TransactionStatus: FC = () => {
 
   return (
     <div className="text-white space-y-6">
-      <div className="grid grid-cols-4 gap-4 rounded-xl bg-[#1e2024] p-6">
+      <div className="grid grid-cols-4 gap-4 rounded-xl bg-[#1e2024] p-6 max-lg:grid-cols-1">
         <div className="fyc flex-inline b b-white rounded-xl b-solid px-4 py-2 space-x-4">
           <div className="i-iconamoon-search size-5 shrink-0 bg-[#b5b5b5]"></div>
           <input

@@ -9,8 +9,8 @@ import HistoryRightTop from './historyRightTop'
 function History() {
   const { t } = useTranslation()
   return (
-    <div className="flex justify-start text-white">
-      <div className="mr-3 w-1/2">
+    <div className="flex justify-start text-white max-lg:flex max-lg:flex-col max-md:gap-4">
+      <div className="mr-3 w-1/2 max-lg:w-full max-lg:flex max-lg:flex-col">
         <TitleCard
           title={<div>{t('profile.history.incomeRecords')}</div>}
           selectSlot={(
@@ -47,7 +47,7 @@ function History() {
         </TitleCard>
       </div>
 
-      <div className="ml-3 w-1/2">
+      <div className="ml-3 w-1/2 max-md:ml-0 max-lg:w-full max-lg:flex max-lg:flex-col">
         <TitleCard
           title={<div>{t('profile.history.recentTransactions')}</div>}
           selectSlot={(

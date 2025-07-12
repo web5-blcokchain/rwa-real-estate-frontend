@@ -57,13 +57,13 @@ function DataCount() {
   }, [data])
 
   return (
-    <div className="h-32 fcc">
+    <div className="h-32 fcc max-lg:h-auto">
       <Waiting
         for={!isLoading}
         className="w-full fcc"
         iconClass="size-6 bg-white"
       >
-        <div className="grid grid-cols-4 w-full gap-4">
+        <div className="grid grid-cols-4 w-full gap-4 max-lg:grid-cols-2">
 
           { list.map(item => (
             <div key={item.title} className="flex flex-col rounded-xl bg-[#202329] p-5">

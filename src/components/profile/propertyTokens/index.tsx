@@ -31,14 +31,14 @@ function PropertyTokens() {
     <div>
       <DataCount />
 
-      <div className="p-8 text-white">
-        <div className="flex items-center justify-between">
+      <div className="p-8 text-white max-lg:p-4">
+        <div className="flex items-center justify-between max-lg:flex-col max-lg:gap-3">
           <div className="text-8 text-[#fff] font-medium">
             {t('profile.propertyTokens.title')}
           </div>
 
-          <div>
-            <div className="fyc flex-inline b b-white rounded-xl b-solid p-4 space-x-4">
+          <div className="max-lg:w-full">
+            <div className="fyc flex-inline b b-white rounded-xl b-solid p-4 max-lg:w-full space-x-4">
               <div className="i-iconamoon-search size-5 bg-[#b5b5b5]"></div>
               <input
                 type="text"

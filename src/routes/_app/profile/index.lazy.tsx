@@ -82,8 +82,8 @@ function RouteComponent() {
   }
 
   return (
-    <Layout className="aboutMe">
-      <Sider className="sider w-fit bg-[#191a1f]" width={256}>
+    <Layout className="aboutMe max-lg:w-full max-lg:flex max-lg:!flex-col">
+      <Sider className="sider w-fit bg-[#191a1f] max-lg:!max-w-full max-lg:!w-full" width={256}>
         <div className="flex justify-start px-4 pb-6 pt-34px">
           <div className="img-wrap size-16 shrink-0">
             <IImage
@@ -108,7 +108,7 @@ function RouteComponent() {
         />
       </Sider>
 
-      <Layout className="page-layout-wrap bg-[#191a1f]">
+      <Layout className="page-layout-wrap bg-[#191a1f] max-lg:!w-full">
         <Content>
           {renderContent()}
         </Content>

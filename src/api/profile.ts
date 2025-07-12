@@ -40,3 +40,12 @@ export function redemption(data: {
 }) {
   return apiClient.post('/api/assets/redemption', data)
 }
+
+/**
+ * 绑定钱包
+ * @param data 钱包地址
+ * @returns
+ */
+export function bindWallet(data: { wallet_address: string }) {
+  return apiClient.post('/api/info/bindWallet', data)
+}

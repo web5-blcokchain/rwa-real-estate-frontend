@@ -7,6 +7,10 @@
       font-size: 32px;
       font-weight: 500;
       line-height: 44px;
+      @media (max-width: 768px) {
+        font-size: 20px;
+        line-height: 28px;
+      }
     }
   }
 }

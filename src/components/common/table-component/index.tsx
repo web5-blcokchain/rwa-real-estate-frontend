@@ -18,6 +18,7 @@ function TableComponent<T extends object>({ children, titleSlot, columns, data }
       {children}
       {titleSlot}
       <Table<T>
+        scroll={{ x: 'max-content' }}
         className="custom-table"
         columns={columns}
         dataSource={data}

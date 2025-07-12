@@ -100,13 +100,13 @@ function RouteComponent() {
         className="home-content fxc flex-col pl-[118px] max-md:py-9 max-lg:pl-[24px] max-md:pl-2 max-xl:pl-[60px] max-md:!h-fit"
       >
         <div
-          className={cn(i18n.language === 'en' ? 'text-[82px] leading-[100px]' : 'text-[100px] leading-[120px]', 'w-[700px]   max-lg:w-[500px] max-md:w-196px max-xl:w-[600px] max-lg:text-[48px] max-md:text-28px max-xl:text-[62px] max-lg:leading-[64px] max-md:leading-38px max-xl:leading-[90px]')}
+          className={cn(i18n.language === 'en' ? 'text-[80px] leading-[92px]' : 'text-[100px] leading-[120px]', 'w-[700px]   max-lg:w-[500px] max-md:w-196px max-xl:w-[600px] max-lg:text-[48px] max-md:text-28px max-xl:text-[62px] max-lg:leading-[64px] max-md:leading-38px max-xl:leading-[90px]')}
         >
           {t('home.explanation.title')}
         </div>
 
         <div
-          className="mt-[97px] w-[521.5px] flex flex-col gap-[33px] max-lg:mt-[60px] max-md:mt-30px max-xl:mt-[80px] max-lg:w-[400px] max-md:w-[205px] max-xl:w-[460px] max-lg:gap-[28px] max-md:gap-22px max-xl:gap-[30px]"
+          className="mt-[97px] w-[560px] flex flex-col gap-[33px] max-lg:mt-[60px] max-md:mt-30px max-xl:mt-[80px] max-lg:w-[400px] max-md:w-[205px] max-xl:w-[460px] max-lg:gap-[28px] max-md:gap-22px max-xl:gap-[30px]"
         >
           <div
             className="text-[30px] leading-[42px] max-lg:text-[20px] max-md:text-10px max-xl:text-[24px] max-lg:leading-[30px] max-md:leading-15px max-xl:leading-[36px]"

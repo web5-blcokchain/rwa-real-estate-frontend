@@ -40,7 +40,7 @@ function RouteComponent() {
       </div>
 
       <div className="mt-8">
-        <div className="fyc flex-inline b b-white rounded-xl b-solid p-4 space-x-4">
+        <div className="fyc flex-inline b b-white rounded-xl b-solid p-4 max-lg:w-full space-x-4">
           <div className="i-iconamoon-search size-5 bg-[#b5b5b5]"></div>
           <input
             type="text"

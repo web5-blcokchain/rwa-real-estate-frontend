@@ -1,5 +1,6 @@
 import type { ConnectedWallet } from '@privy-io/react-auth'
 import type { Dispatch, SetStateAction } from 'react'
+import { bindWallet } from '@/api/profile'
 import { useUserStore } from '@/stores/user'
 import { ensurePrivyNetwork } from '@/utils/privy'
 import { useWallets } from '@privy-io/react-auth'
@@ -15,13 +16,14 @@ export const PaymentMethod: FC<{
   const { t } = useTranslation()
 
   const [selectedWallet, setSelectedWallet] = walletState
+  // const {} = use
 
   useEffect(() => {
     if (!userData.wallet_address) {
       return
     }
 
-    const wallet = wallets.find(wallet => wallet.address === userData.wallet_address)
+    const wallet = wallets.find(wallet => wallet.walletClientType !== 'privy')
     if (wallet) {
       setSelectedWallet(wallet)
       ensurePrivyNetwork(wallet)
@@ -31,9 +33,30 @@ export const PaymentMethod: FC<{
     }
   }, [userData, wallets])
 
+  const [bindWalletLoading, setBindWalletLoading] = useState(false)
+  // const isConnectedWallet = wallets.some(wallet => wallet.walletClientType !== "privy")
+  // 获取当前链接的钱包
+
+  // 绑定钱包
+  const handleBindWallet = () => {
+    // navigate({ to: '/profile/bind-wallet' })
+    if (!selectedWallet || !selectedWallet.address) {
+      toast.warning('请连接钱包')
+      return
+    }
+    setBindWalletLoading(true)
+    bindWallet({ wallet_address: selectedWallet.address }).then((res) => {
+      if (res.code === 200) {
+        toast.success('绑定成功')
+        userData.wallet_address = selectedWallet.address
+      }
+    })
+    setBindWalletLoading(false)
+  }
+
   return (
     <div className={cn(
-      'rounded-md bg-[#333947] p-2 hidden',
+      'rounded-md bg-[#333947] p-2',
       className
     )}
     >
@@ -42,33 +65,29 @@ export const PaymentMethod: FC<{
         className="fcc"
       >
         {
-          selectedWallet
+          !userData.wallet_address
             ? (
                 <div className="fbc">
-                  <div>{t('payment_method.user_bound_wallet')}</div>
-                  <div>
-                    <div className="fyc gap-2">
-                      <div className="size-5">
-                        {
-                          selectedWallet.meta.icon
-                            ? (
-                                <img src={selectedWallet.meta.icon} alt={selectedWallet.meta.name} />
-                              )
-                            : (
-                                <div className="i-mingcute-wallet-4-fill size-full bg-white" />
-                              )
-                        }
-                      </div>
-                      <div>{selectedWallet.meta.name}</div>
-                      <div className="text-3.5 text-[#898989]">{selectedWallet.address}</div>
-                    </div>
-                  </div>
+                  <div className="text-red">绑定成功</div>
+                  <div className="text-3.5 text-[#898989]">{userData.wallet_address}</div>
                 </div>
               )
             : (
                 <div className="fbc">
                   <div className="text-red">{t('payment_method.not_connected_wallet')}</div>
-                  <div className="text-3.5 text-[#898989]">{userData.wallet_address}</div>
+                  {/* <div className="text-3.5 text-[#898989]">{userData.wallet_address}</div> */}
+                  {
+                    bindWalletLoading
+                      ? (
+                          <div className="fyc">
+                            <div>绑定中</div>
+                            <div className="i-line-md-loading-loop bg-white"></div>
+                          </div>
+                        )
+                      : (
+                          <div className="cursor-pointer text-3.5 text-[#898989]" onClick={handleBindWallet}>点击绑定钱包</div>
+                        )
+                  }
                 </div>
               )
 

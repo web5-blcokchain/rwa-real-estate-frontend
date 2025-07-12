@@ -6,7 +6,7 @@ import { UserCode } from '@/enums/user'
 import { useUserStore } from '@/stores/user'
 import { clearToken, setToken } from '@/utils/user'
 import { shortAddress } from '@/utils/wallet'
-import { usePrivy } from '@privy-io/react-auth'
+import { usePrivy, useWallets } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
 import { Link, useLocation, useNavigate } from '@tanstack/react-router'
 import { Drawer, Dropdown } from 'antd'
@@ -227,10 +227,10 @@ function RightMenu() {
 
 const UserMenu: FC = () => {
   const navigate = useNavigate()
-  const { logout, linkWallet } = usePrivy()
+  const { logout, linkWallet, connectWallet } = usePrivy()
+  const { wallets } = useWallets()
   const { t } = useTranslation()
   const { userData, setCode, setUserData } = useUserStore()
-
   async function handleLogout() {
     logout()
       .then(
@@ -262,7 +262,15 @@ const UserMenu: FC = () => {
     {
       key: 'link_wallet',
       label: (
-        <div onClick={linkWallet}>
+        <div onClick={() => {
+          if (wallets.length > 0) {
+            connectWallet()
+          }
+          else {
+            linkWallet()
+          }
+        }}
+        >
           {t('header.link_wallet')}
         </div>
       )
