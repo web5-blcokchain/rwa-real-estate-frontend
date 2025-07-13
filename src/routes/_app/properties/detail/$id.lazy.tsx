@@ -8,7 +8,7 @@ import { getContractBalance } from '@/utils/web3'
 import { usePrivy } from '@privy-io/react-auth'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate } from '@tanstack/react-router'
-import { Button } from 'antd'
+import { Button, Image, Input } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
@@ -16,6 +16,7 @@ import { LocationCard } from './-cards/location'
 import { PropertyDescriptionCard } from './-cards/property-description'
 import { RegionalPriceTrendsCard } from './-cards/regional-price-trends'
 import { RentalIncomeAnalysisCard } from './-cards/rental-income-analysis'
+import './index.scss'
 
 export const Route = createLazyFileRoute('/_app/properties/detail/$id')({
   component: RouteComponent
@@ -35,6 +36,8 @@ function RouteComponent() {
   const [ratioNum, setRatioNum] = useState<number>(0)
   const [isCollect, setIsCollect] = useState<0 | 1>(0)
   const [, setContractBalance] = useState<string>('0')
+  const [previewVisible, setPreviewVisible] = useState(false)
+  const [previewCurrent, setPreviewCurrent] = useState(0)
 
   const { data: assetDetail, isLoading } = useQuery<DetailResponse>({
     queryKey: ['property-detail', assetId],
@@ -87,96 +90,128 @@ function RouteComponent() {
   }
 
   return (
-    <div className="px-8 space-y-8 max-lg:px-4">
+    <div className="px-12 space-y-8 max-lg:px-4">
       <Waiting
         for={!isLoading}
         className="h-32 fcc"
         iconClass="size-8"
       >
 
-        <div className="w-full flex flex-col gap-8">
-          {imageList.length > 0 && (
-            <div className="relative w-full">
-              <button className="absolute left-4 top-4 rounded-5 bg-#181A20 px-2.5 text-base">
-                查看全部图片
-              </button>
-              {/* <ImageSwiper list={imageList} /> */}
-              <img className="max-h-128 w-full" src={imageList[0]} alt="" />
-              <div className="absolute right-4 top-4">
-                <CollectButton
-                  className="!bg-transparent"
-                  houseId={assetId}
-                  collect={isCollect}
+        <div className="space-y-4">
+          <div className="relative w-full flex flex-col gap-8 b-b-1 b-b-#848E9C">
+            {imageList.length > 0 && (
+              <div className="relative w-full">
+                <button
+                  className="absolute left-4 top-4 z-10 rounded-5 bg-#181A20 px-2.5 text-base"
+                  onClick={() => {
+                    setPreviewVisible(true)
+                    setPreviewCurrent(0)
+                  }}
+                >
+                  查看全部图片
+                </button>
+                {/* <ImageSwiper list={imageList} /> */}
+                <Image.PreviewGroup
+                  items={imageList}
+                  preview={{
+                    visible: previewVisible,
+                    current: previewCurrent,
+                    onVisibleChange: vis => setPreviewVisible(vis),
+                    onChange: current => setPreviewCurrent(current)
+                  }}
+                >
+                  <img className="max-h-128 w-full" src={imageList[0]} alt="" />
+                </Image.PreviewGroup>
+                <div className="absolute right-4 top-4">
+                  <CollectButton
+                    className=""
+                    houseId={assetId}
+                    collect={isCollect}
+                  />
+                </div>
+              </div>
+            )}
+
+            <div>
+              <div className="fb gap-4">
+                <div className="space-y-4">
+                  <div className="text-6">{assetDetail?.name}</div>
+                  <div className="text-4">{assetDetail?.address}</div>
+                </div>
+
+                <div className="pr">
+
+                </div>
+              </div>
+
+              <div className="my-4 flex gap-2 overflow-hidden max-lg:flex-col">
+                <div className="w-fit truncate rounded-6px bg-#848E9C px-2.5 text-18px max-lg:max-w-full">
+                  {t('properties.detail.property_type')}
+                  :
+                  {assetDetail?.property_type || ''}
+                </div>
+                <div className="w-fit truncate rounded-6px bg-#848E9C px-2.5 text-18px max-lg:max-w-full">
+                  {t('properties.detail.bedrooms')}
+                  :
+                  {assetDetail?.bedrooms || ''}
+                </div>
+              </div>
+
+              <div className="mb-4 w-fit flex flex-col text-16px max-lg:text-14px">
+                {/* <IInfoField label={t('properties.detail.property_type')} value={assetDetail?.property_type || ''} />
+              <IInfoField label={t('properties.detail.bedrooms')} value={assetDetail?.bedrooms || ''} /> */}
+                <IInfoField
+                  horizontal
+                  label={t('properties.detail.market_value')}
+                  value={assetDetail?.price || ''}
+                  className="gap-4"
+                />
+                <IInfoField className="gap-4" horizontal label={t('properties.detail.monthly_rent')} value={assetDetail?.monthly_rent || ''} />
+              </div>
+
+            </div>
+            <div className="absolute bottom-6 right-0 rounded-lg bg-#F0B90B px-6 py-18px text-black max-lg:relative space-y-2">
+              <div>
+                <div className="text-4.5 font-bold">{t('properties.detail.return')}</div>
+                <div className="text-10 font-bold max-lg:text-7.5">
+                  {assetDetail?.expected_annual_return}
+                  %
+                </div>
+                <div className="text-4">
+                  {t('properties.detail.including')}
+                  {assetDetail?.expected_annual_return}
+                  %
+                  {' '}
+                  {t('properties.detail.rental')}
+                  {assetDetail?.capital_appreciation}
+                  %
+                  {' '}
+                  {t('properties.detail.capital')}
+                </div>
+              </div>
+
+              <div>
+                <div className="mb-2 flex justify-between text-18px max-lg:text-16px">
+                  <div>{t('properties.detail.invest_calculator')}</div>
+                  <div>{t('properties.detail.average_days', { n: 30 })}</div>
+                </div>
+                <Input
+                  className="computed-input w-510px max-lg:w-full !b-#484D56 !bg-transparent !text-#484D56"
+                  placeholder={t('properties.detail.invest_calculator_placeholder')}
+                  suffix="GBP"
                 />
               </div>
-            </div>
-          )}
 
-          <div>
-            <div className="fb gap-4">
-              <div className="space-y-4">
-                <div className="text-6">{assetDetail?.name}</div>
-                <div className="text-4">{assetDetail?.address}</div>
-              </div>
-
-              <div className="pr">
-
-              </div>
-            </div>
-
-            <div className="my-4 flex gap-2 overflow-hidden max-lg:flex-col">
-              <div className="w-fit truncate rounded-6px bg-#848E9C px-2.5 text-18px max-lg:max-w-full">
-                {t('properties.detail.property_type')}
-                :
-                {assetDetail?.property_type || ''}
-              </div>
-              <div className="w-fit truncate rounded-6px bg-#848E9C px-2.5 text-18px max-lg:max-w-full">
-                {t('properties.detail.bedrooms')}
-                :
-                {assetDetail?.bedrooms || ''}
-              </div>
-            </div>
-
-            <div className="mb-4 w-fit flex flex-col text-16px max-lg:text-14px">
-              {/* <IInfoField label={t('properties.detail.property_type')} value={assetDetail?.property_type || ''} />
-              <IInfoField label={t('properties.detail.bedrooms')} value={assetDetail?.bedrooms || ''} /> */}
-              <IInfoField
-                horizontal
-                label={t('properties.detail.market_value')}
-                value={assetDetail?.price || ''}
-                className="gap-4"
-              />
-              <IInfoField className="gap-4" horizontal label={t('properties.detail.monthly_rent')} value={assetDetail?.monthly_rent || ''} />
-            </div>
-
-            <div className="rounded-lg bg-background-secondary p-6 space-y-2">
-              <div className="text-4.5">{t('properties.detail.return')}</div>
-              <div className="text-7.5 text-primary">
-                {assetDetail?.expected_annual_return}
-                %
-              </div>
-              <div className="text-4 text-[#898989]">
-                {t('properties.detail.including')}
-                {assetDetail?.expected_annual_return}
-                %
-                {' '}
-                {t('properties.detail.rental')}
-                {assetDetail?.capital_appreciation}
-                %
-                {' '}
-                {t('properties.detail.capital')}
-              </div>
-
-              <div className="fbc">
+              <div className="fyc">
                 <IInfoField
-                  className="space-y-2"
-                  labelClass="text-[#898989]"
+                  className="flex-1 space-y-2"
+                  labelClass="text-black"
                   label={t('properties.detail.return')}
                   value={annualReturn}
                 />
                 <IInfoField
-                  className="space-y-2"
-                  labelClass="text-[#898989]"
+                  className="flex-1 space-y-2"
+                  labelClass="text-black"
                   label={t('properties.detail.ratio')}
                   value={`${ratioNum.toFixed(2)}%`}
                 />
@@ -184,9 +219,8 @@ function RouteComponent() {
 
               <div>
                 <Button
-                  type="primary"
                   size="large"
-                  className="w-full text-black!"
+                  className="w-full bg-#181A20 text-#F0B90B!"
                   onClick={() => {
                     toInvest(assetId, assetDetail!)
                   }}
@@ -195,14 +229,11 @@ function RouteComponent() {
                 </Button>
               </div>
             </div>
+
           </div>
+          <PropertyDescriptionCard className="px-0 !bg-transparent max-lg:px-0" location={assetDetail?.location || ''} />
 
-          <PropertyDescriptionCard className="!bg-transparent max-lg:px-0" location={assetDetail?.location || ''} />
-
-          <LocationCard className="w-529px max-lg:w-full !bg-transparent max-lg:px-0" />
-        </div>
-
-        <div className="space-y-4">
+          <LocationCard className="w-529px px-0 max-lg:w-full !bg-transparent max-lg:px-0" />
           <div className="text-5">{t('properties.detail.market_analysis')}</div>
 
           <div className="grid grid-cols-1 w-full gap-8 md:grid-cols-2">

@@ -300,7 +300,7 @@
       "bedrooms": "ベッドルーム",
       "market_value": "市場価値",
       "monthly_rent": "家賃",
-      "return": "予想される年間収益率",
+      "return": "年間リターンを期待しています",
       "including": "を含む",
       "rental": "賃貸料収益率と",
       "capital": "の資本増値",
@@ -313,7 +313,10 @@
       "location": "位置",
       "market_analysis": "市場分析",
       "trends": "地域別価格トレンド",
-      "analysis": "賃料収入分析"
+      "analysis": "賃料収入分析",
+      "invest_calculator": "投資計算機",
+      "invest_calculator_placeholder": "投資金額の入力",
+      "average_days": "平均{{n}}日"
     },
     "payment": {
       "token_price": "トークン価格",

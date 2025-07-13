@@ -300,7 +300,7 @@
       "bedrooms": "Bedrooms",
       "market_value": "Market Value",
       "monthly_rent": "Monthly Rent",
-      "return": "Expected Annual Return",
+      "return": "Expected annual return",
       "including": "Including",
       "rental": "rental yield and",
       "capital": "capital appreciation",
@@ -313,7 +313,10 @@
       "location": "Location",
       "market_analysis": "Market Analysis",
       "trends": "Regional Price Trends",
-      "analysis": "Rental Income Analysis"
+      "analysis": "Rental Income Analysis",
+      "invest_calculator": "Investment Calculator",
+      "invest_calculator_placeholder": "Enter investment amount",
+      "average_days": "Average {{n}} days"
     },
     "payment": {
       "token_price": "Token Price",

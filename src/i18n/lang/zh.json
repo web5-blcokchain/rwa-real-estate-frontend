@@ -301,7 +301,7 @@
       "bedrooms": "卧室",
       "market_value": "市场价值",
       "monthly_rent": "月租金",
-      "return": "预期年回报率",
+      "return": "预期年度回报",
       "including": "包括",
       "rental": "租金收益率和",
       "capital": "资本增值",
@@ -314,7 +314,10 @@
       "location": "位置",
       "market_analysis": "市场分析",
       "trends": "区域价格趋势",
-      "analysis": "租金收入分析"
+      "analysis": "租金收入分析",
+      "invest_calculator": "投资计算器",
+      "invest_calculator_placeholder": "请输入投资净金额",
+      "average_days": "平均{{n}}天"
     },
     "payment": {
       "token_price": "代币价格",
