@@ -28,7 +28,7 @@ function AppLayoutComponent() {
 
 const PortalToast: FC = () => {
   return ReactDOM.createPortal(
-    <ToastContainer />,
+    <ToastContainer position="top-center" hideProgressBar />,
     document.body
   )
 }

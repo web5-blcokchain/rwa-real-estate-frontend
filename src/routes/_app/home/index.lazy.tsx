@@ -94,9 +94,8 @@ function RouteComponent() {
   }
 
   return (
-    <div className="">
+    <div className="" style={{ '--conent-h': `${headerH || 80}px` } as any}>
       <div
-        style={{ '--conent-h': `${headerH || 80}px` } as any}
         className="home-content fxc flex-col pl-[118px] max-md:py-9 max-lg:pl-[24px] max-md:pl-2 max-xl:pl-[60px] max-md:!h-fit"
       >
         <div
@@ -165,7 +164,7 @@ function RouteComponent() {
         </div>
       </div>
 
-      <div className="home-explanation w-full fccc gap-11 pb-68px pl-125px pr-161px pt-93px text-center max-lg:gap-4 max-md:gap-4 max-xl:gap-7 max-lg:pb-24px max-lg:pl-12px max-lg:pr-12px max-lg:pt-32px max-md:pb-32px max-md:pl-14px max-md:pr-7 max-md:pt-12px max-xl:pb-40px max-xl:pl-40px max-xl:pr-40px max-xl:pt-60px">
+      <div className="content-min-h home-explanation w-full fccc gap-11 pb-68px pl-125px pr-161px pt-93px text-center max-lg:gap-4 max-md:gap-4 max-xl:gap-7 max-lg:pb-24px max-lg:pl-12px max-lg:pr-12px max-lg:pt-32px max-md:pb-32px max-md:pl-14px max-md:pr-7 max-md:pt-12px max-xl:pb-40px max-xl:pl-40px max-xl:pr-40px max-xl:pt-60px">
         <div>
           <div className="text-36px font-500 leading-10 max-lg:text-18px max-md:text-4 max-xl:text-28px max-lg:leading-6 max-md:leading-6 max-xl:leading-8">{t('home.investmentFeature.frictionless')}</div>
           <div className="pt-14px text-26px font-500 leading-10 max-md:pt-0 max-lg:text-12px max-md:text-10px max-xl:text-18px max-lg:leading-5 max-md:leading-4 max-xl:leading-7">{t('home.investmentFeature.anyone')}</div>
@@ -190,12 +189,12 @@ function RouteComponent() {
       </div>
 
       <div className="px-30 max-lg:px-12 max-md:px-2 max-xl:px-16">
-        <div className="fccc gap-11 pt-86px max-lg:gap-6 max-md:gap-0 max-xl:gap-8 max-lg:pt-40px max-md:pt-6 max-xl:pt-64px">
+        <div className="content-min-h fccc gap-11 pt-86px max-lg:gap-6 max-md:gap-0 max-xl:gap-8 max-lg:pt-40px max-md:pt-6 max-xl:pt-64px">
           <div className="text-center font-500 leading-10 max-lg:text-5 max-xl:text-7 max-lg:leading-7 max-xl:leading-8">
             <div className="text-9 max-lg:text-5 max-md:text-4 max-xl:text-7 max-md:leading-100%">{t('home.earn.title')}</div>
             <div className="text-26px max-lg:text-16px max-md:text-10px max-xl:text-20px max-lg:leading-6 max-md:leading-26px max-xl:leading-7">{t('home.earn.content')}</div>
           </div>
-          <div className="px-30 max-lg:px-12 max-md:px-2 max-xl:px-16">
+          <div className="">
             <Waiting
               for={!propertieLoading}
               className="fcc"
@@ -233,7 +232,7 @@ function RouteComponent() {
           </div>
         </div>
 
-        <div className="fccc gap-50px pt-20 max-lg:gap-5 max-lg:gap-8 max-md:gap-14px max-xl:gap-8 max-xl:gap-8 max-md:pt-45px">
+        <div className="content-min-h fccc gap-50px pt-20 max-lg:gap-5 max-lg:gap-8 max-md:gap-14px max-xl:gap-8 max-xl:gap-8 max-md:pt-45px">
           <div className="text-center leading-10 max-lg:leading-5 max-lg:leading-7 max-xl:leading-8">
             <div className="pb-14px text-9 max-lg:pb-6px max-md:pb-2px max-xl:pb-10px max-lg:text-5 max-md:text-14px max-xl:text-7">{t('home.investorGuide.newbieInvest')}</div>
             <div className="text-26px max-lg:text-16px max-md:text-10px max-xl:text-20px max-lg:leading-6 max-md:leading-5 max-xl:leading-7">{t('home.investorGuide.getInfo')}</div>
@@ -261,33 +260,35 @@ function RouteComponent() {
           </div>
         </div>
 
-        <ConfigProvider
-          theme={{
-            // 1. 单独使用暗色算法
-            components: {
-              Tabs: {
+        <div className="">
+          <ConfigProvider
+            theme={{
+              // 1. 单独使用暗色算法
+              components: {
+                Tabs: {
 
+                }
               }
-            }
 
-            // 2. 组合使用暗色算法与紧凑算法
-            // algorithm: [theme.darkAlgorithm, theme.compactAlgorithm],
-          }}
-        >
-          <Tabs
-            activeKey={activeKey}
-            key={tabsKey}
-            onChange={setActiveKey}
-            className="mt-77px"
-            defaultActiveKey="1"
-            items={[
-              { label: t(documentType[0]), key: '1', children: tabOfDocument(0) },
-              { label: t(documentType[1]), key: '2', children: tabOfDocument(1) },
-              { label: t(documentType[2]), key: '3', children: tabOfDocument(2) },
-              { label: t(documentType[3]), key: '4', children: tabOfDocument(3) }
-            ]}
-          />
-        </ConfigProvider>
+              // 2. 组合使用暗色算法与紧凑算法
+              // algorithm: [theme.darkAlgorithm, theme.compactAlgorithm],
+            }}
+          >
+            <Tabs
+              activeKey={activeKey}
+              key={tabsKey}
+              onChange={setActiveKey}
+              className="mt-77px"
+              defaultActiveKey="1"
+              items={[
+                { label: t(documentType[0]), key: '1', children: tabOfDocument(0) },
+                { label: t(documentType[1]), key: '2', children: tabOfDocument(1) },
+                { label: t(documentType[2]), key: '3', children: tabOfDocument(2) },
+                { label: t(documentType[3]), key: '4', children: tabOfDocument(3) }
+              ]}
+            />
+          </ConfigProvider>
+        </div>
       </div>
     </div>
   )

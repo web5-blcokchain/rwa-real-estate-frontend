@@ -23,7 +23,7 @@ function RouteComponent() {
   const [tabsKey, setTabsKey] = useState(0)
   const tabOfDocument = (index: number) => {
     return (
-      <div className="grid grid-cols-3 gap-x-[29px] gap-y-[43px] rounded-14px max-lg:gap-3 max-xl:gap-6">
+      <div className="grid grid-cols-3 gap-x-[29px] gap-y-[43px] rounded-14px max-lg:grid-cols-2 max-lg:gap-3 max-xl:gap-6">
         {
           documentList.map((res) => {
             return <Document key={res.title} data={res} index={index} />
@@ -39,7 +39,7 @@ function RouteComponent() {
   }, [i18n.language])
 
   return (
-    <div className="px-102px">
+    <div className="px-102px max-lg:px-24px max-md:px-12px">
       <ConfigProvider
         theme={{
           // 1. 单独使用暗色算法
@@ -57,7 +57,7 @@ function RouteComponent() {
           activeKey={activeKey}
           key={tabsKey}
           onChange={setActiveKey}
-          className="mt-77px"
+          className="mt-77px max-lg:mt-0px"
           defaultActiveKey="1"
           items={[
             { label: t(documentType[0]), key: '1', children: tabOfDocument(0) },

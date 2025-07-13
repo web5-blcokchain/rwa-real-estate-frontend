@@ -3,7 +3,7 @@ import { Link } from '@tanstack/react-router'
 export default function MainFooter() {
   const { t } = useTranslation()
   return (
-    <footer className="mt-32 bg-[#1e2024] px-8 py-14">
+    <footer className="mt-32 bg-[#1e2024] px-8 py-14 max-lg:mt-6 max-lg:py-7">
       <div className="flex items-center gap-y-12 md:grid-cols-4 max-md:flex-col">
         <div className="flex items-center gap-11 pr-132px max-md:w-full max-md:pr-0 max-xl:pr-82px">
           <img className="w-171px max-lg:w-81px max-xl:w-121px" src="/src/assets/images/logo.png" alt="" />

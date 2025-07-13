@@ -137,7 +137,10 @@
         "title": "Personal Identity Verification",
         "subTitle": "Please upload your personal identity documents for KYC verification",
         "identity": "Identity Document",
-        "upload_title": "Upload Identity Card / Passport",
+        "upload_title": "Upload {{type}} ",
+        "upload_title_passport": "Passport",
+        "upload_title_id_card": "ID Card",
+        "upload_title_driver_license": "Driver License",
         "upload_subTitle": "Front and back sides required, JPG/PNG/PDF up to 5MB",
         "files": "Browse Files",
         "poof": "Proof of Address",
@@ -178,10 +181,10 @@
       "link_email": "Please bind your email address",
       "create_success": "Account created successfully"
     },
-    "upload_id_card_front": "Upload ID card front",
-    "upload_id_card_back": "Upload ID card back",
-    "id_card_front": "ID Card Front",
-    "id_card_back": "ID Card Back",
+    "upload_id_card_front": "Upload {{type}} front",
+    "upload_id_card_back": "Upload {{type}} back",
+    "id_card_front": "{{type}} front",
+    "id_card_back": "{{type}} back",
     "reupload": "Reupload",
     "step3": "Identity Verification",
     "step2": "Bond the wallet",
@@ -570,7 +573,10 @@
   },
   "payment_method": {
     "user_bound_wallet": "Bound wallet",
-    "not_connected_wallet": "Unconnected wallet"
+    "not_connected_wallet": "Unconnected wallet",
+    "bind_wallet_success": "Bind successfully",
+    "bind_wallet_loading": "Binding",
+    "please_connect_wallet": "Please connect wallet"
   },
   "help-content": {
     "title": "How can we help you?",

@@ -27,6 +27,7 @@ export const AppPrivyProvider: FC = ({ children }) => {
             createOnLogin: 'all-users'
           }
         },
+        loginMethods: ['email', 'google'],
         supportedChains: [mainnet, goChain],
         defaultChain: goChain
       }}

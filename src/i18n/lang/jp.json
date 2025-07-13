@@ -137,7 +137,10 @@
         "title": "個人のアイデンティティの検証",
         "subTitle": "フォークYC検証を誰かにアップロードしてください",
         "identity": "IDドキュメント",
-        "upload_title": "IDカード /パスポートをアップロードします",
+        "upload_title": "{{type}}をアップロードします",
+        "upload_title_passport": "パスポート",
+        "upload_title_id_card": "IDカード",
+        "upload_title_driver_license": "運転免許証",
         "upload_subTitle": "正面と裏側が必要で、JPG/PNG/PDFまで5MBまで",
         "files": "ファイルを参照します",
         "poof": "住所の証明",
@@ -170,18 +173,18 @@
     },
     "button": {
       "next": "つぎ",
-      "link_email": "Bind the email"
+      "link_email": "メールアドレスを連携してください"
     },
-    "step1": "Log in to Privy",
-    "logged_in_privy": "Logged in Privy",
+    "step1": "Privyにログイン",
+    "logged_in_privy": "Privyにログイン済み",
     "message": {
-      "link_email": "Please bind your email address",
-      "create_success": "Account created successfully"
+      "link_email": "メールアドレスを連携してください",
+      "create_success": "アカウントが正常に作成されました"
     },
-    "upload_id_card_front": "Upload ID card front",
-    "upload_id_card_back": "Upload ID card back",
-    "id_card_front": "身分証明書の表面",
-    "id_card_back": "身分証明書の裏面",
+    "upload_id_card_front": "{{type}}正面をアップロードします",
+    "upload_id_card_back": "{{type}}反面をアップロードします",
+    "id_card_front": "{{type}}正面",
+    "id_card_back": "{{type}}反面",
     "reupload": "再アップロード",
     "step3": "ID検証",
     "step2": "財布をバインドする",
@@ -566,7 +569,10 @@
   },
   "payment_method": {
     "user_bound_wallet": "バインドされた財布",
-    "not_connected_wallet": "バインドされていないウォレット"
+    "not_connected_wallet": "バインドされていないウォレット",
+    "bind_wallet_success": "バインド成功",
+    "bind_wallet_loading": "バインド中",
+    "please_connect_wallet": "ウォレットを接続してください"
   },
   "help-content": {
     "title": "どのようなご用件でしょうか？",

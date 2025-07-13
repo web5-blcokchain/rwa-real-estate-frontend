@@ -1,4 +1,5 @@
 import basicApi from '@/api/basicApi'
+import { useUserStore } from '@/stores/user'
 import { usePrivy } from '@privy-io/react-auth'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
@@ -17,6 +18,7 @@ export const CollectButton: FC<{
   const [defaultValue, setDefaultValue] = useState(collect)
   const { authenticated } = usePrivy()
   const { t } = useTranslation()
+  const { userData } = useUserStore()
   // 监听外部传入的collect属性变化
   useEffect(() => {
     setDefaultValue(collect)
@@ -75,8 +77,18 @@ export const CollectButton: FC<{
           onClick={async (e) => {
             e.stopPropagation()
             e.preventDefault()
+
             if (!authenticated) {
               toast.error(t('header.error.login_required'))
+              return
+            }
+            // 判定是不是已经认证成功
+            if ([0].includes(userData.audit_status)) {
+              toast.error(t('header.error.wallet_already_bound'))
+              return
+            }
+            else if ([2].includes(userData.audit_status)) {
+              toast.error(t('header.error.kyc_audit_rejected'))
               return
             }
             if (isLoading) {

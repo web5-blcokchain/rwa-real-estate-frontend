@@ -12,10 +12,10 @@ export const PaymentMethod: FC<{
   className
 }) => {
   const { ready, wallets } = useWallets()
-  const { userData } = useUserStore()
+  const { userData, setUserData } = useUserStore()
   const { t } = useTranslation()
 
-  const [selectedWallet, setSelectedWallet] = walletState
+  const [_selectedWallet, setSelectedWallet] = walletState
   // const {} = use
 
   useEffect(() => {
@@ -40,15 +40,20 @@ export const PaymentMethod: FC<{
   // 绑定钱包
   const handleBindWallet = () => {
     // navigate({ to: '/profile/bind-wallet' })
-    if (!selectedWallet || !selectedWallet.address) {
-      toast.warning(t('wallet.please_bind_wallet'))
+    const wallet = wallets.find(wallet => wallet.walletClientType !== 'privy')
+
+    if (!wallet) {
+      toast.warning(t('payment_method.please_connect_wallet'))
       return
     }
     setBindWalletLoading(true)
-    bindWallet({ wallet_address: selectedWallet.address }).then((res) => {
+    bindWallet({ wallet_address: wallet.address }).then((res) => {
       if (res.code === 200) {
-        toast.success(t('wallet.bind_wallet_success'))
-        userData.wallet_address = selectedWallet.address
+        toast.success(t('create.wallet.bind_wallet_success'))
+        setUserData({
+          ...userData,
+          wallet_address: wallet.address
+        })
       }
     })
     setBindWalletLoading(false)
@@ -65,10 +70,10 @@ export const PaymentMethod: FC<{
         className="fcc"
       >
         {
-          !userData.wallet_address
+          userData.wallet_address
             ? (
                 <div className="fbc">
-                  <div className="text-red">绑定成功</div>
+                  <div className="text-red">{t('payment_method.bind_wallet_success')}</div>
                   <div className="text-3.5 text-[#898989]">{userData.wallet_address}</div>
                 </div>
               )
@@ -80,7 +85,7 @@ export const PaymentMethod: FC<{
                     bindWalletLoading
                       ? (
                           <div className="fyc">
-                            <div>绑定中</div>
+                            <div>{t('payment_method.bind_wallet_loading')}</div>
                             <div className="i-line-md-loading-loop bg-white"></div>
                           </div>
                         )

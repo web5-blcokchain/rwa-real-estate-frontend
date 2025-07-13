@@ -24,3 +24,5 @@ dist-ssr
 
 .auto-imports
 .eslintcache
+
+.env.development

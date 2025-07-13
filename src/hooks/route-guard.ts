@@ -15,6 +15,7 @@ export function useRouteGuard() {
   const location = useLocation()
   const { code, userData } = useUserStore()
   const { t } = useTranslation()
+  const prevPathRef = useRef<string | null>(null)
 
   const token = getToken()
 
@@ -71,8 +72,11 @@ export function useRouteGuard() {
     }
 
     // TODO 判断当前用户是否审核通过
-    // 1的时候表示已审核 2:中心化数据库审核拒绝 3.钱包已绑走4 kyc审核通过 5 kyc审核拒绝
-    if (loggedInBlackList.includes(currentPath)) {
+    // 1的时候表示已审核 2:中心化数据库审核拒绝 3.钱 kyc审核通过 5 kyc审核拒绝
+    const hasLoginUrl = ['/profile', '/properties/payment']
+    console.log(currentPath, hasLoginUrl)
+
+    if (hasLoginUrl.some(item => currentPath.includes(item))) {
       if (userData.audit_status === 2) {
         toast.error(t('header.error.centralized_database_review_rejection'))
         navigate({
@@ -81,8 +85,17 @@ export function useRouteGuard() {
       }
       else if (userData.audit_status === 0) {
         toast.error(t('header.error.wallet_already_bound'))
+        // 返回上一级页面
         navigate({
-          to: '/home'
+          to: prevPathRef.current || '/',
+          replace: true
+        })
+      }
+      else if (userData.audit_status === 5) {
+        toast.error(t('header.error.kyc_audit_rejected'))
+        navigate({
+          to: prevPathRef.current || '/',
+          replace: true
         })
       }
     }
@@ -93,6 +106,7 @@ export function useRouteGuard() {
         to: '/account/create'
       })
     }
+    prevPathRef.current = location.pathname
     // 跳转路由后，返回页面顶部
     setTimeout(() => {
       document.querySelector('.app-content')?.scrollTo(0, 0)

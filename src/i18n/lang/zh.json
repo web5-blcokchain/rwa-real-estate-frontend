@@ -137,7 +137,10 @@
         "title": "个人身份验证",
         "subTitle": "请上传您的个人身份证明文件以进行KYC验证",
         "identity": "身份证明文件",
-        "upload_title": "上传身份证/护照",
+        "upload_title": "上传{{type}} ",
+        "upload_title_passport": "护照",
+        "upload_title_id_card": "身份证",
+        "upload_title_driver_license": "驾照",
         "upload_subTitle": "需要正反两面，JPG/PNG/PDF格式，大小不超过5MB",
         "files": "浏览文件",
         "poof": "地址证明",
@@ -147,7 +150,8 @@
         "facial_title": "自拍",
         "facial_subTitle": "在良好照明条件下拍摄的清晰面部照片",
         "notice": "所有提交的文件必须真实且未经修改。请确保图像清晰完整。验证过程通常需要1-2个工作日。您的个人信息受到银行级别加密的保护。",
-        "continue": "继续"
+        "continue": "继续",
+        "upload": "提交"
       },
       "business": {
         "title": "业务验证",
@@ -178,10 +182,10 @@
       "link_email": "请绑定邮箱",
       "create_success": "创建账号成功"
     },
-    "upload_id_card_front": "上传身份证正面",
-    "upload_id_card_back": "上传身份证反面",
-    "id_card_front": "身份证正面",
-    "id_card_back": "身份证反面",
+    "upload_id_card_front": "上传{{type}}正面",
+    "upload_id_card_back": "上传{{type}}反面",
+    "id_card_front": "{{type}}正面",
+    "id_card_back": "{{type}}反面",
     "reupload": "重新上传",
     "step3": "身份验证",
     "step2": "绑定钱包",
@@ -567,7 +571,10 @@
   },
   "payment_method": {
     "user_bound_wallet": "绑定钱包",
-    "not_connected_wallet": "未连接绑定钱包"
+    "not_connected_wallet": "未连接绑定钱包",
+    "bind_wallet_success": "绑定成功",
+    "bind_wallet_loading": "绑定中",
+    "please_connect_wallet": "请连接钱包"
   },
   "help-content": {
     "title": "我们能帮您什么？",
