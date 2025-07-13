@@ -189,7 +189,7 @@ function RouteComponent() {
       </div>
 
       <div className="px-30 max-lg:px-12 max-md:px-2 max-xl:px-16">
-        <div className="content-min-h fccc gap-11 pt-86px max-lg:gap-6 max-md:gap-0 max-xl:gap-8 max-lg:pt-40px max-md:pt-6 max-xl:pt-64px">
+        <div className="content-min-h fccc gap-11 pt-86px max-lg:gap-6 max-md:gap-0 max-xl:gap-8 max-lg:pt-40px max-md:pt-6 max-xl:pt-64px max-lg:!min-h-auto">
           <div className="text-center font-500 leading-10 max-lg:text-5 max-xl:text-7 max-lg:leading-7 max-xl:leading-8">
             <div className="text-9 max-lg:text-5 max-md:text-4 max-xl:text-7 max-md:leading-100%">{t('home.earn.title')}</div>
             <div className="text-26px max-lg:text-16px max-md:text-10px max-xl:text-20px max-lg:leading-6 max-md:leading-26px max-xl:leading-7">{t('home.earn.content')}</div>
@@ -232,7 +232,7 @@ function RouteComponent() {
           </div>
         </div>
 
-        <div className="content-min-h fccc gap-50px pt-20 max-lg:gap-5 max-lg:gap-8 max-md:gap-14px max-xl:gap-8 max-xl:gap-8 max-md:pt-45px">
+        <div className="content-min-h fccc gap-50px pt-20 max-lg:gap-5 max-lg:gap-8 max-md:gap-14px max-xl:gap-8 max-xl:gap-8 max-md:pt-45px max-lg:!min-h-auto">
           <div className="text-center leading-10 max-lg:leading-5 max-lg:leading-7 max-xl:leading-8">
             <div className="pb-14px text-9 max-lg:pb-6px max-md:pb-2px max-xl:pb-10px max-lg:text-5 max-md:text-14px max-xl:text-7">{t('home.investorGuide.newbieInvest')}</div>
             <div className="text-26px max-lg:text-16px max-md:text-10px max-xl:text-20px max-lg:leading-6 max-md:leading-5 max-xl:leading-7">{t('home.investorGuide.getInfo')}</div>

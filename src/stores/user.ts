@@ -14,6 +14,7 @@ interface StoreState {
   setUserData: (obj: Partial<UserResponse>) => void
   setRegisterData: (obj: Partial<RegisterParams>) => void
   clearRegisterData: () => void
+  clearUserData: () => void
 }
 
 const store: StateCreator<StoreState, [], [['zustand/persist', StoreState]]> = persist(
@@ -30,6 +31,9 @@ const store: StateCreator<StoreState, [], [['zustand/persist', StoreState]]> = p
     },
     setUserData: (obj: Partial<UserResponse>) => {
       set(state => ({ userData: { ...state.userData, ...obj } }))
+    },
+    clearUserData: () => {
+      set({ userData: {} as UserResponse })
     },
     setRegisterData: (obj: Partial<RegisterParams>) => {
       set(state => ({ registerData: { ...state.registerData, ...obj } }))

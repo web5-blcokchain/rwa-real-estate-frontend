@@ -72,10 +72,9 @@ export function useRouteGuard() {
     }
 
     // TODO 判断当前用户是否审核通过
-    // 1的时候表示已审核 2:中心化数据库审核拒绝 3.钱 kyc审核通过 5 kyc审核拒绝
+    // 1的时候表示已审核 2:中心化数据库审核拒绝 3.钱包绑定成功 kyc审核通过 5 kyc审核拒绝
     const hasLoginUrl = ['/profile', '/properties/payment']
-    console.log(currentPath, hasLoginUrl)
-
+    // console.log(currentPath, hasLoginUrl)
     if (hasLoginUrl.some(item => currentPath.includes(item))) {
       if (userData.audit_status === 2) {
         toast.error(t('header.error.centralized_database_review_rejection'))

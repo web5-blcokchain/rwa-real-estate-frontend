@@ -230,7 +230,7 @@ const UserMenu: FC = () => {
   const { logout, linkWallet, connectWallet } = usePrivy()
   const { wallets } = useWallets()
   const { t } = useTranslation()
-  const { userData, setCode, setUserData } = useUserStore()
+  const { userData, setCode, clearUserData } = useUserStore()
   async function handleLogout() {
     logout()
       .then(
@@ -239,8 +239,9 @@ const UserMenu: FC = () => {
         })
       )
       .then(() => {
+        clearUserData()
         clearToken()
-        setUserData({})
+
         setCode(UserCode.NotExist)
       })
   }
