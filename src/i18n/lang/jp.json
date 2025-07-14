@@ -20,7 +20,8 @@
       "centralized_database_review_rejection": "Centralized database review rejection",
       "wallet_already_bound": "KYC audit in progress",
       "kyc_audit_passed": "KYC audit passed",
-      "kyc_audit_rejected": "KYC audit rejected"
+      "kyc_audit_rejected": "KYC audit rejected",
+      "kyc_audit_rejected_desc": "Your KYC audit has been rejected, please resubmit your information~"
     },
     "link_wallet": "リンク財布"
   },
@@ -150,7 +151,8 @@
         "facial_title": "自己を取る",
         "facial_subTitle": "良い照明で顔の写真を明確にします",
         "notice": "提出されたすべてのドキュメントは、本物であり、修正されていない必要があります。画像が明確で完全であることを確認してください。検証プロセスには通常、1〜2営業日かかります。お客様の個人情報は、銀行レベルの暗号化で保護されています。",
-        "continue": "続行します"
+        "continue": "続行します",
+        "upload_error": "すべてのドキュメントをアップロードしてください"
       },
       "business": {
         "title": "ビジネス検証",
@@ -339,7 +341,11 @@
       "select_asset": "資産を選択",
       "search_asset": "資産を検索",
       "select_asset_prompt": "購入注文を作成するには資産を選択してください",
-      "redemption_success": "買い戻しに成功する"
+      "redemption_success": "買い戻しに成功する",
+      "annual_yield": "年間利回り",
+      "valuation": "評価",
+      "create_sell_order": "売り注文を作成する",
+      "redeem": "買い戻す"
     }
   },
   "help": {
@@ -437,7 +443,10 @@
     "search": "検索します",
     "load_more": "もっとロードします",
     "search_placeholder": "アドレス、タイプで検索",
-    "asset_type": "資産タイプ"
+    "asset_type": "資産タイプ",
+    "reupload": "再アップロード",
+    "copy_success": "コピーに成功した",
+    "copy_failed": "コピーに失敗した"
   },
   "profile": {
     "transactions": {
@@ -523,17 +532,20 @@
       "incomeHistory": "過去の収益記録",
       "thisMonth": "今月",
       "lastMonth": "先月",
-      "decemberBudget": "12月予算",
+      "decemberBudget": "{{month}}予算",
       "income": "収入",
       "received": "受取済み",
       "budget": "予算",
       "expenses": "支出",
       "spent": "使用済み",
-      "monthComparison": "今月と先月の比較",
-      "last30Days": "過去30日間",
-      "usernameExample": "yiminghe",
-      "disabledStatus": "無効",
-      "view_detailed": "詳細分析レポートを見ます"
+      "week": "過去7日",
+      "month": "過去30日",
+      "halfYear": "半年経ちました",
+      "year": "過去1年",
+      "all": "全部です",
+      "view_detailed": "詳細分析レポートを見ます",
+      "lastMonth_vs_thisMonth": "先月と今月",
+      "lastYear_vs_thisYear": "昨年と今年"
     },
     "transaction_status": {
       "all": "すべて",
@@ -559,6 +571,30 @@
     },
     "create_sell_order": {
       "gas_estimation_failed": "Gas見積もりに失敗しました"
+    },
+    "hash": {
+      "token_distribution": "トークン分配",
+      "token_distribution_complete": "トークン分配完了",
+      "tokens_have_been_successfully_transferred_to_your_wallet": "トークンは正常にあなたの財布に転送されました",
+      "real_estate_token": "不動産トークン",
+      "smart_contract_address": "スマートコントラクトアドレス",
+      "token_contract_address": "トークンコントラクトアドレス",
+      "estimated_execution_time": "推定実行時間",
+      "property_token_distribution": "不動産トークン分配",
+      "property_location": "不動産位置",
+      "registration_number": "登録番号",
+      "annual_yield": "年間収益",
+      "smart_contract_audited_by_certik": "CertiKによるスマートコントラクトの監査",
+      "transaction_status": "取引ステータス",
+      "estimated_token_arrival_time": "推定トークン到着時間: {{num}} 秒",
+      "transaction_hash": "取引ハッシュ",
+      "smart_contract_status": "スマートコントラクトステータス",
+      "block_confirmation_confirmed": "ブロック確認",
+      "success": "成功",
+      "confirmed": "確認済み",
+      "pending": "保留中",
+      "view_in_explorer": "ブラウザで表示",
+      "confirm_in_wallet": "ウォレットで確認"
     }
   },
   "investment": {

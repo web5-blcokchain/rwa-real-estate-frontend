@@ -8,7 +8,8 @@ import { getContractBalance } from '@/utils/web3'
 import { usePrivy } from '@privy-io/react-auth'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate } from '@tanstack/react-router'
-import { Button, Image, Input } from 'antd'
+import { Button, Image, InputNumber } from 'antd'
+import numbro from 'numbro'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
@@ -32,7 +33,7 @@ function RouteComponent() {
   const assets = useCommonDataStore(state => state.assets)
   const assetId = Number.parseInt(params.id)
 
-  const [annualReturn, setAnnualReturn] = useState<number>(0)
+  // const [annualReturn, setAnnualReturn] = useState<number>(0)
   const [ratioNum, setRatioNum] = useState<number>(0)
   const [isCollect, setIsCollect] = useState<0 | 1>(0)
   const [, setContractBalance] = useState<string>('0')
@@ -51,16 +52,16 @@ function RouteComponent() {
     if (!assetDetail)
       return
 
-    const monthlyRent = Number(assetDetail.monthly_rent)
-    const expectedAnnualReturn = Number(assetDetail.expected_annual_return)
-    const price = Number(assetDetail.price)
-    const capitalAppreciation = Number(assetDetail.capital_appreciation)
+    // const monthlyRent = Number(assetDetail.monthly_rent) // 每月租金
+    // const expectedAnnualReturn = Number(assetDetail.expected_annual_return) // 预期年回报率
+    // const price = Number(assetDetail.price)
+    // const capitalAppreciation = Number(assetDetail.capital_appreciation)
 
-    const rentalNum = monthlyRent * expectedAnnualReturn / 100
-    const capitalNum = price * capitalAppreciation / 100
-    const annualReturnValue = (rentalNum + capitalNum) * 12
+    // const rentalNum = monthlyRent * expectedAnnualReturn / 100
+    // const capitalNum = price * capitalAppreciation / 100
+    // const annualReturnValue = (rentalNum + capitalNum) * 12
 
-    setAnnualReturn(annualReturnValue)
+    // setAnnualReturn(annualReturnValue)
     setRatioNum(20)
     setIsCollect(assetDetail.is_collect)
     // setRatioNum(Number(((investmentPrice * 12) / (rentalNum + capitalNum)) * 100))
@@ -88,6 +89,8 @@ function RouteComponent() {
       params: { id: `${assetId}` }
     })
   }
+
+  const [investmentAmount, setInvestmentAmount] = useState<number>()
 
   return (
     <div className="px-12 space-y-8 max-lg:px-4">
@@ -195,7 +198,10 @@ function RouteComponent() {
                   <div>{t('properties.detail.invest_calculator')}</div>
                   <div>{t('properties.detail.average_days', { n: 30 })}</div>
                 </div>
-                <Input
+                <InputNumber
+                  value={investmentAmount}
+                  controls={false}
+                  onChange={e => setInvestmentAmount(e || 0)}
                   className="computed-input w-510px max-lg:w-full !b-#484D56 !bg-transparent !text-#484D56"
                   placeholder={t('properties.detail.invest_calculator_placeholder')}
                   suffix="GBP"
@@ -207,7 +213,7 @@ function RouteComponent() {
                   className="flex-1 space-y-2"
                   labelClass="text-black"
                   label={t('properties.detail.return')}
-                  value={annualReturn}
+                  value={numbro(Number(assetDetail?.expected_annual_return) * (investmentAmount || 0)).format({ thousandSeparated: true, mantissa: (investmentAmount ? 2 : 0) })}
                 />
                 <IInfoField
                   className="flex-1 space-y-2"

@@ -1,7 +1,9 @@
 import { UserCode } from '@/enums/user'
+import { useMessageDialogStore } from '@/stores/message-dialog'
 import { useUserStore } from '@/stores/user'
 import { getToken } from '@/utils/user'
 import { useLocation, useNavigate } from '@tanstack/react-router'
+import { Button } from 'antd'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
@@ -16,7 +18,7 @@ export function useRouteGuard() {
   const { code, userData } = useUserStore()
   const { t } = useTranslation()
   const prevPathRef = useRef<string | null>(null)
-
+  const { open: openMessageDialog } = useMessageDialogStore()
   const token = getToken()
 
   useEffect(() => {
@@ -73,6 +75,7 @@ export function useRouteGuard() {
 
     // TODO 判断当前用户是否审核通过
     // 1的时候表示已审核 2:中心化数据库审核拒绝 3.钱包绑定成功 kyc审核通过 5 kyc审核拒绝
+
     const hasLoginUrl = ['/profile', '/properties/payment']
     // console.log(currentPath, hasLoginUrl)
     if (hasLoginUrl.some(item => currentPath.includes(item))) {
@@ -83,22 +86,52 @@ export function useRouteGuard() {
         })
       }
       else if (userData.audit_status === 0) {
-        toast.error(t('header.error.wallet_already_bound'))
+        window.history.back()
+        setTimeout(() => {
+          openMessageDialog((
+            <div className="fccc gap-2">
+              <div className="text-center text-8 font-bold max-lg:text-6">{t('header.error.kyc_audit_rejected_desc')}</div>
+              <div className="text-4 text-#5e6570">{t('header.error.kyc_audit_rejected')}</div>
+              <Button
+                type="primary"
+                onClick={() => {
+                  navigate({
+                    to: '/account/create'
+                  })
+                }}
+              >
+                {t('common.reupload')}
+              </Button>
+
+            </div>
+          ), t('header.error.wallet_already_bound')
+          )
+        }, 200)
+
         // 返回上一级页面
-        navigate({
-          to: prevPathRef.current || '/',
-          replace: true
-        })
       }
       else if (userData.audit_status === 5) {
         toast.error(t('header.error.kyc_audit_rejected'))
-        navigate({
-          to: prevPathRef.current || '/',
-          replace: true
-        })
+        window.history.back()
+        setTimeout(() => {
+          openMessageDialog((
+            <div className="fccc gap-2">
+              <div className="i-arcticons-voteinfo size-12 bg-white"></div>
+              <div className="text-center text-8 font-bold max-lg:text-6">{t('header.error.kyc_audit_rejected')}</div>
+              {/* <Button type="primary" onClick={() => {
+                navigate({
+                  to: '/account/create'
+                })
+              }}>
+                {t('common.reupload')}
+              </Button> */}
+
+            </div>
+          ), t('header.error.kyc_audit_rejected')
+          )
+        }, 200)
       }
     }
-
     if (code === UserCode.NotExist) {
       toast.error(t('header.error.user_not_found'))
       navigate({

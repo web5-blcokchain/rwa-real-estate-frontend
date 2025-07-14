@@ -28,13 +28,20 @@ axios.interceptors.request.use(
   }
 )
 
+const errorList: { message: string, time: number }[] = []
 axios.interceptors.response.use((res: ResponseData<any>) => {
   const code = _get(res.data, 'code', 0)
 
   // 401 账户不存在不需要提示，因为是强制跳转创建账号页面
   if (code !== 401 && code !== 1) {
     const message = _get(res.data, 'msg', 'Response error')
-    toast.error(message)
+    // 同一个提示信息一段时间只出现一次
+    const hasError = errorList.some(item => item.message === message && item.time > Date.now() - 5000)
+    if (!hasError) {
+      toast.error(message)
+      errorList.push({ message, time: Date.now() })
+    }
+
     throw new Error(message)
   }
 

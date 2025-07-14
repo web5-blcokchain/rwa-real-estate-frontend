@@ -12,7 +12,7 @@ import './individual.scss'
 
 export default function IndividualVerification() {
   const { t } = useTranslation()
-  const { registerData, setCode: setExist, setRegisterData, clearRegisterData } = useUserStore()
+  const { registerData, setCode: setExist, setRegisterData, clearRegisterData, getUserInfo } = useUserStore()
   const navigate = useNavigate()
 
   // 获取身份证正反面图片地址
@@ -34,24 +34,43 @@ export default function IndividualVerification() {
     mutationFn: async (data: { file: File, key: string }) => {
       const formData = new FormData()
       formData.append('file', data.file)
-      setCardLoading({
-        ...cardLoading,
+      setCardLoading(prev => ({
+        ...prev,
         [data.key]: true
-      })
+      }))
       const res = await apiMyInfo.uploadFile(formData)
-      console.log('res', res, data)
       setRegisterData({
         ...registerData,
         [data.key]: _get(res.data, 'file.url', '')
       })
-
+      setCardLoading(prev => ({
+        ...prev,
+        [data.key]: false
+      }))
+      console.log('res', res, data, cardLoading)
       return res
     },
     onSuccess: (res) => {
       const url = _get(res.data, 'file.url', '')
       console.log(url, res)
+    },
+    onError(_error, variables) {
+      setCardLoading(prev => ({
+        ...prev,
+        [variables.key]: false
+      }))
+      toast.error(t('profile.edit.upload_failed'))
     }
   })
+
+  // 验证上传资料
+  const verifyUpload = () => {
+    if (!idCardFrontUrl || !idCardBackUrl || !addressUrl || !photoUrl) {
+      toast.error(t('create.verification.personal.upload_error'))
+      return false
+    }
+    return true
+  }
 
   const { mutate: createMutate, isPending } = useMutation({
     mutationFn: () => apiMyInfo.register({
@@ -59,6 +78,7 @@ export default function IndividualVerification() {
     }),
     onSuccess: () => {
       toast.success(t('create.message.create_success'))
+      getUserInfo()
       setExist(UserCode.LoggedIn)
       clearRegisterData()
       navigate({
@@ -72,12 +92,7 @@ export default function IndividualVerification() {
   }
 
   const beforeUpload = (file: File, key: string) => {
-    updateFile({ file, key }).then(() => {
-      setCardLoading({
-        ...cardLoading,
-        [key]: false
-      })
-    })
+    updateFile({ file, key })
   }
 
   const idCardImages = [
@@ -87,6 +102,7 @@ export default function IndividualVerification() {
     .filter(Boolean)
     .map(url => joinImagePath(url))
 
+  // TODO 身份证类型添加
   const isType = [
     { name: '国民身份证', value: 'id_card' },
     { name: '护照', value: 'passport' },
@@ -190,7 +206,11 @@ export default function IndividualVerification() {
             size="large"
             className="bg-transparent! text-white! hover:text-primary-1!"
             loading={isPending}
-            onClick={() => createMutate()}
+            onClick={() => {
+              if (verifyUpload()) {
+                createMutate()
+              }
+            }}
           >
             {t('create.verification.personal.upload')}
           </Button>

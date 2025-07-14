@@ -99,7 +99,7 @@ export const Earnings: FC = () => {
             <div>{shortAddress(value)}</div>
             <div
               className="i-mingcute-copy-2-fill bg-[#b5b5b5] clickable"
-              onClick={() => copy(value)}
+              onClick={() => copy(value, t)}
             />
           </div>
         )

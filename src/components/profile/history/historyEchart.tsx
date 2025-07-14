@@ -2,14 +2,20 @@ import { getChartIncomeTrend } from '@/api/profile'
 import { useQuery } from '@tanstack/react-query'
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
-export const HistoryEchart: FC = () => {
-  const { data, isLoading } = useQuery({
-    queryKey: ['getCchartIncomeTrend'],
+export const HistoryEchart: FC<{ type: string }> = ({ type }) => {
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ['getCchartIncomeTrend', type],
     queryFn: async () => {
-      const res = await getChartIncomeTrend()
+      const res = await getChartIncomeTrend({
+        type
+      })
       return res.data
     }
   })
+
+  useEffect(() => {
+    refetch()
+  }, [type])
 
   if (isLoading) {
     return (

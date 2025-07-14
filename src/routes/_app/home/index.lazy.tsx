@@ -260,7 +260,7 @@ function RouteComponent() {
           </div>
         </div>
 
-        <div className="">
+        <div className="home-tables">
           <ConfigProvider
             theme={{
               // 1. 单独使用暗色算法

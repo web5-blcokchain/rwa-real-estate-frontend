@@ -20,7 +20,8 @@
       "centralized_database_review_rejection": "中心化数据库审核拒绝",
       "wallet_already_bound": "kyc审核中",
       "kyc_audit_passed": "KYC审核通过",
-      "kyc_audit_rejected": "KYC审核拒绝"
+      "kyc_audit_rejected": "KYC审核拒绝",
+      "kyc_audit_rejected_desc": "您的实名认证未通过，请重新提交信息~"
     },
     "link_wallet": "连接钱包"
   },
@@ -151,7 +152,8 @@
         "facial_subTitle": "在良好照明条件下拍摄的清晰面部照片",
         "notice": "所有提交的文件必须真实且未经修改。请确保图像清晰完整。验证过程通常需要1-2个工作日。您的个人信息受到银行级别加密的保护。",
         "continue": "继续",
-        "upload": "提交"
+        "upload": "提交",
+        "upload_error": "请上传所有资料"
       },
       "business": {
         "title": "业务验证",
@@ -340,7 +342,11 @@
       "select_asset": "选择资产",
       "search_asset": "搜索资产",
       "select_asset_prompt": "请选择一个资产来创建买单",
-      "redemption_success": "赎回成功"
+      "redemption_success": "赎回成功",
+      "annual_yield": "年回报率",
+      "valuation": "估值",
+      "create_sell_order": "创建卖出订单",
+      "redeem": "赎回"
     }
   },
   "help": {
@@ -433,7 +439,10 @@
     "search": "搜索",
     "load_more": "加载更多",
     "search_placeholder": "搜索地址,类型",
-    "asset_type": "资产类型"
+    "asset_type": "资产类型",
+    "reupload": "重新提交",
+    "copy_success": "复制成功",
+    "copy_failed": "复制失败"
   },
   "action": {
     "sell": "卖出",
@@ -524,17 +533,20 @@
       "incomeHistory": "历史收入记录",
       "thisMonth": "本月",
       "lastMonth": "上月",
-      "decemberBudget": "十二月预算",
+      "decemberBudget": "{{month}}预算",
       "income": "收入",
       "received": "已接收",
       "budget": "预算",
       "expenses": "支出",
       "spent": "已支出",
-      "monthComparison": "本月 vs 上月",
-      "last30Days": "过去30天",
-      "usernameExample": "yiminghe",
-      "disabledStatus": "已禁用",
-      "view_detailed": "查看详细分析报表"
+      "week": "最近7天",
+      "month": "最近30天",
+      "halfYear": "最近半年",
+      "year": "最近一年",
+      "all": "全部",
+      "view_detailed": "查看详细分析报表",
+      "lastMonth_vs_thisMonth": "本月与上月",
+      "lastYear_vs_thisYear": "本年和去年"
     },
     "transaction_status": {
       "all": "全部",
@@ -561,6 +573,30 @@
     },
     "create_sell_order": {
       "gas_estimation_failed": "Gas 估算失败"
+    },
+    "hash": {
+      "token_distribution": "代币分配",
+      "token_distribution_complete": "代币分配完成",
+      "tokens_have_been_successfully_transferred_to_your_wallet": "代币已成功转移到您的钱包",
+      "real_estate_token": "房地产代币",
+      "smart_contract_address": "智能合约地址",
+      "token_contract_address": "代币合约地址",
+      "estimated_execution_time": "预计执行时间",
+      "property_token_distribution": "房地产代币分配",
+      "property_location": "房地产位置",
+      "registration_number": "注册号码",
+      "annual_yield": "年收益率",
+      "smart_contract_audited_by_certik": "智能合约由CertiK审计",
+      "transaction_status": "交易状态",
+      "estimated_token_arrival_time": "预计代币到达时间: {{num}} 秒",
+      "transaction_hash": "交易哈希",
+      "smart_contract_status": "智能合约状态",
+      "block_confirmation_confirmed": "区块确认",
+      "success": "成功",
+      "confirmed": "已确认",
+      "pending": "待确认",
+      "view_in_explorer": "在浏览器中查看",
+      "confirm_in_wallet": "在钱包中确认"
     }
   },
   "investment": {

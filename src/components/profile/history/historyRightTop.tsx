@@ -1,6 +1,20 @@
+import { getTransactions } from '@/api/transaction'
 import group272Icon from '@/assets/icons/group272.png'
+import { useQuery } from '@tanstack/react-query'
 
-function HistoryRightTop() {
+function HistoryRightTop({ type }: { type: string }) {
+  const { data } = useQuery({
+    queryKey: ['getTransactions', type],
+    queryFn: async () => {
+      const res = await getTransactions({
+        page: 1,
+        pageSize: 10,
+        type
+      })
+      return res.data
+    }
+  })
+  console.log(data)
   const [carList] = useState([
     {
       title: 'Balance Adjustment',

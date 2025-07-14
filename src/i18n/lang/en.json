@@ -20,7 +20,8 @@
       "centralized_database_review_rejection": "Centralized database review rejection",
       "wallet_already_bound": "KYC audit in progress",
       "kyc_audit_passed": "KYC audit passed",
-      "kyc_audit_rejected": "KYC audit rejected"
+      "kyc_audit_rejected": "KYC audit rejected",
+      "kyc_audit_rejected_desc": "Your KYC audit has been rejected, please resubmit your information~"
     },
     "link_wallet": "Link wallet"
   },
@@ -150,7 +151,8 @@
         "facial_title": "Take a Selfie",
         "facial_subTitle": "Clear facial photo in good lighting",
         "notice": "All submitted documents must be authentic and unmodified. Please ensure images are clear and complete. The verification process typically takes 1-2 business days. Your personal information is protected with bank-level encryption.",
-        "continue": "Continue"
+        "continue": "Continue",
+        "upload_error": "Please upload all documents"
       },
       "business": {
         "title": "Business Verification",
@@ -339,7 +341,11 @@
       "select_asset": "Select Asset",
       "search_asset": "Search Asset",
       "select_asset_prompt": "Please select an asset to create a buy order",
-      "redemption_success": "Redemption successful"
+      "redemption_success": "Redemption successful",
+      "annual_yield": "Annual Yield",
+      "valuation": "Valuation",
+      "create_sell_order": "Create Sell Order",
+      "redeem": "Redeem"
     }
   },
   "help": {
@@ -437,7 +443,10 @@
     "search": "Search",
     "load_more": "Load More",
     "search_placeholder": "Search address, type",
-    "asset_type": "Asset Type"
+    "asset_type": "Asset Type",
+    "reupload": "Reupload",
+    "copy_success": "Copied to clipboard",
+    "copy_failed": "Failed to copy to clipboard"
   },
   "profile": {
     "transactions": {
@@ -523,17 +532,20 @@
       "incomeHistory": "Historical Income Records",
       "thisMonth": "This Month",
       "lastMonth": "Last Month",
-      "decemberBudget": "December Budget",
+      "decemberBudget": "{{month}} Budget",
       "income": "Income",
       "received": "Received",
       "budget": "Budget",
       "expenses": "Expenses",
       "spent": "Spent",
-      "monthComparison": "This Month Vs Last Month",
-      "last30Days": "Last 30 Days",
-      "usernameExample": "yiminghe",
-      "disabledStatus": "Disabled",
-      "view_detailed": "View Detailed Analysis Report"
+      "week": "Last 7 Days",
+      "month": "Last 30 Days",
+      "halfYear": "Last 6 Months",
+      "year": "Last 1 Year",
+      "all": "All",
+      "view_detailed": "View Detailed Analysis Report",
+      "lastMonth_vs_thisMonth": "Last Month vs This Month",
+      "lastYear_vs_thisYear": "Last Year vs This Year"
     },
     "transaction_status": {
       "all": "All",
@@ -563,6 +575,30 @@
     },
     "create_sell_order": {
       "gas_estimation_failed": "Gas estimation failed"
+    },
+    "hash": {
+      "token_distribution": "Token Distribution",
+      "token_distribution_complete": "Token Distribution Complete",
+      "tokens_have_been_successfully_transferred_to_your_wallet": "Tokens have been successfully transferred to your wallet",
+      "real_estate_token": "Real Estate Token",
+      "smart_contract_address": "Smart Contract Address",
+      "token_contract_address": "Token Contract Address",
+      "estimated_execution_time": "Estimated Execution Time",
+      "property_token_distribution": "Property Token Distribution",
+      "property_location": "Property Location",
+      "registration_number": "Registration Number",
+      "annual_yield": "Annual Yield",
+      "smart_contract_audited_by_certik": "Smart Contract Audited by CertiK",
+      "transaction_status": "Transaction Status",
+      "estimated_token_arrival_time": "Estimated token arrival time: {{num}} seconds",
+      "transaction_hash": "Transaction Hash",
+      "smart_contract_status": "Smart Contract Status",
+      "block_confirmation_confirmed": "Block Confirmation",
+      "success": "Success",
+      "confirmed": "confirmed",
+      "pending": "pending",
+      "view_in_explorer": "View in Explorer",
+      "confirm_in_wallet": "Confirm in Wallet"
     }
   },
   "investment": {

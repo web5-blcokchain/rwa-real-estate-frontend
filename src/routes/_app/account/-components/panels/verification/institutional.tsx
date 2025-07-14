@@ -12,7 +12,7 @@ import './individual.scss'
 
 export default function InstitutionalVerification() {
   const { t } = useTranslation()
-  const { registerData, setRegisterData, setCode: setExist, clearRegisterData } = useUserStore()
+  const { registerData, setRegisterData, setCode: setExist, clearRegisterData, getUserInfo } = useUserStore()
   const navigate = useNavigate()
 
   // 获取各种文档的URL
@@ -21,7 +21,14 @@ export default function InstitutionalVerification() {
   const legalRepresentativeUrl = registerData?.legal_representative_documents_url || ''
   const financialDocumentsUrl = registerData?.financial_documents_url || ''
 
-  const { mutate: updateFile } = useMutation({
+  const [cardLoading, setCardLoading] = useState({
+    business_registration_document: false,
+    shareholder_structure_url: false,
+    legal_representative_documents_url: false,
+    financial_documents_url: false
+  })
+
+  const { mutateAsync: updateFile } = useMutation({
     mutationFn: async (data: { file: File, key: string }) => {
       const formData = new FormData()
       formData.append('file', data.file)
@@ -35,8 +42,12 @@ export default function InstitutionalVerification() {
     onSuccess: (res) => {
       console.log('onSuccess', res)
     },
-    onError: (error) => {
-      console.log('onError', error)
+    onError(_error, variables) {
+      setCardLoading(prev => ({
+        ...prev,
+        [variables.key]: false
+      }))
+      toast.error(t('profile.edit.upload_failed'))
     }
   })
 
@@ -49,6 +60,7 @@ export default function InstitutionalVerification() {
     },
     onSuccess: () => {
       toast.success(t('create.message.create_success'))
+      getUserInfo()
       setExist(UserCode.LoggedIn)
       clearRegisterData()
       navigate({
@@ -57,8 +69,26 @@ export default function InstitutionalVerification() {
     }
   })
 
+  // 验证上传资料
+  const verifyUpload = () => {
+    if (!businessRegistrationUrl || !shareholderStructureUrl || !legalRepresentativeUrl || !financialDocumentsUrl) {
+      toast.error(t('create.verification.personal.upload_error'))
+      return false
+    }
+    return true
+  }
+
   const beforeUpload = (file: File, key: string) => {
-    updateFile({ file, key })
+    setCardLoading({
+      ...cardLoading,
+      [key]: true
+    })
+    updateFile({ file, key }).then(() => {
+      setCardLoading({
+        ...cardLoading,
+        [key]: false
+      })
+    })
   }
 
   return (
@@ -68,6 +98,7 @@ export default function InstitutionalVerification() {
 
       <div className="mt-8 max-w-lg w-full space-y-6">
         <UploadCard
+          loading={cardLoading.business_registration_document}
           label={t('create.verification.business.business_registration')}
           title={t('create.verification.business.business_registration_title')}
           subTitle={t('create.verification.business.business_registration_subTitle')}
@@ -80,6 +111,7 @@ export default function InstitutionalVerification() {
         </UploadCard>
 
         <UploadCard
+          loading={cardLoading.shareholder_structure_url}
           label={t('create.verification.business.business_company')}
           title={t('create.verification.business.business_company_title')}
           subTitle={t('create.verification.business.business_company_subTitle')}
@@ -92,6 +124,7 @@ export default function InstitutionalVerification() {
         </UploadCard>
 
         <UploadCard
+          loading={cardLoading.legal_representative_documents_url}
           label={t('create.verification.business.legal_representative')}
           title={t('create.verification.business.legal_representative_title')}
           subTitle={t('create.verification.business.legal_representative_subTitle')}
@@ -104,6 +137,7 @@ export default function InstitutionalVerification() {
         </UploadCard>
 
         <UploadCard
+          loading={cardLoading.financial_documents_url}
           label={t('create.verification.business.financial_documents')}
           title={t('create.verification.business.financial_documents_title')}
           subTitle={t('create.verification.business.financial_documents_subTitle')}
@@ -124,7 +158,11 @@ export default function InstitutionalVerification() {
             size="large"
             className="bg-transparent! text-white! hover:text-primary-1!"
             loading={isPending}
-            onClick={() => createMutate()}
+            onClick={() => {
+              if (verifyUpload()) {
+                createMutate()
+              }
+            }}
           >
             {t('create.verification.business.continue')}
           </Button>

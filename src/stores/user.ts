@@ -9,12 +9,14 @@ interface StoreState {
   language: string
   userData: UserResponse
   registerData: RegisterParams
+  refreshUserInfo: number
   setCode: (code?: UserCode) => void
   setLanguage: (lang: string) => void
   setUserData: (obj: Partial<UserResponse>) => void
   setRegisterData: (obj: Partial<RegisterParams>) => void
   clearRegisterData: () => void
   clearUserData: () => void
+  getUserInfo: () => void
 }
 
 const store: StateCreator<StoreState, [], [['zustand/persist', StoreState]]> = persist(
@@ -23,6 +25,7 @@ const store: StateCreator<StoreState, [], [['zustand/persist', StoreState]]> = p
     language: 'en',
     userData: {} as UserResponse,
     registerData: {} as RegisterParams,
+    refreshUserInfo: 0,
     setCode: (code: UserCode = UserCode.NotExist) => {
       set({ code })
     },
@@ -40,6 +43,9 @@ const store: StateCreator<StoreState, [], [['zustand/persist', StoreState]]> = p
     },
     clearRegisterData: () => {
       set({ registerData: {} as RegisterParams })
+    },
+    getUserInfo: () => {
+      set(state => ({ refreshUserInfo: state.refreshUserInfo + 1 }))
     }
   }),
   { name: 'userInfo' }

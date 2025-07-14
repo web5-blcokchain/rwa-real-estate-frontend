@@ -66,11 +66,12 @@ function RouteComponent() {
         return
       }
 
-      const PropertyManager = getContracts('PropertyManager')
+      const PropertyManager = getContracts('PropertyToken')
       const SimpleERC20 = getContracts('SimpleERC20')
 
       // PropertyManager 合约地址应从配置或 item 里获取，不能用 propertyToken 地址
-      const propertyManagerAddress = PropertyManager.address || process.env.REACT_APP_PROPERTY_MANAGER_ADDRESS
+      const propertyManagerAddress = item.contract_address
+      const usdcAddress = import.meta.env.VITE_APP_USDC_ADDRESS || SimpleERC20.address
       if (!propertyManagerAddress || !isAddress(propertyManagerAddress)) {
         toast.error(t('payment.errors.invalid_contract'))
         return
@@ -84,7 +85,7 @@ function RouteComponent() {
 
       // USDT合约
       const usdtContract = new ethers.Contract(
-        SimpleERC20.address,
+        usdcAddress,
         SimpleERC20.abi,
         signer
       )
@@ -123,10 +124,7 @@ function RouteComponent() {
 
       try {
         // propertyId 类型要与合约一致（通常为 string 或 bytes32）
-        const tx = await propertyManagerContract.initialBuyPropertyToken(
-          String(id),
-          tokens
-        )
+        const tx = await propertyManagerContract.purchaseTokens(tokenPrice, usdcAddress)
         const receipt = await tx.wait()
         toast.success(t('payment.success.tx_sent'))
         const hash = receipt.hash
@@ -197,11 +195,11 @@ function RouteComponent() {
   const [imageUrl] = joinImagesPath(item.image_urls)
 
   return (
-    <div className="max-w-7xl p-8 space-y-8">
+    <div className="mx-auto max-w-7xl p-8 space-y-8">
       <div className="text-center text-6 font-medium">{t('common.payment_title')}</div>
 
-      <div className="flex gap-6 rounded-xl bg-[#202329] p-6">
-        <div className="h-60 w-100">
+      <div className="flex gap-6 rounded-xl bg-[#202329] p-6 max-lg:flex-col">
+        <div className="h-60 w-100 max-lg:h-auto max-lg:w-full">
           <IImage src={imageUrl} className="size-full rounded" />
         </div>
         <div>
@@ -239,35 +237,41 @@ function RouteComponent() {
       <div className="rounded-xl bg-[#202329] p-6 space-y-4">
         <div className="text-4.5">{t('properties.payment.payment_details')}</div>
 
-        <div className="flex items-center justify-between text-4">
-          <div className="text-[#898989] space-y-4">
-            <div>{t('properties.payment.number')}</div>
-            <div>{t('properties.payment.subtotal')}</div>
+        <div className="text-4">
+          <div className="w-full text-[#898989] [&>div]:w-full [&>div]:fyc [&>div]:justify-between space-y-4">
             <div>
-              {t('properties.payment.platform_fee')}
-              {' '}
-              (2%)
+              <div>{t('properties.payment.number')}</div>
+              <div className="flex justify-end">
+                <QuantitySelector
+                  value={tokens}
+                  onChange={setTokens}
+                  min={1}
+                  disabled={isPending}
+                />
+              </div>
+            </div>
+            <div>
+              <div>{t('properties.payment.subtotal')}</div>
+              <div className="text-right">
+                $
+                {tokens * Number(item.price)}
+              </div>
+            </div>
+            <div>
+              <div>
+                {t('properties.payment.platform_fee')}
+                {' '}
+                (2%)
+              </div>
+              <div className="text-right">
+                $
+                {(tokens * Number(item.price) * 0.02).toFixed(2)}
+              </div>
             </div>
           </div>
 
           <div className="space-y-4">
-            <div className="flex justify-end">
-              <QuantitySelector
-                value={tokens}
-                onChange={setTokens}
-                min={1}
-                disabled={isPending}
-              />
-            </div>
 
-            <div className="text-right">
-              $
-              {tokens * Number(item.price)}
-            </div>
-            <div className="text-right">
-              $
-              {(tokens * Number(item.price) * 0.02).toFixed(2)}
-            </div>
           </div>
         </div>
 

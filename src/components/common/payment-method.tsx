@@ -48,7 +48,7 @@ export const PaymentMethod: FC<{
     }
     setBindWalletLoading(true)
     bindWallet({ wallet_address: wallet.address }).then((res) => {
-      if (res.code === 200) {
+      if (res.code === 1) {
         toast.success(t('create.wallet.bind_wallet_success'))
         setUserData({
           ...userData,
@@ -72,9 +72,9 @@ export const PaymentMethod: FC<{
         {
           userData.wallet_address
             ? (
-                <div className="fbc">
+                <div className="max-w-full fbc gap-x-2 overflow-hidden max-lg:flex-col">
                   <div className="text-red">{t('payment_method.bind_wallet_success')}</div>
-                  <div className="text-3.5 text-[#898989]">{userData.wallet_address}</div>
+                  <div className="flex-1max-w-full truncate text-3.5 text-[#898989]">{userData.wallet_address}</div>
                 </div>
               )
             : (

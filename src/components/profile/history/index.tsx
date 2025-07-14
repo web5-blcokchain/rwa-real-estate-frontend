@@ -7,7 +7,13 @@ import HistoryLeftTop from './historyLeftTop'
 import HistoryRightTop from './historyRightTop'
 
 function History() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const enMonth = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+  const [transactionType, setTransactionType] = useState('all')
+  const [historyType, setHistoryType] = useState('week')
+  const [chartType, setChartType] = useState('1')
+
+  const month = (new Date().getMonth())
   return (
     <div className="flex justify-start text-white max-lg:flex max-lg:flex-col max-md:gap-4">
       <div className="mr-3 w-1/2 max-lg:w-full max-lg:flex max-lg:flex-col">
@@ -15,17 +21,20 @@ function History() {
           title={<div>{t('profile.history.incomeRecords')}</div>}
           selectSlot={(
             <SelectComponent
-              defaultValue="lucy"
+              defaultValue={historyType}
+              onChange={value => setHistoryType(value)}
+              className="min-w-120px"
               options={[
-                { value: 'jack', label: <div>{t('profile.history.monthComparison')}</div> },
-                { value: 'lucy', label: <div>{t('profile.history.last30Days')}</div> },
-                { value: 'Yiminghe', label: <div>{t('profile.history.usernameExample')}</div> },
-                { value: 'disabled', label: <div>{t('profile.history.disabledStatus')}</div>, disabled: true }
+                // { value: 'all', label: <div>{t('profile.history.all')}</div> },
+                { value: 'week', label: <div>{t('profile.history.week')}</div> },
+                { value: 'month', label: <div>{t('profile.history.month')}</div> },
+                { value: 'halfYear', label: <div>{t('profile.history.halfYear')}</div> },
+                { value: 'year', label: <div>{t('profile.history.year')}</div> }
               ]}
             />
           )}
         >
-          <HistoryLeftTop />
+          <HistoryLeftTop type={historyType} />
         </TitleCard>
 
         <TitleCard
@@ -33,17 +42,17 @@ function History() {
           className="mt-6"
           selectSlot={(
             <SelectComponent
-              defaultValue="jack"
+              defaultValue={chartType}
+              onChange={value => setChartType(value)}
+              className="min-w-120px"
               options={[
-                { value: 'jack', label: <div>{t('profile.history.monthComparison')}</div> },
-                { value: 'lucy', label: <div>{t('profile.history.last30Days')}</div> },
-                { value: 'Yiminghe', label: <div>{t('profile.history.usernameExample')}</div> },
-                { value: 'disabled', label: <div>{t('profile.history.disabledStatus')}</div>, disabled: true }
+                { value: '1', label: <div>{t('profile.history.lastMonth_vs_thisMonth')}</div> },
+                { value: '2', label: <div>{t('profile.history.lastYear_vs_thisYear')}</div> }
               ]}
             />
           )}
         >
-          <HistoryEchart />
+          <HistoryEchart type={chartType} />
         </TitleCard>
       </div>
 
@@ -52,20 +61,23 @@ function History() {
           title={<div>{t('profile.history.recentTransactions')}</div>}
           selectSlot={(
             <SelectComponent
-              defaultValue="Yiminghe"
+              defaultValue={transactionType}
+              onChange={value => setTransactionType(value)}
+              className="min-w-120px"
               options={[
-                { value: 'jack', label: <div>{t('profile.history.monthComparison')}</div> },
-                { value: 'lucy', label: <div>{t('profile.history.last30Days')}</div> },
-                { value: 'Yiminghe', label: <div>{t('profile.history.usernameExample')}</div> },
-                { value: 'disabled', label: <div>{t('profile.history.disabledStatus')}</div>, disabled: true }
+                { value: 'all', label: <div>{t('profile.history.all')}</div> },
+                { value: 'week', label: <div>{t('profile.history.week')}</div> },
+                { value: 'month', label: <div>{t('profile.history.month')}</div> },
+                { value: 'halfYear', label: <div>{t('profile.history.halfYear')}</div> },
+                { value: 'year', label: <div>{t('profile.history.year')}</div> }
               ]}
             />
           )}
         >
-          <HistoryRightTop />
+          <HistoryRightTop type={transactionType} />
         </TitleCard>
 
-        <TitleCard title={<div>{t('profile.history.decemberBudget')}</div>} className="mt-6">
+        <TitleCard title={<div>{t('profile.history.decemberBudget', { month: i18n.language === 'en' ? enMonth[month] : `${month + 1}月` })}</div>} className="mt-6">
           <HistoryDecmber />
         </TitleCard>
       </div>

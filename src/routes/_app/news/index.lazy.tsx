@@ -39,7 +39,7 @@ function RouteComponent() {
   }, [i18n.language])
 
   return (
-    <div className="px-102px max-lg:px-24px max-md:px-12px">
+    <div className="news-tables px-102px max-lg:px-24px max-md:px-12px">
       <ConfigProvider
         theme={{
           // 1. 单独使用暗色算法

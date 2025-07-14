@@ -1,6 +1,7 @@
 // 选中input的placeholder颜色
 .computed-input{
   input{
+    color: #484D56 !important;
     &::placeholder{
       color: #484D56 !important;
     }

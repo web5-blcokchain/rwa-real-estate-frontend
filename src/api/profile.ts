@@ -8,12 +8,16 @@ export function getOverView() {
   return apiClient.post('/api/info/overView')
 }
 
-export function getChartIncomeStatistics() {
-  return apiClient.get('/api/chart/income_statistics')
+export function getChartIncomeStatistics(data: {
+  data_number: string
+}) {
+  return apiClient.post('/api/chart/income_statistics', data)
 }
 
-export function getChartIncomeTrend() {
-  return apiClient.get('/api/chart/income_trend')
+export function getChartIncomeTrend(data: {
+  type: string
+}) {
+  return apiClient.post('/api/chart/income_trend', data)
 }
 
 export function getEarningList() {

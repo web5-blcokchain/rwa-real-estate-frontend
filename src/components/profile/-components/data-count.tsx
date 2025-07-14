@@ -13,37 +13,44 @@ function DataCount() {
     }
   })
 
+  const isUpIcon = (data: any) => {
+    if (data) {
+      return new URL('@/assets/icons/arrow-up.png', import.meta.url).href
+    }
+    return ''
+  }
+
   const updateData = () => [
     {
       title: 'profile.data_count.totalAssetValue',
       field: `¥${_get(data, 'total_current', '0.00')}`,
       fieldTwo: { content: '', value: `${_get(data, 'total_current_growth', '0.00')}%` },
-      picture: new URL('@/assets/icons/arrow-up.png', import.meta.url).href,
-      color: '#2bb480'
+      picture: isUpIcon(_get(data, 'total_number_vs_last_month', false)),
+      color: _get(data, 'total_number_vs_last_month', false) ? '#2bb480' : '8d909a'
     },
 
     {
       title: 'profile.data_count.expectedIncomeThisMonth',
-      field: '1,245',
-      fieldTwo: { content: '', value: '≈ ¥8,526,450.00' },
-      picture: '',
-      color: '#8d909a'
+      field: `¥${_get(data, 'monthly_rental_income', '0.00')}`,
+      fieldTwo: { content: '', value: `${_get(data, 'monthly_rental_income_growth', '0.00')}%` },
+      picture: isUpIcon(_get(data, 'monthly_rental_income_vs_last_month', false)),
+      color: _get(data, 'monthly_rental_income_vs_last_month', false) ? '#2bb480' : '8d909a'
     },
 
     {
       title: 'profile.data_count.averageMonthlyIncome',
       field: `¥${_get(data, 'monthly_rental_income', '0.00')}`,
-      fieldTwo: { content: 'profile.data_count.vsLastMonth', value: ` +1.2%` },
-      picture: new URL('@/assets/icons/arrow-up.png', import.meta.url).href,
-      color: '#2bb480'
+      fieldTwo: { content: 'profile.data_count.vsLastMonth', value: `¥${_get(data, 'monthly_rental_income_growth', '0.00')}%` },
+      picture: isUpIcon(_get(data, 'monthly_rental_income_vs_last_month', false)),
+      color: _get(data, 'monthly_rental_income_vs_last_month', false) ? '#2bb480' : '8d909a'
     },
 
     {
       title: 'profile.data_count.yieldPerformance',
       field: `${_get(data, 'annual_yield', '0.00')}%`,
-      fieldTwo: { content: 'profile.data_count.industryAverage', value: ` 4.2%` },
-      picture: '',
-      color: '#8d909a'
+      fieldTwo: { content: 'profile.data_count.industryAverage', value: `¥${_get(data, 'annual_yield_growth', '0.00')}%` },
+      picture: isUpIcon(_get(data, 'annual_yield_vs_last_month', false)),
+      color: _get(data, 'annual_yield_vs_last_month', false) ? '#2bb480' : '8d909a'
     }
   ]
 

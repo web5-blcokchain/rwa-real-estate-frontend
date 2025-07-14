@@ -28,7 +28,7 @@ export default function MainHeader() {
   }, [pathname])
 
   return (
-    <header className="sticky left-0 top-0 z-10 fbc gap-3 bg-background px-107px py-6px text-text max-md:px-8px max-md:py-1">
+    <header className="sticky left-0 top-0 z-10 z-99 fbc gap-3 bg-background px-107px py-6px text-text max-md:px-8px max-md:py-1">
       <div className="fyc gap-8">
         <div className="text-5 text-primary">
           <Link to="/home"><img src={logo} className="h-18 transform max-md:h-10 -translate-y-6%" /></Link>
@@ -116,7 +116,7 @@ function RightMenu() {
   const setUserData = useUserStore(state => state.setUserData)
   // const { open } = useGlobalDialogStore()
   const navigate = useNavigate()
-  const { setCode } = useUserStore()
+  const { setCode, refreshUserInfo } = useUserStore()
 
   const [openLoginDialog, setOpenLoginDialog] = useState(false)
 
@@ -138,6 +138,12 @@ function RightMenu() {
       return data
     }
   })
+
+  useEffect(() => {
+    if (refreshUserInfo > 0) {
+      mutateAsync()
+    }
+  }, [refreshUserInfo])
 
   useEffect(() => {
     if (!authenticated)

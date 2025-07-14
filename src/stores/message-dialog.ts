@@ -2,14 +2,16 @@ import { create } from 'zustand'
 
 interface GlobalDialogState {
   message: string | React.ReactNode
+  title: string
   visible: boolean
-  open: (message: string | React.ReactNode) => void
+  open: (message: string | React.ReactNode, title?: string) => void
   close: () => void
 }
 
-export const useGlobalDialogStore = create<GlobalDialogState>(set => ({
+export const useMessageDialogStore = create<GlobalDialogState>(set => ({
   message: '',
+  title: '',
   visible: false,
-  open: (message: string | React.ReactNode) => set({ message, visible: true }),
+  open: (message: string | React.ReactNode, title?: string) => set({ message, title, visible: true }),
   close: () => set({ visible: false })
 }))
