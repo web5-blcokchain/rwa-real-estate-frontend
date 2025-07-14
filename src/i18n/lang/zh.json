@@ -182,7 +182,8 @@
     "logged_in_privy": "已登陆 Privy",
     "message": {
       "link_email": "请绑定邮箱",
-      "create_success": "创建账号成功"
+      "create_success": "创建账号成功",
+      "reload_success": "重新提交成功"
     },
     "upload_id_card_front": "上传{{type}}正面",
     "upload_id_card_back": "上传{{type}}反面",

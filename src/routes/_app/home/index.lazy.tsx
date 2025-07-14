@@ -189,7 +189,7 @@ function RouteComponent() {
       </div>
 
       <div className="px-30 max-lg:px-12 max-md:px-2 max-xl:px-16">
-        <div className="content-min-h fccc gap-11 pt-86px max-lg:gap-6 max-md:gap-0 max-xl:gap-8 max-lg:pt-40px max-md:pt-6 max-xl:pt-64px max-lg:!min-h-auto">
+        <div className="fccc gap-11 pt-120px max-lg:gap-6 max-md:gap-0 max-xl:gap-8 max-2xl:pt-86px max-lg:pt-40px max-md:pt-6 max-xl:pt-64px max-lg:!min-h-auto">
           <div className="text-center font-500 leading-10 max-lg:text-5 max-xl:text-7 max-lg:leading-7 max-xl:leading-8">
             <div className="text-9 max-lg:text-5 max-md:text-4 max-xl:text-7 max-md:leading-100%">{t('home.earn.title')}</div>
             <div className="text-26px max-lg:text-16px max-md:text-10px max-xl:text-20px max-lg:leading-6 max-md:leading-26px max-xl:leading-7">{t('home.earn.content')}</div>

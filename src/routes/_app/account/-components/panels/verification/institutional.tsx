@@ -12,7 +12,7 @@ import './individual.scss'
 
 export default function InstitutionalVerification() {
   const { t } = useTranslation()
-  const { registerData, setRegisterData, setCode: setExist, clearRegisterData, getUserInfo } = useUserStore()
+  const { registerData, setRegisterData, setCode: setExist, clearRegisterData, getUserInfo, userData } = useUserStore()
   const navigate = useNavigate()
 
   // 获取各种文档的URL
@@ -60,6 +60,20 @@ export default function InstitutionalVerification() {
     },
     onSuccess: () => {
       toast.success(t('create.message.create_success'))
+      getUserInfo()
+      setExist(UserCode.LoggedIn)
+      clearRegisterData()
+      navigate({
+        to: '/home'
+      })
+    }
+  })
+  const { mutate: reloadCreateMutate, isPending: reloadCreatePending } = useMutation({
+    mutationFn: () => apiMyInfo.submitInfo({
+      ...registerData
+    }),
+    onSuccess: () => {
+      toast.success(t('create.message.reload_success'))
       getUserInfo()
       setExist(UserCode.LoggedIn)
       clearRegisterData()
@@ -157,10 +171,15 @@ export default function InstitutionalVerification() {
           <Button
             size="large"
             className="bg-transparent! text-white! hover:text-primary-1!"
-            loading={isPending}
+            loading={isPending || reloadCreatePending}
             onClick={() => {
               if (verifyUpload()) {
-                createMutate()
+                if (userData.audit_status && userData.audit_status === 2) {
+                  reloadCreateMutate()
+                }
+                else {
+                  createMutate()
+                }
               }
             }}
           >

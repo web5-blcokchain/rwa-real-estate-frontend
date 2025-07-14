@@ -181,7 +181,8 @@
     "logged_in_privy": "Logged in Privy",
     "message": {
       "link_email": "Please bind your email address",
-      "create_success": "Account created successfully"
+      "create_success": "Account created successfully",
+      "reload_success": "Resubmit successfully"
     },
     "upload_id_card_front": "Upload {{type}} front",
     "upload_id_card_back": "Upload {{type}} back",

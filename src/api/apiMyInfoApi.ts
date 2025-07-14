@@ -76,6 +76,10 @@ function register(data: RegisterParams) {
   return apiClient.post<RegisterResponse>('/api/user/register', data)
 }
 
+function submitInfo(data: RegisterParams) {
+  return apiClient.post<RegisterResponse>('/api/info/submitInfo ', data)
+}
+
 export interface AboutMeParams {
   page?: number
   pageSize?: number
@@ -177,7 +181,8 @@ const apiMyInfoApi = {
   getMeInfo,
   getHistory,
   getEarningsHistory,
-  getUserInfo
+  getUserInfo,
+  submitInfo
 }
 
 export default apiMyInfoApi

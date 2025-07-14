@@ -237,7 +237,7 @@ function RouteComponent() {
   )
 
   return (
-    <div className="max-w-7xl p-8 space-y-8">
+    <div className="mx-auto max-w-7xl p-8 space-y-8 max-lg:p-4">
       <div className="text-center text-6 font-medium">{t('common.payment_title')}</div>
 
       {/* 添加资产选择下拉框 */}
@@ -246,13 +246,13 @@ function RouteComponent() {
       {!item
         ? (
             <div className="rounded-xl bg-[#202329] p-6 text-center">
-              {t('properties.payment.select_asset_prompt') }
+              {t('properties.payment.select_asset_prompt')}
             </div>
           )
         : (
             <>
-              <div className="flex gap-6 rounded-xl bg-[#202329] p-6">
-                <div className="h-60 w-100">
+              <div className="flex gap-6 rounded-xl bg-[#202329] p-6 max-lg:flex-col">
+                <div className="h-60 w-100 max-lg:h-auto max-lg:w-full">
                   <IImage src={joinImagesPath(item.image_urls)[0]} className="size-full rounded" />
                 </div>
                 <div className="flex-1">
@@ -290,34 +290,39 @@ function RouteComponent() {
                 <div className="text-4.5">{t('properties.payment.payment_details')}</div>
 
                 <div className="flex items-center justify-between text-4">
-                  <div className="text-[#898989] space-y-4">
-                    <div>{t('properties.payment.number')}</div>
-                    <div>{t('properties.payment.subtotal')}</div>
+                  <div className="w-full text-[#898989] [&>div]:w-full [&>div]:fyc [&>div]:justify-between space-y-4">
                     <div>
-                      {t('properties.payment.platform_fee')}
-                      {' '}
-                      (2%)
+                      <div>{t('properties.payment.number')}</div>
+                      <div className="flex justify-end">
+                        <QuantitySelector
+                          value={tokens}
+                          onChange={setTokens}
+                          min={minTokenAmount}
+                          disabled={isPending}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <div>{t('properties.payment.subtotal')}</div>
+                      <div className="text-right">
+                        $
+                        {tokens * Number(item.price)}
+                      </div>
+                    </div>
+                    <div>
+                      <div>
+                        {t('properties.payment.platform_fee')}
+                        {' '}
+                        (2%)
+                      </div>
+                      <div className="text-right">
+                        $
+                        {tokens * Number(item.price) * 0.02}
+                      </div>
                     </div>
                   </div>
 
                   <div className="space-y-4">
-                    <div className="flex justify-end">
-                      <QuantitySelector
-                        value={tokens}
-                        onChange={setTokens}
-                        min={minTokenAmount}
-                        disabled={isPending}
-                      />
-                    </div>
-
-                    <div className="text-right">
-                      $
-                      {tokens * Number(item.price)}
-                    </div>
-                    <div className="text-right">
-                      $
-                      {(tokens * Number(item.price) * 0.02).toFixed(2)}
-                    </div>
                   </div>
                 </div>
 

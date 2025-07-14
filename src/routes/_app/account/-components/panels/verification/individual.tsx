@@ -12,7 +12,7 @@ import './individual.scss'
 
 export default function IndividualVerification() {
   const { t } = useTranslation()
-  const { registerData, setCode: setExist, setRegisterData, clearRegisterData, getUserInfo } = useUserStore()
+  const { registerData, setCode: setExist, setRegisterData, clearRegisterData, getUserInfo, userData } = useUserStore()
   const navigate = useNavigate()
 
   // 获取身份证正反面图片地址
@@ -74,6 +74,20 @@ export default function IndividualVerification() {
 
   const { mutate: createMutate, isPending } = useMutation({
     mutationFn: () => apiMyInfo.register({
+      ...registerData
+    }),
+    onSuccess: () => {
+      toast.success(t('create.message.create_success'))
+      getUserInfo()
+      setExist(UserCode.LoggedIn)
+      clearRegisterData()
+      navigate({
+        to: '/home'
+      })
+    }
+  })
+  const { mutate: reloadCreateMutate, isPending: reloadCreatePending } = useMutation({
+    mutationFn: () => apiMyInfo.submitInfo({
       ...registerData
     }),
     onSuccess: () => {
@@ -205,10 +219,16 @@ export default function IndividualVerification() {
           <Button
             size="large"
             className="bg-transparent! text-white! hover:text-primary-1!"
-            loading={isPending}
+            loading={isPending || reloadCreatePending}
             onClick={() => {
               if (verifyUpload()) {
-                createMutate()
+                // 判断是不是拒绝之后重新申请的
+                if (userData.audit_status && userData.audit_status === 2) {
+                  reloadCreateMutate()
+                }
+                else {
+                  createMutate()
+                }
               }
             }}
           >

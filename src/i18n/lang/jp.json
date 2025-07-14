@@ -181,7 +181,8 @@
     "logged_in_privy": "Privyにログイン済み",
     "message": {
       "link_email": "メールアドレスを連携してください",
-      "create_success": "アカウントが正常に作成されました"
+      "create_success": "アカウントが正常に作成されました",
+      "reload_success": "再提出できました"
     },
     "upload_id_card_front": "{{type}}正面をアップロードします",
     "upload_id_card_back": "{{type}}反面をアップロードします",

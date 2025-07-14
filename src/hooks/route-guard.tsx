@@ -18,7 +18,7 @@ export function useRouteGuard() {
   const { code, userData } = useUserStore()
   const { t } = useTranslation()
   const prevPathRef = useRef<string | null>(null)
-  const { open: openMessageDialog } = useMessageDialogStore()
+  const { open: openMessageDialog, close } = useMessageDialogStore()
   const token = getToken()
 
   useEffect(() => {
@@ -50,6 +50,7 @@ export function useRouteGuard() {
         UserCode.NotAudited
       ]).has(code))
       && loggedInBlackList.includes(currentPath)
+      && userData.audit_status !== 2
     ) {
       navigate({
         to: '/'
@@ -79,13 +80,13 @@ export function useRouteGuard() {
     const hasLoginUrl = ['/profile', '/properties/payment']
     // console.log(currentPath, hasLoginUrl)
     if (hasLoginUrl.some(item => currentPath.includes(item))) {
-      if (userData.audit_status === 2) {
-        toast.error(t('header.error.centralized_database_review_rejection'))
+      if (userData.audit_status === 0) {
+        toast.error(t('header.error.wallet_already_bound'))
         navigate({
           to: '/account/create'
         })
       }
-      else if (userData.audit_status === 0) {
+      else if (userData.audit_status === 2) {
         window.history.back()
         setTimeout(() => {
           openMessageDialog((
@@ -98,13 +99,16 @@ export function useRouteGuard() {
                   navigate({
                     to: '/account/create'
                   })
+                  setTimeout(() => {
+                    close()
+                  }, 200)
                 }}
               >
                 {t('common.reupload')}
               </Button>
 
             </div>
-          ), t('header.error.wallet_already_bound')
+          ), t('header.error.kyc_audit_rejected')
           )
         }, 200)
 
