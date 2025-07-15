@@ -70,7 +70,9 @@
       "invalid_token_price": "トークン価格が無効または未定義です",
       "invalid_property": "無効な物件ID",
       "token_approve_failed": "トークンの承認に失敗しました",
-      "insufficient_token": "トークン残高が不足しています"
+      "insufficient_token": "トークン残高が不足しています",
+      "please_wait_for_kyc": "KYC審査が完了するまでお待ちください",
+      "please_use_bound_wallet": "バインドされたウォレットを使用して支払いしてください"
     },
     "info": {
       "eth_required": "トランザクションにはETHの送信が必要です",

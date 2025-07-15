@@ -70,7 +70,9 @@
       "invalid_token_price": "代币价格无效或未定义",
       "invalid_property": "无效的房产ID",
       "token_approve_failed": "代币授权失败",
-      "insufficient_token": "代币余额不足"
+      "insufficient_token": "代币余额不足",
+      "please_wait_for_kyc": "请等待KYC审核通过",
+      "please_use_bound_wallet": "请使用绑定的钱包进行支付"
     },
     "info": {
       "eth_required": "交易需要发送ETH",

@@ -126,8 +126,8 @@ function RouteComponent() {
 
       <div className="fccc gap-124px px-120px pb-150px pt-96px max-lg:gap-48px max-md:gap-22px max-xl:gap-80px max-lg:px-32px max-md:px-2 max-xl:px-40px max-lg:pb-60px max-lg:pt-36px max-md:pb-7px max-md:pt-16px max-xl:pb-100px max-xl:pt-60px">
         <div className="fccc gap-10 max-lg:gap-5 max-md:gap-13px max-xl:gap-7">
-          <div className="fccc gap-18px max-lg:gap-6 max-lg:gap-6px max-md:gap-0 max-xl:gap-10px">
-            <div className="text-36px font-500 leading-10 max-lg:text-20px max-md:text-4 max-xl:text-28px">{t('home.rwaType.rwaTitle')}</div>
+          <div className="fccc gap-14px max-md:gap-0 max-xl:gap-10px">
+            <div className="text-36px font-500 leading-10 max-lg:text-20px max-md:text-4 max-xl:text-28px max-lg:leading-6 max-md:leading-6 max-xl:leading-8">{t('home.rwaType.rwaTitle')}</div>
             <div className="text-22px leading-26px max-lg:text-14px max-md:text-10px max-xl:text-18px">{t('home.rwaType.rwaDesc')}</div>
           </div>
           <div className="grid grid-cols-3 gap-30px max-lg:gap-16px max-md:gap-11px max-xl:gap-18px">
@@ -164,10 +164,10 @@ function RouteComponent() {
         </div>
       </div>
 
-      <div className="content-min-h home-explanation w-full fccc gap-11 pb-68px pl-125px pr-161px pt-93px text-center max-lg:gap-4 max-md:gap-4 max-xl:gap-7 max-lg:pb-24px max-lg:pl-12px max-lg:pr-12px max-lg:pt-32px max-md:pb-32px max-md:pl-14px max-md:pr-7 max-md:pt-12px max-xl:pb-40px max-xl:pl-40px max-xl:pr-40px max-xl:pt-60px">
+      <div className="content-min-h home-explanation w-full fccc gap-11 pb-68px pl-125px pr-161px pt-93px text-center max-lg:gap-4 max-md:gap-4 max-xl:gap-7 max-lg:pb-24px max-lg:pl-12px max-lg:pr-12px max-lg:pt-32px max-md:pb-32px max-md:pl-14px max-md:pr-7 max-md:pt-12px max-xl:pb-40px max-xl:pl-40px max-xl:pr-40px max-xl:pt-60px !max-lg:min-h-auto">
         <div>
           <div className="text-36px font-500 leading-10 max-lg:text-18px max-md:text-4 max-xl:text-28px max-lg:leading-6 max-md:leading-6 max-xl:leading-8">{t('home.investmentFeature.frictionless')}</div>
-          <div className="pt-14px text-26px font-500 leading-10 max-md:pt-0 max-lg:text-12px max-md:text-10px max-xl:text-18px max-lg:leading-5 max-md:leading-4 max-xl:leading-7">{t('home.investmentFeature.anyone')}</div>
+          <div className="pt-14px text-22px font-500 leading-10 max-md:pt-0 max-lg:text-14px max-md:text-10px max-xl:text-18px max-lg:leading-5 max-md:leading-4 max-xl:leading-7">{t('home.investmentFeature.anyone')}</div>
         </div>
         <div className="w-full fyc justify-between">
           <div className="flex flex-col gap-11 max-lg:gap-3 max-md:gap-1 max-xl:gap-6">
@@ -191,8 +191,8 @@ function RouteComponent() {
       <div className="px-30 max-lg:px-12 max-md:px-2 max-xl:px-16">
         <div className="fccc gap-11 pt-120px max-lg:gap-6 max-md:gap-0 max-xl:gap-8 max-2xl:pt-86px max-lg:pt-40px max-md:pt-6 max-xl:pt-64px max-lg:!min-h-auto">
           <div className="text-center font-500 leading-10 max-lg:text-5 max-xl:text-7 max-lg:leading-7 max-xl:leading-8">
-            <div className="text-9 max-lg:text-5 max-md:text-4 max-xl:text-7 max-md:leading-100%">{t('home.earn.title')}</div>
-            <div className="text-26px max-lg:text-16px max-md:text-10px max-xl:text-20px max-lg:leading-6 max-md:leading-26px max-xl:leading-7">{t('home.earn.content')}</div>
+            <div className="text-36px font-500 leading-10 max-lg:text-20px max-md:text-4 max-xl:text-28px max-lg:leading-6 max-md:leading-6 max-xl:leading-8">{t('home.earn.title')}</div>
+            <div className="pt-14px text-22px leading-26px max-md:pt-0 max-lg:text-14px max-md:text-10px max-xl:text-18px">{t('home.earn.content')}</div>
           </div>
           <div className="">
             <Waiting
@@ -232,10 +232,10 @@ function RouteComponent() {
           </div>
         </div>
 
-        <div className="content-min-h fccc gap-50px pt-20 max-lg:gap-5 max-lg:gap-8 max-md:gap-14px max-xl:gap-8 max-xl:gap-8 max-md:pt-45px max-lg:!min-h-auto">
+        <div className="content-min-h fccc gap-50px pt-20 max-lg:gap-5 max-lg:gap-8 max-md:gap-14px max-xl:gap-8 max-xl:gap-8 max-md:pt-45px !max-lg:min-h-auto max-lg:!min-h-auto">
           <div className="text-center leading-10 max-lg:leading-5 max-lg:leading-7 max-xl:leading-8">
-            <div className="pb-14px text-9 max-lg:pb-6px max-md:pb-2px max-xl:pb-10px max-lg:text-5 max-md:text-14px max-xl:text-7">{t('home.investorGuide.newbieInvest')}</div>
-            <div className="text-26px max-lg:text-16px max-md:text-10px max-xl:text-20px max-lg:leading-6 max-md:leading-5 max-xl:leading-7">{t('home.investorGuide.getInfo')}</div>
+            <div className="pb-14px text-36px font-500 leading-10 max-md:pb-0 max-lg:text-20px max-md:text-4 max-xl:text-28px max-lg:leading-6 max-md:leading-6 max-xl:leading-8">{t('home.investorGuide.newbieInvest')}</div>
+            <div className="text-22px leading-26px max-lg:text-14px max-md:text-10px max-xl:text-18px">{t('home.investorGuide.getInfo')}</div>
           </div>
           <div className="grid grid-cols-2 gap-x-38px gap-y-50px max-md:gap-11px max-lg:gap-x-10px max-lg:gap-y-5 max-xl:gap-x-20px max-xl:gap-y-8">
             {

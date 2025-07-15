@@ -7,6 +7,7 @@ import { PaymentMethod } from '@/components/common/payment-method'
 import QuantitySelector from '@/components/common/quantity-selector'
 import { getContracts } from '@/contract'
 import { useCommonDataStore } from '@/stores/common-data'
+import { useUserStore } from '@/stores/user'
 import { joinImagesPath } from '@/utils/url'
 import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
@@ -29,6 +30,7 @@ function RouteComponent() {
   const navigate = useNavigate()
 
   const [wallet, setWallet] = useState<ConnectedWallet | null>(null)
+  const { userData } = useUserStore()
 
   const { params } = useMatch({
     from: '/_app/properties/payment/$id'
@@ -55,8 +57,17 @@ function RouteComponent() {
   })
 
   async function payment() {
+    // 判断当前用户是否是绑定的钱包/已经审核通过链
+    if (userData.audit_status !== 4) {
+      toast.error(t('payment.errors.please_wait_for_kyc'))
+      return
+    }
     if (!wallet) {
       toast.error(t('payment.errors.no_wallet'))
+      return
+    }
+    if (wallet.address !== userData.wallet_address) {
+      toast.error(t('payment.errors.please_use_bound_wallet'))
       return
     }
     setBtnLoading(true)

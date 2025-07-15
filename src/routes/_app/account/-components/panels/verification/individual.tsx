@@ -91,7 +91,7 @@ export default function IndividualVerification() {
       ...registerData
     }),
     onSuccess: () => {
-      toast.success(t('create.message.create_success'))
+      toast.success(t('create.message.reload_success'))
       getUserInfo()
       setExist(UserCode.LoggedIn)
       clearRegisterData()

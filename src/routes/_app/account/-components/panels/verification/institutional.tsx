@@ -183,7 +183,7 @@ export default function InstitutionalVerification() {
               }
             }}
           >
-            {t('create.verification.business.continue')}
+            {t('create.verification.personal.upload')}
           </Button>
         </div>
       </div>

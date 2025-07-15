@@ -70,7 +70,9 @@
       "invalid_token_price": "Token price is invalid or undefined",
       "invalid_property": "Invalid property ID",
       "token_approve_failed": "Token authorization failed",
-      "insufficient_token": "Insufficient token balance"
+      "insufficient_token": "Insufficient token balance",
+      "please_wait_for_kyc": "Please wait for KYC audit to pass",
+      "please_use_bound_wallet": "Please use the bound wallet to pay"
     },
     "info": {
       "eth_required": "Transaction requires sending ETH",
