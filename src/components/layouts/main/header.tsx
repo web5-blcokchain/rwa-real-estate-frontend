@@ -5,7 +5,6 @@ import { LoginDialog } from '@/components/dialog/login'
 import { UserCode } from '@/enums/user'
 import { useUserStore } from '@/stores/user'
 import { clearToken, setToken } from '@/utils/user'
-import { shortAddress } from '@/utils/wallet'
 import { usePrivy, useWallets } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
 import { Link, useLocation, useNavigate } from '@tanstack/react-router'
@@ -14,6 +13,8 @@ import { Drawer, Dropdown } from 'antd'
 export default function MainHeader() {
   const [open, setOpen] = useState(false)
   const { pathname } = useLocation()
+  const { linkWallet, connectWallet } = usePrivy()
+  const { wallets } = useWallets()
 
   const showDrawer = () => {
     setOpen(true)
@@ -37,6 +38,21 @@ export default function MainHeader() {
       </div>
       <div className="fyc gap-4 lt-lg:hidden">
         <RightMenu />
+        {(!wallets.some(wallet => wallet.walletClientType !== 'privy')) && (
+          <div
+            onClick={() => {
+              if (wallets.length > 0) {
+                connectWallet()
+              }
+              else {
+                linkWallet()
+              }
+            }}
+            className="cursor-pointer"
+          >
+            连接钱包
+          </div>
+        )}
       </div>
 
       <div className="hidden lt-lg:flex">
@@ -233,10 +249,10 @@ function RightMenu() {
 
 const UserMenu: FC = () => {
   const navigate = useNavigate()
-  const { logout, linkWallet, connectWallet } = usePrivy()
+  const { logout } = usePrivy()
   const { wallets } = useWallets()
   const { t } = useTranslation()
-  const { userData, setCode, clearUserData } = useUserStore()
+  const { setCode, clearUserData } = useUserStore()
   async function handleLogout() {
     logout()
       .then(
@@ -267,18 +283,15 @@ const UserMenu: FC = () => {
       )
     },
     {
-      key: 'link_wallet',
+      key: 'kyc_status',
       label: (
         <div onClick={() => {
-          if (wallets.length > 0) {
-            connectWallet()
-          }
-          else {
-            linkWallet()
-          }
+          navigate({
+            to: '/auditStatus'
+          })
         }}
         >
-          {t('header.link_wallet')}
+          {t('header.kyc_status')}
         </div>
       )
     },
@@ -294,13 +307,14 @@ const UserMenu: FC = () => {
       )
     }
   ]
+  const connectWalletAddress = wallets.find(wallet => wallet.walletClientType !== 'privy')
 
   return (
     <Dropdown menu={{ items }} placement="bottomRight">
       <div className="fyc gap-1 clickable">
         <div className="i-material-symbols-account-circle-outline size-5 bg-white"></div>
         <div className="text-4 text-white">
-          {shortAddress(_get(userData, 'wallet_address', ''))}
+          {connectWalletAddress ? (`${connectWalletAddress.address.slice(0, 6)}...${connectWalletAddress.address.slice(-4)}`) : ''}
         </div>
         <div className="i-ic-round-keyboard-arrow-down size-5 bg-white"></div>
       </div>

@@ -91,7 +91,14 @@ function SelectVerification({ setCurrentVisible }: VerificationPanelProps) {
         }
 
         <INotice>
-          {t('create.verification.notice')}
+          <div>
+            <p>{t('create.verification.notice_desc')}</p>
+            <p>
+              {' '}
+              {t('create.verification.notice')}
+            </p>
+
+          </div>
         </INotice>
       </div>
     </div>

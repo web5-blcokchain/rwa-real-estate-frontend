@@ -26,6 +26,7 @@ const AppInvestmentIndexLazyImport = createFileRoute('/_app/investment/')()
 const AppHomeIndexLazyImport = createFileRoute('/_app/home/')()
 const AppHelpIndexLazyImport = createFileRoute('/_app/help/')()
 const AppGuidanceIndexLazyImport = createFileRoute('/_app/guidance/')()
+const AppAuditStatusIndexLazyImport = createFileRoute('/_app/auditStatus/')()
 const AppAboutIndexLazyImport = createFileRoute('/_app/about/')()
 const AppTransactionHashLazyImport = createFileRoute(
   '/_app/transaction/$hash',
@@ -127,6 +128,14 @@ const AppGuidanceIndexLazyRoute = AppGuidanceIndexLazyImport.update({
   getParentRoute: () => AppRoute,
 } as any).lazy(() =>
   import('./routes/_app/guidance/index.lazy').then((d) => d.Route),
+)
+
+const AppAuditStatusIndexLazyRoute = AppAuditStatusIndexLazyImport.update({
+  id: '/auditStatus/',
+  path: '/auditStatus/',
+  getParentRoute: () => AppRoute,
+} as any).lazy(() =>
+  import('./routes/_app/auditStatus/index.lazy').then((d) => d.Route),
 )
 
 const AppAboutIndexLazyRoute = AppAboutIndexLazyImport.update({
@@ -289,6 +298,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAboutIndexLazyImport
       parentRoute: typeof AppImport
     }
+    '/_app/auditStatus/': {
+      id: '/_app/auditStatus/'
+      path: '/auditStatus'
+      fullPath: '/auditStatus'
+      preLoaderRoute: typeof AppAuditStatusIndexLazyImport
+      parentRoute: typeof AppImport
+    }
     '/_app/guidance/': {
       id: '/_app/guidance/'
       path: '/guidance'
@@ -425,6 +441,7 @@ interface AppRouteChildren {
   AppBuyIdLazyRoute: typeof AppBuyIdLazyRoute
   AppTransactionHashLazyRoute: typeof AppTransactionHashLazyRoute
   AppAboutIndexLazyRoute: typeof AppAboutIndexLazyRoute
+  AppAuditStatusIndexLazyRoute: typeof AppAuditStatusIndexLazyRoute
   AppGuidanceIndexLazyRoute: typeof AppGuidanceIndexLazyRoute
   AppHelpIndexLazyRoute: typeof AppHelpIndexLazyRoute
   AppHomeIndexLazyRoute: typeof AppHomeIndexLazyRoute
@@ -450,6 +467,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppBuyIdLazyRoute: AppBuyIdLazyRoute,
   AppTransactionHashLazyRoute: AppTransactionHashLazyRoute,
   AppAboutIndexLazyRoute: AppAboutIndexLazyRoute,
+  AppAuditStatusIndexLazyRoute: AppAuditStatusIndexLazyRoute,
   AppGuidanceIndexLazyRoute: AppGuidanceIndexLazyRoute,
   AppHelpIndexLazyRoute: AppHelpIndexLazyRoute,
   AppHomeIndexLazyRoute: AppHomeIndexLazyRoute,
@@ -481,6 +499,7 @@ export interface FileRoutesByFullPath {
   '/buy/$id': typeof AppBuyIdLazyRoute
   '/transaction/$hash': typeof AppTransactionHashLazyRoute
   '/about': typeof AppAboutIndexLazyRoute
+  '/auditStatus': typeof AppAuditStatusIndexLazyRoute
   '/guidance': typeof AppGuidanceIndexLazyRoute
   '/help': typeof AppHelpIndexLazyRoute
   '/home': typeof AppHomeIndexLazyRoute
@@ -506,6 +525,7 @@ export interface FileRoutesByTo {
   '/buy/$id': typeof AppBuyIdLazyRoute
   '/transaction/$hash': typeof AppTransactionHashLazyRoute
   '/about': typeof AppAboutIndexLazyRoute
+  '/auditStatus': typeof AppAuditStatusIndexLazyRoute
   '/guidance': typeof AppGuidanceIndexLazyRoute
   '/help': typeof AppHelpIndexLazyRoute
   '/home': typeof AppHomeIndexLazyRoute
@@ -533,6 +553,7 @@ export interface FileRoutesById {
   '/_app/buy/$id': typeof AppBuyIdLazyRoute
   '/_app/transaction/$hash': typeof AppTransactionHashLazyRoute
   '/_app/about/': typeof AppAboutIndexLazyRoute
+  '/_app/auditStatus/': typeof AppAuditStatusIndexLazyRoute
   '/_app/guidance/': typeof AppGuidanceIndexLazyRoute
   '/_app/help/': typeof AppHelpIndexLazyRoute
   '/_app/home/': typeof AppHomeIndexLazyRoute
@@ -561,6 +582,7 @@ export interface FileRouteTypes {
     | '/buy/$id'
     | '/transaction/$hash'
     | '/about'
+    | '/auditStatus'
     | '/guidance'
     | '/help'
     | '/home'
@@ -585,6 +607,7 @@ export interface FileRouteTypes {
     | '/buy/$id'
     | '/transaction/$hash'
     | '/about'
+    | '/auditStatus'
     | '/guidance'
     | '/help'
     | '/home'
@@ -610,6 +633,7 @@ export interface FileRouteTypes {
     | '/_app/buy/$id'
     | '/_app/transaction/$hash'
     | '/_app/about/'
+    | '/_app/auditStatus/'
     | '/_app/guidance/'
     | '/_app/help/'
     | '/_app/home/'
@@ -659,6 +683,7 @@ export const routeTree = rootRoute
         "/_app/buy/$id",
         "/_app/transaction/$hash",
         "/_app/about/",
+        "/_app/auditStatus/",
         "/_app/guidance/",
         "/_app/help/",
         "/_app/home/",
@@ -693,6 +718,10 @@ export const routeTree = rootRoute
     },
     "/_app/about/": {
       "filePath": "_app/about/index.lazy.tsx",
+      "parent": "/_app"
+    },
+    "/_app/auditStatus/": {
+      "filePath": "_app/auditStatus/index.lazy.tsx",
       "parent": "/_app"
     },
     "/_app/guidance/": {

@@ -23,7 +23,8 @@
       "kyc_audit_rejected": "KYC audit rejected",
       "kyc_audit_rejected_desc": "Your KYC audit has been rejected, please resubmit your information~"
     },
-    "link_wallet": "Link wallet"
+    "link_wallet": "Link wallet",
+    "kyc_status": "KYC audit status"
   },
   "payment": {
     "errors": {
@@ -136,6 +137,7 @@
       "institutional": "Institutional Investor",
       "organizations": "For companies and organizations",
       "notice": " Different verification requirements apply to individual and institutional investors.Please select the appropriate type to proceed with the verification process.",
+      "notice_desc": "Please note that you can only select one identity type.",
       "personal": {
         "title": "Personal Identity Verification",
         "subTitle": "Please upload your personal identity documents for KYC verification",
@@ -179,8 +181,8 @@
       "next": "Next",
       "link_email": "Bind the email"
     },
-    "step1": "Log in to Privy",
-    "logged_in_privy": "Logged in Privy",
+    "step1": "Log in",
+    "logged_in_privy": "Logged",
     "message": {
       "link_email": "Please bind your email address",
       "create_success": "Account created successfully",

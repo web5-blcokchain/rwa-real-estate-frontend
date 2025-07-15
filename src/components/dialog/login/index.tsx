@@ -52,7 +52,7 @@ export const LoginDialog: FC<{
           <Button
             type="primary"
             size="large"
-            className="text-black!"
+            className="w-180px text-black!"
             onClick={() => login({
               loginMethods: ['email']
             })}
@@ -65,7 +65,7 @@ export const LoginDialog: FC<{
           <Button
             type="primary"
             size="large"
-            className="text-black!"
+            className="w-180px text-black!"
             onClick={() => handlePrivyLogin(['google'])}
           >
             <div className="fyc gap-2">

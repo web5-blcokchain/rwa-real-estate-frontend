@@ -23,7 +23,8 @@
       "kyc_audit_rejected": "KYC审核拒绝",
       "kyc_audit_rejected_desc": "您的实名认证未通过，请重新提交信息~"
     },
-    "link_wallet": "连接钱包"
+    "link_wallet": "连接钱包",
+    "kyc_status": "KYC审核状态"
   },
   "payment": {
     "errors": {
@@ -136,6 +137,7 @@
       "institutional": "机构投资者",
       "organizations": "对于公司和组织",
       "notice": "个人投资者和机构投资者的验证要求不同.请选择适当的类型以继续验证过程.",
+      "notice_desc": "请注意，您只能选择一种身份类型。",
       "personal": {
         "title": "个人身份验证",
         "subTitle": "请上传您的个人身份证明文件以进行KYC验证",
@@ -180,8 +182,8 @@
       "next": "下一步",
       "link_email": "绑定邮箱"
     },
-    "step1": "登陆 Privy",
-    "logged_in_privy": "已登陆 Privy",
+    "step1": "登陆",
+    "logged_in_privy": "已登陆",
     "message": {
       "link_email": "请绑定邮箱",
       "create_success": "创建账号成功",

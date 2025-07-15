@@ -24,8 +24,8 @@ const INotice: FC<Props> = ({
         className
       )}
     >
-      <div>
-        <div className="i-carbon-warning size-4 bg-white"></div>
+      <div className="h-6 fcc">
+        <div className="i-carbon-warning size-4 bg-white leading-4"></div>
       </div>
 
       <div className={cn(

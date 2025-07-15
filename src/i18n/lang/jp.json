@@ -23,7 +23,8 @@
       "kyc_audit_rejected": "KYC audit rejected",
       "kyc_audit_rejected_desc": "Your KYC audit has been rejected, please resubmit your information~"
     },
-    "link_wallet": "リンク財布"
+    "link_wallet": "リンク財布",
+    "kyc_status": "KYC審査状態"
   },
   "payment": {
     "errors": {
@@ -136,6 +137,7 @@
       "institutional": "機関投資家",
       "organizations": "企業や組織向け",
       "notice": "個人および機関の投資家には、さまざまな検証要件が適用されます.検証プロセスを進めるには、適切なタイプを選択してください.",
+      "notice_desc": "あなたは、あなたが選択できるのは1つのアイデンティティタイプのみです。",
       "personal": {
         "title": "個人のアイデンティティの検証",
         "subTitle": "フォークYC検証を誰かにアップロードしてください",
@@ -179,8 +181,8 @@
       "next": "つぎ",
       "link_email": "メールアドレスを連携してください"
     },
-    "step1": "Privyにログイン",
-    "logged_in_privy": "Privyにログイン済み",
+    "step1": "にログイン",
+    "logged_in_": "にログイン済み",
     "message": {
       "link_email": "メールアドレスを連携してください",
       "create_success": "アカウントが正常に作成されました",
