@@ -58,7 +58,7 @@
       "transaction_timeout": "Transaction wait timeout, please check MetaMask notifications",
       "amount_below_minimum": "Token amount below minimum requirement (Min: {{min}})",
       "contract_not_initialized": "Contract not initialized",
-      "insufficient_eth": "Insufficient ETH balance, please ensure you have enough ETH to pay for transaction fees",
+      "insufficient_eth": "Insufficient USDC balance, please ensure you have enough USDC to pay for transaction fees",
       "transaction_failed": "Transaction execution failed, please try again later",
       "invalid_order_id": "Invalid order ID",
       "order_id_not_found": "Order ID not found",

@@ -108,14 +108,17 @@ function RouteComponent() {
       )
 
       // 获取USDT精度
-      // const usdtDecimals = await usdtContract.decimals()
+      const usdtDecimals = await usdtContract.decimals()
       // 计算所需USDT金额
       const tokenPrice = ethers.parseUnits(String(item.price))
       const requiredUsdtAmount = tokenPrice * BigInt(tokens)
 
       // 检查USDT余额
+      const payUSDCAmount = ethers.parseUnits(String(item.price), usdtDecimals)
       const usdtBalance = await usdtContract.balanceOf(signerAddress)
-      if (usdtBalance < requiredUsdtAmount) {
+
+      // TODO 计算代币与USDC比例兑换之后的余额，之后进行判断
+      if (usdtBalance < payUSDCAmount) {
         toast.error(t('payment.errors.insufficient_eth'))
         return
       }

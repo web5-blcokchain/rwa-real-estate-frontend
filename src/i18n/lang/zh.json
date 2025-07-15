@@ -58,7 +58,7 @@
       "transaction_timeout": "交易等待超时，请检查MetaMask通知",
       "amount_below_minimum": "代币数量低于最小购买要求 (最小: {{min}})",
       "contract_not_initialized": "合约未初始化",
-      "insufficient_eth": "ETH 余额不足，请确保有足够的 ETH 支付交易费用",
+      "insufficient_eth": "USDC 余额不足，请确保有足够的 USDC 支付交易费用",
       "transaction_failed": "交易执行失败，请稍后重试",
       "invalid_order_id": "无效的订单ID",
       "order_id_not_found": "找不到订单ID",
