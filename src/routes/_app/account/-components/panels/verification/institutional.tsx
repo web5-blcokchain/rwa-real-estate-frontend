@@ -32,9 +32,17 @@ export default function InstitutionalVerification() {
     mutationFn: async (data: { file: File, key: string }) => {
       const formData = new FormData()
       formData.append('file', data.file)
+      setCardLoading(prev => ({
+        ...prev,
+        [data.key]: true
+      }))
       const res = await apiMyInfo.uploadFile(formData)
+      setCardLoading(prev => ({
+        ...prev,
+        [data.key]: false
+      }))
       setRegisterData({
-        ...registerData,
+        // ...registerData,
         [data.key]: _get(res.data, 'file.url', '')
       })
       return res?.data
@@ -93,16 +101,7 @@ export default function InstitutionalVerification() {
   }
 
   const beforeUpload = (file: File, key: string) => {
-    setCardLoading({
-      ...cardLoading,
-      [key]: true
-    })
-    updateFile({ file, key }).then(() => {
-      setCardLoading({
-        ...cardLoading,
-        [key]: false
-      })
-    })
+    updateFile({ file, key })
   }
 
   return (

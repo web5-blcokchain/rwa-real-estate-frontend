@@ -630,5 +630,16 @@
     "bindEmail": "邮箱绑定",
     "changeGoogleAuthenticator": "修改谷歌验证器",
     "recoveryRequest": "找回申请"
+  },
+  "auditStatus": {
+    "reSubmit": "重新提交",
+    "contactAdmin": "请联系管理员",
+    "contactAdminDesc": "请联系管理员解决",
+    "backendAudit": "后台审核中",
+    "backendAuditPass": "后台审核通过",
+    "backendAuditFail": "后台审核失败",
+    "walletBindSuccess": "钱包绑定成功",
+    "kycAuditPass": "KYC审核通过",
+    "kycAuditFail": "KYC审核失败"
   }
 }

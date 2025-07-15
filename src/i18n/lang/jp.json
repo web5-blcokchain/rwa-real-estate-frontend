@@ -628,5 +628,16 @@
     "bindEmail": "メールアドレスを紐付ける",
     "changeGoogleAuthenticator": "Google認証を変更",
     "recoveryRequest": "復旧申請"
+  },
+  "auditStatus": {
+    "reSubmit": "再提出",
+    "contactAdmin": "管理者に連絡",
+    "contactAdminDesc": "管理者に連絡して解決してください",
+    "backendAudit": "後台審査中",
+    "backendAuditPass": "後台審査通過",
+    "backendAuditFail": "後台審査失敗",
+    "walletBindSuccess": "財布バインド成功",
+    "kycAuditPass": "KYC審査通過",
+    "kycAuditFail": "KYC審査失敗"
   }
 }

@@ -632,5 +632,16 @@
     "bindEmail": "Bind Email",
     "changeGoogleAuthenticator": "Change Google Authenticator",
     "recoveryRequest": "Recovery Request"
+  },
+  "auditStatus": {
+    "reSubmit": "Resubmit",
+    "contactAdmin": "Contact Admin",
+    "contactAdminDesc": "Please contact the administrator to solve",
+    "backendAudit": "Backend Audit",
+    "backendAuditPass": "Backend Audit Pass",
+    "backendAuditFail": "Backend Audit Fail",
+    "walletBindSuccess": "Wallet Bind Success",
+    "kycAuditPass": "KYC Audit Pass",
+    "kycAuditFail": "KYC Audit Fail"
   }
 }

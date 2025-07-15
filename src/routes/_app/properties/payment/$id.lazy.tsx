@@ -124,9 +124,9 @@ function RouteComponent() {
       const usdtAllowance = await usdtContract.allowance(signerAddress, propertyManagerAddress)
       if (usdtAllowance < requiredUsdtAmount) {
         // 先清零授权
-        const resetTx = await usdtContract.approve(propertyManagerAddress, 0)
-        await resetTx.wait()
-        // 再授权
+        // const resetTx = await usdtContract.approve(propertyManagerAddress, 0)
+        // await resetTx.wait()
+        // 直接授权
         const approveTx = await usdtContract.approve(propertyManagerAddress, requiredUsdtAmount)
         await approveTx.wait()
       }

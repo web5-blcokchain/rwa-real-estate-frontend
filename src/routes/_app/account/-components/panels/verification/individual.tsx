@@ -40,7 +40,7 @@ export default function IndividualVerification() {
       }))
       const res = await apiMyInfo.uploadFile(formData)
       setRegisterData({
-        ...registerData,
+        // ...registerData,
         [data.key]: _get(res.data, 'file.url', '')
       })
       setCardLoading(prev => ({
