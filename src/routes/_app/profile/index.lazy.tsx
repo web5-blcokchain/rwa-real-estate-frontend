@@ -3,6 +3,7 @@ import { IImage } from '@/components/common/i-image'
 import { Earnings } from '@/components/profile/earnings'
 import { ProfileEdit } from '@/components/profile/edit'
 import History from '@/components/profile/history'
+import { MyAssets } from '@/components/profile/myAssets'
 import Overview from '@/components/profile/overview'
 import PropertyTokens from '@/components/profile/propertyTokens'
 import Recording from '@/components/profile/recording'
@@ -51,7 +52,8 @@ function RouteComponent() {
     getItem(`${t('aboutMe.menu_earnings')}`, ProfileTab.Earnings),
     getItem(`${t('aboutMe.menu_history')}`, ProfileTab.History),
     getItem(`${t('aboutMe.menu_recording')}`, ProfileTab.Recording),
-    getItem(`${t('aboutMe.menu_transaction_status')}`, ProfileTab.TransactionStatus)
+    getItem(`${t('aboutMe.menu_transaction_status')}`, ProfileTab.TransactionStatus),
+    getItem(`${t('aboutMe.menu_assets')}`, ProfileTab.Assets)
   ]
 
   const handleMenuClick: MenuProps['onClick'] = (e) => {
@@ -78,6 +80,8 @@ function RouteComponent() {
         return <Recording />
       case ProfileTab.TransactionStatus:
         return <TransactionStatus />
+      case ProfileTab.Assets:
+        return <MyAssets />
     }
   }
 

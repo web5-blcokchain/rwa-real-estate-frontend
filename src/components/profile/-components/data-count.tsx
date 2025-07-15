@@ -58,7 +58,6 @@ function DataCount() {
 
   useEffect(() => {
     if (data) {
-      console.log(data)
       setList(updateData())
     }
   }, [data])

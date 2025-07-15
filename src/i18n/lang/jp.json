@@ -392,7 +392,8 @@
     "annual_yield": "年間生産高",
     "menu_edit": "Edit settings",
     "menu_recording": "取引記録",
-    "menu_transaction_status": "取引ステータス"
+    "menu_transaction_status": "取引ステータス",
+    "menu_assets": "私の資産です"
   },
   "footer": {
     "about": "について",
@@ -522,7 +523,8 @@
       "time": "時間",
       "type": "タイプ",
       "amountJpy": "金額（円）",
-      "status": "ステータス"
+      "status": "ステータス",
+      "draw_time": "引き出し時間"
     },
     "propertyTokens": {
       "title": "保有しているトークンです"
@@ -568,6 +570,12 @@
       "total_money": "合計金額",
       "number_of_tokens": "トークン数",
       "status": "ステータス"
+    },
+    "coin": {
+      "unclaimed": "未引き出し",
+      "claimed": "引き出し済み",
+      "withdraw": "引き出し",
+      "failed": "引き出し失敗"
     }
   },
   "transaction": {

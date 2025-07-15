@@ -393,7 +393,8 @@
     "annual_yield": "每年的产量",
     "menu_edit": "编辑设置",
     "menu_recording": "交易记录",
-    "menu_transaction_status": "交易状态"
+    "menu_transaction_status": "交易状态",
+    "menu_assets": "我的资产"
   },
   "footer": {
     "about": "关于",
@@ -523,7 +524,8 @@
       "time": "时间",
       "type": "类型",
       "amountJpy": "金额（日元）",
-      "status": "状态"
+      "status": "状态",
+      "draw_time": "领取时间"
     },
     "propertyTokens": {
       "title": "持有的代币"
@@ -570,6 +572,12 @@
       "number_of_tokens": "代币数量",
       "status": "状态"
 
+    },
+    "coin": {
+      "unclaimed": "未领取",
+      "claimed": "已领取",
+      "withdraw": "赎回",
+      "failed": "领取失败"
     }
   },
   "transaction": {

@@ -66,7 +66,6 @@ function HistoryLeftTop({ type }: { type: string }) {
 
   useEffect(() => {
     if (data) {
-      console.log(data)
       setList(updateData())
     }
   }, [data])

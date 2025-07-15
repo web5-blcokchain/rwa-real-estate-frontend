@@ -1,4 +1,4 @@
-import type { TableProps } from 'antd'
+import type { TablePaginationConfig, TableProps } from 'antd'
 import { Empty, Table } from 'antd'
 import React from 'react'
 
@@ -9,9 +9,10 @@ interface TableComponentProps<T> {
   titleSlot?: React.ReactNode
   columns: TableProps<T>['columns']
   data: T[]
+  pagination?: false | TablePaginationConfig
 }
 
-function TableComponent<T extends object>({ children, titleSlot, columns, data }: TableComponentProps<T>) {
+function TableComponent<T extends object>({ children, titleSlot, columns, data, pagination = false }: TableComponentProps<T>) {
   const { t } = useTranslation()
   return (
     <div className="mt-8 rounded-xl bg-[#202329] p-5 text-white">
@@ -23,7 +24,7 @@ function TableComponent<T extends object>({ children, titleSlot, columns, data }
         columns={columns}
         dataSource={data}
         rowClassName={() => 'custom-table-row'}
-        pagination={false}
+        pagination={pagination}
         locale={{ emptyText: <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description=""><div className="text-white">{t('common.no_data')}</div></Empty> }}
       >
 

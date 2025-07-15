@@ -98,6 +98,7 @@ export interface PropertieItem {
   total_current: number
   create_date: number
   update_date: number
+  /** 状态0 为未领取11为已领取 2为赎回 3为领取失败 */
   status: number
   address: string
   property_type: string
@@ -108,6 +109,7 @@ export interface PropertieItem {
   image_urls: string
   longitude: string | null
   latitude: string | null
+  draw_time: string
 }
 export interface AboutMeResponse {
   list: PropertieItem[]
@@ -117,7 +119,7 @@ export interface AboutMeResponse {
 }
 // 获取我的资产列表
 function getMeInfo(data: AboutMeParams) {
-  return apiClient.post<ResponseData<AboutMeResponse>>('/api/assets/myProperties', data)
+  return apiClient.post<AboutMeResponse>('/api/assets/myProperties', data)
 }
 
 export interface historyResponse {

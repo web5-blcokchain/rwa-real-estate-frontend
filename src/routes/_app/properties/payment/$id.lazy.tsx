@@ -108,9 +108,9 @@ function RouteComponent() {
       )
 
       // 获取USDT精度
-      const usdtDecimals = await usdtContract.decimals()
+      // const usdtDecimals = await usdtContract.decimals()
       // 计算所需USDT金额
-      const tokenPrice = ethers.parseUnits(String(item.price), usdtDecimals)
+      const tokenPrice = ethers.parseUnits(String(item.price))
       const requiredUsdtAmount = tokenPrice * BigInt(tokens)
 
       // 检查USDT余额

@@ -5,7 +5,7 @@ import { LoginDialog } from '@/components/dialog/login'
 import { UserCode } from '@/enums/user'
 import { useUserStore } from '@/stores/user'
 import { clearToken, setToken } from '@/utils/user'
-import { usePrivy, useWallets } from '@privy-io/react-auth'
+import { usePrivy, useUser, useWallets } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
 import { Link, useLocation, useNavigate } from '@tanstack/react-router'
 import { Drawer, Dropdown } from 'antd'
@@ -132,6 +132,7 @@ function RightMenu() {
   const setUserData = useUserStore(state => state.setUserData)
   // const { open } = useGlobalDialogStore()
   const navigate = useNavigate()
+  const { refreshUser } = useUser()
   const { setCode, refreshUserInfo } = useUserStore()
 
   const [openLoginDialog, setOpenLoginDialog] = useState(false)
@@ -161,6 +162,14 @@ function RightMenu() {
     }
   }, [refreshUserInfo])
 
+  function isTokenExpired(token: string) {
+    if (!token)
+      return true
+    const payload = JSON.parse(atob(token.split('.')[1]))
+    const now = Math.floor(Date.now() / 1000)
+    return payload.exp < now
+  }
+
   useEffect(() => {
     if (!authenticated)
       return
@@ -180,6 +189,21 @@ function RightMenu() {
         }
       })
   }, [authenticated, user, mutateAsync])
+  useEffect(() => {
+    // 定时监测，刷新token (1分钟)
+    const interval = setInterval(async () => {
+      const token = await getAccessToken()
+      if (token && isTokenExpired(token)) {
+        await refreshUser()
+        getAccessToken().then((token) => {
+          if (!token)
+            return
+          setToken(token, 2)
+        })
+      }
+    }, 1000 * 60)
+    return () => clearInterval(interval)
+  }, [])
 
   return (
     <>

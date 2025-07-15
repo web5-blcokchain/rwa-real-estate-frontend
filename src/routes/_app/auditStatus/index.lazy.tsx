@@ -14,10 +14,10 @@ function RouteComponent() {
   const { t } = useTranslation()
   // 0 表示在审核 1的时候表示已审核 2:中心化数据库审核拒绝 3.钱包绑定成功 4.kyc审核通过 5 kyc审核拒绝
   const items = [
-    { title: <div>{t('auditStatus.backendAudit')}</div> },
-    { title: <div>{userData.audit_status === 2 ? t('auditStatus.backendAuditFail') : t('auditStatus.backendAuditPass')}</div> },
-    { title: <div>{t('auditStatus.walletBindSuccess')}</div> },
-    { title: <div>{userData.audit_status === 5 ? t('auditStatus.kycAuditFail') : t('auditStatus.kycAuditPass')}</div> }
+    { title: <div className="max-lg:pb-7">{t('auditStatus.backendAudit')}</div> },
+    { title: <div className="max-lg:pb-7">{userData.audit_status === 2 ? t('auditStatus.backendAuditFail') : t('auditStatus.backendAuditPass')}</div> },
+    { title: <div className="max-lg:pb-7">{t('auditStatus.walletBindSuccess')}</div> },
+    { title: <div className="max-lg:pb-7">{userData.audit_status === 5 ? t('auditStatus.kycAuditFail') : t('auditStatus.kycAuditPass')}</div> }
   ]
   const [wallet, setWallet] = useState<ConnectedWallet | null>(null)
   const [showModal, setShowModal] = useState(false)
@@ -32,9 +32,9 @@ function RouteComponent() {
       case 3:
         return 2
       case 4:
-        return 3
+        return 4
       case 5:
-        return 3
+        return 4
       default:
         return -1
     }
@@ -61,7 +61,7 @@ function RouteComponent() {
           : [2, 5].includes(userData.audit_status)
               ? <div className="i-iconoir-pc-warning size-24 bg-white"></div>
               : <div className="i-carbon:close-outline size-24 bg-#ec5b56"></div>}
-        <div className="text-8 font-bold max-lg:text-4">{userData.audit_status >= 0 ? items[nowStep(userData.audit_status)].title : t('header.error.login_required')}</div>
+        <div className="text-8 font-bold max-lg:text-4">{userData.audit_status >= 0 ? items[nowStep(userData.audit_status) === 4 ? 3 : nowStep(userData.audit_status)].title : t('header.error.login_required')}</div>
         <div>
           {
             userData.audit_status === 2 && <Button onClick={() => { navigate({ to: '/account/create' }) }} size="large" type="primary">{t('auditStatus.reSubmit')}</Button>

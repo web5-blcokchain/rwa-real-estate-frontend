@@ -92,7 +92,7 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
       )}
       {...props}
     >
-      <div className="relative h-56">
+      <div className="relative h-56 max-lg:h-auto max-lg:w-full">
         <IImage
           src={firstImage}
           className="size-full"
