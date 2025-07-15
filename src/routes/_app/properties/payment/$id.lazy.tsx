@@ -109,12 +109,11 @@ function RouteComponent() {
 
       // 获取USDT精度
       const usdtDecimals = await usdtContract.decimals()
-      // 计算所需USDT金额
-      const tokenPrice = ethers.parseUnits(String(item.price))
-      const requiredUsdtAmount = tokenPrice * BigInt(tokens)
+      // 获取购买的房屋代币数量
+      const requiredUsdtAmount = ethers.parseUnits(String(tokens))
 
-      // 检查USDT余额
-      const payUSDCAmount = ethers.parseUnits(String(item.price), usdtDecimals)
+      // 计算需要支付USDT余额 百分之2的手续费 （总数 * 价格 * 手续费）
+      const payUSDCAmount = ethers.parseUnits((tokens * Number(item.price) * 1.02).toFixed(2), usdtDecimals)
       const usdtBalance = await usdtContract.balanceOf(signerAddress)
 
       // TODO 计算代币与USDC比例兑换之后的余额，之后进行判断
@@ -129,8 +128,8 @@ function RouteComponent() {
         // 先清零授权
         // const resetTx = await usdtContract.approve(propertyManagerAddress, 0)
         // await resetTx.wait()
-        // 直接授权
-        const approveTx = await usdtContract.approve(propertyManagerAddress, requiredUsdtAmount)
+        // 直接授权USDC所支付的数量
+        const approveTx = await usdtContract.approve(propertyManagerAddress, payUSDCAmount)
         await approveTx.wait()
       }
 
@@ -138,7 +137,7 @@ function RouteComponent() {
 
       try {
         // propertyId 类型要与合约一致（通常为 string 或 bytes32）
-        const tx = await propertyManagerContract.purchaseTokens(tokenPrice, usdcAddress)
+        const tx = await propertyManagerContract.purchaseTokens(requiredUsdtAmount, usdcAddress)
         const receipt = await tx.wait()
         toast.success(t('payment.success.tx_sent'))
         const hash = receipt.hash
