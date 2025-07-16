@@ -524,7 +524,7 @@
       "type": "タイプ",
       "amountJpy": "金額（円）",
       "status": "ステータス",
-      "draw_time": "引き出し時間"
+      "draw_time": "受給可能時間です"
     },
     "propertyTokens": {
       "title": "保有しているトークンです"

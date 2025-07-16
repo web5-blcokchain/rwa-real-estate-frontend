@@ -9,10 +9,13 @@ export const Route = createLazyFileRoute('/_app/auditStatus/')({
 })
 
 function RouteComponent() {
-  const { userData } = useUserStore()
+  const { userData, getUserInfo } = useUserStore()
   const navigate = useNavigate()
   const { t } = useTranslation()
   // 0 表示在审核 1的时候表示已审核 2:中心化数据库审核拒绝 3.钱包绑定成功 4.kyc审核通过 5 kyc审核拒绝
+  useEffect(() => {
+    getUserInfo()
+  }, [])
   const items = [
     { title: <div className="max-lg:pb-7">{t('auditStatus.backendAudit')}</div> },
     { title: <div className="max-lg:pb-7">{userData.audit_status === 2 ? t('auditStatus.backendAuditFail') : t('auditStatus.backendAuditPass')}</div> },

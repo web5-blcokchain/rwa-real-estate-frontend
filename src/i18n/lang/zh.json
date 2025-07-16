@@ -525,7 +525,7 @@
       "type": "类型",
       "amountJpy": "金额（日元）",
       "status": "状态",
-      "draw_time": "领取时间"
+      "draw_time": "可领取时间"
     },
     "propertyTokens": {
       "title": "持有的代币"

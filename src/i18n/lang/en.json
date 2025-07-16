@@ -524,7 +524,7 @@
       "type": "Type",
       "amountJpy": "Amount (JPY)",
       "status": "Status",
-      "draw_time": "Draw Time"
+      "draw_time": "Available time for collection"
     },
     "propertyTokens": {
       "title": "Tokens Held"

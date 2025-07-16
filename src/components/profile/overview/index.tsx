@@ -9,14 +9,14 @@ import group272Icon from '@/assets/icons/group272.png'
 import { PaymentMethod } from '@/components/common/payment-method'
 import { useQuery } from '@tanstack/react-query'
 import { Space } from 'antd'
+import dayjs from 'dayjs'
 import DataCount from '../-components/data-count'
 import TableComponent from '../../common/table-component'
-// import dayjs from 'dayjs'
 
 function Overview() {
   const [wallet, setWallet] = useState<ConnectedWallet | null>(null)
   const { t } = useTranslation()
-  // const coinStatus = ['unclaimed', 'claimed', 'withdraw', 'failed']
+  const coinStatus = ['unclaimed', 'claimed', 'withdraw', 'failed']
 
   // 表格1配置
   const columns: TableProps<PropertieItem>['columns'] = [
@@ -57,20 +57,20 @@ function Overview() {
       dataIndex: 'expected_annual_return',
       key: 'Change'
     },
-    // {
-    //   title: <div>{t('profile.data_count.status')}</div>,
-    //   key: 'status',
-    //   render: (_, record) => {
-    //     return <div>{t(`profile.coin.${coinStatus[record.status]}`)}</div>
-    //   }
-    // },
-    // {
-    //   title: <div>{t('profile.data_count.draw_time')}</div>,
-    //   key: 'draw_time',
-    //   render: (_, record) => {
-    //     return <div>{dayjs((record.draw_time as any as number)*1000).format('YYYY-MM-DD HH:mm:ss')}</div>
-    //   }
-    // },
+    {
+      title: <div>{t('profile.data_count.status')}</div>,
+      key: 'status',
+      render: (_, record) => {
+        return <div>{t(`profile.coin.${coinStatus[record.status]}`)}</div>
+      }
+    },
+    {
+      title: <div>{t('profile.data_count.draw_time')}</div>,
+      key: 'draw_time',
+      render: (_, record) => {
+        return <div>{dayjs((record.draw_time as any as number) * 1000).format('YYYY-MM-DD HH:mm:ss')}</div>
+      }
+    },
     {
       title: <div>{t('profile.data_count.action')}</div>,
       key: 'action',

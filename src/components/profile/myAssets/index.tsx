@@ -6,6 +6,7 @@ export function MyAssets() {
         <div>资产列表</div>
 
       </div>
+      {/* 汇总资产记录 */}
       {/* 领取记录，每次领取都会有一条记录 */}
     </div>
   )

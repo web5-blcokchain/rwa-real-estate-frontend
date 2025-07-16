@@ -112,11 +112,15 @@ function RouteComponent() {
       // 获取购买的房屋代币数量
       const requiredUsdtAmount = ethers.parseUnits(String(tokens))
 
+      // 获取房屋代币对应的usdc价格
+      let usdcPrice = await propertyManagerContract.issuePrice()
+      usdcPrice = ethers.formatUnits(usdcPrice, usdtDecimals)
+
       // 计算需要支付USDT余额 百分之2的手续费 （总数 * 价格 * 手续费）
-      const payUSDCAmount = ethers.parseUnits((tokens * Number(item.price) * 1.02).toFixed(2), usdtDecimals)
+      const payUSDCAmount = ethers.parseUnits((tokens * Number(usdcPrice) * 1.02).toFixed(2), usdtDecimals)
       const usdtBalance = await usdtContract.balanceOf(signerAddress)
 
-      // TODO 计算代币与USDC比例兑换之后的余额，之后进行判断
+      // TODO 使用合约获取价格,计算代币与USDC比例兑换之后的余额，之后进行判断
       if (usdtBalance < payUSDCAmount) {
         toast.error(t('payment.errors.insufficient_eth'))
         return
