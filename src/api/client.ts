@@ -5,7 +5,7 @@ import axios from 'axios'
 axios.defaults.baseURL = Env.apiUrl
 axios.defaults.headers.common.server = true
 
-interface ResponseData<T> {
+export interface ResponseData<T> {
   code?: number
   data?: T
   error?: any

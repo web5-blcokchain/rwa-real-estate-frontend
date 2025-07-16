@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
 export const HistoryEchart: FC<{ type: string }> = ({ type }) => {
+  const { t } = useTranslation()
   const { data, isLoading } = useQuery({
     queryKey: ['getCchartIncomeTrend', type],
     queryFn: async () => {
@@ -38,8 +39,8 @@ export const HistoryEchart: FC<{ type: string }> = ({ type }) => {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Line type="linear" dataKey="thisMonth" stroke="#f0b90b" name="This Month" />
-          <Line type="linear" dataKey="lastMonth" stroke="#82ca9d" name="Last Month" />
+          <Line type="linear" dataKey="thisMonth" stroke="#f0b90b" name={t('profile.history.thisMonth')} />
+          <Line type="linear" dataKey="lastMonth" stroke="#82ca9d" name={t('profile.history.lastMonth')} />
         </LineChart>
       </ResponsiveContainer>
     </div>

@@ -557,7 +557,11 @@
       "all": "全部",
       "view_detailed": "查看详细分析报表",
       "lastMonth_vs_thisMonth": "本月与上月",
-      "lastYear_vs_thisYear": "本年和去年"
+      "lastYear_vs_thisYear": "本年和去年",
+      "primary_subscription": "资产投资",
+      "asset_redemption": "赎回",
+      "secondary_market_disposition": "二级市场出售",
+      "secondary_market_acquisition": "二级市场购买"
     },
     "transaction_status": {
       "all": "全部",
