@@ -213,7 +213,7 @@ function RouteComponent() {
                   className="flex-1 space-y-2"
                   labelClass="text-black"
                   label={t('properties.detail.return')}
-                  value={numbro(Number(assetDetail?.expected_annual_return) * (investmentAmount || 0)).format({ thousandSeparated: true, mantissa: (investmentAmount ? 2 : 0) })}
+                  value={numbro(Number(assetDetail?.expected_annual_return) + Number(assetDetail?.capital_appreciation) * (investmentAmount || 0) / 100).format({ thousandSeparated: true, mantissa: (investmentAmount ? 2 : 0) })}
                 />
                 <IInfoField
                   className="flex-1 space-y-2"
