@@ -24,7 +24,8 @@
       "kyc_audit_rejected_desc": "您的实名认证未通过，请重新提交信息~"
     },
     "link_wallet": "连接钱包",
-    "kyc_status": "KYC审核状态"
+    "kyc_status": "KYC审核状态",
+    "user_audit_status": "用户认证申请"
   },
   "payment": {
     "errors": {

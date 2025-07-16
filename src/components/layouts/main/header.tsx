@@ -287,7 +287,7 @@ const UserMenu: FC = () => {
   const { logout } = usePrivy()
   const { wallets } = useWallets()
   const { t } = useTranslation()
-  const { setCode, clearUserData } = useUserStore()
+  const { setCode, clearUserData, userData } = useUserStore()
   async function handleLogout() {
     logout()
       .then(
@@ -331,6 +331,21 @@ const UserMenu: FC = () => {
       )
     },
     {
+      key: 'apply_for_kyc',
+      label: (
+        <div onClick={() => {
+          navigate({
+            to: '/account/create'
+          })
+        }}
+        >
+          {t('header.user_audit_status')}
+        </div>
+
+      ),
+      show: (userData.audit_status === 1 || userData.audit_status > 2) ? 'hidden' : ''
+    } as any,
+    {
       key: 'logout',
       label: (
         <div
@@ -342,10 +357,11 @@ const UserMenu: FC = () => {
       )
     }
   ]
+  const visibleItems = items?.filter(item => (item as any)?.show !== 'hidden')
   const connectWalletAddress = wallets.find(wallet => wallet.walletClientType !== 'privy')
 
   return (
-    <Dropdown menu={{ items }} placement="bottomRight">
+    <Dropdown menu={{ items: visibleItems }} placement="bottomRight">
       <div className="fyc gap-1 clickable">
         <div className="i-material-symbols-account-circle-outline size-5 bg-white"></div>
         <div className="text-4 text-white">

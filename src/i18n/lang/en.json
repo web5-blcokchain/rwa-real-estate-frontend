@@ -24,7 +24,8 @@
       "kyc_audit_rejected_desc": "Your KYC audit has been rejected, please resubmit your information~"
     },
     "link_wallet": "Link wallet",
-    "kyc_status": "KYC audit status"
+    "kyc_status": "KYC audit status",
+    "user_audit_status": "User audit application"
   },
   "payment": {
     "errors": {

@@ -27,25 +27,25 @@ function RouteComponent() {
   const nowStep = (step: number) => {
     switch (step) {
       case 0:
-        return 0
+        return { step: 0, title: 0 }
       case 1:
-        return 2
+        return { step: 2, title: 1 }
       case 2:
-        return 1
+        return { step: 1, title: 1 }
       case 3:
-        return 3
+        return { step: 3, title: 2 }
       case 4:
-        return 4
+        return { step: 4, title: 3 }
       case 5:
-        return 3
+        return { step: 3, title: 3 }
       default:
-        return -1
+        return { step: -1, title: -1 }
     }
   }
   return (
     <div className="fccc p-12 max-lg:p-6">
       <Steps
-        current={nowStep(userData.audit_status)}
+        current={nowStep(userData.audit_status).step}
         status={[2, 5].includes(userData.audit_status) ? 'error' : 'process'}
         items={items}
       />
@@ -64,7 +64,7 @@ function RouteComponent() {
           : [2, 5].includes(userData.audit_status)
               ? <div className="i-iconoir-pc-warning size-24 bg-white"></div>
               : <div className="i-carbon:close-outline size-24 bg-#ec5b56"></div>}
-        <div className="text-8 font-bold max-lg:text-4">{userData.audit_status >= 0 ? items[(nowStep(userData.audit_status)) === 4 ? 3 : nowStep(userData.audit_status)].title : t('header.error.login_required')}</div>
+        <div className="text-8 font-bold max-lg:text-4">{userData.audit_status >= 0 ? items[(nowStep(userData.audit_status).title) === 4 ? 3 : nowStep(userData.audit_status).title].title : t('header.error.login_required')}</div>
         <div>
           {
             userData.audit_status === 2 && <Button onClick={() => { navigate({ to: '/account/create' }) }} size="large" type="primary">{t('auditStatus.reSubmit')}</Button>
