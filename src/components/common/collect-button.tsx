@@ -83,12 +83,8 @@ export const CollectButton: FC<{
               return
             }
             // 判定是不是已经认证成功
-            if ([0].includes(userData.audit_status)) {
+            if ([0].includes(userData.audit_status) || !userData.audit_status) {
               toast.error(t('header.error.wallet_already_bound'))
-              return
-            }
-            else if ([2].includes(userData.audit_status)) {
-              toast.error(t('header.error.kyc_audit_rejected'))
               return
             }
             if (isLoading) {
@@ -101,7 +97,7 @@ export const CollectButton: FC<{
             else {
               resopnse = await collectMutate()
             }
-            if (resopnse.code === 200)
+            if (resopnse.code === 1)
               setDefaultValue(defaultValue ? 0 : 1)
           }}
         >
