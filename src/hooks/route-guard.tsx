@@ -91,8 +91,8 @@ export function useRouteGuard() {
         setTimeout(() => {
           openMessageDialog((
             <div className="fccc gap-2">
-              <div className="text-center text-8 font-bold max-lg:text-6">{t('header.error.kyc_audit_rejected_desc')}</div>
-              <div className="text-4 text-#5e6570">{t('header.error.kyc_audit_rejected')}</div>
+              <div className="text-center text-8 font-bold max-lg:text-6">{t('header.error.centralized_database_review_rejection')}</div>
+              <div className="text-4 text-#5e6570">{t('header.error.kyc_audit_rejected_desc')}</div>
               <Button
                 type="primary"
                 onClick={() => {
@@ -108,7 +108,7 @@ export function useRouteGuard() {
               </Button>
 
             </div>
-          ), t('header.error.kyc_audit_rejected')
+          ), t('header.error.centralized_database_review_rejection')
           )
         }, 200)
 
@@ -122,6 +122,7 @@ export function useRouteGuard() {
             <div className="fccc gap-2">
               <div className="i-arcticons-voteinfo size-12 bg-white"></div>
               <div className="text-center text-8 font-bold max-lg:text-6">{t('header.error.kyc_audit_rejected')}</div>
+              <div className="text-4 text-#5e6570">{t('auditStatus.contactAdminDesc')}</div>
               {/* <Button type="primary" onClick={() => {
                 navigate({
                   to: '/account/create'

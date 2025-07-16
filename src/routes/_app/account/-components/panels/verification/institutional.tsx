@@ -97,6 +97,11 @@ export default function InstitutionalVerification() {
       toast.error(t('create.verification.personal.upload_error'))
       return false
     }
+    // 判读当前用户是否是二次认证，并且第一次是KYC
+    if (userData.audit_status && userData.audit_status === 2 && userData.type === 1) {
+      toast.error(t('create.verification.personal.upload_error_user'))
+      return false
+    }
     return true
   }
 

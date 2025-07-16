@@ -69,6 +69,11 @@ export default function IndividualVerification() {
       toast.error(t('create.verification.personal.upload_error'))
       return false
     }
+    // 判读当前用户是否是二次认证，并且第一次是KYB
+    if (userData.audit_status && userData.audit_status === 2 && userData.type === 1) {
+      toast.error(t('create.verification.personal.upload_error_business'))
+      return false
+    }
     return true
   }
 

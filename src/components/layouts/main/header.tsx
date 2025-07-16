@@ -189,20 +189,26 @@ function RightMenu() {
         }
       })
   }, [authenticated, user, mutateAsync])
+  const checkToken = async () => {
+    const token = await getAccessToken()
+    if (token && isTokenExpired(token)) {
+      await refreshUser()
+      getAccessToken().then((token) => {
+        if (!token)
+          return
+        setToken(token, 2)
+      })
+    }
+  }
   useEffect(() => {
     // 定时监测，刷新token (1分钟)
-    const interval = setInterval(async () => {
-      const token = await getAccessToken()
-      if (token && isTokenExpired(token)) {
-        await refreshUser()
-        getAccessToken().then((token) => {
-          if (!token)
-            return
-          setToken(token, 2)
-        })
-      }
-    }, 1000 * 60)
-    return () => clearInterval(interval)
+    const interval = setInterval(checkToken, 1000 * 60)
+    // 从网页从后台切换至前台，监测token是否过期
+    window.addEventListener('focus', checkToken)
+    return () => {
+      window.removeEventListener('focus', checkToken)
+      clearInterval(interval)
+    }
   }, [])
 
   return (
