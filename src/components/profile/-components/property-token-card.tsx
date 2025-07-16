@@ -56,31 +56,31 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
     })
   }
 
-  const redemption = (e: React.MouseEvent) => {
-    e.stopPropagation()
+  // const redemption = (e: React.MouseEvent) => {
+  //   e.stopPropagation()
 
-    investmentItems.set(properties_id, {
-      id: properties_id,
-      name,
-      location: address,
-      property_type,
-      token_price: current_price,
-      tokens_held: number,
-      total_amount: total_current,
-      rental_yield: expected_annual_return,
-      image_urls,
-      sell_order_id,
-      order_type: InvestmentOrderType.Buy,
-      contract_address,
-      token_number,
-      total_selling
-    })
+  //   investmentItems.set(properties_id, {
+  //     id: properties_id,
+  //     name,
+  //     location: address,
+  //     property_type,
+  //     token_price: current_price,
+  //     tokens_held: number,
+  //     total_amount: total_current,
+  //     rental_yield: expected_annual_return,
+  //     image_urls,
+  //     sell_order_id,
+  //     order_type: InvestmentOrderType.Buy,
+  //     contract_address,
+  //     token_number,
+  //     total_selling
+  //   })
 
-    navigate({
-      to: '/transaction/redemption/$id',
-      params: { id: `${properties_id}` }
-    })
-  }
+  //   navigate({
+  //     to: '/transaction/redemption/$id',
+  //     params: { id: `${properties_id}` }
+  //   })
+  // }
 
   const [firstImage] = joinImagesPath(image_urls)
 
@@ -146,19 +146,19 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
           <Button
             type="primary"
             size="large"
-            className="mr-2 w-1/2 text-black!"
+            className="mr-2 w-full text-black!"
             onClick={createSellOrder}
           >
             {t('properties.payment.create_sell_order')}
           </Button>
 
-          <Button
+          {/* <Button
             size="large"
             className="w-1/2 border-[#9e9e9e] bg-[#202329] text-[#9e9e9e]!"
             onClick={redemption}
           >
             {t('properties.payment.redeem')}
-          </Button>
+          </Button> */}
         </div>
       </div>
     </div>

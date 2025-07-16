@@ -1,20 +1,17 @@
-import type { PropertieItem } from '@/api/apiMyInfoApi'
+import type { PropertyInvestment } from '@/api/apiMyInfoApi'
 import type { TableProps } from 'antd'
-import apiMyInfo from '@/api/apiMyInfoApi'
+import apiMyInfoApi from '@/api/apiMyInfoApi'
 import button2 from '@/assets/icons/BUTTON2-2.png'
 import button3 from '@/assets/icons/BUTTON3.png'
 import group272Icon from '@/assets/icons/group272.png'
 import TableComponent from '@/components/common/table-component'
 import { useQuery } from '@tanstack/react-query'
 import { Space } from 'antd'
-import dayjs from 'dayjs'
-import { useTranslation } from 'react-i18next'
 
-export function MyAssets() {
+export function AssetsSummary() {
   const { t } = useTranslation()
-  const coinStatus = ['unclaimed', 'claimed', 'withdraw', 'failed']
   // 表格1配置
-  const columns: TableProps<PropertieItem>['columns'] = [
+  const columns: TableProps<PropertyInvestment>['columns'] = [
     {
       title: <div>{t('profile.data_count.asset')}</div>,
       dataIndex: 'total_purchase',
@@ -37,14 +34,13 @@ export function MyAssets() {
       key: 'Amount',
       render: text => <a>{text}</a>
     },
-    // TODO 价值
     {
       title: <div>{t('profile.data_count.valueJpy')}</div>,
       key: 'USD',
       render: (_, record) => (
         <>
           <div className="flex items-center justify-start">
-            <div className="">{Number(record.total_current) * Number(record.purchase_price)}</div>
+            <div className="">{Number(record.total_current) * Number(record.current_price)}</div>
           </div>
         </>
       )
@@ -53,20 +49,6 @@ export function MyAssets() {
       title: <div>{t('profile.data_count.change24h')}</div>,
       dataIndex: 'expected_annual_return',
       key: 'Change'
-    },
-    {
-      title: <div>{t('profile.data_count.status')}</div>,
-      key: 'status',
-      render: (_, record) => {
-        return <div>{t(`profile.coin.${coinStatus[record.status]}`)}</div>
-      }
-    },
-    {
-      title: <div>{t('profile.data_count.draw_time')}</div>,
-      key: 'draw_time',
-      render: (_, record) => {
-        return <div>{dayjs((record.draw_time as any as number) * 1000).format('YYYY-MM-DD HH:mm:ss')}</div>
-      }
     },
     {
       title: <div>{t('profile.data_count.action')}</div>,
@@ -86,10 +68,10 @@ export function MyAssets() {
   })
   const [keyword, setKeyword] = useState('')
   const getOverviewData = async () => {
-    const res = await apiMyInfo.getMeInfo({
+    const res = await apiMyInfoApi.getMeInfoSummary({
       page: overPageInfo.page,
       pageSize: overPageInfo.pageSize,
-      keyword: keyword || undefined
+      keyword
     })
     setOverPageInfo({
       ...overPageInfo,
@@ -98,7 +80,7 @@ export function MyAssets() {
     return res
   }
   const { data: overviewData, isFetching, refetch: refetchOverview } = useQuery({
-    queryKey: ['overview'],
+    queryKey: ['overviewSummary'],
     queryFn: async () => {
       const res = await getOverviewData()
       return res.data?.list
@@ -106,7 +88,6 @@ export function MyAssets() {
   })
   return (
     <div>
-      {/* 资产列表 每次交易都会有一条记录 */}
       <div>
         <div className="fyc flex-inline b b-white rounded-xl b-solid px-4 py-2 max-lg:w-full space-x-4">
           <div className="i-iconamoon-search size-5 shrink-0 bg-[#b5b5b5]"></div>
@@ -149,9 +130,10 @@ export function MyAssets() {
             }
           }
         >
-          <div className="mb-2 text-5">{t('profile.myAssets.assetList')}</div>
+          <div className="mb-2 text-5">{t('profile.myAssets.summaryRecord')}</div>
         </TableComponent>
       </div>
     </div>
+
   )
 }

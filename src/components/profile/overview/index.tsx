@@ -38,19 +38,20 @@ function Overview() {
     },
     {
       title: <div>{t('profile.data_count.amount')}</div>,
-      dataIndex: 'purchase_price',
+      dataIndex: 'number',
       key: 'Amount',
       render: text => <a>{text}</a>
     },
     {
       title: <div>{t('profile.data_count.valueJpy')}</div>,
-      dataIndex: 'purchase_price',
-      key: 'JPY'
-    },
-    {
-      title: <div>{t('profile.data_count.share')}</div>,
-      dataIndex: 'number',
-      key: 'Share'
+      key: 'USD',
+      render: (_, record) => (
+        <>
+          <div className="flex items-center justify-start">
+            <div className="">{Number(record.total_current) * Number(record.current_price)}</div>
+          </div>
+        </>
+      )
     },
     {
       title: <div>{t('profile.data_count.change24h')}</div>,

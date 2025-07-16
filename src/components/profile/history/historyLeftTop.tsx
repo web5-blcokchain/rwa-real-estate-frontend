@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 
 function HistoryLeftTop({ type }: { type: string }) {
   const { t } = useTranslation()
-  const { data, isLoading, refetch } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['getChartIncomeStatistics', type],
     queryFn: async () => {
       const data_number = {
@@ -18,9 +18,6 @@ function HistoryLeftTop({ type }: { type: string }) {
       return res.data
     }
   })
-  useEffect(() => {
-    refetch()
-  }, [type])
 
   const isUpIcon = (data: any) => {
     if (data) {

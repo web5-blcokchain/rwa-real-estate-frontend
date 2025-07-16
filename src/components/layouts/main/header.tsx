@@ -4,7 +4,7 @@ import logo from '@/assets/images/logo.png'
 import { LoginDialog } from '@/components/dialog/login'
 import { UserCode } from '@/enums/user'
 import { useUserStore } from '@/stores/user'
-import { clearToken, setToken } from '@/utils/user'
+import { clearToken, getToken, setToken } from '@/utils/user'
 import { usePrivy, useUser, useWallets } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
 import { Link, useLocation, useNavigate } from '@tanstack/react-router'
@@ -190,7 +190,7 @@ function RightMenu() {
       })
   }, [authenticated, user, mutateAsync])
   const checkToken = async () => {
-    const token = await getAccessToken()
+    const token = getToken()
     if (token && isTokenExpired(token)) {
       await refreshUser()
       getAccessToken().then((token) => {
@@ -203,10 +203,15 @@ function RightMenu() {
   useEffect(() => {
     // 定时监测，刷新token (1分钟)
     const interval = setInterval(checkToken, 1000 * 60)
+    const visibilitychange = () => {
+      if (document.visibilityState === 'visible') {
+        checkToken()
+      }
+    }
     // 从网页从后台切换至前台，监测token是否过期
-    window.addEventListener('focus', checkToken)
+    window.addEventListener('visibilitychange', visibilitychange)
     return () => {
-      window.removeEventListener('focus', checkToken)
+      window.removeEventListener('visibilitychange', visibilitychange)
       clearInterval(interval)
     }
   }, [])

@@ -84,6 +84,7 @@ export interface AboutMeParams {
   page?: number
   pageSize?: number
   keyword?: string
+  status?: number
 }
 
 export interface PropertieItem {
@@ -120,6 +121,37 @@ export interface AboutMeResponse {
 // 获取我的资产列表
 function getMeInfo(data: AboutMeParams) {
   return apiClient.post<AboutMeResponse>('/api/assets/myProperties', data)
+}
+
+export interface PropertyInvestment {
+  id: number // 投资记录 ID
+  user_id: number // 用户 ID
+  properties_id: number // 关联的房产 ID
+  number: number // 购买的份额数
+  total_current: string // 当前总价值（字符串表示精度）
+  create_date: number // 创建时间戳（秒）
+  update_date: number // 更新时间戳（秒）
+  current_price: string // 当前单价
+  address: string // 地址
+  property_type: string // 房产类型（如“独立式住宅”）
+  bedrooms: number // 卧室数量
+  expected_annual_return: string // 预期年回报率（%）
+  property_description: string // 房产描述
+  location: string // 位置说明
+  image_urls: string // 房产图 URL（如多个建议改为 string[]）
+  longitude: string // 经度（如 "1000,2000"，建议规范为 string[] 或两个字段）
+  latitude: string | null // 纬度（可能为 null）
+  name: string // 房产名称
+}
+
+export interface PropertyInvestmentResponse {
+  list: PropertyInvestment[]
+  count: number
+  page: number
+  pageSize: number
+}
+function getMeInfoSummary(data: AboutMeParams) {
+  return apiClient.post<PropertyInvestmentResponse>('/api/assets/myPropertiesTotal', data)
 }
 
 export interface historyResponse {
@@ -184,7 +216,8 @@ const apiMyInfoApi = {
   getHistory,
   getEarningsHistory,
   getUserInfo,
-  submitInfo
+  submitInfo,
+  getMeInfoSummary
 }
 
 export default apiMyInfoApi

@@ -396,7 +396,9 @@
     "menu_edit": "编辑设置",
     "menu_recording": "交易记录",
     "menu_transaction_status": "交易状态",
-    "menu_assets": "我的资产"
+    "menu_assets": "资产列表",
+    "menu_assets_summary": "资产汇总记录",
+    "menu_distribution_record": "发放记录"
   },
   "footer": {
     "about": "关于",
@@ -518,7 +520,7 @@
       "tokenHoldings": "代币持仓",
       "asset": "资产",
       "amount": "数量",
-      "valueJpy": "价值（日元）",
+      "valueJpy": "价值（美元）",
       "share": "占比",
       "change24h": "24小时变化",
       "action": "操作",
@@ -580,6 +582,11 @@
       "claimed": "已领取",
       "withdraw": "赎回",
       "failed": "领取失败"
+    },
+    "myAssets": {
+      "distributionRecord": "发放记录",
+      "summaryRecord": "汇总资产记录",
+      "assetList": "资产列表"
     }
   },
   "transaction": {

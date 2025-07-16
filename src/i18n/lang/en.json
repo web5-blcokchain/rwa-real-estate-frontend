@@ -395,7 +395,9 @@
     "menu_edit": "Edit settings",
     "menu_recording": "Recording",
     "menu_transaction_status": "Transaction Status",
-    "menu_assets": "My Assets"
+    "menu_assets": "Asset List",
+    "menu_assets_summary": "Asset Summary Record",
+    "menu_distribution_record": "Distribution Record"
   },
   "footer": {
     "about": "About",
@@ -517,7 +519,7 @@
       "tokenHoldings": "Token Holdings",
       "asset": "Asset",
       "amount": "Amount",
-      "valueJpy": "Value (JPY)",
+      "valueJpy": "Value (USD)",
       "share": "Share",
       "change24h": "24h Change",
       "action": "Action",
@@ -582,6 +584,11 @@
       "claimed": "Claimed",
       "withdraw": "Withdraw",
       "failed": "Failed"
+    },
+    "myAssets": {
+      "distributionRecord": "Distribution Record",
+      "summaryRecord": "Summary Record",
+      "assetList": "Asset List"
     }
   },
   "transaction": {

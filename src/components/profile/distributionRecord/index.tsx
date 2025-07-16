@@ -1,16 +1,12 @@
 import type { PropertieItem } from '@/api/apiMyInfoApi'
 import type { TableProps } from 'antd'
 import apiMyInfo from '@/api/apiMyInfoApi'
-import button2 from '@/assets/icons/BUTTON2-2.png'
-import button3 from '@/assets/icons/BUTTON3.png'
 import group272Icon from '@/assets/icons/group272.png'
 import TableComponent from '@/components/common/table-component'
 import { useQuery } from '@tanstack/react-query'
-import { Space } from 'antd'
 import dayjs from 'dayjs'
-import { useTranslation } from 'react-i18next'
 
-export function MyAssets() {
+export function DistributionRecord() {
   const { t } = useTranslation()
   const coinStatus = ['unclaimed', 'claimed', 'withdraw', 'failed']
   // 表格1配置
@@ -37,14 +33,14 @@ export function MyAssets() {
       key: 'Amount',
       render: text => <a>{text}</a>
     },
-    // TODO 价值
+    // TODO 价值、占比、24小时变化
     {
       title: <div>{t('profile.data_count.valueJpy')}</div>,
       key: 'USD',
       render: (_, record) => (
         <>
           <div className="flex items-center justify-start">
-            <div className="">{Number(record.total_current) * Number(record.purchase_price)}</div>
+            <div className="">{Number(record.total_current) * Number(record.current_price)}</div>
           </div>
         </>
       )
@@ -67,16 +63,6 @@ export function MyAssets() {
       render: (_, record) => {
         return <div>{dayjs((record.draw_time as any as number) * 1000).format('YYYY-MM-DD HH:mm:ss')}</div>
       }
-    },
-    {
-      title: <div>{t('profile.data_count.action')}</div>,
-      key: 'action',
-      render: () => (
-        <Space size="middle">
-          <img src={button3} alt="" className="mr-2 h-6 w-8" />
-          <img src={button2} alt="" className="mr-2 h-6 w-8" />
-        </Space>
-      )
     }
   ]
   const [overPageInfo, setOverPageInfo] = useState({
@@ -84,12 +70,11 @@ export function MyAssets() {
     pageSize: 10,
     total: 0
   })
-  const [keyword, setKeyword] = useState('')
   const getOverviewData = async () => {
     const res = await apiMyInfo.getMeInfo({
       page: overPageInfo.page,
       pageSize: overPageInfo.pageSize,
-      keyword: keyword || undefined
+      status: 1
     })
     setOverPageInfo({
       ...overPageInfo,
@@ -97,7 +82,7 @@ export function MyAssets() {
     })
     return res
   }
-  const { data: overviewData, isFetching, refetch: refetchOverview } = useQuery({
+  const { data: overviewData, isLoading, refetch: refetchOverview } = useQuery({
     queryKey: ['overview'],
     queryFn: async () => {
       const res = await getOverviewData()
@@ -106,52 +91,28 @@ export function MyAssets() {
   })
   return (
     <div>
-      {/* 资产列表 每次交易都会有一条记录 */}
-      <div>
-        <div className="fyc flex-inline b b-white rounded-xl b-solid px-4 py-2 max-lg:w-full space-x-4">
-          <div className="i-iconamoon-search size-5 shrink-0 bg-[#b5b5b5]"></div>
-          <input
-            type="text"
-            placeholder={t('profile.transactions.search')}
-            className="w-128 b-none bg-transparent outline-none max-lg:w-full"
-            value={keyword}
-            onChange={e => setKeyword(e.target.value)}
-            onKeyUp={(e) => {
-              if (e.key === 'Enter') {
-                setOverPageInfo({
-                  ...overPageInfo,
-                  page: 1
-                })
-                refetchOverview()
-              }
-            }}
-          />
-        </div>
-      </div>
-      <div>
-        <TableComponent
-          columns={columns}
-          data={overviewData || []}
-          loading={isFetching}
-          pagination={
-            {
-              defaultCurrent: overPageInfo.page,
-              defaultPageSize: overPageInfo.pageSize,
-              total: overPageInfo.total,
-              onChange: (page, pageSize) => {
-                setOverPageInfo({
-                  ...overPageInfo,
-                  page,
-                  pageSize
-                })
-                refetchOverview()
-              }
+      <TableComponent
+        columns={columns}
+        data={overviewData || []}
+        loading={isLoading}
+        pagination={
+          {
+            defaultCurrent: overPageInfo.page,
+            defaultPageSize: overPageInfo.pageSize,
+            total: overPageInfo.total,
+            onChange: (page, pageSize) => {
+              setOverPageInfo({
+                ...overPageInfo,
+                page,
+                pageSize
+              })
+              refetchOverview()
             }
           }
-        >
-          <div className="mb-2 text-5">{t('profile.myAssets.assetList')}</div>
-        </TableComponent>
-      </div>
+        }
+      >
+        <div className="mb-2 text-5">{t('profile.myAssets.distributionRecord')}</div>
+      </TableComponent>
     </div>
   )
 }

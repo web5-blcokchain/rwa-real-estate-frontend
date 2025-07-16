@@ -6,5 +6,7 @@ export enum ProfileTab {
   History = 'History',
   Recording = 'Recording',
   TransactionStatus = 'TransactionStatus',
-  Assets = 'Assets'
+  Assets = 'Assets',
+  AssetsSummary = 'AssetsSummary',
+  DistributionRecord = 'DistributionRecord'
 }

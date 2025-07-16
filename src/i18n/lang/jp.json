@@ -395,7 +395,9 @@
     "menu_edit": "Edit settings",
     "menu_recording": "取引記録",
     "menu_transaction_status": "取引ステータス",
-    "menu_assets": "私の資産です"
+    "menu_assets": "資産リスト",
+    "menu_assets_summary": "資産概要記録",
+    "menu_distribution_record": "発行記録"
   },
   "footer": {
     "about": "について",
@@ -517,7 +519,7 @@
       "tokenHoldings": "トークン保有",
       "asset": "資産",
       "amount": "数量",
-      "valueJpy": "価値（円）",
+      "valueJpy": "価値（ドル）",
       "share": "割合",
       "change24h": "24時間変動",
       "action": "操作",
@@ -578,6 +580,11 @@
       "claimed": "引き出し済み",
       "withdraw": "引き出し",
       "failed": "引き出し失敗"
+    },
+    "myAssets": {
+      "distributionRecord": "発行記録",
+      "summaryRecord": "資産記録",
+      "assetList": "資産リスト"
     }
   },
   "transaction": {

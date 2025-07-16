@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
 export const HistoryEchart: FC<{ type: string }> = ({ type }) => {
-  const { data, isLoading, refetch } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['getCchartIncomeTrend', type],
     queryFn: async () => {
       const res = await getChartIncomeTrend({
@@ -12,10 +12,6 @@ export const HistoryEchart: FC<{ type: string }> = ({ type }) => {
       return res.data
     }
   })
-
-  useEffect(() => {
-    refetch()
-  }, [type])
 
   if (isLoading) {
     return (

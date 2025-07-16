@@ -56,7 +56,7 @@ function History() {
         </TitleCard>
       </div>
 
-      <div className="ml-3 w-1/2 max-md:ml-0 max-lg:w-full max-lg:flex max-lg:flex-col">
+      <div className="ml-3 w-1/2 max-lg:ml-0 max-lg:mt-5 max-lg:w-full max-lg:flex max-lg:flex-col">
         <TitleCard
           title={<div>{t('profile.history.recentTransactions')}</div>}
           selectSlot={(

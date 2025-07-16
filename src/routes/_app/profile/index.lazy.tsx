@@ -1,5 +1,7 @@
 import type { MenuProps } from 'antd'
 import { IImage } from '@/components/common/i-image'
+import { AssetsSummary } from '@/components/profile/assetsSummary'
+import { DistributionRecord } from '@/components/profile/distributionRecord'
 import { Earnings } from '@/components/profile/earnings'
 import { ProfileEdit } from '@/components/profile/edit'
 import History from '@/components/profile/history'
@@ -53,7 +55,9 @@ function RouteComponent() {
     getItem(`${t('aboutMe.menu_history')}`, ProfileTab.History),
     getItem(`${t('aboutMe.menu_recording')}`, ProfileTab.Recording),
     getItem(`${t('aboutMe.menu_transaction_status')}`, ProfileTab.TransactionStatus),
-    getItem(`${t('aboutMe.menu_assets')}`, ProfileTab.Assets)
+    getItem(`${t('aboutMe.menu_assets')}`, ProfileTab.Assets),
+    getItem(`${t('aboutMe.menu_assets_summary')}`, ProfileTab.AssetsSummary),
+    getItem(`${t('aboutMe.menu_distribution_record')}`, ProfileTab.DistributionRecord)
   ]
 
   const handleMenuClick: MenuProps['onClick'] = (e) => {
@@ -82,6 +86,10 @@ function RouteComponent() {
         return <TransactionStatus />
       case ProfileTab.Assets:
         return <MyAssets />
+      case ProfileTab.AssetsSummary:
+        return <AssetsSummary />
+      case ProfileTab.DistributionRecord:
+        return <DistributionRecord />
     }
   }
 
