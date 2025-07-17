@@ -2,13 +2,15 @@ import type { DetailResponse } from '@/api/basicApi'
 import apiBasic from '@/api/basicApi'
 import { CollectButton } from '@/components/common/collect-button'
 import { IInfoField } from '@/components/common/i-info-field'
+import { getContracts } from '@/contract'
 import { useCommonDataStore } from '@/stores/common-data'
 import { joinImagesPath } from '@/utils/url'
 import { getContractBalance } from '@/utils/web3'
-import { usePrivy } from '@privy-io/react-auth'
+import { usePrivy, useWallets } from '@privy-io/react-auth'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate } from '@tanstack/react-router'
 import { Button, Image, InputNumber } from 'antd'
+import { ethers } from 'ethers'
 import numbro from 'numbro'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -47,6 +49,30 @@ function RouteComponent() {
       return response.data!
     }
   })
+  const [coinSymbol, setCoinSymbol] = useState<string>('')
+  const { wallets } = useWallets()
+  useEffect(() => {
+    if (!assetDetail)
+      return
+    (async () => {
+      let wallet = wallets.find(wallet => wallet.walletClientType !== 'privy')
+      wallet = wallet || wallets[0]
+      if (!wallet)
+        return
+      const PropertyManager = getContracts('PropertyToken')
+      const ethProvider = await wallet.getEthereumProvider()
+      const provider = new ethers.BrowserProvider(ethProvider)
+      const signer = await provider.getSigner()
+      // PropertyManager合约
+      const propertyManagerContract = new ethers.Contract(
+        assetDetail.contract_address,
+        PropertyManager.abi,
+        signer
+      )
+      const symbol = await propertyManagerContract.symbol()
+      setCoinSymbol(symbol)
+    })()
+  }, [assetDetail])
 
   useEffect(() => {
     if (!assetDetail)
@@ -204,7 +230,7 @@ function RouteComponent() {
                   onChange={e => setInvestmentAmount(e || 0)}
                   className="computed-input w-510px max-lg:w-full !b-#484D56 !bg-transparent !text-#484D56"
                   placeholder={t('properties.detail.invest_calculator_placeholder')}
-                  suffix="GBP"
+                  suffix={coinSymbol || assetDetail?.token_symbol || 'GBP'}
                 />
               </div>
 

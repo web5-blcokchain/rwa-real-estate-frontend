@@ -12,7 +12,7 @@ export const PaymentMethod: FC<{
   className
 }) => {
   const { ready, wallets } = useWallets()
-  const { userData, setUserData } = useUserStore()
+  const { userData, setUserData, getUserInfo } = useUserStore()
   const { t } = useTranslation()
 
   const [_selectedWallet, setSelectedWallet] = walletState
@@ -54,6 +54,8 @@ export const PaymentMethod: FC<{
           ...userData,
           wallet_address: wallet.address
         })
+        // 刷新用户状态
+        getUserInfo()
       }
     })
     setBindWalletLoading(false)
@@ -90,7 +92,7 @@ export const PaymentMethod: FC<{
                           </div>
                         )
                       : (
-                          <div className="cursor-pointer text-3.5 text-[#898989]" onClick={handleBindWallet}>点击绑定钱包</div>
+                          <div className="cursor-pointer text-3.5 text-[#898989]" onClick={handleBindWallet}>{t('payment_method.click_to_bind_wallet')}</div>
                         )
                   }
                 </div>

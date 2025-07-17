@@ -4,6 +4,7 @@ import logo from '@/assets/images/logo.png'
 import { LoginDialog } from '@/components/dialog/login'
 import { UserCode } from '@/enums/user'
 import { useUserStore } from '@/stores/user'
+import { ensureEthersNetwork } from '@/utils/ethers'
 import { clearToken, getToken, setToken } from '@/utils/user'
 import { usePrivy, useUser, useWallets } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
@@ -11,10 +12,12 @@ import { Link, useLocation, useNavigate } from '@tanstack/react-router'
 import { Drawer, Dropdown } from 'antd'
 
 export default function MainHeader() {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const { pathname } = useLocation()
   const { linkWallet, connectWallet } = usePrivy()
   const { wallets } = useWallets()
+  const { userData } = useUserStore()
 
   const showDrawer = () => {
     setOpen(true)
@@ -28,6 +31,11 @@ export default function MainHeader() {
     onClose()
   }, [pathname])
 
+  useEffect(() => {
+    if (wallets.length > 0 && wallets.some(wallet => wallet.walletClientType !== 'privy'))
+      ensureEthersNetwork()
+  }, [wallets])
+
   return (
     <header className="sticky left-0 top-0 z-10 z-99 fbc gap-3 bg-background px-107px py-6px text-text max-md:px-8px max-md:py-1">
       <div className="fyc gap-8">
@@ -38,7 +46,7 @@ export default function MainHeader() {
       </div>
       <div className="fyc gap-4 lt-lg:hidden">
         <RightMenu />
-        {(!wallets.some(wallet => wallet.walletClientType !== 'privy')) && (
+        {((!wallets.some(wallet => wallet.walletClientType !== 'privy')) && userData && Object.keys(userData).length > 0) && (
           <div
             onClick={() => {
               if (wallets.length > 0) {
@@ -50,7 +58,7 @@ export default function MainHeader() {
             }}
             className="cursor-pointer"
           >
-            连接钱包
+            {t('header.link_wallet')}
           </div>
         )}
       </div>
@@ -98,7 +106,8 @@ function NavMenu({ className }: { className?: string }) {
     { title: `${t('header.home')}`, href: '/home' },
     { title: `${t('header.properties')}`, href: '/properties' },
     { title: `${t('header.investment')}`, href: '/investment' },
-    { title: `${t('header.about')}`, href: '/about' }
+    { title: `${t('header.about')}`, href: '/about' },
+    { title: `${t('footer.news')}`, href: '/news' }
   ]
 
   return (
@@ -241,7 +250,7 @@ function RightMenu() {
               </div>
             </div>
           )}
-          <Link to="/news"><div className="w-max">{t('footer.news')}</div></Link>
+          {/* <Link to="/news"><div className="w-max">{t('footer.news')}</div></Link> */}
         </div>
 
         <Waiting for={ready}>

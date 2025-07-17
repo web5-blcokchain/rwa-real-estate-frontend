@@ -54,7 +54,7 @@ export function DistributionRecord() {
       title: <div>{t('profile.data_count.status')}</div>,
       key: 'status',
       render: (_, record) => {
-        return <div>{t(`profile.coin.${coinStatus[record.status]}`)}</div>
+        return <div>{t(`profile.coin.${record.status === -1 ? 'locked' : coinStatus[record.status]}`)}</div>
       }
     },
     {

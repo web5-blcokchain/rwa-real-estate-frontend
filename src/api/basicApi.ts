@@ -51,6 +51,8 @@ export interface DetailResponse {
   updated_date: string
   valuation_report: string
   is_collect: 0 | 1
+  token_name: string
+  token_symbol: string
 }
 
 // 详情接口参数

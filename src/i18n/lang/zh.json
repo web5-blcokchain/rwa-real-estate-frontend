@@ -586,7 +586,8 @@
       "unclaimed": "未领取",
       "claimed": "已领取",
       "withdraw": "赎回",
-      "failed": "领取失败"
+      "failed": "领取失败",
+      "locked": "锁定中"
     },
     "myAssets": {
       "distributionRecord": "发放记录",
@@ -640,7 +641,8 @@
     "not_connected_wallet": "未连接绑定钱包",
     "bind_wallet_success": "绑定成功",
     "bind_wallet_loading": "绑定中",
-    "please_connect_wallet": "请连接钱包"
+    "please_connect_wallet": "请连接钱包",
+    "click_to_bind_wallet": "点击绑定钱包"
   },
   "help-content": {
     "title": "我们能帮您什么？",

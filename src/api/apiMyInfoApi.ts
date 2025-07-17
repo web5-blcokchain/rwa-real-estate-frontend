@@ -99,7 +99,7 @@ export interface PropertieItem {
   total_current: number
   create_date: number
   update_date: number
-  /** 状态0 为未领取 1为已领取 2为赎回 3为领取失败 */
+  /** 状态-1锁定中 0 为未领取 1为已领取 2为赎回 3为领取失败 */
   status: number
   address: string
   property_type: string

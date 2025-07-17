@@ -159,7 +159,8 @@
         "continue": "続行します",
         "upload_error": "すべてのドキュメントをアップロードしてください",
         "upload_error_user": "あなたが最初に提出した身分証明書と現在の提出が一致していません。ユーザー身分で提出してください",
-        "upload_error_business": "あなたが最初に提出した身分証明書と現在の提出が一致していません。ビジネス身分で提出してください"
+        "upload_error_business": "あなたが最初に提出した身分証明書と現在の提出が一致していません。ビジネス身分で提出してください",
+        "upload": "提出します"
       },
       "business": {
         "title": "ビジネス検証",
@@ -580,7 +581,8 @@
       "unclaimed": "未引き出し",
       "claimed": "引き出し済み",
       "withdraw": "引き出し",
-      "failed": "引き出し失敗"
+      "failed": "引き出し失敗",
+      "locked": "ロック中"
     },
     "myAssets": {
       "distributionRecord": "発行記録",
@@ -634,7 +636,8 @@
     "not_connected_wallet": "バインドされていないウォレット",
     "bind_wallet_success": "バインド成功",
     "bind_wallet_loading": "バインド中",
-    "please_connect_wallet": "ウォレットを接続してください"
+    "please_connect_wallet": "ウォレットを接続してください",
+    "click_to_bind_wallet": "ウォレットをバインドする"
   },
   "help-content": {
     "title": "どのようなご用件でしょうか？",

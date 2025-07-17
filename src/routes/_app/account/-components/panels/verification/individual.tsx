@@ -123,9 +123,9 @@ export default function IndividualVerification() {
 
   // TODO 身份证类型添加
   const isType = [
-    { name: '国民身份证', value: 'id_card' },
-    { name: '护照', value: 'passport' },
-    { name: '驾照', value: 'driver_license' }
+    { name: 'create.verification.personal.upload_title_id_card', value: 'id_card' },
+    { name: 'create.verification.personal.upload_title_passport', value: 'passport' },
+    { name: 'create.verification.personal.upload_title_driver_license', value: 'driver_license' }
   ]
   const [isTypeValue, setIsTypeValue] = useState(isType[0].value)
   const typeText = {
@@ -133,7 +133,9 @@ export default function IndividualVerification() {
     passport: 'create.verification.personal.upload_title_passport',
     driver_license: 'create.verification.personal.upload_title_driver_license'
   }
-
+  useEffect(() => {
+    console.log(registerData)
+  }, [])
   return (
     <div className="fccc gap-2">
       <div className="max-w-md text-center text-8 font-medium">{t('create.verification.personal.title')}</div>
@@ -141,17 +143,22 @@ export default function IndividualVerification() {
 
       <div className="mt-8 max-w-lg w-full space-y-6">
         <UploadCard
+          className="grid grid-cols-2 gap-4"
+          number={2}
           loading={cardLoading.id_card_front_url || cardLoading.id_card_back_url}
           label={t('create.verification.personal.identity')}
           title={t('create.verification.personal.upload_title', { type: t(typeText[isTypeValue as keyof typeof typeText]) })}
           subTitle={t('create.verification.personal.upload_subTitle')}
           icon={new URL('@/assets/icons/id-card.svg', import.meta.url).href}
           src={idCardImages}
+          beforeUpload={(file, index) => {
+            beforeUpload(file, index === 0 ? 'id_card_front_url' : 'id_card_back_url')
+          }}
           other={(
             <Select className="w-200px" defaultValue={isType[0].value} onChange={setIsTypeValue}>
               {isType.map(item => (
                 <Select.Option key={item.value} value={item.value}>
-                  {item.name}
+                  {t(item.name)}
                 </Select.Option>
               ))}
             </Select>

@@ -157,6 +157,7 @@
         "facial_subTitle": "Clear facial photo in good lighting",
         "notice": "All submitted documents must be authentic and unmodified. Please ensure images are clear and complete. The verification process typically takes 1-2 business days. Your personal information is protected with bank-level encryption.",
         "continue": "Continue",
+        "upload": "Submit",
         "upload_error": "Please upload all documents",
         "upload_error_user": "The identity you submitted for the first time does not match the current submission, please submit as a user",
         "upload_error_business": "The identity you submitted for the first time does not match the current submission, please submit as a business"
@@ -584,7 +585,8 @@
       "unclaimed": "Unclaimed",
       "claimed": "Claimed",
       "withdraw": "Withdraw",
-      "failed": "Failed"
+      "failed": "Failed",
+      "locked": "Locked"
     },
     "myAssets": {
       "distributionRecord": "Distribution Record",
@@ -638,7 +640,8 @@
     "not_connected_wallet": "Unconnected wallet",
     "bind_wallet_success": "Bind successfully",
     "bind_wallet_loading": "Binding",
-    "please_connect_wallet": "Please connect wallet"
+    "please_connect_wallet": "Please connect wallet",
+    "click_to_bind_wallet": "Click to bind wallet"
   },
   "help-content": {
     "title": "How can we help you?",
