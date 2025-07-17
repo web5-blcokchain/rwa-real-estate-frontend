@@ -39,7 +39,7 @@ axios.interceptors.response.use(async (res: ResponseData<any>) => {
   if (code === 401 && fullUrl.includes('/api/info/userInfo')) {
     return res.data
   }
-  if (code !== 1) {
+  if (code !== 1 && code !== 401) {
     const message = _get(res.data, 'msg', 'Response error')
     // 同一个提示信息一段时间只出现一次
     const hasError = errorList.some(item => item.message === message && item.time > Date.now() - 5000)
