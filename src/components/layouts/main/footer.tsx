@@ -45,7 +45,7 @@ export default function MainFooter() {
       </div>
       <div className="mt-16 fcc text-center text-5 text-[#d2d2d2] max-lg:text-3.5">
         <div>
-          © 2024 RealToken.
+          © 2025 RealToken.
           {t('footer.reserved')}
         </div>
 
