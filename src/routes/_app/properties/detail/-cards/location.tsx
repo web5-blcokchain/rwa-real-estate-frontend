@@ -1,5 +1,6 @@
-import type { FC, useState } from 'react'
+import type { FC } from 'react'
 import { TitleCard } from '@/components/common/title-card'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 interface LocationCardProps {

@@ -186,7 +186,7 @@ export const ProfileEdit: FC = () => {
               />
             </Form.Item>
 
-            <Form.Item
+            {/* <Form.Item
               label={<span className="text-4 text-white">{t('profile.edit.phone')}</span>}
               name="mobile"
               className="mb-6"
@@ -196,7 +196,7 @@ export const ProfileEdit: FC = () => {
                 size="large"
                 placeholder={t('profile.edit.phone_placeholder')}
               />
-            </Form.Item>
+            </Form.Item> */}
 
             <Form.Item
               label={<span className="text-4 text-white">{t('profile.edit.email')}</span>}
