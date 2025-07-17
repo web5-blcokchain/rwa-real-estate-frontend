@@ -320,6 +320,7 @@
       "ratio": "投资比例",
       "invest": "立刻投资",
       "property_title": "物业描述",
+      "location_description": "位置描述",
       "property_includes": "该物业包括:",
       "location": "位置",
       "market_analysis": "市场分析",
@@ -453,7 +454,8 @@
     "asset_type": "资产类型",
     "reupload": "重新提交",
     "copy_success": "复制成功",
-    "copy_failed": "复制失败"
+    "copy_failed": "复制失败",
+    "all_images": "查看全部图片"
   },
   "action": {
     "sell": "卖出",

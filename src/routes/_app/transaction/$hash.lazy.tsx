@@ -259,7 +259,7 @@ function RouteComponent() {
 
           <IInfoField
             horizontal
-            label={t('transaction.hash.smart_contract_status')}
+            label={`${t('transaction.hash.smart_contract_status')}:`}
             value={status === 'pending' ? t('transaction.hash.processing') : (status === 'success' ? t('transaction.hash.success') : t('transaction.hash.failed'))}
             labelClass="text-3.5"
             valueClass={`text-3.5 ${status === 'success' ? 'text-green!' : (status === 'failed' ? 'text-red!' : '')}`}
@@ -267,7 +267,7 @@ function RouteComponent() {
 
           <IInfoField
             horizontal
-            label={t('transaction.hash.block_confirmation_confirmed')}
+            label={`${t('transaction.hash.block_confirmation_confirmed')}:`}
             value={status === 'success' ? t('transaction.hash.confirmed') : t('transaction.hash.pending')}
             labelClass="text-3.5"
             valueClass="text-3.5"

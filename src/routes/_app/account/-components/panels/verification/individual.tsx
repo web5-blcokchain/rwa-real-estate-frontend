@@ -133,9 +133,6 @@ export default function IndividualVerification() {
     passport: 'create.verification.personal.upload_title_passport',
     driver_license: 'create.verification.personal.upload_title_driver_license'
   }
-  useEffect(() => {
-    console.log(registerData)
-  }, [])
   return (
     <div className="fccc gap-2">
       <div className="max-w-md text-center text-8 font-medium">{t('create.verification.personal.title')}</div>

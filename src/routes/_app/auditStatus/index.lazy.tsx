@@ -59,7 +59,7 @@ function RouteComponent() {
       }
       {/* 当前步骤说明 */}
       <div className="mt-20 fccc gap-6 max-lg:mt-10 max-lg:gap-4">
-        {[1, 3, 4].includes(userData.audit_status)
+        {[0, 1, 3, 4].includes(userData.audit_status)
           ? <div className="i-iconoir-pc-check size-24 bg-white"></div>
           : [2, 5].includes(userData.audit_status)
               ? <div className="i-iconoir-pc-warning size-24 bg-white"></div>

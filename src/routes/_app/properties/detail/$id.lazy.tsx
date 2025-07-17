@@ -49,7 +49,7 @@ function RouteComponent() {
       return response.data!
     }
   })
-  const [coinSymbol, setCoinSymbol] = useState<string>('')
+  const [_coinSymbol, setCoinSymbol] = useState<string>('')
   const { wallets } = useWallets()
   useEffect(() => {
     if (!assetDetail)
@@ -137,7 +137,7 @@ function RouteComponent() {
                     setPreviewCurrent(0)
                   }}
                 >
-                  查看全部图片
+                  {t('common.all_images')}
                 </button>
                 {/* <ImageSwiper list={imageList} /> */}
                 <Image.PreviewGroup
@@ -230,7 +230,7 @@ function RouteComponent() {
                   onChange={e => setInvestmentAmount(e || 0)}
                   className="computed-input w-510px max-lg:w-full !b-#484D56 !bg-transparent !text-#484D56"
                   placeholder={t('properties.detail.invest_calculator_placeholder')}
-                  suffix={coinSymbol || assetDetail?.token_symbol || 'GBP'}
+                  suffix="USDC" // coinSymbol || assetDetail?.token_symbol ||
                 />
               </div>
 
@@ -263,17 +263,25 @@ function RouteComponent() {
             </div>
 
           </div>
-          <PropertyDescriptionCard className="px-0 !bg-transparent max-lg:px-0" location={assetDetail?.location || ''} />
+          <PropertyDescriptionCard className="px-0 !bg-transparent max-lg:px-0" location={assetDetail?.property_description || ''} />
 
           <LocationCard className="w-529px px-0 max-lg:w-full !bg-transparent max-lg:px-0" Longitude={assetDetail?.longitude || ''} Latitude={assetDetail?.latitude || ''} />
-          <div className="text-5">{t('properties.detail.market_analysis')}</div>
-
-          <div className="grid grid-cols-1 w-full gap-8 md:grid-cols-2">
-            <div>
-              <RegionalPriceTrendsCard className="!bg-transparent" />
+          <div className='max-lg:px-0" p-6 px-0'>
+            <div className="text-5">{t('properties.detail.location_description')}</div>
+            <div className="mt-4 text-[#d9d9d9]">
+              {assetDetail?.location}
             </div>
-            <div>
-              <RentalIncomeAnalysisCard className="!bg-transparent" />
+          </div>
+          <div className="p-6 px-0 max-lg:px-0">
+            <div className="text-5">{t('properties.detail.market_analysis')}</div>
+
+            <div className="grid grid-cols-1 mt-4 w-full gap-8 md:grid-cols-2">
+              <div>
+                <RegionalPriceTrendsCard className="!bg-transparent" />
+              </div>
+              <div>
+                <RentalIncomeAnalysisCard className="!bg-transparent" />
+              </div>
             </div>
           </div>
         </div>

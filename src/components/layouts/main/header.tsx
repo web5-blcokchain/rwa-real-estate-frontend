@@ -345,7 +345,7 @@ const UserMenu: FC = () => {
     },
     {
       key: 'kyc_status',
-      show: !(userData.audit_status) ? 'hidden' : '',
+      show: (userData.audit_status === null || userData.audit_status === undefined) ? 'hidden' : '',
       label: (
         <div onClick={() => {
           navigate({

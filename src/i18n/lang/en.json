@@ -320,6 +320,7 @@
       "ratio": "Investment Ratio",
       "invest": "Invest Now",
       "property_title": "Property Description",
+      "location_description": "Location Description",
       "property_includes": "The property includes:",
       "location": "Location",
       "market_analysis": "Market Analysis",
@@ -458,7 +459,8 @@
     "asset_type": "Asset Type",
     "reupload": "Reupload",
     "copy_success": "Copied to clipboard",
-    "copy_failed": "Failed to copy to clipboard"
+    "copy_failed": "Failed to copy to clipboard",
+    "all_images": "View all images"
   },
   "profile": {
     "transactions": {

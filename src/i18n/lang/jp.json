@@ -320,6 +320,7 @@
       "ratio": "投資比",
       "invest": "即時投資",
       "property_title": "住宅源の説明",
+      "location_description": "位置説明",
       "property_includes": "この不動産には次のものが含まれます。",
       "location": "位置",
       "market_analysis": "市場分析",
@@ -458,7 +459,8 @@
     "asset_type": "資産タイプ",
     "reupload": "再アップロード",
     "copy_success": "コピーに成功した",
-    "copy_failed": "コピーに失敗した"
+    "copy_failed": "コピーに失敗した",
+    "all_images": "すべての画像を表示"
   },
   "profile": {
     "transactions": {
