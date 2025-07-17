@@ -392,7 +392,7 @@
     "menu_history": "历史",
     "toyota_camry": "Toyota Camry",
     "toyota_balance": "Toyota Balance",
-    "monthly_rental_income": "每月租金收入（日元）",
+    "monthly_rental_income": "每月租金收入（美元）",
     "annual_yield": "每年的产量",
     "menu_edit": "编辑设置",
     "menu_recording": "交易记录",
@@ -514,7 +514,7 @@
     "data_count": {
       "totalAssetValue": "总资产价值",
       "expectedIncomeThisMonth": "本月预期收益",
-      "averageMonthlyIncome": "平均每月收入（日元）",
+      "averageMonthlyIncome": "平均每月收入（美元）",
       "yieldPerformance": "收益表现",
       "vsLastMonth": "较上月",
       "industryAverage": "行业平均",
@@ -528,7 +528,7 @@
       "earningsHistory": "收益记录",
       "time": "时间",
       "type": "类型",
-      "amountJpy": "金额（日元）",
+      "amountJpy": "金额（美元）",
       "status": "状态",
       "draw_time": "可领取时间"
     },
