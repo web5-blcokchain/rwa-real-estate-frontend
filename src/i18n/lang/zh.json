@@ -337,7 +337,7 @@
       "subtotal": "小计",
       "platform_fee": "平台费用",
       "total_amount": "总金额",
-      "payment_method": "支付方式",
+      "payment_method": "使用以下钱包地址支付",
       "credit_card": "信用卡",
       "cryptocurrency": "加密货币",
       "dear_user": "亲爱的用户,",
@@ -353,7 +353,7 @@
       "redemption_success": "赎回成功",
       "annual_yield": "年回报率",
       "valuation": "估值",
-      "create_sell_order": "创建卖出订单",
+      "create_sell_order": "卖出",
       "redeem": "赎回"
     }
   },
@@ -398,8 +398,8 @@
     "menu_recording": "交易记录",
     "menu_transaction_status": "交易状态",
     "menu_assets": "资产列表",
-    "menu_assets_summary": "资产汇总记录",
-    "menu_distribution_record": "发放记录"
+    "menu_assets_summary": "购买记录",
+    "menu_distribution_record": "代币发放记录"
   },
   "footer": {
     "about": "关于",
@@ -605,6 +605,7 @@
     "hash": {
       "token_distribution": "代币分配",
       "token_distribution_complete": "代币分配完成",
+      "token_distribution_failed": "代币分配失败",
       "tokens_have_been_successfully_transferred_to_your_wallet": "代币已成功转移到您的钱包",
       "real_estate_token": "房地产代币",
       "smart_contract_address": "智能合约地址",

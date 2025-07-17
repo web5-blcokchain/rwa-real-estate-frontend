@@ -5,16 +5,16 @@ function HistoryDecmber() {
   const list = [
     {
       title: 'profile.history.income',
-      amount: { content: 'profile.history.received', value: '¥0' },
+      amount: { content: 'profile.history.received', value: '$0' },
       percent: 0,
-      total: { content: 'profile.history.budget', value: '¥170' }
+      total: { content: 'profile.history.budget', value: '$170' }
     },
 
     {
       title: 'profile.history.expenses',
-      amount: { content: 'profile.history.spent', value: '¥10' },
+      amount: { content: 'profile.history.spent', value: '$10' },
       percent: 20,
-      total: { content: 'profile.history.budget', value: '¥90' }
+      total: { content: 'profile.history.budget', value: '$90' }
     }
   ]
 

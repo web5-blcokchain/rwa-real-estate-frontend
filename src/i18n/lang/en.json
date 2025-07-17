@@ -337,7 +337,7 @@
       "subtotal": "Subtotal",
       "platform_fee": "Platform Fee",
       "total_amount": "Total Amount",
-      "payment_method": "Payment Method",
+      "payment_method": "Use the following wallet address to pay",
       "credit_card": "Credit Card",
       "cryptocurrency": "Cryptocurrency",
       "dear_user": "Dear User,",
@@ -353,7 +353,7 @@
       "redemption_success": "Redemption successful",
       "annual_yield": "Annual Yield",
       "valuation": "Valuation",
-      "create_sell_order": "Create Sell Order",
+      "create_sell_order": "Sell",
       "redeem": "Redeem"
     }
   },
@@ -392,14 +392,14 @@
     "menu_history": "History",
     "toyota_camry": "Toyota Camry",
     "toyota_balance": "Toyota Balance",
-    "monthly_rental_income": "Monthly Rental Income(JPY)",
+    "monthly_rental_income": "Monthly Rental Income(USD)",
     "annual_yield": "Annual Yield",
     "menu_edit": "Edit settings",
     "menu_recording": "Recording",
     "menu_transaction_status": "Transaction Status",
     "menu_assets": "Asset List",
-    "menu_assets_summary": "Asset Summary Record",
-    "menu_distribution_record": "Distribution Record"
+    "menu_assets_summary": "Purchase Record",
+    "menu_distribution_record": "Token Distribution Record"
   },
   "footer": {
     "about": "About",
@@ -514,7 +514,7 @@
     "data_count": {
       "totalAssetValue": "Total Asset Value",
       "expectedIncomeThisMonth": "Expected Income This Month",
-      "averageMonthlyIncome": "Average Monthly Income (JPY)",
+      "averageMonthlyIncome": "Average Monthly Income (USD)",
       "yieldPerformance": "Yield Performance",
       "vsLastMonth": "vs last month",
       "industryAverage": "Industry avg",
@@ -528,7 +528,7 @@
       "earningsHistory": "Earnings History",
       "time": "Time",
       "type": "Type",
-      "amountJpy": "Amount (JPY)",
+      "amountJpy": "Amount (USD)",
       "status": "Status",
       "draw_time": "Available time for collection"
     },
@@ -604,6 +604,7 @@
     "hash": {
       "token_distribution": "Token Distribution",
       "token_distribution_complete": "Token Distribution Complete",
+      "token_distribution_failed": "Token Distribution Failed",
       "tokens_have_been_successfully_transferred_to_your_wallet": "Tokens have been successfully transferred to your wallet",
       "real_estate_token": "Real Estate Token",
       "smart_contract_address": "Smart Contract Address",

@@ -29,7 +29,7 @@ function HistoryLeftTop({ type }: { type: string }) {
   const updateData = () => ([
     {
       title: 'profile.history.totalTransactions',
-      field: `¥${_get(data, 'total_transactions.value', '0.00')}`,
+      field: `$${_get(data, 'total_transactions.value', '0.00')}`,
       fieldTwo: `${_get(data, 'total_transactions.growth', '0')}%`,
       picture: isUpIcon(Number(_get(data, 'total_transactions.growth', 0)) > 0),
       color: Number(_get(data, 'total_transactions.growth', 0)) > 0 ? '#2bb480' : '8d909a'
@@ -37,7 +37,7 @@ function HistoryLeftTop({ type }: { type: string }) {
 
     {
       title: 'profile.history.transactionCount',
-      field: `¥${_get(data, 'number_of_transactions.value', '0.00')}`,
+      field: `$${_get(data, 'number_of_transactions.value', '0.00')}`,
       fieldTwo: `${_get(data, 'number_of_transactions.growth', '0')}%`,
       picture: isUpIcon(Number(_get(data, 'number_of_transactions.growth', 0)) > 0),
       color: Number(_get(data, 'number_of_transactions.growth', 0)) > 0 ? '#2bb480' : '8d909a'
@@ -45,7 +45,7 @@ function HistoryLeftTop({ type }: { type: string }) {
 
     {
       title: 'profile.history.transactionVolume',
-      field: `¥${_get(data, 'average_transaction.value', '0.00')}`,
+      field: `$${_get(data, 'average_transaction.value', '0.00')}`,
       fieldTwo: `${_get(data, 'average_transaction.growth', '0')}%`,
       picture: isUpIcon(Number(_get(data, 'average_transaction.growth', 0)) > 0),
       color: Number(_get(data, 'average_transaction.growth', 0)) > 0 ? '#2bb480' : '8d909a'
@@ -79,12 +79,12 @@ function HistoryLeftTop({ type }: { type: string }) {
               <div key={item.title} className="rounded-2 bg-[#242933] p-4">
                 <div className="text-[#8d909a]">{t(item.title)}</div>
                 <div className="text-4">{item.field}</div>
-                <div className="box-item flex items-center justify-start">
+                {/* <div className="box-item flex items-center justify-start">
                   {item.picture && (
                     <img src={item.picture} alt="" className="h-3 w-3" />
                   )}
                   <span style={{ color: item.color }}>{item.fieldTwo}</span>
-                </div>
+                </div> */}
               </div>
             ))
           }

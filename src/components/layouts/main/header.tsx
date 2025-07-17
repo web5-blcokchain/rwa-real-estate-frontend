@@ -140,7 +140,7 @@ function RightMenu() {
   const [, setUserObj] = useState<Record<string, any>>()
   const setUserData = useUserStore(state => state.setUserData)
   // const { open } = useGlobalDialogStore()
-  const navigate = useNavigate()
+  const { userData } = useUserStore()
   const { refreshUser } = useUser()
   const { setCode, refreshUserInfo } = useUserStore()
 
@@ -178,6 +178,8 @@ function RightMenu() {
     const now = Math.floor(Date.now() / 1000)
     return payload.exp < now
   }
+  const { linkWallet, connectWallet } = usePrivy()
+  const { wallets } = useWallets()
 
   useEffect(() => {
     if (!authenticated)
@@ -238,7 +240,7 @@ function RightMenu() {
                 onClick={() => open('help')}
               >
               </div>
-              <div className="i-material-symbols-notifications-outline size-5 bg-white"></div>
+              {/* <div className="i-material-symbols-notifications-outline size-5 bg-white"></div>
               <div
                 className="i-material-symbols-favorite-outline-rounded size-5 bg-white clickable"
                 onClick={
@@ -247,22 +249,22 @@ function RightMenu() {
                   })
                 }
               >
-              </div>
+              </div> */}
             </div>
           )}
           {/* <Link to="/news"><div className="w-max">{t('footer.news')}</div></Link> */}
         </div>
-
-        <Waiting for={ready}>
-          <div className="w-full fec">
-            {
-              authenticated
-                ? (
-                    <UserMenu />
-                  )
-                : (
-                    <div onClick={() => setOpenLoginDialog(true)} className="w-full fec cursor-pointer space-x-4">
-                      {/* <Button
+        <div className="fyc gap-4">
+          <Waiting for={ready}>
+            <div className="w-full fec">
+              {
+                authenticated
+                  ? (
+                      <UserMenu />
+                    )
+                  : (
+                      <div onClick={() => setOpenLoginDialog(true)} className="w-full fec cursor-pointer space-x-4">
+                        {/* <Button
                         className="text-white bg-transparent!"
                         onClick={() => setOpenLoginDialog(true)}
                       >
@@ -276,16 +278,31 @@ function RightMenu() {
                       >
                         {t('header.register')}
                       </Button> */}
-                      {t('header.login')}
-                      /
-                      {t('header.register')}
-                    </div>
-                  )
-            }
-          </div>
-        </Waiting>
+                        {t('header.login')}
+                        /
+                        {t('header.register')}
+                      </div>
+                    )
+              }
+            </div>
+          </Waiting>
+          {((!wallets.some(wallet => wallet.walletClientType !== 'privy')) && userData && Object.keys(userData).length > 0) && (
+            <div
+              onClick={() => {
+                if (wallets.length > 0) {
+                  connectWallet()
+                }
+                else {
+                  linkWallet()
+                }
+              }}
+              className="hidden w-fit cursor-pointer whitespace-nowrap text-4 lt-lg:block"
+            >
+              {t('header.link_wallet')}
+            </div>
+          )}
+        </div>
       </div>
-
       <LoginDialog openState={[openLoginDialog, setOpenLoginDialog]} />
     </>
   )
@@ -328,6 +345,7 @@ const UserMenu: FC = () => {
     },
     {
       key: 'kyc_status',
+      show: !(userData.audit_status) ? 'hidden' : '',
       label: (
         <div onClick={() => {
           navigate({

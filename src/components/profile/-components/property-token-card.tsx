@@ -144,6 +144,7 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
 
         <div className="flex items-center justify-between text-sm">
           <Button
+            disabled
             type="primary"
             size="large"
             className="mr-2 w-full text-black!"

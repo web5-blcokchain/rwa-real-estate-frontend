@@ -39,7 +39,7 @@ function RouteComponent() {
       case 5:
         return { step: 3, title: 3 }
       default:
-        return { step: -1, title: -1 }
+        return { step: -1, title: 0 }
     }
   }
   return (

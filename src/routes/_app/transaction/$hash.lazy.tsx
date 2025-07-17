@@ -34,7 +34,6 @@ function RouteComponent() {
   // 使用交易确认逻辑
   // 使用 ref 跟踪是否是首次查询
   const isFirstCheck = useRef(true)
-
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -66,7 +65,6 @@ function RouteComponent() {
 
         if (receipt) {
           console.log('Transaction receipt:', receipt)
-
           if (receipt.status) {
             console.log('Payment successful')
             // 只有非首次查询才显示 toast
@@ -123,11 +121,14 @@ function RouteComponent() {
 
   // 根据状态选择要显示的组件
   const renderStatusComponent = () => {
-    if (status === 'success') {
+    if (status === 'pending') {
+      return <Pending />
+    }
+    else if (status === 'success') {
       return <Result />
     }
     else {
-      return <Request />
+      return <Error />
     }
   }
 
@@ -291,15 +292,6 @@ function RouteComponent() {
   )
 }
 
-const Request: FC = () => {
-  return (
-    <Waiting
-      className="fcc"
-      iconClass="size-8"
-    />
-  )
-}
-
 const Result: FC = () => {
   const { t } = useTranslation()
   return (
@@ -315,5 +307,32 @@ const Result: FC = () => {
         <div className="text-4 font-medium">JPRE-0023</div>
       </div>
     </>
+  )
+}
+
+const Error: FC = () => {
+  const { t } = useTranslation()
+  return (
+    <>
+      <div className="fccc gap-4">
+        <div className="i-carbon:close-outline size-15 bg-#ec5b56"></div>
+        <div className="text-6 font-medium">{t('transaction.hash.token_distribution_failed')}</div>
+        {/* <div className="text-4 text-[#898989]">{t('transaction.hash.tokens_have_been_successfully_transferred_to_your_wallet')}</div> */}
+      </div>
+
+      <div className="rounded-xl bg-[#252932] p-4">
+        <div className="text-3.5 text-[#b5b5b5]">{t('transaction.hash.real_estate_token')}</div>
+        <div className="text-4 font-medium">JPRE-0023</div>
+      </div>
+    </>
+  )
+}
+
+const Pending: FC = () => {
+  return (
+    <Waiting
+      className="fcc"
+      iconClass="size-8"
+    />
   )
 }

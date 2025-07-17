@@ -1,4 +1,4 @@
-import type { PropertieItem } from '@/api/apiMyInfoApi'
+import type { PropertyInvestment } from '@/api/apiMyInfoApi'
 import apiMyInfo from '@/api/apiMyInfoApi'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
@@ -12,14 +12,14 @@ function PropertyTokens() {
   const [total, setTotal] = useState(0)
   const [keyword, setKeyword] = useState('')
   const { t } = useTranslation()
-  const [tokenData, setTokenData] = useState<PropertieItem[]>([])
+  const [tokenData, setTokenData] = useState<PropertyInvestment[]>([])
 
   const getTokenData = async () => {
-    return await apiMyInfo.getMeInfo({ page, pageSize: 20, keyword })
+    return await apiMyInfo.getMeInfoSummary({ page, pageSize: 20, keyword })
   }
 
   const { isLoading, isFetching, refetch: refetchPropertyTokens } = useQuery({
-    queryKey: ['PropertyTokens', { page, tokenData }],
+    queryKey: ['overviewSummary', { page, tokenData }],
     queryFn: async () => {
       const res = await getTokenData()
       setTotal(res.data?.count || 0)

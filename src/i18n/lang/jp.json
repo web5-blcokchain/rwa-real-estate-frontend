@@ -337,7 +337,7 @@
       "subtotal": "小計",
       "platform_fee": "プラットフォーム料金",
       "total_amount": "合計金額",
-      "payment_method": "支払い方法",
+      "payment_method": "以下のウォレットアドレスで支払います",
       "credit_card": "クレジットカード",
       "cryptocurrency": "デジタル暗号化通貨",
       "dear_user": "尊敬するユーザー,",
@@ -353,7 +353,7 @@
       "redemption_success": "買い戻しに成功する",
       "annual_yield": "年間利回り",
       "valuation": "評価",
-      "create_sell_order": "売り注文を作成する",
+      "create_sell_order": "売却",
       "redeem": "買い戻す"
     }
   },
@@ -398,8 +398,8 @@
     "menu_recording": "取引記録",
     "menu_transaction_status": "取引ステータス",
     "menu_assets": "資産リスト",
-    "menu_assets_summary": "資産概要記録",
-    "menu_distribution_record": "発行記録"
+    "menu_assets_summary": "購入記録",
+    "menu_distribution_record": "代币发放記録"
   },
   "footer": {
     "about": "について",
@@ -521,14 +521,14 @@
       "tokenHoldings": "トークン保有",
       "asset": "資産",
       "amount": "数量",
-      "valueJpy": "価値（ドル）",
+      "valueJpy": "価値（USD）",
       "share": "割合",
       "change24h": "24時間変動",
       "action": "操作",
       "earningsHistory": "収益履歴",
       "time": "時間",
       "type": "タイプ",
-      "amountJpy": "金額（円）",
+      "amountJpy": "金額（USD）",
       "status": "ステータス",
       "draw_time": "受給可能時間です"
     },
@@ -600,6 +600,7 @@
     "hash": {
       "token_distribution": "トークン分配",
       "token_distribution_complete": "トークン分配完了",
+      "token_distribution_failed": "トークン分配失敗",
       "tokens_have_been_successfully_transferred_to_your_wallet": "トークンは正常にあなたの財布に転送されました",
       "real_estate_token": "不動産トークン",
       "smart_contract_address": "スマートコントラクトアドレス",

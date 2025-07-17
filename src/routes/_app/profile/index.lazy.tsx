@@ -51,12 +51,12 @@ function RouteComponent() {
     getItem(`${t('aboutMe.menu_overview')}`, ProfileTab.Overview),
     getItem(`${t('aboutMe.menu_edit')}`, ProfileTab.Edit),
     getItem(`${t('aboutMe.menu_property_tokens')}`, ProfileTab.PropertyTokens),
-    getItem(`${t('aboutMe.menu_earnings')}`, ProfileTab.Earnings),
-    getItem(`${t('aboutMe.menu_history')}`, ProfileTab.History),
-    getItem(`${t('aboutMe.menu_recording')}`, ProfileTab.Recording),
-    getItem(`${t('aboutMe.menu_transaction_status')}`, ProfileTab.TransactionStatus),
-    getItem(`${t('aboutMe.menu_assets')}`, ProfileTab.Assets),
-    getItem(`${t('aboutMe.menu_assets_summary')}`, ProfileTab.AssetsSummary),
+    // getItem(`${t('aboutMe.menu_earnings')}`, ProfileTab.Earnings),
+    // getItem(`${t('aboutMe.menu_history')}`, ProfileTab.History),
+    // getItem(`${t('aboutMe.menu_recording')}`, ProfileTab.Recording),
+    // getItem(`${t('aboutMe.menu_transaction_status')}`, ProfileTab.TransactionStatus),
+    getItem(`${t('aboutMe.menu_assets_summary')}`, ProfileTab.Assets),
+    // getItem(`${t('aboutMe.menu_assets_summary')}`, ProfileTab.AssetsSummary),
     getItem(`${t('aboutMe.menu_distribution_record')}`, ProfileTab.DistributionRecord)
   ]
 

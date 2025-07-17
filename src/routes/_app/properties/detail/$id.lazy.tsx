@@ -265,7 +265,7 @@ function RouteComponent() {
           </div>
           <PropertyDescriptionCard className="px-0 !bg-transparent max-lg:px-0" location={assetDetail?.location || ''} />
 
-          <LocationCard className="w-529px px-0 max-lg:w-full !bg-transparent max-lg:px-0" />
+          <LocationCard className="w-529px px-0 max-lg:w-full !bg-transparent max-lg:px-0" Longitude={assetDetail?.longitude || ''} Latitude={assetDetail?.latitude || ''} />
           <div className="text-5">{t('properties.detail.market_analysis')}</div>
 
           <div className="grid grid-cols-1 w-full gap-8 md:grid-cols-2">
