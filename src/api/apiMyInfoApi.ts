@@ -111,6 +111,8 @@ export interface PropertieItem {
   longitude: string | null
   latitude: string | null
   draw_time: string
+  drwa_hash: string
+  contract_address: string
 }
 export interface AboutMeResponse {
   list: PropertieItem[]

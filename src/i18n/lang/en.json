@@ -532,7 +532,16 @@
       "type": "Type",
       "amountJpy": "Amount (USD)",
       "status": "Status",
-      "draw_time": "Available time for collection"
+      "draw_time": "Pending issuance period",
+      "order_id": "Order ID",
+      "purchase_price": "Purchase Price",
+      "token_contract_address": "Token Contract Address",
+      "payment_currency": "Payment Currency",
+      "purchase_time": "Purchase Time",
+      "transaction_hash": "Transaction Hash",
+      "add_to_wallet": "Add to Wallet",
+      "token_name": "Token Name",
+      "add_token_success": "Token added successfully"
     },
     "propertyTokens": {
       "title": "Tokens Held"

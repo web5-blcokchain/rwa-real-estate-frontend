@@ -532,7 +532,16 @@
       "type": "タイプ",
       "amountJpy": "金額（USD）",
       "status": "ステータス",
-      "draw_time": "受給可能時間です"
+      "draw_time": "発行待ち期間です",
+      "order_id": "注文番号",
+      "purchase_price": "購入価格",
+      "token_contract_address": "トークンコントラクトアドレス",
+      "payment_currency": "支払い通貨",
+      "purchase_time": "購入時間",
+      "transaction_hash": "取引ハッシュです",
+      "add_to_wallet": "ウォレットに追加",
+      "token_name": "トークン名",
+      "add_token_success": "トークンをウォレットに追加しました"
     },
     "propertyTokens": {
       "title": "保有しているトークンです"

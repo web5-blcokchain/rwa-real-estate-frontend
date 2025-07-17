@@ -8,6 +8,7 @@ import TableComponent from '@/components/common/table-component'
 import { useQuery } from '@tanstack/react-query'
 import { Space } from 'antd'
 import dayjs from 'dayjs'
+import numbro from 'numbro'
 import { useTranslation } from 'react-i18next'
 
 export function MyAssets() {
@@ -15,6 +16,11 @@ export function MyAssets() {
   const coinStatus = ['unclaimed', 'claimed', 'withdraw', 'failed']
   // 表格1配置
   const columns: TableProps<PropertieItem>['columns'] = [
+    {
+      title: <div>{t('profile.data_count.order_id')}</div>,
+      dataIndex: 'id',
+      key: 'id'
+    },
     {
       title: <div>{t('profile.data_count.asset')}</div>,
       dataIndex: 'total_purchase',
@@ -26,6 +32,11 @@ export function MyAssets() {
             <div className="flex flex-col justify-start">
               <div>{record.address}</div>
               <div className="text-[#8d909a]">{record.property_type}</div>
+              <div>
+                {t('profile.data_count.token_name')}
+                :
+                {record.name}
+              </div>
             </div>
           </div>
         </>
@@ -37,7 +48,18 @@ export function MyAssets() {
       key: 'Amount',
       render: text => <a>{text}</a>
     },
-    // TODO 价值
+    {
+      title: <div>{t('profile.data_count.purchase_price')}</div>,
+      dataIndex: 'purchase_price',
+      key: 'purchase_price',
+      render: (_, record) => (
+        <>
+          <div className="flex items-center justify-start">
+            <div>{numbro(Number(record.purchase_price) * Number(record.number)).format({ thousandSeparated: true, mantissa: 2, trimMantissa: true })}</div>
+          </div>
+        </>
+      )
+    },
     {
       title: <div>{t('profile.data_count.valueJpy')}</div>,
       key: 'USD',
@@ -50,9 +72,27 @@ export function MyAssets() {
       )
     },
     {
-      title: <div>{t('profile.data_count.change24h')}</div>,
-      dataIndex: 'expected_annual_return',
-      key: 'Change'
+      title: <div>{t('profile.data_count.payment_currency')}</div>,
+      key: 'payment_currency',
+      render: (_, _record) => (
+        <>
+          <div className="flex items-center justify-start">
+            <div>USDT</div>
+          </div>
+        </>
+      )
+    },
+    {
+      title: <div>{t('profile.data_count.token_contract_address')}</div>,
+      key: 'token_contract_address',
+      dataIndex: 'contract_address'
+    },
+    {
+      title: <div>{t('profile.data_count.purchase_time')}</div>,
+      key: 'payment_currency',
+      render: (_, record) => {
+        return <div>{dayjs((record.create_date as any as number) * 1000).format('YYYY-MM-DD HH:mm:ss')}</div>
+      }
     },
     {
       title: <div>{t('profile.data_count.status')}</div>,
@@ -149,7 +189,7 @@ export function MyAssets() {
             }
           }
         >
-          <div className="mb-2 text-5">{t('profile.myAssets.assetList')}</div>
+          <div className="mb-2 text-5">{t('aboutMe.menu_assets_summary')}</div>
         </TableComponent>
       </div>
     </div>

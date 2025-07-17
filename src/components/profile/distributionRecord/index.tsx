@@ -3,12 +3,39 @@ import type { TableProps } from 'antd'
 import apiMyInfo from '@/api/apiMyInfoApi'
 import group272Icon from '@/assets/icons/group272.png'
 import TableComponent from '@/components/common/table-component'
+import { addTokenToWallet } from '@/utils/wallet'
+import { useWallets } from '@privy-io/react-auth'
 import { useQuery } from '@tanstack/react-query'
+import { Button } from 'antd'
 import dayjs from 'dayjs'
 
 export function DistributionRecord() {
   const { t } = useTranslation()
   const coinStatus = ['unclaimed', 'claimed', 'withdraw', 'failed']
+  const { wallets } = useWallets()
+
+  const [addCoinLoading, setAddCoinLoading] = useState(0)
+  const addCoinToWallet = async (address: string, index: number) => {
+    setAddCoinLoading(index)
+    let wallet = wallets.find(wallet => wallet.walletClientType !== 'privy')
+    wallet = wallet || wallets[0]
+    if (!wallet) {
+      toast.error(t('payment_method.please_connect_wallet'))
+      setAddCoinLoading(0)
+      return
+    }
+    try {
+      await addTokenToWallet(wallet, address)
+      toast.success(t('profile.data_count.add_token_success'))
+    }
+    catch (e) {
+      console.error(e)
+    }
+    finally {
+      setAddCoinLoading(0)
+    }
+  }
+
   // 表格1配置
   const columns: TableProps<PropertieItem>['columns'] = [
     {
@@ -22,6 +49,11 @@ export function DistributionRecord() {
             <div className="flex flex-col justify-start">
               <div>{record.address}</div>
               <div className="text-[#8d909a]">{record.property_type}</div>
+              <div>
+                {t('profile.data_count.token_name')}
+                :
+                {record.name}
+              </div>
             </div>
           </div>
         </>
@@ -46,15 +78,23 @@ export function DistributionRecord() {
       )
     },
     {
-      title: <div>{t('profile.data_count.change24h')}</div>,
-      dataIndex: 'expected_annual_return',
-      key: 'Change'
-    },
-    {
       title: <div>{t('profile.data_count.status')}</div>,
       key: 'status',
       render: (_, record) => {
         return <div>{t(`profile.coin.${record.status === -1 ? 'locked' : coinStatus[record.status]}`)}</div>
+      }
+    },
+    {
+      title: <div>{t('profile.data_count.token_contract_address')}</div>,
+      key: 'token_contract_address',
+      dataIndex: 'contract_address'
+    },
+    {
+      title: <div>{t('profile.data_count.transaction_hash')}</div>,
+      key: 'transaction_hash',
+      dataIndex: 'drwa_hash',
+      render: (_, record) => {
+        return <a href={`${import.meta.env.VITE_PUBLIC_WEB_BLOCK_URL}/tx/${record?.drwa_hash}`} target="_blank">{record?.drwa_hash}</a>
       }
     },
     {
@@ -63,6 +103,15 @@ export function DistributionRecord() {
       render: (_, record) => {
         return <div>{dayjs((record.draw_time as any as number) * 1000).format('YYYY-MM-DD HH:mm:ss')}</div>
       }
+    },
+    {
+      title: <div>{t('profile.data_count.action')}</div>,
+      key: 'action',
+      render: (_, record) => (
+        <div>
+          <Button loading={addCoinLoading === record.id} onClick={() => addCoinToWallet(record.contract_address, record.id)} type="primary" size="small">{t('profile.data_count.add_to_wallet')}</Button>
+        </div>
+      )
     }
   ]
   const [overPageInfo, setOverPageInfo] = useState({

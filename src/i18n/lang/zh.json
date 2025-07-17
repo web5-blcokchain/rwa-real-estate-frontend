@@ -532,7 +532,16 @@
       "type": "类型",
       "amountJpy": "金额（美元）",
       "status": "状态",
-      "draw_time": "可领取时间"
+      "draw_time": "待发放时间",
+      "order_id": "订单编号",
+      "purchase_price": "购买价格",
+      "token_contract_address": "代币合约地址",
+      "payment_currency": "支付币种",
+      "purchase_time": "购买时间",
+      "transaction_hash": "交易hash",
+      "add_to_wallet": "添加代币到钱包",
+      "token_name": "代币名",
+      "add_token_success": "添加代币成功"
     },
     "propertyTokens": {
       "title": "持有的代币"
