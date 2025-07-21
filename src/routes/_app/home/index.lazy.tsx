@@ -232,7 +232,7 @@ function RouteComponent() {
           </div>
         </div>
 
-        <div className="content-min-h fccc gap-50px pt-20 max-lg:gap-5 max-lg:gap-8 max-md:gap-14px max-xl:gap-8 max-xl:gap-8 max-md:pt-45px !max-lg:min-h-auto max-lg:!min-h-auto">
+        <div className="content-min-h fccc gap-50px pt-20 max-lg:gap-5 max-lg:gap-8 max-md:gap-14px max-xl:gap-8 max-xl:gap-8 max-md:pt-35px !max-lg:min-h-auto max-lg:!min-h-auto">
           <div className="text-center leading-10 max-lg:leading-5 max-lg:leading-7 max-xl:leading-8">
             <div className="pb-14px text-36px font-500 leading-10 max-md:pb-0 max-lg:text-20px max-md:text-4 max-xl:text-28px max-lg:leading-6 max-md:leading-6 max-xl:leading-8">{t('home.investorGuide.newbieInvest')}</div>
             <div className="text-center text-22px leading-26px max-lg:text-14px max-md:text-10px max-xl:text-18px max-lg:leading-18px max-md:leading-14px max-xl:leading-22px">{t('home.investorGuide.getInfo')}</div>
@@ -278,7 +278,7 @@ function RouteComponent() {
               activeKey={activeKey}
               key={tabsKey}
               onChange={setActiveKey}
-              className="mt-77px"
+              className="mt-77px max-lg:mt-22px"
               defaultActiveKey="1"
               items={[
                 { label: t(documentType[0]), key: '1', children: tabOfDocument(0) },
