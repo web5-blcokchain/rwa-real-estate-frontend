@@ -252,14 +252,14 @@ function RouteComponent() {
 
           </div>
           <PropertyDescriptionCard className="px-0 !bg-transparent max-lg:px-0" location={assetDetail?.property_description || ''} />
-
-          <LocationCard className="w-529px px-0 max-lg:w-full !bg-transparent max-lg:px-0" Longitude={assetDetail?.longitude || ''} Latitude={assetDetail?.latitude || ''} />
           <div className='max-lg:px-0" p-6 px-0'>
             <div className="text-5">{t('properties.detail.location_description')}</div>
             <div className="mt-4 text-[#d9d9d9]">
               {assetDetail?.location}
             </div>
           </div>
+          <LocationCard className="w-529px px-0 max-lg:w-full !bg-transparent max-lg:px-0" Longitude={assetDetail?.longitude || ''} Latitude={assetDetail?.latitude || ''} />
+
           <div className="p-6 px-0 max-lg:px-0">
             <div className="text-5">{t('properties.detail.market_analysis')}</div>
 

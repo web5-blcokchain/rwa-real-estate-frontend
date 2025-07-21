@@ -177,7 +177,7 @@ function RouteComponent() {
                   <img className={cn('size-10 max-xl:size-8 max-lg:size-6 max-md:size-10px', index === 1 && 'size-15 max-xl:size-10 max-lg:size-8 max-md:size-14px')} src={item.icon} />
                   <div className="text-30px font-500 leading-10 max-lg:text-14px max-md:text-10px max-xl:text-20px max-lg:leading-5 max-md:leading-6 max-xl:leading-7">{t(item.title)}</div>
                 </div>
-                <div className="mt-3 w-490px text-left text-6 text-#a7a9ad leading-7 max-lg:w-180px max-xl:w-320px max-lg:text-2 max-xl:text-4 max-lg:leading-3 max-xl:leading-5">{t(item.content)}</div>
+                <div className="mt-3 w-490px text-left text-6 text-#a7a9ad leading-7 max-md:mt-1 max-lg:w-180px max-xl:w-320px max-lg:text-2 max-xl:text-4 max-lg:leading-3 max-xl:leading-5">{t(item.content)}</div>
               </div>
             ))}
           </div>

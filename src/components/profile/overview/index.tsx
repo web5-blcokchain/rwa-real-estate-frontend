@@ -191,6 +191,7 @@ function Overview() {
 
       <TableComponent
         columns={columns}
+        key="columns"
         data={overviewData || []}
         pagination={
           {
@@ -213,6 +214,7 @@ function Overview() {
 
       <TableComponent<historyResponse>
         columns={columnsTwo}
+        key="columnsTwo"
         data={historyData || []}
       >
         <div className="mb-2 text-5">{t('profile.data_count.earningsHistory')}</div>

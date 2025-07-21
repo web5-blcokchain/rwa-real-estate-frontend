@@ -131,7 +131,7 @@ export function DistributionRecord() {
     })
     return res
   }
-  const { data: overviewData, isLoading, refetch: refetchOverview } = useQuery({
+  const { data: overviewData, isFetching, refetch: refetchOverview } = useQuery({
     queryKey: ['overview'],
     queryFn: async () => {
       const res = await getOverviewData()
@@ -143,7 +143,7 @@ export function DistributionRecord() {
       <TableComponent
         columns={columns}
         data={overviewData || []}
-        loading={isLoading}
+        loading={isFetching}
         pagination={
           {
             defaultCurrent: overPageInfo.page,

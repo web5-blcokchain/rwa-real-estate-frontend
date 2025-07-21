@@ -124,7 +124,7 @@ function Recording() {
       >
         <TableComponent
           columns={columns}
-          data={transactionsData}
+          data={transactionsData || []}
         />
       </Waiting>
 

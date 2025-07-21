@@ -15,7 +15,7 @@ function Document({ data, index }: { data: any, index: number }) {
         </div>
       </div>
       <div className="fyc gap-20px px-10px max-lg:gap-4 max-xl:gap-8 max-lg:px-2px max-xl:px-6px max-md:text-5px max-md:leading-30px">
-        <span>{t(documentType[index])}</span>
+        <span key={documentType[index]}>{t(documentType[index])}</span>
         <span>{dayjs(data.date).format(`M${t('common.month')}D，YYYY`)}</span>
       </div>
     </div>
