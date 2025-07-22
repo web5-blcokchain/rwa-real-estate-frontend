@@ -36,7 +36,7 @@ function RouteComponent() {
     queryFn: async () => {
       const res = await apiBasic.getDataList({ page: 1 })
       const list = _get(res.data, 'list', []) as any[]
-      return list.slice(0, 3)
+      return list
     }
   })
 
@@ -194,15 +194,16 @@ function RouteComponent() {
             <div className="text-36px font-500 leading-10 max-lg:text-20px max-md:text-4 max-xl:text-28px max-lg:leading-6 max-md:leading-6 max-xl:leading-8">{t('home.earn.title')}</div>
             <div className="pt-14px text-22px leading-26px max-md:pt-0 max-lg:text-14px max-md:text-10px max-xl:text-18px">{t('home.earn.content')}</div>
           </div>
-          <div className="">
+          <div className="w-full">
             <Waiting
               for={!propertieLoading}
               className="fcc"
               iconClass="size-8 max-xl:size-6 max-lg:size-5"
             >
-              <div className="grid grid-cols-3 mt-8 gap-7 max-lg:mt-4 max-xl:mt-6 max-lg:gap-3 max-xl:gap-5">
+              <div className="grid grid-cols-3 mt-8 gap-7 max-lg:grid-cols-2 max-lg:mt-4 max-xl:mt-6 max-lg:gap-3 max-xl:gap-5">
                 {
-                  propertieList && propertieList.map((card) => {
+                  propertieList && Array.from({ length: 4 }).map((_, index) => {
+                    const card = propertieList[index]
                     console.log(card)
                     const [picture] = joinImagesPath(card.image_urls)
                     return (
@@ -214,7 +215,7 @@ function RouteComponent() {
                         price={card.price}
                         house_life={card.house_life}
                         bedrooms={card.bedrooms}
-                        className="select-none clickable-99"
+                        className={cn('select-none clickable-99 max-lg:block w-full', index === 3 && 'hidden')}
                         onClick={() => {
                           navigate({
                             to: '/properties/detail/$id',

@@ -89,7 +89,7 @@ export default function MainHeader() {
           <NavMenu
             className={cn(
               'flex flex-col items-end justify-center gap-6 ',
-              'text-6'
+              'text-base'
             )}
           />
         </div>

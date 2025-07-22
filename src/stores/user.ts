@@ -19,7 +19,7 @@ interface StoreState {
   getUserInfo: () => void
 }
 
-const store: StateCreator<StoreState, [], [['zustand/persist', StoreState]]> = persist(
+const store: StateCreator<StoreState, [], [['zustand/persist', Partial<StoreState>]]> = persist(
   set => ({
     code: 401,
     language: 'en',
@@ -48,7 +48,11 @@ const store: StateCreator<StoreState, [], [['zustand/persist', StoreState]]> = p
       set(state => ({ refreshUserInfo: state.refreshUserInfo + 1 }))
     }
   }),
-  { name: 'userInfo' }
+  { name: 'userInfo', partialize: (state) => {
+    return Object.fromEntries(
+      Object.entries(state).filter(([key]) => key !== 'refreshUserInfo')
+    )
+  } }
 )
 
 export const useUserStore = create(store)

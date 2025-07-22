@@ -1,6 +1,7 @@
 import type { PriceTrendResponse } from '@/api/basicApi'
 import apiBasic from '@/api/basicApi'
 import { useQuery } from '@tanstack/react-query'
+import dayjs from 'dayjs'
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
 interface trendDataResponse {
@@ -11,7 +12,7 @@ interface trendDataResponse {
 export const RegionalPriceTrendsCard: FC<{
   className?: string
 }> = ({ className }) => {
-  // const { t } = useTranslation()
+  const { t } = useTranslation()
 
   const { data: trendData = [] } = useQuery<trendDataResponse[]>({
     queryKey: ['PriceTrend'],
@@ -19,7 +20,7 @@ export const RegionalPriceTrendsCard: FC<{
       const response = await apiBasic.getPriceTrend()
       const arrData = response.data?.map((item: PriceTrendResponse) => {
         return {
-          name: item.date,
+          name: dayjs(item.date).format('MM-DD'),
           price: Number(item.price)
         }
       })
@@ -38,7 +39,7 @@ export const RegionalPriceTrendsCard: FC<{
           <YAxis />
           <Tooltip />
           <Legend />
-          <Line type="linear" dataKey="price" stroke="#f0b90b" />
+          <Line type="linear" dataKey="price" name={t('profile.common.price')} stroke="#f0b90b" />
         </LineChart>
       </ResponsiveContainer>
     </div>

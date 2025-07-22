@@ -172,8 +172,8 @@ export default function IndividualVerification() {
             >
               <Button type="primary" size="large" className="w-full">
                 <div className="fyc gap-2">
-                  <span className="i-material-symbols-upload-rounded bg-black text-5"></span>
-                  <span className="text-black">{t('create.upload_id_card_front', { type: t(typeText[isTypeValue as keyof typeof typeText]) })}</span>
+                  <span className="i-material-symbols-upload-rounded bg-black text-5 max-lg:text-sm"></span>
+                  <span className="text-black max-lg:text-sm">{t('create.upload_id_card_front', { type: t(typeText[isTypeValue as keyof typeof typeText]) })}</span>
                 </div>
               </Button>
             </Upload>
@@ -186,8 +186,8 @@ export default function IndividualVerification() {
             >
               <Button type="primary" size="large" className="w-full">
                 <div className="fyc gap-2">
-                  <span className="i-material-symbols-upload-rounded bg-black text-5"></span>
-                  <span className="text-black">{t('create.upload_id_card_back', { type: t(typeText[isTypeValue as keyof typeof typeText]) })}</span>
+                  <span className="i-material-symbols-upload-rounded bg-black text-5 max-lg:text-sm"></span>
+                  <span className="text-black max-lg:text-sm">{t('create.upload_id_card_back', { type: t(typeText[isTypeValue as keyof typeof typeText]) })}</span>
                 </div>
               </Button>
             </Upload>
