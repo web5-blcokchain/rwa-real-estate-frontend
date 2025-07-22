@@ -40,9 +40,15 @@
   .home-tables .ant-tabs .ant-tabs-tab{
     font-size: 14px;
     line-height: 30px;
+    padding: 6px 0;
   }
 }
 
+@media (max-width: 767.9px) {
+  .home-tables .ant-tabs  .ant-tabs-nav{
+    margin-bottom: 12px;
+  }
+}
 .ant-tabs-ink-bar {
   height: 4px !important;
   @media (max-width: 768px) {

@@ -3,6 +3,7 @@ import { createLazyFileRoute } from '@tanstack/react-router'
 import { Button, Checkbox, ConfigProvider, InputNumber, Tabs } from 'antd'
 import { useState } from 'react'
 import { DialogByCoin } from './-components/DialogByCoin'
+import { DialogConfirmPayment } from './-components/DialogConfirmPayment'
 import './index.scss'
 
 export const Route = createLazyFileRoute('/_app/buy/$id')({
@@ -68,7 +69,7 @@ function BuyContent({ type, onSuccess }: { type: number, onSuccess: () => void }
             </div>
             <div>
               <div
-                className="fyc cursor-pointer gap-2 text-8 leading-11 max-lg:text-6 max-md:text-4"
+                className="fyc cursor-pointer gap-2 text-7 leading-10 max-lg:text-6 max-md:text-4"
                 onClick={() => toOpenDialog(0)}
               >
                 <span>BNB</span>
@@ -76,7 +77,7 @@ function BuyContent({ type, onSuccess }: { type: number, onSuccess: () => void }
                   <div className="i-solar-alt-arrow-down-line-duotone size-6 max-lg:size-4 max-md:size-3"></div>
                 </span>
               </div>
-              <div className="text-18px leading-6 max-lg:text-14px max-md:text-10px">BNB Chain</div>
+              <div className="text-16px leading-6 max-lg:text-14px max-md:text-10px">BNB Chain</div>
             </div>
           </div>
           <div className="flex-1">
@@ -119,11 +120,11 @@ function BuyContent({ type, onSuccess }: { type: number, onSuccess: () => void }
               <img src="/src/assets/images/usdc.png" alt="" />
             </div>
             <div>
-              <div className="fyc cursor-pointer gap-2 text-8 leading-11 max-lg:text-6 max-md:text-4" onClick={() => toOpenDialog(0)}>
+              <div className="fyc cursor-pointer gap-2 text-7 leading-10 max-lg:text-6 max-md:text-4" onClick={() => toOpenDialog(0)}>
                 <span>USDT</span>
                 <span><div className="i-solar-alt-arrow-down-line-duotone size-6 max-lg:size-4 max-md:size-3"></div></span>
               </div>
-              <div className="text-18px leading-6 max-lg:text-14px max-md:text-10px">BNB Chain</div>
+              <div className="text-16px leading-6 max-lg:text-14px max-md:text-10px">BNB Chain</div>
             </div>
           </div>
           <div className="flex-1">
@@ -144,7 +145,7 @@ function BuyContent({ type, onSuccess }: { type: number, onSuccess: () => void }
         </div>
       </div>
       <Checkbox rootClassName="text-xl max-lg:text-lg max-md:text-base" onChange={() => setSelectedMEV(!selectedMEV)}>启用MEV保护</Checkbox>
-      <Button onClick={buyOrSell} rootClassName="w-full py-22px text-9 h-auto leading-11 bg-#F0B90B text-black mt-46px max-lg:py-12px max-lg:text-7 max-lg:mt-24px max-md:py-6px max-md:text-4 max-md:mt-12px">
+      <Button onClick={buyOrSell} rootClassName="w-full py-18px text-7 h-auto leading-10 bg-#F0B90B text-black mt-46px max-lg:py-12px max-lg:text-7 max-lg:mt-24px max-md:py-6px max-md:text-4 max-md:mt-12px">
         {buyValue > 0 ? '确认' : '输入金额'}
       </Button>
       <DialogByCoin openState={[open, setOpen]} type={openDialogType} onSelectCoin={searchCoin} />
@@ -178,6 +179,8 @@ function RouteComponent() {
     }
   ]
 
+  const [openConfirmPayment, setOpenConfirmPayment] = useState(false)
+
   return (
     <div className="buy-content mx-auto min-w-760px w-53% max-lg:min-w-0 max-lg:w-11/12 max-md:w-full max-md:px-16px">
       <div className="mb-98px mt-101px text-center text-38px font-500 leading-61px max-lg:mb-60px max-lg:mt-60px max-md:mb-32px max-md:mt-32px max-lg:text-28px max-md:text-20px max-lg:leading-40px max-md:leading-28px">
@@ -208,6 +211,7 @@ function RouteComponent() {
           />
         </ConfigProvider>
       </div>
+      <DialogConfirmPayment openState={[openConfirmPayment, setOpenConfirmPayment]} />
     </div>
   )
 }

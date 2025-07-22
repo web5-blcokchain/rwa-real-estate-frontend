@@ -96,7 +96,7 @@ function RouteComponent() {
   return (
     <div className="" style={{ '--conent-h': `${headerH || 80}px` } as any}>
       <div
-        className="home-content fxc flex-col pl-[118px] max-md:py-9 max-lg:pl-[24px] max-md:pl-2 max-xl:pl-[60px] max-md:!h-fit"
+        className="home-content fxc flex-col pl-[118px] max-lg:py-9 max-lg:pl-[24px] max-md:pl-2 max-xl:pl-[60px] max-lg:!h-fit"
       >
         <div
           className={cn(i18n.language === 'en' ? 'text-[80px] leading-[92px]' : 'text-[100px] leading-[120px]', 'w-[700px]   max-lg:w-[500px] max-md:w-196px max-xl:w-[600px] max-lg:text-[48px] max-md:text-28px max-xl:text-[62px] max-lg:leading-[64px] max-md:leading-38px max-xl:leading-[90px]')}
@@ -232,7 +232,7 @@ function RouteComponent() {
           </div>
         </div>
 
-        <div className="content-min-h fccc gap-50px pt-20 max-lg:gap-5 max-lg:gap-8 max-md:gap-14px max-xl:gap-8 max-xl:gap-8 max-md:pt-35px !max-lg:min-h-auto max-lg:!min-h-auto">
+        <div className="content-min-h fccc gap-50px pt-20 max-lg:gap-5 max-lg:gap-8 max-md:gap-14px max-xl:gap-8 max-xl:gap-8 max-md:pt-5px !max-lg:min-h-auto max-lg:!min-h-auto">
           <div className="text-center leading-10 max-lg:leading-5 max-lg:leading-7 max-xl:leading-8">
             <div className="pb-14px text-36px font-500 leading-10 max-md:pb-0 max-lg:text-20px max-md:text-4 max-xl:text-28px max-lg:leading-6 max-md:leading-6 max-xl:leading-8">{t('home.investorGuide.newbieInvest')}</div>
             <div className="text-center text-22px leading-26px max-lg:text-14px max-md:text-10px max-xl:text-18px max-lg:leading-18px max-md:leading-14px max-xl:leading-22px">{t('home.investorGuide.getInfo')}</div>
