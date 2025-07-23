@@ -400,7 +400,9 @@
     "menu_transaction_status": "Transaction Status",
     "menu_assets": "Asset List",
     "menu_assets_summary": "Purchase Record",
-    "menu_distribution_record": "Token Distribution Record"
+    "menu_distribution_record": "Token Distribution Record",
+    "menu_message": "Message Center",
+    "menu_dividend_statistics": "Dividend Statistics"
   },
   "footer": {
     "about": "About",
@@ -676,5 +678,31 @@
     "walletBindSuccess": "Wallet Bind Success",
     "kycAuditPass": "KYC Audit Pass",
     "kycAuditFail": "KYC Audit Fail"
+  },
+  "dividendStatistics": {
+    "title": "Dividend Statistics",
+    "currentMonthIncome": "Current Month Income",
+    "totalIncome": "Total Income",
+    "avgMonthIncome": "Average Monthly Income",
+    "thisMonth": "This Month",
+    "last3Months": "Last 3 Months",
+    "last6Months": "Last 6 Months",
+    "property": "Property",
+    "all": "All",
+    "house": "House",
+    "business": "Business",
+    "personal": "Personal",
+    "status": "Status",
+    "sale": "Sold",
+    "rent": "Processing",
+    "sold": "Failed",
+    "id": "Property ID",
+    "name": "RWA Name",
+    "price": "Dividend Amount",
+    "handlingFee": "Handling Fee",
+    "checkInPrice": "Actual Check-in",
+    "checkInStatus": "Check-in Status",
+    "hash": "Transaction Hash",
+    "time": "Check-in Time"
   }
 }

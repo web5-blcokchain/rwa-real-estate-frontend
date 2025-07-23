@@ -400,7 +400,9 @@
     "menu_transaction_status": "取引ステータス",
     "menu_assets": "資産リスト",
     "menu_assets_summary": "購入記録",
-    "menu_distribution_record": "代币发放記録"
+    "menu_distribution_record": "代币发放記録",
+    "menu_message": "メッセージセンター",
+    "menu_dividend_statistics": "配当統計"
   },
   "footer": {
     "about": "について",
@@ -672,5 +674,31 @@
     "walletBindSuccess": "財布バインド成功",
     "kycAuditPass": "KYC審査通過",
     "kycAuditFail": "KYC審査失敗"
+  },
+  "dividendStatistics": {
+    "title": "配当統計",
+    "currentMonthIncome": "今月の累計配当",
+    "totalIncome": "累計配当",
+    "avgMonthIncome": "平均月配当",
+    "thisMonth": "今月",
+    "last3Months": "過去3ヶ月",
+    "last6Months": "過去6ヶ月",
+    "property": "不動産",
+    "all": "すべて",
+    "house": "住宅",
+    "business": "商業",
+    "personal": "個人",
+    "status": "ステータス",
+    "sale": "到着済み",
+    "rent": "処理中",
+    "sold": "失敗",
+    "id": "不動産ID",
+    "name": "RWA名称",
+    "price": "配当金額",
+    "handlingFee": "手数料",
+    "checkInPrice": "実際の到着",
+    "checkInStatus": "到着ステータス",
+    "hash": "取引ハッシュ",
+    "time": "到着時間"
   }
 }

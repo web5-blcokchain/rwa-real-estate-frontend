@@ -210,6 +210,18 @@ function getUserInfo() {
   return apiClient.post<UserResponse>('/api/info/userInfo')
 }
 
+interface EarningsInfo {
+  current_month_income: number
+  total_income: number
+  avg_month_income: number
+}
+// 获取收益详情
+export async function getEarningsInfo(params: string) {
+  return apiClient.post<EarningsInfo>('/api/info/getIncomeSummary', {
+    type: params
+  })
+}
+
 const apiMyInfoApi = {
   uploadFile,
   logins,

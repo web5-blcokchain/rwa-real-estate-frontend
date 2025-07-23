@@ -240,7 +240,8 @@ function RightMenu() {
                 onClick={() => open('help')}
               >
               </div>
-              {/* <div className="i-material-symbols-notifications-outline size-5 bg-white"></div>
+              {/* <div className="i-material-symbols-notifications-outline size-5 bg-white"></div> */}
+              {/*
               <div
                 className="i-material-symbols-favorite-outline-rounded size-5 bg-white clickable"
                 onClick={

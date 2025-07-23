@@ -33,7 +33,7 @@ const FeatureCard: FC<
         <IImage
           src={picture}
           alt="picture"
-          className="h-54 w-full max-lg:h-28 max-md:h-63px max-xl:h-40"
+          className="aspect-ratio-2/1 w-full"
           imgClass="object-cover"
         />
       </div>

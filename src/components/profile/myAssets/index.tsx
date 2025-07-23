@@ -14,6 +14,10 @@ import { useTranslation } from 'react-i18next'
 export function MyAssets() {
   const { t } = useTranslation()
   const coinStatus = ['unclaimed', 'claimed', 'withdraw', 'failed']
+  const copyText = (text: string) => {
+    navigator.clipboard.writeText(text)
+    toast.success(t('common.copy_success'))
+  }
   // 表格1配置
   const columns: TableProps<PropertieItem>['columns'] = [
     {
@@ -85,7 +89,17 @@ export function MyAssets() {
     {
       title: <div>{t('profile.data_count.token_contract_address')}</div>,
       key: 'token_contract_address',
-      dataIndex: 'contract_address'
+      dataIndex: 'contract_address',
+      render: (_, record) => {
+        return (
+          <div className="fyc gap-2">
+            <span title={record.contract_address}>{`${record.contract_address.slice(0, 4)}...${record.contract_address.slice(-4)}`}</span>
+            <span onClick={() => copyText(record.contract_address)} className="cursor-pointer">
+              <img className="size-4" src="/src/assets/icons/copy.svg" alt="" />
+            </span>
+          </div>
+        )
+      }
     },
     {
       title: <div>{t('profile.data_count.purchase_time')}</div>,

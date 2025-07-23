@@ -35,6 +35,10 @@ export function DistributionRecord() {
       setAddCoinLoading(0)
     }
   }
+  const copyText = (text: string) => {
+    navigator.clipboard.writeText(text)
+    toast.success(t('common.copy_success'))
+  }
 
   // 表格1配置
   const columns: TableProps<PropertieItem>['columns'] = [
@@ -87,14 +91,31 @@ export function DistributionRecord() {
     {
       title: <div>{t('profile.data_count.token_contract_address')}</div>,
       key: 'token_contract_address',
-      dataIndex: 'contract_address'
+      dataIndex: 'contract_address',
+      render: (_, record) => {
+        return (
+          <div className="fyc gap-2">
+            <span title={record.contract_address}>{`${record.contract_address.slice(0, 4)}...${record.contract_address.slice(-4)}`}</span>
+            <span onClick={() => copyText(record.contract_address)} className="cursor-pointer">
+              <img className="size-4" src="/src/assets/icons/copy.svg" alt="" />
+            </span>
+          </div>
+        )
+      }
     },
     {
       title: <div>{t('profile.data_count.transaction_hash')}</div>,
       key: 'transaction_hash',
       dataIndex: 'drwa_hash',
       render: (_, record) => {
-        return <a href={`${import.meta.env.VITE_PUBLIC_WEB_BLOCK_URL}/tx/${record?.drwa_hash}`} target="_blank">{record?.drwa_hash}</a>
+        return (
+          <div className="fyc gap-2">
+            <span title={record.drwa_hash}>{`${record.drwa_hash.slice(0, 4)}...${record.drwa_hash.slice(-4)}`}</span>
+            <span onClick={() => copyText(record.drwa_hash)} className="cursor-pointer">
+              <img className="size-4" src="/src/assets/icons/copy.svg" alt="" />
+            </span>
+          </div>
+        )
       }
     },
     {

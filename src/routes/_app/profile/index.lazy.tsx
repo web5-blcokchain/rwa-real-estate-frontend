@@ -2,9 +2,11 @@ import type { MenuProps } from 'antd'
 import { IImage } from '@/components/common/i-image'
 import { AssetsSummary } from '@/components/profile/assetsSummary'
 import { DistributionRecord } from '@/components/profile/distributionRecord'
+import DividendStatistics from '@/components/profile/dividendStatistics'
 import { Earnings } from '@/components/profile/earnings'
 import { ProfileEdit } from '@/components/profile/edit'
 import History from '@/components/profile/history'
+import Message from '@/components/profile/message'
 import { MyAssets } from '@/components/profile/myAssets'
 import Overview from '@/components/profile/overview'
 import PropertyTokens from '@/components/profile/propertyTokens'
@@ -50,6 +52,7 @@ function RouteComponent() {
   const items: MenuItem[] = [
     getItem(`${t('aboutMe.menu_overview')}`, ProfileTab.Overview),
     getItem(`${t('aboutMe.menu_edit')}`, ProfileTab.Edit),
+    getItem(`${t('aboutMe.menu_message')}`, ProfileTab.Message),
     getItem(`${t('aboutMe.menu_property_tokens')}`, ProfileTab.PropertyTokens),
     // getItem(`${t('aboutMe.menu_earnings')}`, ProfileTab.Earnings),
     // getItem(`${t('aboutMe.menu_history')}`, ProfileTab.History),
@@ -57,7 +60,8 @@ function RouteComponent() {
     // getItem(`${t('aboutMe.menu_transaction_status')}`, ProfileTab.TransactionStatus),
     getItem(`${t('aboutMe.menu_assets_summary')}`, ProfileTab.Assets),
     // getItem(`${t('aboutMe.menu_assets_summary')}`, ProfileTab.AssetsSummary),
-    getItem(`${t('aboutMe.menu_distribution_record')}`, ProfileTab.DistributionRecord)
+    getItem(`${t('aboutMe.menu_distribution_record')}`, ProfileTab.DistributionRecord),
+    getItem(`${t('aboutMe.menu_dividend_statistics')}`, ProfileTab.DividendStatistics)
   ]
 
   const handleMenuClick: MenuProps['onClick'] = (e) => {
@@ -90,6 +94,10 @@ function RouteComponent() {
         return <AssetsSummary />
       case ProfileTab.DistributionRecord:
         return <DistributionRecord />
+      case ProfileTab.Message:
+        return <Message />
+      case ProfileTab.DividendStatistics:
+        return <DividendStatistics />
     }
   }
 
