@@ -130,10 +130,10 @@ function RouteComponent() {
             <div className="text-36px font-500 leading-10 max-lg:text-20px max-md:text-4 max-xl:text-28px max-lg:leading-6 max-md:leading-6 max-xl:leading-8">{t('home.rwaType.rwaTitle')}</div>
             <div className="text-center text-22px leading-26px max-lg:text-14px max-md:text-10px max-xl:text-18px max-lg:leading-18px max-md:leading-14px max-xl:leading-22px">{t('home.rwaType.rwaDesc')}</div>
           </div>
-          <div className="grid grid-cols-3 gap-30px max-lg:gap-16px max-md:gap-11px max-xl:gap-18px">
+          <div className="grid grid-cols-3 gap-30px max-lg:grid-cols-2 max-lg:gap-16px max-md:gap-11px max-xl:gap-18px">
             {
               coinTypes.map((item, index) => (
-                <div key={index} className="flex flex-col items-center rounded-5 bg-#1f2328 max-lg:rounded-2 max-xl:rounded-3">
+                <div key={index} className={cn('flex flex-col items-center rounded-5 bg-#1f2328 max-lg:rounded-2 max-xl:rounded-3', index === 2 && 'max-lg:hidden')}>
                   <img src={item.img} alt="" className="w-full" />
                   <div className="h-full w-full flex flex-col justify-between px-5 pb-33px pt-5 max-lg:px-2 max-md:px-6px max-xl:px-3 max-lg:pb-10px max-lg:pt-2 max-md:pb-9px max-md:pt-6px max-xl:pb-18px max-xl:pt-3">
                     <div>
@@ -190,7 +190,7 @@ function RouteComponent() {
 
       <div className="px-30 max-lg:px-12 max-md:px-3 max-xl:px-16">
         <div className="fccc gap-11 pt-120px max-lg:gap-6 max-md:gap-0 max-xl:gap-8 max-2xl:pt-86px max-lg:pt-40px max-md:pt-6 max-xl:pt-64px max-lg:!min-h-auto">
-          <div className="text-center font-500 leading-10 max-lg:text-5 max-xl:text-7 max-lg:leading-7 max-xl:leading-8">
+          <div className="fccc text-center font-500 leading-10 max-lg:text-5 max-xl:text-7 max-lg:leading-7 max-xl:leading-8">
             <div className="text-36px font-500 leading-10 max-lg:text-20px max-md:text-4 max-xl:text-28px max-lg:leading-6 max-md:leading-6 max-xl:leading-8">{t('home.earn.title')}</div>
             <div className="pt-14px text-22px leading-26px max-md:pt-0 max-lg:text-14px max-md:text-10px max-xl:text-18px">{t('home.earn.content')}</div>
           </div>
@@ -234,8 +234,8 @@ function RouteComponent() {
           </div>
         </div>
 
-        <div className="content-min-h fccc gap-50px pt-20 max-lg:gap-5 max-lg:gap-8 max-md:gap-14px max-xl:gap-8 max-xl:gap-8 max-md:pt-5px !max-lg:min-h-auto max-lg:!min-h-auto">
-          <div className="text-center leading-10 max-lg:leading-5 max-lg:leading-7 max-xl:leading-8">
+        <div className="content-min-h fccc gap-50px pt-20 max-lg:gap-5 max-lg:gap-8 max-md:gap-14px max-xl:gap-8 max-xl:gap-8 max-md:pt-6 !max-lg:min-h-auto max-lg:!min-h-auto">
+          <div className="fccc text-center leading-10 max-lg:leading-5 max-lg:leading-7 max-xl:leading-8">
             <div className="pb-14px text-36px font-500 leading-10 max-md:pb-0 max-lg:text-20px max-md:text-4 max-xl:text-28px max-lg:leading-6 max-md:leading-6 max-xl:leading-8">{t('home.investorGuide.newbieInvest')}</div>
             <div className="text-center text-22px leading-26px max-lg:text-14px max-md:text-10px max-xl:text-18px max-lg:leading-18px max-md:leading-14px max-xl:leading-22px">{t('home.investorGuide.getInfo')}</div>
           </div>
@@ -243,7 +243,7 @@ function RouteComponent() {
             {
               introductionList.map((item, index) => (
                 <div
-                  className="flex justify-between gap-3 rounded-5 bg-#1f2328 pb-4 pl-33px pr-45px pt-54px max-lg:gap-1 max-md:gap-1 max-xl:gap-2 max-lg:pl-10px max-lg:pr-12px max-lg:pt-20px max-md:pb-14px max-md:pl-10px max-md:pr-15px max-md:pt-14px max-xl:pl-20px max-xl:pr-28px max-xl:pt-36px"
+                  className="flex justify-between gap-3 rounded-5 bg-#1f2328 pb-4 pl-33px pr-45px pt-54px max-lg:gap-1 max-md:gap-1 max-xl:gap-2 max-lg:rounded-2 max-lg:pl-10px max-lg:pr-12px max-lg:pt-20px max-md:pb-14px max-md:pl-10px max-md:pr-15px max-md:pt-14px max-xl:pl-20px max-xl:pr-28px max-xl:pt-36px"
                   key={item.title}
                 >
                   <div className="flex-1 leading-10 max-lg:leading-7 max-md:leading-11px max-xl:leading-8">
