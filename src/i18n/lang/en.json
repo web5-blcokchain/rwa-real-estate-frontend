@@ -694,6 +694,7 @@
     "personal": "Personal",
     "status": "Status",
     "sale": "Sold",
+    "unclaimed": "Unclaimed",
     "rent": "Processing",
     "sold": "Failed",
     "id": "Property ID",

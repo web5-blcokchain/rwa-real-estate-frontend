@@ -1,5 +1,6 @@
+import type { historyResponse } from '@/api/apiMyInfoApi'
 import type { TableProps } from 'antd'
-import { getEarningsInfo } from '@/api/apiMyInfoApi'
+import apiMyInfoApi, { getEarningsInfo } from '@/api/apiMyInfoApi'
 import { useQuery } from '@tanstack/react-query'
 import { ConfigProvider, Empty, Select, Table } from 'antd'
 import enUS from 'antd/locale/en_US'
@@ -30,37 +31,40 @@ export default function DividendStatistics() {
   const { data: earningsInfo, isFetching: earningsLoading } = useQuery({
     queryKey: ['earningsInfo'],
     queryFn: async () => {
-      const data = await getEarningsInfo('2')
+      const data = await getEarningsInfo()
       return data.data
     }
   })
-
-  const mockHouseData = [
-    { id: 1, name: '房产1', price: '100', handlingFee: '10.2', checkInPrice: '89.8', status: 0, hash: '0x1234567890', time: '2021-01-01' },
-    { id: 2, name: '房产2', price: '100', handlingFee: '10.2', checkInPrice: '89.8', status: 0, hash: '0x1234567890', time: '2021-01-01' },
-    { id: 3, name: '房产3', price: '100', handlingFee: '10.2', checkInPrice: '89.8', status: 0, hash: '0x1234567890', time: '2021-01-01' },
-    { id: 4, name: '房产4', price: '100', handlingFee: '10.2', checkInPrice: '89.8', status: 0, hash: '0x1234567890', time: '2021-01-01' },
-    { id: 5, name: '房产5', price: '100', handlingFee: '10.2', checkInPrice: '89.8', status: 0, hash: '0x1234567890', time: '2021-01-01' },
-    { id: 6, name: '房产6', price: '100', handlingFee: '10.2', checkInPrice: '89.8', status: 0, hash: '0x1234567890', time: '2021-01-01' },
-    { id: 7, name: '房产7', price: '100', handlingFee: '10.2', checkInPrice: '89.8', status: 0, hash: '0x1234567890', time: '2021-01-01' }
-  ]
-  interface TableData {
-    id: number
-    name: string
-    price: string
-    handlingFee: string
-    checkInPrice: string
-    status: number
-    hash: string
-    time: string
-  }
+  const [pagination, _setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+    total: 100,
+    showQuickJumper: true,
+    showSizeChanger: false
+  })
+  const { data: earningsList, isFetching: earningsListLoading } = useQuery({
+    queryKey: ['earningsList', pagination.current, pagination.pageSize],
+    queryFn: async () => {
+      const data = await apiMyInfoApi.getHistory({
+        page: pagination.current,
+        pageSize: pagination.pageSize
+      })
+      return data.data?.list || []
+    }
+  })
+  useEffect(() => {
+    _setPagination({
+      ...pagination,
+      total: earningsList?.length || 0
+    })
+  }, [earningsList])
 
   const copyText = (text: string) => {
     navigator.clipboard.writeText(text)
     toast.success(t('common.copy_success'))
   }
 
-  const tableColumns: TableProps<TableData>['columns'] = [
+  const tableColumns: TableProps<historyResponse>['columns'] = [
     {
       title: <div>{t('dividendStatistics.id')}</div>,
       dataIndex: 'id',
@@ -68,18 +72,18 @@ export default function DividendStatistics() {
     },
     {
       title: <div>{t('dividendStatistics.name')}</div>,
-      dataIndex: 'name',
-      key: 'name'
+      dataIndex: 'property_name',
+      key: 'property_name'
     },
     {
       title: <div>{t('dividendStatistics.price')}</div>,
-      dataIndex: 'price',
-      key: 'price',
+      dataIndex: 'total_amount',
+      key: 'total_amount',
       render: (_, record) => {
         return (
           <div>
             $
-            {numbro(record.price).format({ mantissa: 2, thousandSeparated: true })}
+            {numbro(record.total_amount).format({ mantissa: 2, thousandSeparated: true })}
           </div>
         )
       }
@@ -89,23 +93,25 @@ export default function DividendStatistics() {
       dataIndex: 'handlingFee',
       key: 'handlingFee',
       render: (_, record) => {
+        const totalAmount = Number(record.total_amount) || 0
+        const incomeAmount = Number(record.income_amount) || 0
         return (
           <div>
             $
-            {numbro(record.handlingFee).format({ mantissa: 2, thousandSeparated: true })}
+            {numbro(totalAmount - incomeAmount).format({ mantissa: 2, thousandSeparated: true })}
           </div>
         )
       }
     },
     {
       title: <div>{t('dividendStatistics.checkInPrice')}</div>,
-      dataIndex: 'checkInPrice',
-      key: 'checkInPrice',
+      dataIndex: 'income_amount',
+      key: 'income_amount',
       render: (_, record) => {
         return (
           <div>
             $
-            {numbro(record.checkInPrice).format({ mantissa: 2, thousandSeparated: true })}
+            {numbro(record.income_amount).format({ mantissa: 2, thousandSeparated: true })}
           </div>
         )
       }
@@ -117,22 +123,22 @@ export default function DividendStatistics() {
       render: (_, record) => {
         return (
           <div className={cn(record.status === 0 && 'text-#0A84FF', record.status === 1 && 'text-#32D74B', record.status === 2 && 'text-#FF453A')}>
-            {record.status === 0 && <div>处理中</div>}
-            {record.status === 1 && <div>已到账</div>}
-            {record.status === 2 && <div>失败</div>}
+            {record.status === 0 && <div>{t('dividendStatistics.unclaimed')}</div>}
+            {record.status === 1 && <div>{t('dividendStatistics.sale')}</div>}
+            {record.status === 2 && <div>{t('dividendStatistics.sold')}</div>}
           </div>
         )
       }
     },
     {
       title: <div>{t('dividendStatistics.hash')}</div>,
-      dataIndex: 'hash',
-      key: 'hash',
+      dataIndex: 'tx_hash',
+      key: 'tx_hash',
       render: (_, record) => {
         return (
           <div className="fyc gap-2">
-            <span title={record.hash}>{`${record.hash.slice(0, 4)}...${record.hash.slice(-4)}`}</span>
-            <span onClick={() => copyText(record.hash)} className="cursor-pointer">
+            <span title={record.tx_hash}>{`${record.tx_hash.slice(0, 4)}...${record.tx_hash.slice(-4)}`}</span>
+            <span onClick={() => copyText(record.tx_hash)} className="cursor-pointer">
               <img className="size-4" src="/src/assets/icons/copy.svg" alt="" />
             </span>
           </div>
@@ -141,20 +147,13 @@ export default function DividendStatistics() {
     },
     {
       title: <div>{t('dividendStatistics.time')}</div>,
-      dataIndex: 'time',
-      key: 'time',
+      dataIndex: 'income_date',
+      key: 'income_date',
       render: (_, record) => {
-        return <div>{dayjs(record.time).format('YYYY-MM-DD HH:mm:ss')}</div>
+        return <div>{dayjs(record.income_date).format('YYYY-MM-DD HH:mm:ss')}</div>
       }
     }
   ]
-  const [pagination, _setPagination] = useState({
-    current: 1,
-    pageSize: 10,
-    total: 100,
-    showQuickJumper: true,
-    showSizeChanger: false
-  })
 
   return (
     <div className="flex flex-col gap-4">
@@ -164,7 +163,7 @@ export default function DividendStatistics() {
         className="w-full fcc"
         iconClass="size-6 bg-white"
       >
-        <div className="fyc justify-between rounded-md bg-#212328 px-23 py-18 [&>div>div]:fccc [&>div>div]:gap-6px max-lg:px-4 max-lg:py-8 [&>div]:text-center [&>div>div:first-child]:text-2xl [&>div>div:last-child]:text-base [&>div>div:last-child]:text-[#8d909a] [&>div>div:first-child]:max-lg:text-xl [&>div>div:last-child]:max-lg:text-sm">
+        <div className="fyc justify-between rounded-md bg-#212328 px-23 py-18 [&>div>div]:fccc [&>div>div]:gap-3 max-lg:px-4 max-lg:py-8 [&>div]:text-center [&>div>div:first-child]:text-2xl [&>div>div:last-child]:text-base [&>div>div:last-child]:text-[#8d909a] [&>div>div]:max-lg:gap-6px [&>div>div:first-child]:max-lg:text-xl [&>div>div:last-child]:max-lg:text-sm">
           <div>
             <div>
               $
@@ -206,7 +205,8 @@ export default function DividendStatistics() {
               scroll={{ x: 'max-content' }}
               className="custom-table w-full"
               columns={tableColumns}
-              dataSource={mockHouseData}
+              loading={earningsListLoading}
+              dataSource={earningsList}
               rowClassName={() => 'custom-table-row'}
               pagination={pagination}
               // loading={loading}

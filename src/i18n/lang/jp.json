@@ -691,6 +691,7 @@
     "status": "ステータス",
     "sale": "到着済み",
     "rent": "処理中",
+    "unclaimed": "未引き出し",
     "sold": "失敗",
     "id": "不動産ID",
     "name": "RWA名称",

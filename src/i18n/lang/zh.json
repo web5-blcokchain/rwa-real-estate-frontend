@@ -696,6 +696,7 @@
     "status": "状态",
     "sale": "已到账",
     "rent": "处理中",
+    "unclaimed": "未领取",
     "sold": "失败",
     "id": "房产ID",
     "name": "RWA名称",

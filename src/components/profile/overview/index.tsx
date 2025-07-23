@@ -105,7 +105,7 @@ function Overview() {
         <>
           <div className="flex items-center justify-start">
             <div className="flex flex-col justify-start">
-              <div>{record.address}</div>
+              <div>{record.user_address}</div>
               <div className="text-[#8d909a]">TKYT</div>
             </div>
           </div>
@@ -165,7 +165,10 @@ function Overview() {
   const { data: historyData, isLoading: historyLoading } = useQuery({
     queryKey: ['history'],
     queryFn: async () => {
-      const res = await apiMyInfo.getHistory()
+      const res = await apiMyInfo.getHistory({
+        page: 1,
+        pageSize: 10
+      })
       return res.data?.list || []
     }
   })

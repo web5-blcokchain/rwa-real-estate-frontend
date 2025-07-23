@@ -158,19 +158,30 @@ function getMeInfoSummary(data: AboutMeParams) {
 
 export interface historyResponse {
   id: number
-  user_id: number
+  income_date: string
   type: number
-  properties_id: number
-  income_amount: number
+  properties_id: string
   number: number
+  income_amount: string
+  total_amount: string
+  service_charge: string
+  /** 状态 0为未领取 1为已领取 2为领取失败 */
   status: number
-  income_id: number
-  income_date: number
-  address: string
+  amount: string
+  user_address: string
+  merkle_proof: string
+  tx_hash: string
+  remake: string
+}
+interface EarningsInfoResponse {
+  list: historyResponse[]
+  count: number
+  page: number
+  pageSize: number
 }
 // 收益记录
-function getHistory() {
-  return apiClient.post<ResponseData<historyResponse>>('/api/info/earningsHistory')
+function getHistory(params: { page: number, pageSize: number }) {
+  return apiClient.post<EarningsInfoResponse>('/api/info/earningsHistory', params)
 }
 
 export interface EarningsResponse {
@@ -186,8 +197,8 @@ export interface EarningsResponse {
   address: string
 }
 // 收益记录
-function getEarningsHistory() {
-  return apiClient.post<ResponseData<EarningsResponse>>('/api/info/earningsHistory')
+function getEarningsHistory(params: { page: number, pageSize: number }) {
+  return apiClient.post<ResponseData<EarningsResponse>>('/api/info/earningsHistory', params)
 }
 
 export interface UserResponse {
@@ -210,17 +221,28 @@ function getUserInfo() {
   return apiClient.post<UserResponse>('/api/info/userInfo')
 }
 
-interface EarningsInfo {
+interface EarningsInfoSummary {
   current_month_income: number
   total_income: number
   avg_month_income: number
 }
 // 获取收益详情
-export async function getEarningsInfo(params: string) {
-  return apiClient.post<EarningsInfo>('/api/info/getIncomeSummary', {
-    type: params
-  })
+export async function getEarningsInfo() {
+  return apiClient.post<EarningsInfoSummary>('/api/info/getIncomeSummary')
 }
+
+// interface EarningsInfoResponse {
+//   list: EarningsInfo[]
+//   count: number
+//   page: number
+//   pageSize: number
+// }
+// // 获取收益列表
+// export async function getEarningsList(params: string) {
+//   return apiClient.post<EarningsInfoResponse>('/api/info/earningsHistory', {
+//     type: params
+//   })
+// }
 
 const apiMyInfoApi = {
   uploadFile,
