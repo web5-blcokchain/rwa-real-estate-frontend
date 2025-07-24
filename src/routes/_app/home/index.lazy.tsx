@@ -204,9 +204,9 @@ function RouteComponent() {
                 {
                   propertieList && Array.from({ length: 4 }).map((_, index) => {
                     const card = propertieList[index]
-                    if (!card || !card.image_urls)
-                      return null
-                    const [picture] = joinImagesPath(card.image_urls)
+                    // if (!card || !card.image_urls)
+                    //   return null
+                    const [picture] = (!card || !card.image_urls) ? [''] : joinImagesPath(card.image_urls)
                     return (
                       <FeatureCard
                         key={card.id}
