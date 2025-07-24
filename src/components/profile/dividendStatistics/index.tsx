@@ -137,7 +137,7 @@ export default function DividendStatistics() {
       render: (_, record) => {
         return (
           <div className="fyc gap-2">
-            <span title={record.tx_hash}>{`${record.tx_hash.slice(0, 4)}...${record.tx_hash.slice(-4)}`}</span>
+            <span title={record.tx_hash}>{record.tx_hash ? `${record.tx_hash.slice(0, 4)}...${record.tx_hash.slice(-4)}` : ''}</span>
             <span onClick={() => copyText(record.tx_hash)} className="cursor-pointer">
               <img className="size-4" src="/src/assets/icons/copy.svg" alt="" />
             </span>

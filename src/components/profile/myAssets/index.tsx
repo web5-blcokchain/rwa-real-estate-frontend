@@ -93,7 +93,7 @@ export function MyAssets() {
       render: (_, record) => {
         return (
           <div className="fyc gap-2">
-            <span title={record.contract_address}>{`${record.contract_address.slice(0, 4)}...${record.contract_address.slice(-4)}`}</span>
+            <span title={record.contract_address}>{record.contract_address ? `${record.contract_address.slice(0, 4)}...${record.contract_address.slice(-4)}` : ''}</span>
             <span onClick={() => copyText(record.contract_address)} className="cursor-pointer">
               <img className="size-4" src="/src/assets/icons/copy.svg" alt="" />
             </span>
