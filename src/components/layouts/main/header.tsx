@@ -15,7 +15,7 @@ export default function MainHeader() {
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const { pathname } = useLocation()
-  const { linkWallet, connectWallet } = usePrivy()
+  const { connectWallet } = usePrivy()
   const { wallets } = useWallets()
   const { userData } = useUserStore()
 
@@ -49,12 +49,13 @@ export default function MainHeader() {
         {((!wallets.some(wallet => wallet.walletClientType !== 'privy')) && userData && Object.keys(userData).length > 0) && (
           <div
             onClick={() => {
-              if (wallets.length > 0) {
-                connectWallet()
-              }
-              else {
-                linkWallet()
-              }
+              connectWallet()
+              // if (wallets.length > 0) {
+              //   connectWallet()
+              // }
+              // else {
+              //   linkWallet()
+              // }
             }}
             className="cursor-pointer"
           >
@@ -178,7 +179,7 @@ function RightMenu() {
     const now = Math.floor(Date.now() / 1000)
     return payload.exp < now
   }
-  const { linkWallet, connectWallet } = usePrivy()
+  const { connectWallet } = usePrivy()
   const { wallets } = useWallets()
 
   useEffect(() => {
@@ -314,12 +315,13 @@ function RightMenu() {
           {((!wallets.some(wallet => wallet.walletClientType !== 'privy')) && userData && Object.keys(userData).length > 0) && (
             <div
               onClick={() => {
-                if (wallets.length > 0) {
-                  connectWallet()
-                }
-                else {
-                  linkWallet()
-                }
+                connectWallet()
+                // if (wallets.length > 0) {
+                //   connectWallet()
+                // }
+                // else {
+                //   linkWallet()
+                // }
               }}
               className="hidden w-fit cursor-pointer whitespace-nowrap text-4 lt-lg:block"
             >
