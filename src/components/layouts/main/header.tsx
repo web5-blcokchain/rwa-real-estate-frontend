@@ -200,15 +200,39 @@ function RightMenu() {
         }
       })
   }, [authenticated, user, mutateAsync])
-  const checkToken = async () => {
-    const token = getToken()
-    if (token && isTokenExpired(token)) {
-      await refreshUser()
-      getAccessToken().then((token) => {
-        if (!token)
-          return
-        setToken(token, 2)
+  const { logout } = usePrivy()
+  const navigate = useNavigate()
+  const { clearUserData } = useUserStore()
+  async function handleLogout() {
+    logout()
+      .then(
+        () => navigate({
+          to: '/home'
+        })
+      )
+      .then(() => {
+        clearUserData()
+        clearToken()
+
+        setCode(UserCode.NotExist)
       })
+  }
+  const checkToken = async () => {
+    try {
+      const token = getToken()
+      if (token && isTokenExpired(token)) {
+        await refreshUser()
+        getAccessToken().then((token) => {
+          if (!token)
+            return
+          setToken(token, 2)
+        })
+      }
+    }
+    catch (error) {
+      console.log(error)
+      // 重新获取token失败，重新登录
+      handleLogout()
     }
   }
   useEffect(() => {

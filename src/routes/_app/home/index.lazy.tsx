@@ -174,10 +174,12 @@ function RouteComponent() {
             {coinExplanation.map((item, index) => (
               <div key={index} className="">
                 <div className="fyc gap-7px max-lg:gap-1px max-xl:gap-3px">
-                  <img className={cn('size-10 max-xl:size-8 max-lg:size-6 max-md:size-10px', index === 1 && 'size-15 max-xl:size-10 max-lg:size-8 max-md:size-14px')} src={item.icon} />
-                  <div className="text-30px font-500 leading-10 max-lg:text-14px max-md:text-10px max-xl:text-20px max-lg:leading-5 max-md:leading-6 max-xl:leading-7">{t(item.title)}</div>
+                  <img className={cn('size-10 max-xl:size-8 max-lg:size-6 max-md:size-10px')} src={item.icon} />
+                  <div className="text-26px font-500 leading-10 max-lg:text-16px max-md:text-10px max-xl:text-20px max-lg:leading-5 max-md:leading-6 max-xl:leading-7">{t(item.title)}</div>
                 </div>
-                <div className="mt-3 w-490px text-left text-6 text-#a7a9ad leading-7 max-md:mt-1 max-lg:w-180px max-xl:w-320px max-lg:text-2 max-xl:text-4 max-lg:leading-3 max-xl:leading-5">{t(item.content)}</div>
+                <div className="mt-3 w-490px text-left text-20px text-#a7a9ad leading-7 max-md:mt-1 max-lg:w-180px max-xl:w-320px max-lg:text-12px max-md:text-8px max-xl:text-14px max-lg:leading-3 max-xl:leading-5">
+                  {t(item.content)}
+                </div>
               </div>
             ))}
           </div>
@@ -202,26 +204,26 @@ function RouteComponent() {
             >
               <div className="grid grid-cols-3 mt-8 gap-7 max-lg:grid-cols-2 max-lg:mt-4 max-xl:mt-6 max-lg:gap-3 max-xl:gap-5">
                 {
-                  propertieList && Array.from({ length: 4 }).map((_, index) => {
+                  propertieList && Array.from({ length: Math.min(4, propertieList.length) }).map((_, index) => {
                     const card = propertieList[index]
                     // if (!card || !card.image_urls)
                     //   return null
                     const [picture] = (!card || !card.image_urls) ? [''] : joinImagesPath(card.image_urls)
                     return (
                       <FeatureCard
-                        key={card.id}
+                        key={card?.id || ''}
                         picture={picture}
-                        title={card.name}
-                        location={card.address}
-                        price={card.price}
-                        house_life={card.house_life}
-                        bedrooms={card.bedrooms}
+                        title={card?.name || ''}
+                        location={card?.address || ''}
+                        price={card?.price || ''}
+                        house_life={card?.house_life || ''}
+                        bedrooms={card?.bedrooms || ''}
                         className={cn('select-none clickable-99 max-lg:block w-full', index === 3 && 'hidden')}
                         onClick={() => {
                           navigate({
                             to: '/properties/detail/$id',
                             params: {
-                              id: card.id
+                              id: card?.id || ''
                             }
                           })
                         }}
