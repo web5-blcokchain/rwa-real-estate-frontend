@@ -195,7 +195,7 @@ function RouteComponent() {
         <p>
           {t('properties.payment.please_verify_1')}
 
-          Your account must be fully verified with a valid government-issued ID or passport.
+          {t('properties.payment.appeal_title')}
         </p>
       </div>
 

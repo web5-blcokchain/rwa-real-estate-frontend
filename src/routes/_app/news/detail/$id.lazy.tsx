@@ -1,3 +1,4 @@
+import featureCard from '@/assets/images/feature-card.png'
 import { createLazyFileRoute } from '@tanstack/react-router'
 
 export const Route = createLazyFileRoute('/_app/news/detail/$id')({
@@ -12,7 +13,7 @@ function RouteComponent() {
     <div className="mt-16 px-121px max-lg:px-20px max-xl:px-60px">
       <div className="text-6 max-lg:text-4 max-xl:text-5">马修·艾斯纳·1月16，2024</div>
       <div className="mt-25px text-50px font-600 leading-100% max-lg:mt-12px max-xl:mt-18px max-lg:text-24px max-xl:text-36px max-lg:leading-120% max-xl:leading-110%">探索金融的未来:代币化的现实世界资产</div>
-      <img className="mt-65px w-full max-lg:mt-24px max-xl:mt-40px" src="/src/assets/images/feature-card.png" alt="" />
+      <img className="mt-65px w-full max-lg:mt-24px max-xl:mt-40px" src={featureCard} alt="" />
       <div className="mt-41px flex flex-col gap-41px text-6 max-lg:mt-16px max-xl:mt-28px max-lg:gap-12px max-xl:gap-24px max-lg:text-4 max-xl:text-5">
         <div>在充满活力的金融世界中，一种变革性的趋势正在出现，这种趋势模糊了传统金融方法与去中心化金融(DeFi)创新领域之间的界限。这一趋势围绕着将现实世界资产(RWA) 整合到 DeFi 中展开，标志着数字时代资产感知和处理方式的关键转变。</div>
         <div>从历史上看，RWA 一直是传统金融(Tradi)的支柱，受既定规范和实践的约束。然而，区块链技术的出现和 DeFi 的兴起为这些资产开辟了新的途径。通过将 RWA 引入 DeFi 生态系统，有可能彻底改变资产管理，使其更具包容性、流动性和效率。</div>

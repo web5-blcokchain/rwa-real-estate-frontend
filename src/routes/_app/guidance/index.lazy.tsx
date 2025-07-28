@@ -1,3 +1,4 @@
+import blocksAndArrows from '@/assets/icons/blocks-and-arrows.svg'
 import { createLazyFileRoute } from '@tanstack/react-router'
 
 export const Route = createLazyFileRoute('/_app/guidance/')({
@@ -12,7 +13,7 @@ function RouteComponent() {
     <div className="flex gap-100px px-120px py-30px max-md:flex-col max-lg:gap-40px max-md:gap-8 max-lg:px-24px max-lg:py-16px max-md:px-2 max-md:py-2">
       <div>
         <div className="fyc gap-4 py-5 text-28px font-500 max-lg:py-3 max-md:py-2 max-lg:text-20px max-md:text-16px">
-          <img className="size-26px max-lg:size-18px max-md:size-12px" src="/src/assets/icons/blocks-and-arrows.svg" alt="" />
+          <img className="size-26px max-lg:size-18px max-md:size-12px" src={blocksAndArrows} alt="" />
           <div>新手指导</div>
         </div>
         <div className="w-254px flex flex-col gap-4 text-center text-26px max-lg:w-180px max-md:w-full max-lg:gap-2 max-md:gap-1 max-lg:text-18px max-md:text-14px">

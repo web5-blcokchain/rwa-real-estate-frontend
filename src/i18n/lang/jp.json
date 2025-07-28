@@ -355,7 +355,8 @@
       "annual_yield": "年間利回り",
       "valuation": "評価",
       "create_sell_order": "売却",
-      "redeem": "買い戻す"
+      "redeem": "買い戻す",
+      "appeal_title": "アカウントは、有効な政府発行の身分証明書またはパスポートを使用して完全に検証する必要があります。"
     }
   },
   "help": {
@@ -402,7 +403,8 @@
     "menu_assets_summary": "購入記録",
     "menu_distribution_record": "代币发放記録",
     "menu_message": "メッセージセンター",
-    "menu_dividend_statistics": "配当統計"
+    "menu_dividend_statistics": "配当統計",
+    "menu_appeal": "申訴情報"
   },
   "footer": {
     "about": "について",

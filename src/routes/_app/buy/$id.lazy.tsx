@@ -1,4 +1,6 @@
 import type { TabsProps } from 'antd'
+import bnb from '@/assets/images/bnb.png'
+import usdc from '@/assets/images/usdc.png'
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { Button, Checkbox, ConfigProvider, InputNumber, Tabs } from 'antd'
 import { useState } from 'react'
@@ -65,7 +67,7 @@ function BuyContent({ type, onSuccess }: { type: number, onSuccess: () => void }
         <div className="fyc justify-between gap-4 max-lg:gap-2 max-md:gap-1">
           <div className="flex gap-23px max-lg:gap-12px max-md:gap-6px">
             <div className="size-45px rounded-full pt-8px max-lg:size-32px max-md:size-24px max-lg:pt-8px max-md:pt-10px">
-              <img src="/src/assets/images/bnb.png" alt="" />
+              <img src={bnb} alt="" />
             </div>
             <div>
               <div
@@ -117,7 +119,7 @@ function BuyContent({ type, onSuccess }: { type: number, onSuccess: () => void }
         <div className="fyc justify-between gap-4 max-lg:gap-2 max-md:gap-1">
           <div className="flex gap-23px max-lg:gap-12px max-md:gap-6px">
             <div className="size-45px rounded-full pt-8px max-lg:size-32px max-md:size-24px max-lg:pt-8px max-md:pt-10px">
-              <img src="/src/assets/images/usdc.png" alt="" />
+              <img src={usdc} alt="" />
             </div>
             <div>
               <div className="fyc cursor-pointer gap-2 text-7 leading-10 max-lg:text-6 max-md:text-4" onClick={() => toOpenDialog(0)}>

@@ -1,6 +1,7 @@
 import type { PropertieItem } from '@/api/apiMyInfoApi'
 import type { TableProps } from 'antd'
 import apiMyInfo from '@/api/apiMyInfoApi'
+import copyIcon from '@/assets/icons/copy.svg'
 import group272Icon from '@/assets/icons/group272.png'
 import TableComponent from '@/components/common/table-component'
 import { addTokenToWallet } from '@/utils/wallet'
@@ -97,7 +98,7 @@ export function DistributionRecord() {
           <div className="fyc gap-2">
             <span title={record.contract_address}>{record.contract_address ? `${record.contract_address.slice(0, 4)}...${record.contract_address.slice(-4)}` : ''}</span>
             <span onClick={() => copyText(record.contract_address)} className="cursor-pointer">
-              <img className="size-4" src="/src/assets/icons/copy.svg" alt="" />
+              <img className="size-4" src={copyIcon} alt="" />
             </span>
           </div>
         )
@@ -112,7 +113,7 @@ export function DistributionRecord() {
           <div className="fyc gap-2">
             <span title={record.drwa_hash}>{record.drwa_hash ? `${record.drwa_hash.slice(0, 4)}...${record.drwa_hash.slice(-4)}` : ''}</span>
             <span onClick={() => copyText(record.drwa_hash)} className="cursor-pointer">
-              <img className="size-4" src="/src/assets/icons/copy.svg" alt="" />
+              <img className="size-4" src={copyIcon} alt="" />
             </span>
           </div>
         )

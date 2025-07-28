@@ -30,6 +30,7 @@ const store: StateCreator<StoreState, [], [['zustand/persist', Partial<StoreStat
       set({ code })
     },
     setLanguage: (language: string) => {
+      localStorage.setItem('language', language)
       set({ language })
     },
     setUserData: (obj: Partial<UserResponse>) => {

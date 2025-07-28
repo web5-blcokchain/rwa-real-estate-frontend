@@ -1,6 +1,7 @@
 import type { historyResponse } from '@/api/apiMyInfoApi'
 import type { TableProps } from 'antd'
 import apiMyInfoApi, { getEarningsInfo } from '@/api/apiMyInfoApi'
+import copyIcon from '@/assets/icons/copy.svg'
 import { useQuery } from '@tanstack/react-query'
 import { ConfigProvider, Empty, Select, Table } from 'antd'
 import enUS from 'antd/locale/en_US'
@@ -139,7 +140,7 @@ export default function DividendStatistics() {
           <div className="fyc gap-2">
             <span title={record.tx_hash}>{record.tx_hash ? `${record.tx_hash.slice(0, 4)}...${record.tx_hash.slice(-4)}` : ''}</span>
             <span onClick={() => copyText(record.tx_hash)} className="cursor-pointer">
-              <img className="size-4" src="/src/assets/icons/copy.svg" alt="" />
+              <img className="size-4" src={copyIcon} alt="" />
             </span>
           </div>
         )

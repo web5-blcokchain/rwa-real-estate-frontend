@@ -10,5 +10,6 @@ export enum ProfileTab {
   AssetsSummary = 'AssetsSummary',
   DistributionRecord = 'DistributionRecord',
   Message = 'Message',
-  DividendStatistics = 'DividendStatistics'
+  DividendStatistics = 'DividendStatistics',
+  Appeal = 'Appeal'
 }

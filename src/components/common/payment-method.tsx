@@ -36,7 +36,6 @@ export const PaymentMethod: FC<{
   const [bindWalletLoading, setBindWalletLoading] = useState(false)
   // const isConnectedWallet = wallets.some(wallet => wallet.walletClientType !== "privy")
   // 获取当前链接的钱包
-
   // 绑定钱包
   const handleBindWallet = () => {
     // navigate({ to: '/profile/bind-wallet' })

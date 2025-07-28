@@ -1,3 +1,4 @@
+import logo from '@/assets/images/logo.png'
 import { Link } from '@tanstack/react-router'
 
 export default function MainFooter() {
@@ -6,7 +7,7 @@ export default function MainFooter() {
     <footer className="mt-32 bg-[#1e2024] px-8 py-14 max-lg:mt-6 max-lg:py-7">
       <div className="flex items-center gap-y-12 md:grid-cols-4 max-md:flex-col">
         <div className="flex items-center gap-11 pr-132px max-md:w-full max-md:pr-0 max-xl:pr-82px">
-          <img className="w-171px max-lg:w-81px max-xl:w-121px" src="/src/assets/images/logo.png" alt="" />
+          <img className="w-171px max-lg:w-81px max-xl:w-121px" src={logo} alt="" />
           <div className="mt-4 fyc gap-2 text-text">
             <div className="i-bxl-telegram size-12 max-lg:size-6 max-xl:size-8"></div>
             <div className="i-ri-linkedin-fill size-12 max-lg:size-6 max-xl:size-8"></div>

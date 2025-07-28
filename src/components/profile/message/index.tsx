@@ -87,13 +87,13 @@ export default function Message() {
                   <Checkbox value={item.id}></Checkbox>
                   <div className="w-full flex flex-1 flex-col gap-2">
                     <div className="fyc justify-between">
-                      <div className="flex items-start gap-2 text-xl max-lg:text-base">
+                      <div className="flex items-start gap-2 text-18px max-lg:text-base">
                         <div>{item.title}</div>
                         {item.status === 0 && <div className="mt-3% size-2.5 rounded-full bg-#eb5545"></div>}
                       </div>
                       <div className="text-#dbdbdb max-lg:text-12px">{dayjs(item.time).format('YYYY-MM-DD HH:mm:ss')}</div>
                     </div>
-                    <div className="text-base max-lg:text-sm">{item.content}</div>
+                    <div className="text-sm">{item.content}</div>
                   </div>
                 </div>
               ))

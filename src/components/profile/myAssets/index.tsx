@@ -3,6 +3,7 @@ import type { TableProps } from 'antd'
 import apiMyInfo from '@/api/apiMyInfoApi'
 import button2 from '@/assets/icons/BUTTON2-2.png'
 import button3 from '@/assets/icons/BUTTON3.png'
+import copyIcon from '@/assets/icons/copy.svg'
 import group272Icon from '@/assets/icons/group272.png'
 import TableComponent from '@/components/common/table-component'
 import { useQuery } from '@tanstack/react-query'
@@ -95,7 +96,7 @@ export function MyAssets() {
           <div className="fyc gap-2">
             <span title={record.contract_address}>{record.contract_address ? `${record.contract_address.slice(0, 4)}...${record.contract_address.slice(-4)}` : ''}</span>
             <span onClick={() => copyText(record.contract_address)} className="cursor-pointer">
-              <img className="size-4" src="/src/assets/icons/copy.svg" alt="" />
+              <img className="size-4" src={copyIcon} alt="" />
             </span>
           </div>
         )

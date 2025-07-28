@@ -1,4 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react'
+import bnb from '@/assets/images/bnb.png'
+import usdc from '@/assets/images/usdc.png'
 import { Button, Modal } from 'antd'
 import './DialogConfirmPayment.scss'
 
@@ -21,13 +23,13 @@ export const DialogConfirmPayment: FC<{
       <div className="w-full">
         <div className="mt-11 fyc justify-evenly">
           <div className="fccc gap-4 max-lg:gap-2">
-            <img className="size-45px rounded-full" src="/src/assets/images/bnb.png" alt="" />
+            <img className="size-45px rounded-full" src={bnb} alt="" />
             <div className="text-xl text-#606672 max-lg:text-base">BNB</div>
             <div className="text-3xl max-lg:text-2xl">0.0001</div>
           </div>
           <div className="i-gg:arrow-right size-42px bg-white max-lg:size-32px"></div>
           <div className="fccc gap-4 max-lg:gap-2">
-            <img className="size-45px rounded-full" src="/src/assets/images/usdc.png" alt="" />
+            <img className="size-45px rounded-full" src={usdc} alt="" />
             <div className="text-xl text-#606672 max-lg:text-base">USDC</div>
             <div className="text-3xl max-lg:text-2xl">0.0001</div>
           </div>

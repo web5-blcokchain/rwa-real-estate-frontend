@@ -355,7 +355,8 @@
       "annual_yield": "Annual Yield",
       "valuation": "Valuation",
       "create_sell_order": "Sell",
-      "redeem": "Redeem"
+      "redeem": "Redeem",
+      "appeal_title": "Your account must be fully verified with a valid government-issued ID or passport."
     }
   },
   "help": {
@@ -402,7 +403,8 @@
     "menu_assets_summary": "Purchase Record",
     "menu_distribution_record": "Token Distribution Record",
     "menu_message": "Message Center",
-    "menu_dividend_statistics": "Dividend Statistics"
+    "menu_dividend_statistics": "Dividend Statistics",
+    "menu_appeal": "Appeal Information"
   },
   "footer": {
     "about": "About",

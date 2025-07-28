@@ -355,7 +355,8 @@
       "annual_yield": "年回报率",
       "valuation": "估值",
       "create_sell_order": "卖出",
-      "redeem": "赎回"
+      "redeem": "赎回",
+      "appeal_title": "您的账户必须用政府签发的有效身份证件或护照进行全面核实。"
     }
   },
   "help": {
@@ -402,7 +403,8 @@
     "menu_assets_summary": "购买记录",
     "menu_distribution_record": "代币发放记录",
     "menu_message": "消息中心",
-    "menu_dividend_statistics": "分红统计"
+    "menu_dividend_statistics": "分红统计",
+    "menu_appeal": "申诉信息"
   },
   "footer": {
     "about": "关于",
