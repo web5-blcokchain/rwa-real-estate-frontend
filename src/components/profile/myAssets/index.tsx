@@ -6,7 +6,9 @@ import button3 from '@/assets/icons/BUTTON3.png'
 import copyIcon from '@/assets/icons/copy.svg'
 import group272Icon from '@/assets/icons/group272.png'
 import TableComponent from '@/components/common/table-component'
+import { envConfig } from '@/utils/envConfig'
 import { useQuery } from '@tanstack/react-query'
+import { Link } from '@tanstack/react-router'
 import { Space } from 'antd'
 import dayjs from 'dayjs'
 import numbro from 'numbro'
@@ -19,12 +21,16 @@ export function MyAssets() {
     navigator.clipboard.writeText(text)
     toast.success(t('common.copy_success'))
   }
+
+  const toBlockchain = (address: string) => {
+    window.open(`${envConfig.blockExplorerUrl}/address/${address}`, '_blank')
+  }
   // 表格1配置
   const columns: TableProps<PropertieItem>['columns'] = [
     {
       title: <div>{t('profile.data_count.order_id')}</div>,
-      dataIndex: 'id',
-      key: 'id'
+      dataIndex: 'code',
+      key: 'code'
     },
     {
       title: <div>{t('profile.data_count.asset')}</div>,
@@ -35,9 +41,11 @@ export function MyAssets() {
           <div className="flex items-center justify-start">
             <img src={group272Icon} alt="" className="mr-2 h-6 w-6" />
             <div className="flex flex-col justify-start">
-              <div>{record.address}</div>
+              <Link to="/properties/detail/$id" params={{ id: record.properties_id.toString() }}>
+                <div>{record.address}</div>
+              </Link>
               <div className="text-[#8d909a]">{record.property_type}</div>
-              <div>
+              <div className="main-hover cursor-pointer" onClick={() => toBlockchain(record.contract_address)}>
                 {t('profile.data_count.token_name')}
                 :
                 {record.name}

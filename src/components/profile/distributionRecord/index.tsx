@@ -4,12 +4,15 @@ import apiMyInfo from '@/api/apiMyInfoApi'
 import copyIcon from '@/assets/icons/copy.svg'
 import group272Icon from '@/assets/icons/group272.png'
 import TableComponent from '@/components/common/table-component'
+import { envConfig } from '@/utils/envConfig'
 import { addTokenToWallet } from '@/utils/wallet'
 import { useWallets } from '@privy-io/react-auth'
 import { useQuery } from '@tanstack/react-query'
+import { Link } from '@tanstack/react-router'
 import { Button } from 'antd'
 import dayjs from 'dayjs'
 
+// 代币发放记录
 export function DistributionRecord() {
   const { t } = useTranslation()
   const coinStatus = ['unclaimed', 'claimed', 'withdraw', 'failed']
@@ -31,6 +34,7 @@ export function DistributionRecord() {
     }
     catch (e) {
       console.error(e)
+      toast.error(t('profile.data_count.add_token_failed'))
     }
     finally {
       setAddCoinLoading(0)
@@ -39,6 +43,9 @@ export function DistributionRecord() {
   const copyText = (text: string) => {
     navigator.clipboard.writeText(text)
     toast.success(t('common.copy_success'))
+  }
+  const toBlockchain = (address: string) => {
+    window.open(`${envConfig.blockExplorerUrl}/address/${address}`, '_blank')
   }
 
   // 表格1配置
@@ -52,9 +59,11 @@ export function DistributionRecord() {
           <div className="flex items-center justify-start">
             <img src={group272Icon} alt="" className="mr-2 h-6 w-6" />
             <div className="flex flex-col justify-start">
-              <div>{record.address}</div>
+              <Link to="/properties/detail/$id" params={{ id: record.properties_id.toString() }}>
+                <div>{record.address}</div>
+              </Link>
               <div className="text-[#8d909a]">{record.property_type}</div>
-              <div>
+              <div className="main-hover cursor-pointer" onClick={() => toBlockchain(record.contract_address)}>
                 {t('profile.data_count.token_name')}
                 :
                 {record.name}

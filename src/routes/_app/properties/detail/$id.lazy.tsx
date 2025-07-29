@@ -3,14 +3,14 @@ import apiBasic from '@/api/basicApi'
 import { CollectButton } from '@/components/common/collect-button'
 import { IInfoField } from '@/components/common/i-info-field'
 import { useCommonDataStore } from '@/stores/common-data'
+import { formatNumberNoRound } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
 import { getTokenInfo } from '@/utils/wallet'
 import { getContractBalance } from '@/utils/web3'
 import { usePrivy, useWallets } from '@privy-io/react-auth'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate } from '@tanstack/react-router'
-import { Button, Image, InputNumber } from 'antd'
-import numbro from 'numbro'
+import { Button, Image, InputNumber, Modal } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
@@ -35,7 +35,7 @@ function RouteComponent() {
   const assetId = Number.parseInt(params.id)
 
   // const [annualReturn, setAnnualReturn] = useState<number>(0)
-  const [ratioNum, setRatioNum] = useState<number>(0)
+  // const [ratioNum, setRatioNum] = useState<number>(0)
   const [isCollect, setIsCollect] = useState<0 | 1>(0)
   const [, setContractBalance] = useState<string>('0')
   const [previewVisible, setPreviewVisible] = useState(false)
@@ -65,21 +65,7 @@ function RouteComponent() {
   useEffect(() => {
     if (!assetDetail)
       return
-
-    // const monthlyRent = Number(assetDetail.monthly_rent) // 每月租金
-    // const expectedAnnualReturn = Number(assetDetail.expected_annual_return) // 预期年回报率
-    // const price = Number(assetDetail.price)
-    // const capitalAppreciation = Number(assetDetail.capital_appreciation)
-
-    // const rentalNum = monthlyRent * expectedAnnualReturn / 100
-    // const capitalNum = price * capitalAppreciation / 100
-    // const annualReturnValue = (rentalNum + capitalNum) * 12
-
-    // setAnnualReturn(annualReturnValue)
-    setRatioNum(20)
     setIsCollect(assetDetail.is_collect)
-    // setRatioNum(Number(((investmentPrice * 12) / (rentalNum + capitalNum)) * 100))
-
     // 使用工具函数替换原代码
     if (assetDetail.contract_address) {
       getContractBalance(assetDetail.contract_address)
@@ -105,6 +91,15 @@ function RouteComponent() {
   }
 
   const [investmentAmount, setInvestmentAmount] = useState<number>()
+  const [open, setOpen] = useState(false)
+
+  const detailRatio = useMemo(() => {
+    return formatNumberNoRound((investmentAmount || 0) / Number(assetDetail?.price || 0) / Number(assetDetail?.Inception_number || 0) * 100, 6)
+  }, [investmentAmount, assetDetail])
+
+  const maxBuyNum = useMemo(() => {
+    return Number(assetDetail?.Inception_number || 0) * Number(assetDetail?.price || 0)
+  }, [assetDetail])
 
   return (
     <div className="px-12 space-y-8 max-lg:px-4">
@@ -114,7 +109,7 @@ function RouteComponent() {
         iconClass="size-8"
       >
 
-        <div className="space-y-4">
+        <div className="properties-content space-y-4">
           <div className="relative w-full flex flex-col gap-8 b-b-1 b-b-#848E9C">
             {imageList.length > 0 && (
               <div className="relative w-full">
@@ -150,7 +145,7 @@ function RouteComponent() {
             )}
 
             <div>
-              <div className="fb gap-4">
+              <div className="max-w-50% fb gap-4 pr-3 max-lg:max-w-full max-lg:pr-0">
                 <div className="space-y-4">
                   <div className="text-6">{assetDetail?.name}</div>
                   <div className="text-4">{assetDetail?.address}</div>
@@ -187,7 +182,7 @@ function RouteComponent() {
               </div>
 
             </div>
-            <div className="absolute bottom-6 right-0 rounded-lg bg-#F0B90B px-6 py-18px text-black max-lg:relative space-y-2">
+            <div className="absolute bottom-6 right-0 max-w-50% rounded-lg bg-#F0B90B px-6 py-18px text-black max-lg:relative max-lg:max-w-full space-y-2">
               <div>
                 <div className="text-4.5 font-bold">{t('properties.detail.return')}</div>
                 <div className="text-10 font-bold max-lg:text-7.5">
@@ -195,30 +190,23 @@ function RouteComponent() {
                   %
                 </div>
                 <div className="text-4">
-                  {t('properties.detail.including')}
-                  {assetDetail?.expected_annual_return}
-                  %
-                  {' '}
-                  {t('properties.detail.rental')}
-                  {assetDetail?.capital_appreciation}
-                  %
-                  {' '}
-                  {t('properties.detail.capital')}
+                  {t('properties.detail.return_range', { max: `${Number(assetDetail?.annual_return_max || 0)}%`, min: `${Number(assetDetail?.annual_return_min || 0)}%` })}
                 </div>
               </div>
 
               <div>
                 <div className="mb-2 flex justify-between text-18px max-lg:text-16px">
                   <div>{t('properties.detail.invest_calculator')}</div>
-                  <div>{t('properties.detail.average_days', { n: 30 })}</div>
+                  {/* <div>{t('properties.detail.average_days', { n: 30 })}</div> */}
                 </div>
                 <InputNumber
+                  max={maxBuyNum}
                   value={investmentAmount}
                   controls={false}
                   onChange={e => setInvestmentAmount(e || 0)}
-                  className="computed-input w-510px max-lg:w-full !b-#484D56 !bg-transparent !text-#484D56"
+                  className="computed-input max-w-full w-510px max-lg:w-full !b-#484D56 !bg-transparent !text-#484D56"
                   placeholder={t('properties.detail.invest_calculator_placeholder')}
-                  suffix="USDC" // coinSymbol || assetDetail?.token_symbol ||
+                  suffix="USDT/USDC" // coinSymbol || assetDetail?.token_symbol ||
                 />
               </div>
 
@@ -227,14 +215,22 @@ function RouteComponent() {
                   className="flex-1 space-y-2"
                   labelClass="text-black"
                   label={t('properties.detail.return')}
-                  value={numbro(Number(assetDetail?.expected_annual_return) + Number(assetDetail?.capital_appreciation) * (investmentAmount || 0) / 100).format({ thousandSeparated: true, mantissa: (investmentAmount ? 2 : 0) })}
+                  value={`${formatNumberNoRound((Number(assetDetail?.expected_annual_return) * (investmentAmount || 0) / 100), 6, 0, {
+                    thousandSeparated: true
+                  })}`}
                 />
                 <IInfoField
                   className="flex-1 space-y-2"
                   labelClass="text-black"
                   label={t('properties.detail.ratio')}
-                  value={`${ratioNum.toFixed(2)}%`}
+                  value={`${detailRatio}%`}
                 />
+                {/* <IInfoField
+                  className="flex-1 space-y-2"
+                  labelClass="text-black"
+                  label={t('properties.detail.annual_return_max')}
+                  value={`${Number(assetDetail?.annual_return_max || 0)}%`}
+                /> */}
               </div>
 
               <div>
@@ -247,6 +243,10 @@ function RouteComponent() {
                 >
                   {t('properties.detail.invest')}
                 </Button>
+              </div>
+              <div className="fyc cursor-pointer gap-1 text-sm" onClick={() => setOpen(true)}>
+                <div>{t('properties.detail.lock_period')}</div>
+                <div className="i-carbon-warning size-4 bg-black leading-4"></div>
               </div>
             </div>
 
@@ -272,6 +272,27 @@ function RouteComponent() {
               </div>
             </div>
           </div>
+          {/* 锁定期弹窗 */}
+          <Modal
+            className="[&>div>.ant-modal-content]:!bg-background"
+            // closeIcon={false}
+            centered
+            width="80%"
+            onCancel={() => setOpen(false)}
+            open={open}
+            footer={null}
+          >
+            <div className="">
+              <div className="mb-6 text-2xl font-bold">{t('properties.detail.lock_period_title')}</div>
+              <div className="text-base">{t('properties.detail.lock_period_content')}</div>
+              <ul className="mt-2 list-disc text-sm [&>li]:ml-4 space-y-1">
+                <li>{t('properties.detail.lock_period_content_1')}</li>
+                <li>{t('properties.detail.lock_period_content_2')}</li>
+                <li>{t('properties.detail.lock_period_content_3')}</li>
+                <li>{t('properties.detail.lock_period_content_4')}</li>
+              </ul>
+            </div>
+          </Modal>
         </div>
       </Waiting>
     </div>

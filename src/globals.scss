@@ -45,3 +45,12 @@ a {
 .ant-modal .ant-modal-header {
   background:transparent;
 }
+
+:root {
+  a:hover,.main-hover:hover{
+    color: var(--primary);
+    transition: all 0.3s ease;
+  }
+}
+
+

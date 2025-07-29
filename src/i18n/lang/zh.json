@@ -314,6 +314,7 @@
       "return": "预期年度回报",
       "including": "包括",
       "rental": "租金收益率和",
+      "return_range": "预计收益率在{{min}} 到 {{max}}之间（包括固定租金收益和房屋增值收益）",
       "capital": "资本增值",
       "average": "平均30天",
       "amount_placeholder": "输入投资金额",
@@ -328,7 +329,14 @@
       "analysis": "租金收入分析",
       "invest_calculator": "投资计算器",
       "invest_calculator_placeholder": "请输入投资净金额",
-      "average_days": "平均{{n}}天"
+      "average_days": "平均{{n}}天",
+      "lock_period": "锁定期说明",
+      "lock_period_title": "购买锁定期说明",
+      "lock_period_content": "为保障平台资金安全与投资公平性，每笔房产代币初始购买均设有 锁定期，在锁定期间内，该部分资产将无法进行转让或出售。",
+      "lock_period_content_1": "锁定期时长：购买后 2天（或以房产具体说明为准）",
+      "lock_period_content_2": "锁定期内限制：不能转账、不能在二级市场交易、不能提现",
+      "lock_period_content_3": "锁定期结束后：自动解锁，用户可自由流通或出售所持代币",
+      "lock_period_content_4": "目的说明：用于防止短期套利与恶意操作，保障房产代币系统的稳定运行"
     },
     "payment": {
       "token_price": "代币价格",
@@ -341,7 +349,7 @@
       "payment_method": "使用以下钱包地址支付",
       "credit_card": "信用卡",
       "cryptocurrency": "加密货币",
-      "dear_user": "亲爱的用户,",
+      "dear_user": "亲爱的用户:",
       "please_verify": "为确保场外交易的安全性，您必须满足以下要求并完成必要的验证流程：",
       "please_verify_1": "您的帐户必须用政府签发的有效身份证件或护照进行全面核实。",
       "expire": "付款到账时间为",
@@ -356,7 +364,12 @@
       "valuation": "估值",
       "create_sell_order": "卖出",
       "redeem": "赎回",
-      "appeal_title": "您的账户必须用政府签发的有效身份证件或护照进行全面核实。"
+      "appeal_title": "您的账户必须用政府签发的有效身份证件或护照进行全面核实。",
+      "bind_wallet": "使用以下您曾经绑定的钱包付款",
+      "bind_wallet_content_1": "由于我们即将区块链交互，预计需要10～20秒完成交易，请耐心等待，如中途遇到问题",
+      "bind_wallet_content_2": "1、请检查网络连接；",
+      "bind_wallet_content_3": "2、确保您安装了浏览器插件；",
+      "bind_wallet_content_4": "3、如果是手机中操作确保您的手机中装有MetaMask等钱包；"
     }
   },
   "help": {
@@ -545,7 +558,8 @@
       "transaction_hash": "交易hash",
       "add_to_wallet": "添加代币到钱包",
       "token_name": "代币名",
-      "add_token_success": "添加代币成功"
+      "add_token_success": "添加代币成功",
+      "add_token_failed": "添加代币失败"
     },
     "propertyTokens": {
       "title": "持有的代币"

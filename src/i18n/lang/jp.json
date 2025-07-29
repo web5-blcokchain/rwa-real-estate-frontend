@@ -314,6 +314,7 @@
       "return": "年間リターンを期待しています",
       "including": "を含む",
       "rental": "賃貸料収益率と",
+      "return_range": "予想収益率は{{min}} から {{max}} の間です（固定家賃収入と不動産価値上昇を含む）",
       "capital": "の資本増値",
       "average": "平均30日",
       "amount_placeholder": "投資金額の入力",
@@ -328,7 +329,14 @@
       "analysis": "賃料収入分析",
       "invest_calculator": "投資計算機",
       "invest_calculator_placeholder": "投資金額の入力",
-      "average_days": "平均{{n}}日"
+      "average_days": "平均{{n}}日",
+      "lock_period": "鎖定期説明",
+      "lock_period_title": "購入鎖定期説明",
+      "lock_period_content": "プラットフォーム資金の安全と投資公平性を確保するため、不動産トークンの初期購入には鎖定期が設定されています。鎖定期中、資産は移転または売却できません。",
+      "lock_period_content_1": "鎖定期の長さ：購入後2日（または不動産の詳細に記載されている場合）",
+      "lock_period_content_2": "鎖定期の制限：転送、セカンダリーマーケット取引、引き出しができません",
+      "lock_period_content_3": "鎖定期の終了：自動的に解除され、ユーザーはトークンを自由に流通または売却できます",
+      "lock_period_content_4": "目的：短期の投機と悪意のある操作を防止し、不動産トークンシステムの安定性を確保するため"
     },
     "payment": {
       "token_price": "トークン価格",
@@ -341,7 +349,7 @@
       "payment_method": "以下のウォレットアドレスで支払います",
       "credit_card": "クレジットカード",
       "cryptocurrency": "デジタル暗号化通貨",
-      "dear_user": "尊敬するユーザー,",
+      "dear_user": "尊敬するユーザー:",
       "please_verify": "場外取引を安全にするためには、次の要件を満たし、必要な検証プロセスを完了する必要があります。",
       "please_verify_1": "アカウントは、有効な政府発行の身分証明書またはパスポートを使用して完全に検証する必要があります。",
       "expire": "支払は期限切れになります",
@@ -356,7 +364,12 @@
       "valuation": "評価",
       "create_sell_order": "売却",
       "redeem": "買い戻す",
-      "appeal_title": "アカウントは、有効な政府発行の身分証明書またはパスポートを使用して完全に検証する必要があります。"
+      "appeal_title": "アカウントは、有効な政府発行の身分証明書またはパスポートを使用して完全に検証する必要があります。",
+      "bind_wallet": "以前お支払いしたウォレットを使います ",
+      "bind_wallet_content_1": "わたしたちはブロックチェーンの相互作用を行う予定です。約10～20秒で取引が完了すると予想されます。お待ちください。もし途中で問題が発生した場合は、",
+      "bind_wallet_content_2": "1、ネットワーク接続を確認してください。",
+      "bind_wallet_content_3": "2、ブラウザプラグインをインストールしてください。",
+      "bind_wallet_content_4": "3、携帯電話で操作する場合は、MetaMaskなどのウォレットをインストールしてください。"
     }
   },
   "help": {
@@ -545,7 +558,8 @@
       "transaction_hash": "取引ハッシュです",
       "add_to_wallet": "ウォレットに追加",
       "token_name": "トークン名",
-      "add_token_success": "トークンをウォレットに追加しました"
+      "add_token_success": "トークンをウォレットに追加しました",
+      "add_token_failed": "トークンをウォレットに追加に失敗しました"
     },
     "propertyTokens": {
       "title": "保有しているトークンです"

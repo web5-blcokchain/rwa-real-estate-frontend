@@ -1,6 +1,7 @@
 import { getTransactionDetail } from '@/api/transaction'
 import { ChatButton } from '@/components/common/chat-button'
 import { IInfoField } from '@/components/common/i-info-field'
+import { envConfig } from '@/utils/envConfig'
 import { shortAddress } from '@/utils/wallet'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch } from '@tanstack/react-router'
@@ -134,7 +135,7 @@ function RouteComponent() {
 
   const openBlockUrl = () => {
     if (status === 'success') {
-      window.open(`${import.meta.env.VITE_PUBLIC_WEB_BLOCK_URL}/tx/${hash}`, '_blank')
+      window.open(`${envConfig.blockExplorerUrl}/tx/${hash}`, '_blank')
     }
   }
 

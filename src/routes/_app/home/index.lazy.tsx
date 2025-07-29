@@ -83,7 +83,7 @@ function RouteComponent() {
 
   const tabOfDocument = (index: number) => {
     return (
-      <div className="grid grid-cols-3 gap-[29px] rounded-14px max-lg:gap-3 max-xl:gap-6">
+      <div className="grid grid-cols-3 gap-[29px] rounded-14px max-md:grid-cols-2 max-lg:gap-3 max-xl:gap-6 max-md:[&>:last-child]:hidden">
         {
           documentList.map((res) => {
             return <Document key={res.title} data={res} index={index} />

@@ -214,7 +214,6 @@ function RightMenu() {
       .then(() => {
         clearUserData()
         clearToken()
-
         setCode(UserCode.NotExist)
       })
   }
@@ -338,7 +337,6 @@ function RightMenu() {
 const UserMenu: FC = () => {
   const navigate = useNavigate()
   const { logout } = usePrivy()
-  const { wallets } = useWallets()
   const { t } = useTranslation()
   const { setCode, clearUserData, userData } = useUserStore()
   async function handleLogout() {
@@ -412,14 +410,14 @@ const UserMenu: FC = () => {
     }
   ]
   const visibleItems = items?.filter(item => (item as any)?.show !== 'hidden')
-  const connectWalletAddress = wallets.find(wallet => wallet.walletClientType !== 'privy')
+  // const connectWalletAddress = wallets.find(wallet => wallet.walletClientType !== 'privy')
 
   return (
     <Dropdown menu={{ items: visibleItems }} placement="bottomRight">
       <div className="fyc gap-1 clickable">
         <div className="i-material-symbols-account-circle-outline size-5 bg-white"></div>
         <div className="text-4 text-white">
-          {connectWalletAddress ? (`${connectWalletAddress.address.slice(0, 6)}...${connectWalletAddress.address.slice(-4)}`) : ''}
+          { userData.email }
         </div>
         <div className="i-ic-round-keyboard-arrow-down size-5 bg-white"></div>
       </div>

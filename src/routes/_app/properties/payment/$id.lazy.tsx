@@ -3,15 +3,17 @@ import apiBasic from '@/api/basicApi'
 import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
-import { PaymentMethod } from '@/components/common/payment-method'
+import { PaymentWallet } from '@/components/common/payment-wallect'
 import QuantitySelector from '@/components/common/quantity-selector'
 import { getContracts } from '@/contract'
 import { useCommonDataStore } from '@/stores/common-data'
 import { useUserStore } from '@/stores/user'
+import { envConfig } from '@/utils/envConfig'
 import { joinImagesPath } from '@/utils/url'
 import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
+import dayjs from 'dayjs'
 import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -82,7 +84,7 @@ function RouteComponent() {
 
       // PropertyManager 合约地址应从配置或 item 里获取，不能用 propertyToken 地址
       const propertyManagerAddress = item.contract_address
-      const usdcAddress = import.meta.env.VITE_APP_USDC_ADDRESS || SimpleERC20.address
+      const usdcAddress = envConfig.usdcAddress || SimpleERC20.address
       if (!propertyManagerAddress || !isAddress(propertyManagerAddress)) {
         toast.error(t('payment.errors.invalid_contract'))
         return
@@ -304,15 +306,22 @@ function RouteComponent() {
       </div>
 
       <div className="rounded-xl bg-[#202329] p-6 space-y-4">
-        <div className="text-4.5">{t('properties.payment.payment_method')}</div>
-        <PaymentMethod walletState={[wallet, setWallet]} />
+        <div className="text-4.5">{t('properties.payment.bind_wallet')}</div>
+        <PaymentWallet walletState={[wallet, setWallet]} />
+        <div className="text-3.5 text-[#898989]">
+          <div>{t('properties.payment.dear_user')}</div>
+          <div>{t('properties.payment.bind_wallet_content_1')}</div>
+          <div>{t('properties.payment.bind_wallet_content_2')}</div>
+          <div>{t('properties.payment.bind_wallet_content_3')}</div>
+          <div>{t('properties.payment.bind_wallet_content_4')}</div>
+        </div>
+
       </div>
 
       <div className="rounded-xl bg-[#202329] p-6 text-4 text-[#898989] space-y-2">
-        <p>{t('properties.payment.dear_user')}</p>
+        {/* <p>{t('properties.payment.dear_user')}</p> */}
         <p>
           {t('properties.payment.please_verify')}
-
         </p>
         <p>
           {t('properties.payment.please_verify_1')}
@@ -322,7 +331,7 @@ function RouteComponent() {
       <div>
         <div className="text-center text-3.5 text-[#898989]">
           {t('properties.payment.expire')}
-          14:59
+          {dayjs().format('HH:mm')}
         </div>
         <div className="grid grid-cols-3 mt-2">
           <div>

@@ -314,6 +314,7 @@
       "return": "Expected annual return",
       "including": "Including",
       "rental": "rental yield and",
+      "return_range": "Expected return range between {{min}} and {{max}} (including fixed rental income and property appreciation)",
       "capital": "capital appreciation",
       "average": "Average 30-day",
       "amount_placeholder": "Enter investment amount",
@@ -328,7 +329,14 @@
       "analysis": "Rental Income Analysis",
       "invest_calculator": "Investment Calculator",
       "invest_calculator_placeholder": "Enter investment amount",
-      "average_days": "Average {{n}} days"
+      "average_days": "Average {{n}} days",
+      "lock_period": "Lock Period Description",
+      "lock_period_title": "Purchase Lock Period Description",
+      "lock_period_content": "To ensure the security of platform funds and investment fairness, each initial purchase of real estate tokens is set with a lock period. During the lock period, the assets cannot be transferred or sold.",
+      "lock_period_content_1": "Lock Period Duration: 2 days after purchase (or as specified in the property details)",
+      "lock_period_content_2": "Lock Period Restrictions: No transfer, no secondary market trading, no withdrawal",
+      "lock_period_content_3": "Lock Period End: Automatically unlocked, users can freely circulate or sell their tokens",
+      "lock_period_content_4": "Purpose: To prevent short-term arbitrage and malicious operations, ensuring the stability of the real estate token system"
     },
     "payment": {
       "token_price": "Token Price",
@@ -341,7 +349,7 @@
       "payment_method": "Use the following wallet address to pay",
       "credit_card": "Credit Card",
       "cryptocurrency": "Cryptocurrency",
-      "dear_user": "Dear User,",
+      "dear_user": "Dear User:",
       "please_verify": "To ensure the security of OTC transactions, you must meet the following requirements and complete the necessary verification process:",
       "please_verify_1": " Your account must be fully verified with a valid government-issued ID or passport.",
       "expire": "Payment will expire in",
@@ -356,7 +364,12 @@
       "valuation": "Valuation",
       "create_sell_order": "Sell",
       "redeem": "Redeem",
-      "appeal_title": "Your account must be fully verified with a valid government-issued ID or passport."
+      "appeal_title": "Your account must be fully verified with a valid government-issued ID or passport.",
+      "bind_wallet": "Use the following wallet address you have previously bound to pay",
+      "bind_wallet_content_1": "We are about to interact with the blockchain. It is expected that the transaction will be completed in 10-20 seconds. Please wait patiently. If you encounter any problems during the process,",
+      "bind_wallet_content_2": "1、Please check your network connection;",
+      "bind_wallet_content_3": "2、Ensure that you have installed the browser plugin;",
+      "bind_wallet_content_4": "3、If you are using a mobile phone, ensure that you have MetaMask or other wallets installed."
     }
   },
   "help": {
@@ -545,7 +558,8 @@
       "transaction_hash": "Transaction Hash",
       "add_to_wallet": "Add to Wallet",
       "token_name": "Token Name",
-      "add_token_success": "Token added successfully"
+      "add_token_success": "Token added successfully",
+      "add_token_failed": "Failed to add token"
     },
     "propertyTokens": {
       "title": "Tokens Held"

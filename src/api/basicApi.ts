@@ -22,6 +22,8 @@ interface DataListDetailParams {
 }
 
 export interface DetailResponse {
+  annual_return_max: string
+  annual_return_min: string
   Inception_number: number
   address: string
   area: string

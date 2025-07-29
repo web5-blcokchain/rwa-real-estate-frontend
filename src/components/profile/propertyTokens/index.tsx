@@ -15,17 +15,18 @@ function PropertyTokens() {
   const [tokenData, setTokenData] = useState<PropertyInvestment[]>([])
 
   const getTokenData = async () => {
-    return await apiMyInfo.getMeInfoSummary({ page, pageSize: 20, keyword })
+    const res = await apiMyInfo.getMeInfoSummary({ page, pageSize: 20, keyword })
+    if (page === 1)
+      setTokenData(res.data?.list || [])
+    else setTokenData([...tokenData, ...(res.data?.list || [] as any[])])
+    return res
   }
 
   const { isLoading, isFetching, refetch: refetchPropertyTokens } = useQuery({
-    queryKey: ['overviewSummary', { page, tokenData }],
+    queryKey: ['overviewSummary', { page }],
     queryFn: async () => {
       const res = await getTokenData()
       setTotal(res.data?.count || 0)
-      if (page === 1)
-        setTokenData(res.data?.list || [])
-      else setTokenData([...tokenData, ...(res.data?.list || [] as any[])])
       return res.data?.list || []
     }
   })
@@ -66,7 +67,7 @@ function PropertyTokens() {
             </div>
           </div>
         </div>
-        <Spin spinning={isFetching && page <= 1}>
+        <Spin spinning={isFetching && page <= 1} className={isFetching && page <= 1 ? 'py-20' : ''}>
           <div className="grid grid-cols-1 mt-8 gap-8 max-lg:grid-cols-1 xl:grid-cols-2">
             {
               tokenData?.map((item: any) => (

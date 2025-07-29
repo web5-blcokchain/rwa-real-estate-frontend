@@ -52,7 +52,7 @@ export async function addTokenToWallet(wallet: ConnectedWallet, contractAddress:
         type: 'ERC20', // 目前仅支持 ERC20
         options: {
           address: contractAddress,
-          symbol,
+          symbol: symbol.slice(0, 11),
           decimals: Number(decimals)
         }
       }
@@ -67,5 +67,6 @@ export async function addTokenToWallet(wallet: ConnectedWallet, contractAddress:
   }
   catch (error) {
     console.error('Failed to add token:', error)
+    throw error
   }
 }

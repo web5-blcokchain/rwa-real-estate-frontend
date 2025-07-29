@@ -41,7 +41,7 @@ axios.interceptors.response.use(async (res: ResponseData<any>) => {
   }
   if (code !== 1 && code !== 401) {
     const message = _get(res.data, 'msg', 'Response error')
-    if (message.includes('Token is expired')) { // TODO
+    if (message.includes('Token is expired') || message.includes('Expired token')) { // TODO
       return
     }
     // 同一个提示信息一段时间只出现一次
