@@ -74,7 +74,9 @@
       "token_approve_failed": "代币授权失败",
       "insufficient_token": "代币余额不足",
       "please_wait_for_kyc": "请等待KYC审核通过",
-      "please_use_bound_wallet": "请使用绑定的钱包进行支付"
+      "please_use_bound_wallet": "请使用绑定的钱包进行支付",
+      "token_max_pay": "代币数量不能超过库存 (最大: {{max}})",
+      "token_sold_out": "当前代币已售罄"
     },
     "info": {
       "eth_required": "交易需要发送ETH",
@@ -612,11 +614,12 @@
 
     },
     "coin": {
-      "unclaimed": "未领取",
-      "claimed": "已领取",
+      "unclaimed": "未发放",
+      "claimed": "已发放",
       "withdraw": "赎回",
-      "failed": "领取失败",
-      "locked": "锁定中"
+      "failed": "发放失败",
+      "locked": "锁定中",
+      "distribution": "发放中"
     },
     "myAssets": {
       "distributionRecord": "发放记录",
@@ -721,6 +724,7 @@
     "checkInPrice": "实际到账",
     "checkInStatus": "到账状态",
     "hash": "交易Hash",
-    "time": "到账时间"
+    "time": "到账时间",
+    "distribution": "发放中"
   }
 }

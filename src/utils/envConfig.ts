@@ -29,5 +29,8 @@ export const envConfig = {
   blockExplorerUrl: import.meta.env.VITE_PUBLIC_WEB_BLOCK_URL,
 
   // USDC 合约地址
-  usdcAddress: import.meta.env.VITE_APP_USDC_ADDRESS
+  usdcAddress: import.meta.env.VITE_APP_USDC_ADDRESS,
+
+  // 合约地址
+  rentCustodyAddress: import.meta.env.VITE_PUBLIC_RENT_CUSTODY_CONTRACT
 }

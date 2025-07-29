@@ -49,7 +49,7 @@ export const CollectButton: FC<{
     }
   })
 
-  const isLoading = (queryKey && queryClient.isFetching({ queryKey }) > 0) || collectIsPending || unCollectIsPending
+  const isLoading = collectIsPending || unCollectIsPending
 
   return (
     <div

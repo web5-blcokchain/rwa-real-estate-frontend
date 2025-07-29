@@ -83,13 +83,13 @@ export default function MainHeader() {
             >
             </div>
           </div>
-          <div className="fec gap-4">
+          <div className="fyc gap-4">
             <RightMenu />
           </div>
 
           <NavMenu
             className={cn(
-              'flex flex-col items-end justify-center gap-6 ',
+              'flex flex-col items-start justify-center gap-6 ',
               'text-base'
             )}
           />
@@ -253,7 +253,7 @@ function RightMenu() {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-end gap-29px md:flex-row">
+      <div className="flex flex-col justify-end gap-29px md:flex-row">
         <div className="fyc gap-29px">
           <LanguageSelect />
 
@@ -281,14 +281,14 @@ function RightMenu() {
         </div>
         <div className="fyc gap-4">
           <Waiting for={ready}>
-            <div className="w-full fec">
+            <div className="w-full fyc">
               {
                 authenticated
                   ? (
                       <UserMenu />
                     )
                   : (
-                      <div onClick={() => setOpenLoginDialog(true)} className="w-full fec cursor-pointer space-x-4">
+                      <div onClick={() => setOpenLoginDialog(true)} className="w-full fyc cursor-pointer space-x-4">
                         {/* <Button
                         className="text-white bg-transparent!"
                         onClick={() => setOpenLoginDialog(true)}

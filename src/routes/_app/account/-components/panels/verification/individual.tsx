@@ -227,7 +227,7 @@ export default function IndividualVerification() {
         <div className="fec">
           <Button
             size="large"
-            className="bg-transparent! text-white! hover:text-primary-1!"
+            className={cn('bg-transparent! ', (idCardFrontUrl && idCardBackUrl && addressUrl && photoUrl) ? 'text-primary-1! !b-#e8d655' : '')}
             loading={isPending || reloadCreatePending}
             onClick={() => {
               if (verifyUpload()) {

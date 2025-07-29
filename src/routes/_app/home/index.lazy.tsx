@@ -99,7 +99,7 @@ function RouteComponent() {
         className="home-content fxc flex-col pl-[118px] max-lg:py-9 max-lg:pl-[24px] max-md:pl-2 max-xl:pl-[60px] max-lg:!h-fit"
       >
         <div
-          className={cn(i18n.language === 'en' ? 'text-[80px] leading-[92px]' : 'text-[100px] leading-[120px]', 'w-[700px]   max-lg:w-[500px] max-md:w-196px max-xl:w-[600px] max-lg:text-[48px] max-md:text-28px max-xl:text-[62px] max-lg:leading-[64px] max-md:leading-38px max-xl:leading-[90px]')}
+          className={cn(i18n.language === 'en' ? 'text-[80px] leading-[92px]' : 'text-[100px] leading-[120px]', 'w-[700px]   max-lg:w-[500px] max-md:w-196px max-xl:w-[600px] max-lg:text-[48px] max-md:text-22px max-xl:text-[62px] max-lg:leading-[64px] max-md:leading-32px max-xl:leading-[90px]')}
         >
           {t('home.explanation.title')}
         </div>

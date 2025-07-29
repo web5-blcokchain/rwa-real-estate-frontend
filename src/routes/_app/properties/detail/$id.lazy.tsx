@@ -2,6 +2,7 @@ import type { DetailResponse } from '@/api/basicApi'
 import apiBasic from '@/api/basicApi'
 import { CollectButton } from '@/components/common/collect-button'
 import { IInfoField } from '@/components/common/i-info-field'
+import { ImageSwiper } from '@/components/common/image-swiper'
 import { useCommonDataStore } from '@/stores/common-data'
 import { formatNumberNoRound } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
@@ -122,7 +123,7 @@ function RouteComponent() {
                 >
                   {t('common.all_images')}
                 </button>
-                {/* <ImageSwiper list={imageList} /> */}
+                <ImageSwiper navigation list={imageList} />
                 <Image.PreviewGroup
                   items={imageList}
                   preview={{
@@ -132,7 +133,7 @@ function RouteComponent() {
                     onChange: current => setPreviewCurrent(current)
                   }}
                 >
-                  <img className="max-h-128 w-full" src={imageList[0]} alt="" />
+                  {/* <img className="max-h-128 w-full" src={imageList[0]} alt="" /> */}
                 </Image.PreviewGroup>
                 <div className="absolute right-4 top-4">
                   <CollectButton
@@ -175,14 +176,14 @@ function RouteComponent() {
                 <IInfoField
                   horizontal
                   label={t('properties.detail.market_value')}
-                  value={assetDetail?.price || ''}
+                  value={`$${assetDetail?.price || ''}`}
                   className="gap-4"
                 />
-                <IInfoField className="gap-4" horizontal label={t('properties.detail.monthly_rent')} value={assetDetail?.monthly_rent || ''} />
+                <IInfoField className="gap-4" horizontal label={t('properties.detail.monthly_rent')} value={`$${assetDetail?.monthly_rent || ''}`} />
               </div>
 
             </div>
-            <div className="absolute bottom-6 right-0 max-w-50% rounded-lg bg-#F0B90B px-6 py-18px text-black max-lg:relative max-lg:max-w-full space-y-2">
+            <div className="absolute bottom-6 right-0 z-10 max-w-50% rounded-lg bg-#F0B90B px-6 py-18px text-black max-lg:relative max-lg:max-w-full space-y-2">
               <div>
                 <div className="text-4.5 font-bold">{t('properties.detail.return')}</div>
                 <div className="text-10 font-bold max-lg:text-7.5">
@@ -277,7 +278,7 @@ function RouteComponent() {
             className="[&>div>.ant-modal-content]:!bg-background"
             // closeIcon={false}
             centered
-            width="80%"
+            width={968}
             onCancel={() => setOpen(false)}
             open={open}
             footer={null}

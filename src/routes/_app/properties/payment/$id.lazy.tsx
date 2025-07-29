@@ -13,11 +13,11 @@ import { joinImagesPath } from '@/utils/url'
 import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
-import dayjs from 'dayjs'
 import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { isAddress } from 'web3-validator'
+import { PayDialog } from '../-components/payDialog'
 
 // 最小购买数量常量
 const MIN_TOKEN_PURCHASE = 1 // 设置最小购买量为2个代币，根据合约要求调整
@@ -46,6 +46,7 @@ function RouteComponent() {
   // 默认购买量设置为最小值
   const [tokens, setTokens] = useState(MIN_TOKEN_PURCHASE)
   const [btnLoading, setBtnLoading] = useState(false) // 新增loading状态
+  const [payDialogOpen, setPayDialogOpen] = useState(false)
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async (hash: string) => {
@@ -73,6 +74,7 @@ function RouteComponent() {
       return
     }
     setBtnLoading(true)
+    setPayDialogOpen(true)
     try {
       if (!window.ethereum) {
         toast.error(t('payment.errors.no_ethereum'))
@@ -144,6 +146,12 @@ function RouteComponent() {
       try {
         // propertyId 类型要与合约一致（通常为 string 或 bytes32）
         const tx = await propertyManagerContract.purchaseTokens(requiredUsdtAmount, usdcAddress)
+
+        // const currentTime = Math.floor(Date.now() / 1000);
+        // const deadline = currentTime + 3600; // 1 hour from now
+        // const { v, r, s } = await generatePermitSignature(signer, usdtContract, propertyManagerAddress,
+        //    requiredUsdtAmount, deadline)
+        // const tx = await propertyManagerContract.connect(signer).purchaseTokens(requiredUsdtAmount, usdcAddress,deadline,v,r,s)
         const receipt = await tx.wait()
         toast.success(t('payment.success.tx_sent'))
         const hash = receipt.hash
@@ -194,6 +202,7 @@ function RouteComponent() {
     }
     finally {
       setBtnLoading(false)
+      setPayDialogOpen(false)
     }
   }
 
@@ -329,11 +338,11 @@ function RouteComponent() {
       </div>
 
       <div>
-        <div className="text-center text-3.5 text-[#898989]">
+        {/* <div className="text-center text-3.5 text-[#898989]">
           {t('properties.payment.expire')}
           {dayjs().format('HH:mm')}
-        </div>
-        <div className="grid grid-cols-3 mt-2">
+        </div> */}
+        <div className="grid grid-cols-2 mt-2">
           <div>
             <Button
               className="text-white bg-transparent!"
@@ -355,9 +364,9 @@ function RouteComponent() {
               {t('properties.payment.confirm_payment')}
             </Button>
           </div>
-          <div></div>
         </div>
       </div>
+      <PayDialog open={payDialogOpen} onClose={() => setPayDialogOpen(false)} />
     </div>
   )
 }

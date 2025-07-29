@@ -607,11 +607,12 @@
       "status": "ステータス"
     },
     "coin": {
-      "unclaimed": "未引き出し",
-      "claimed": "引き出し済み",
-      "withdraw": "引き出し",
-      "failed": "引き出し失敗",
-      "locked": "ロック中"
+      "unclaimed": "未配布",
+      "claimed": "配布済み",
+      "withdraw": "償還",
+      "failed": "配布失敗",
+      "locked": "ロック中",
+      "distribution": "配布中"
     },
     "myAssets": {
       "distributionRecord": "発行記録",
@@ -716,6 +717,7 @@
     "checkInPrice": "実際の到着",
     "checkInStatus": "到着ステータス",
     "hash": "取引ハッシュ",
-    "time": "到着時間"
+    "time": "到着時間",
+    "distribution": "配布中"
   }
 }

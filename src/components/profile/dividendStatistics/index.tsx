@@ -127,6 +127,7 @@ export default function DividendStatistics() {
             {record.status === 0 && <div>{t('dividendStatistics.unclaimed')}</div>}
             {record.status === 1 && <div>{t('dividendStatistics.sale')}</div>}
             {record.status === 2 && <div>{t('dividendStatistics.sold')}</div>}
+            {record.status === 5 && <div>{t('dividendStatistics.distribution')}</div>}
           </div>
         )
       }

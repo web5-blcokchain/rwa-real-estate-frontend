@@ -613,9 +613,10 @@
     "coin": {
       "unclaimed": "Unclaimed",
       "claimed": "Claimed",
-      "withdraw": "Withdraw",
-      "failed": "Failed",
-      "locked": "Locked"
+      "withdraw": "Redeem",
+      "failed": "Distribution Failed",
+      "locked": "Locked",
+      "distribution": "Distributing"
     },
     "myAssets": {
       "distributionRecord": "Distribution Record",
@@ -720,6 +721,7 @@
     "checkInPrice": "Actual Check-in",
     "checkInStatus": "Check-in Status",
     "hash": "Transaction Hash",
-    "time": "Check-in Time"
+    "time": "Check-in Time",
+    "distribution": "Distributing"
   }
 }
