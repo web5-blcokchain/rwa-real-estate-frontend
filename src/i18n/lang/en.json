@@ -28,6 +28,8 @@
     "user_audit_status": "User audit application"
   },
   "payment": {
+    "pay_loading": "Payment in progress, please wait",
+    "pay_loading_desc": "Token payment in progress, do not exit during the process to avoid affecting communication with third-party wallet browsers or wallet software. Payment will automatically redirect after completion.",
     "errors": {
       "no_wallet": "Please select a wallet",
       "no_ethereum": "Please install MetaMask or use a Web3 browser",
