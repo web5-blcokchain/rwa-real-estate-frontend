@@ -174,7 +174,7 @@ export default function InstitutionalVerification() {
         <div className="fec">
           <Button
             size="large"
-            className="bg-transparent! text-white! hover:text-primary-1!"
+            className="!b-#e7bb41 bg-transparent! !text-black"
             loading={isPending || reloadCreatePending}
             onClick={() => {
               if (verifyUpload()) {

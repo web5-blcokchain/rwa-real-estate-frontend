@@ -17,17 +17,19 @@
     "error": {
       "user_not_found": "请完善用户信息",
       "login_required": "请先登陆",
-      "centralized_database_review_rejection": "中心化数据库审核拒绝",
+      "centralized_database_review_rejection": "KYC 审核未通过",
       "wallet_already_bound": "kyc审核中",
       "kyc_audit_passed": "KYC审核通过",
       "kyc_audit_rejected": "KYC审核拒绝",
-      "kyc_audit_rejected_desc": "您的实名认证未通过，请重新提交信息~"
+      "kyc_audit_rejected_desc": "很抱歉，您提交的KYC文件因清晰度不足未通过审核"
     },
     "link_wallet": "连接钱包",
     "kyc_status": "KYC审核状态",
     "user_audit_status": "用户认证申请"
   },
   "payment": {
+    "pay_loading": "支付中请稍后",
+    "pay_loading_desc": "代币支付中，中途不要退出，避免影响和第三方钱包浏览器或者钱包软件通信。支付完成自动跳转～",
     "errors": {
       "no_wallet": "请选择钱包",
       "no_ethereum": "请安装MetaMask或使用Web3浏览器",
@@ -625,6 +627,45 @@
       "distributionRecord": "发放记录",
       "summaryRecord": "汇总资产记录",
       "assetList": "资产列表"
+    },
+    "appeal": {
+      "title": "申诉信息",
+      "appealType": {
+        "title": "申诉类型",
+        "options": {
+          "1": "交易类型实际未到账",
+          "2": "金额不符",
+          "3": "其他问题"
+        }
+      },
+      "appealReason": {
+        "title": "申诉原因",
+        "placeholder": "请具体描述您遇到的问题..."
+      },
+      "uploadEvidence": {
+        "title": "上传凭证",
+        "placeholder": "（交易hash、分红记录截图、钱包交易记录）"
+      },
+      "contactInformation": {
+        "title": "联系方式",
+        "realName": "真实姓名",
+        "realNamePlaceholder": "请输入您的真实姓名",
+        "phone": "联系电话",
+        "phonePlaceholder": "请输入您的联系电话",
+        "email": "邮箱",
+        "emailPlaceholder": "请输入您的邮箱"
+      },
+      "submit": "提交申诉",
+      "cancel": "取消",
+      "submitDesc": {
+        "title": "注意事项",
+        "content": {
+          "1": "申诉处理期间请勿重复提交。",
+          "2": "虚假申诉可能导致帐户受限。",
+          "3": "正常工作期间响应更快（9:00-18:00）。",
+          "4": "紧急问题请拨打客服热线: +031 234-5678"
+        }
+      }
     }
   },
   "transaction": {
@@ -692,7 +733,7 @@
     "reSubmit": "重新提交",
     "contactAdmin": "请联系管理员",
     "contactAdminDesc": "请联系管理员解决",
-    "backendAudit": "后台审核中",
+    "backendAudit": "提交用户资料",
     "backendAuditPass": "后台审核通过",
     "backendAuditFail": "后台审核失败",
     "walletBindSuccess": "钱包绑定成功",

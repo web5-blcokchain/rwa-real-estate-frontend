@@ -91,6 +91,7 @@ export function useRouteGuard() {
         setTimeout(() => {
           openMessageDialog((
             <div className="fccc gap-2">
+              <div className="i-carbon:close-outline size-16 bg-#ec5b56"></div>
               <div className="text-center text-8 font-bold max-lg:text-6">{t('header.error.centralized_database_review_rejection')}</div>
               <div className="text-4 text-#5e6570">{t('header.error.kyc_audit_rejected_desc')}</div>
               <Button

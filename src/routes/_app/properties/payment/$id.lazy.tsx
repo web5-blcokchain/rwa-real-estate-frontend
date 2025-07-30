@@ -9,7 +9,9 @@ import { getContracts } from '@/contract'
 import { useCommonDataStore } from '@/stores/common-data'
 import { useUserStore } from '@/stores/user'
 import { envConfig } from '@/utils/envConfig'
+import { formatNumberNoRound } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
+import { generatePermitSignature } from '@/utils/web/utils'
 import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
@@ -114,16 +116,14 @@ function RouteComponent() {
       // 获取USDT精度
       const usdtDecimals = await usdtContract.decimals()
       // 获取购买的房屋代币数量
-      const requiredUsdtAmount = ethers.parseUnits(String(tokens))
 
       // 获取房屋代币对应的usdc价格
       let usdcPrice = await propertyManagerContract.issuePrice()
       usdcPrice = ethers.formatUnits(usdcPrice, usdtDecimals)
-
+      const requiredUsdtAmount = String(tokens * Number(usdcPrice) * 1.02)
       // 计算需要支付USDT余额 百分之2的手续费 （总数 * 价格 * 手续费）
-      const payUSDCAmount = ethers.parseUnits((tokens * Number(usdcPrice) * 1.02).toFixed(2), usdtDecimals)
+      const payUSDCAmount = ethers.parseUnits(requiredUsdtAmount, usdtDecimals)
       const usdtBalance = await usdtContract.balanceOf(signerAddress)
-
       // TODO 使用合约获取价格,计算代币与USDC比例兑换之后的余额，之后进行判断
       if (usdtBalance < payUSDCAmount) {
         toast.error(t('payment.errors.insufficient_eth'))
@@ -131,27 +131,41 @@ function RouteComponent() {
       }
 
       // 检查USDT授权额度（授权给 PropertyManager 合约地址）
-      const usdtAllowance = await usdtContract.allowance(signerAddress, propertyManagerAddress)
-      if (usdtAllowance < requiredUsdtAmount) {
-        // 先清零授权
-        // const resetTx = await usdtContract.approve(propertyManagerAddress, 0)
-        // await resetTx.wait()
-        // 直接授权USDC所支付的数量
-        const approveTx = await usdtContract.approve(propertyManagerAddress, payUSDCAmount)
-        await approveTx.wait()
-      }
+      // const usdtAllowance = await usdtContract.allowance(signerAddress, propertyManagerAddress)
+      // if (usdtAllowance < requiredUsdtAmount) {
+      //   // 先清零授权
+      //   // const resetTx = await usdtContract.approve(propertyManagerAddress, 0)
+      //   // await resetTx.wait()
+      //   // 直接授权USDC所支付的数量
+      //   const approveTx = await usdtContract.approve(propertyManagerAddress, payUSDCAmount)
+      //   await approveTx.wait()
+      // }
 
       toast.info(t('payment.info.creating_transaction'))
 
       try {
         // propertyId 类型要与合约一致（通常为 string 或 bytes32）
-        const tx = await propertyManagerContract.purchaseTokens(requiredUsdtAmount, usdcAddress)
+        // const tx = await propertyManagerContract.purchaseTokens(requiredUsdtAmount, usdcAddress)
 
-        // const currentTime = Math.floor(Date.now() / 1000);
-        // const deadline = currentTime + 3600; // 1 hour from now
-        // const { v, r, s } = await generatePermitSignature(signer, usdtContract, propertyManagerAddress,
-        //    requiredUsdtAmount, deadline)
-        // const tx = await propertyManagerContract.connect(signer).purchaseTokens(requiredUsdtAmount, usdcAddress,deadline,v,r,s)
+        const currentTime = Math.floor(Date.now() / 1000)
+        const deadline = currentTime + 3600 // 1 hour from now
+        const { v, r, s } = await generatePermitSignature(
+          signer,
+          usdtContract,
+          propertyManagerAddress,
+          ethers.parseUnits(requiredUsdtAmount, usdtDecimals),
+          deadline
+        )
+        // 生成支付合约的精度数
+        const tx = await (propertyManagerContract.connect(signer) as any)
+          .purchaseTokens(
+            ethers.parseEther((tokens * 1.02).toString()),
+            usdtContract.getAddress(),
+            deadline,
+            v,
+            r,
+            s
+          )
         const receipt = await tx.wait()
         toast.success(t('payment.success.tx_sent'))
         const hash = receipt.hash
@@ -282,7 +296,7 @@ function RouteComponent() {
               <div>{t('properties.payment.subtotal')}</div>
               <div className="text-right">
                 $
-                {tokens * Number(item.price)}
+                {formatNumberNoRound(tokens * Number(item.price), 8)}
               </div>
             </div>
             <div>
@@ -293,7 +307,7 @@ function RouteComponent() {
               </div>
               <div className="text-right">
                 $
-                {(tokens * Number(item.price) * 0.02).toFixed(2)}
+                {formatNumberNoRound(tokens * Number(item.price) * 0.02, 8)}
               </div>
             </div>
           </div>
@@ -309,7 +323,7 @@ function RouteComponent() {
           <div>{t('properties.payment.total_amount')}</div>
           <div className="text-primary">
             $
-            {(tokens * Number(item.price) * 1.02).toFixed(2)}
+            {formatNumberNoRound(tokens * Number(item.price) * 1.02, 8)}
           </div>
         </div>
       </div>
@@ -327,22 +341,21 @@ function RouteComponent() {
 
       </div>
 
-      <div className="rounded-xl bg-[#202329] p-6 text-4 text-[#898989] space-y-2">
-        {/* <p>{t('properties.payment.dear_user')}</p> */}
+      {/* <div className="rounded-xl bg-[#202329] p-6 text-4 text-[#898989] space-y-2">
         <p>
           {t('properties.payment.please_verify')}
         </p>
         <p>
           {t('properties.payment.please_verify_1')}
         </p>
-      </div>
+      </div> */}
 
       <div>
         {/* <div className="text-center text-3.5 text-[#898989]">
           {t('properties.payment.expire')}
           {dayjs().format('HH:mm')}
         </div> */}
-        <div className="grid grid-cols-2 mt-2">
+        <div className="mt-2 fcc gap-4">
           <div>
             <Button
               className="text-white bg-transparent!"

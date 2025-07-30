@@ -17,11 +17,11 @@
     "error": {
       "user_not_found": "Please complete user information",
       "login_required": "Please log in first",
-      "centralized_database_review_rejection": "Centralized database review rejection",
-      "wallet_already_bound": "KYC audit in progress",
-      "kyc_audit_passed": "KYC audit passed",
-      "kyc_audit_rejected": "KYC audit rejected",
-      "kyc_audit_rejected_desc": "Your KYC audit has been rejected, please resubmit your information~"
+      "centralized_database_review_rejection": "KYC 審査未通過",
+      "wallet_already_bound": "kyc審査中",
+      "kyc_audit_passed": "KYC審査通過",
+      "kyc_audit_rejected": "KYC審査拒否",
+      "kyc_audit_rejected_desc": "申し訳ありませんが、あなたが提出したKYCファイルは、明確度が不足しているため、審査に不合格でした"
     },
     "link_wallet": "リンク財布",
     "kyc_status": "KYC審査状態",
@@ -685,7 +685,7 @@
     "reSubmit": "再提出",
     "contactAdmin": "管理者に連絡",
     "contactAdminDesc": "管理者に連絡して解決してください",
-    "backendAudit": "後台審査中",
+    "backendAudit": "ユーザーデータを提出します",
     "backendAuditPass": "後台審査通過",
     "backendAuditFail": "後台審査失敗",
     "walletBindSuccess": "財布バインド成功",

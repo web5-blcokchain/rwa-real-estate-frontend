@@ -16,18 +16,19 @@ function RouteComponent() {
   useEffect(() => {
     getUserInfo()
   }, [])
+  const audit_status: number = userData.audit_status
   const items = [
     { title: <div className="max-lg:pb-7">{t('auditStatus.backendAudit')}</div> },
-    { title: <div className="max-lg:pb-7">{userData.audit_status === 2 ? t('auditStatus.backendAuditFail') : t('auditStatus.backendAuditPass')}</div> },
+    { title: <div className="max-lg:pb-7">{audit_status === 2 ? t('auditStatus.backendAuditFail') : t('auditStatus.backendAuditPass')}</div> },
     { title: <div className="max-lg:pb-7">{t('auditStatus.walletBindSuccess')}</div> },
-    { title: <div className="max-lg:pb-7">{userData.audit_status === 5 ? t('auditStatus.kycAuditFail') : t('auditStatus.kycAuditPass')}</div> }
+    { title: <div className="max-lg:pb-7">{audit_status === 5 ? t('auditStatus.kycAuditFail') : t('auditStatus.kycAuditPass')}</div> }
   ]
   const [wallet, setWallet] = useState<ConnectedWallet | null>(null)
   const [showModal, setShowModal] = useState(false)
   const nowStep = (step: number) => {
     switch (step) {
       case 0:
-        return { step: 0, title: 0 }
+        return { step: 1, title: 0 }
       case 1:
         return { step: 2, title: 1 }
       case 2:
@@ -39,18 +40,19 @@ function RouteComponent() {
       case 5:
         return { step: 3, title: 3 }
       default:
-        return { step: -1, title: 0 }
+        return { step: 0, title: 0 }
     }
   }
+
   return (
     <div className="fccc p-12 max-lg:p-6">
       <Steps
-        current={nowStep(userData.audit_status).step}
-        status={[2, 5].includes(userData.audit_status) ? 'error' : 'process'}
+        current={nowStep(audit_status).step}
+        status={[2, 5].includes(audit_status) ? 'error' : 'process'}
         items={items}
       />
       {
-        userData.audit_status === 1 && (
+        audit_status === 1 && (
           <PaymentMethod
             walletState={[wallet, setWallet]}
             className="mt-10 w-full bg-[#202329] max-lg:mt-50"
@@ -59,18 +61,16 @@ function RouteComponent() {
       }
       {/* 当前步骤说明 */}
       <div className="mt-20 fccc gap-6 max-lg:mt-10 max-lg:gap-4">
-        {[0, 1, 3, 4].includes(userData.audit_status)
+        {[0, 1, 3, 4].includes(audit_status)
           ? <div className="i-iconoir-pc-check size-24 bg-white"></div>
-          : [2, 5].includes(userData.audit_status)
-              ? <div className="i-iconoir-pc-warning size-24 bg-white"></div>
-              : <div className="i-carbon:close-outline size-24 bg-#ec5b56"></div>}
-        <div className="text-8 font-bold max-lg:text-4">{userData.audit_status >= 0 ? items[(nowStep(userData.audit_status).title) === 4 ? 3 : nowStep(userData.audit_status).title].title : t('header.error.login_required')}</div>
+          : <div className="i-iconoir-pc-warning size-24 bg-white"></div>}
+        <div className="text-8 font-bold max-lg:text-4">{items[(nowStep(audit_status).title) === 4 ? 3 : nowStep(audit_status).title].title}</div>
         <div>
           {
-            userData.audit_status === 2 && <Button onClick={() => { navigate({ to: '/account/create' }) }} size="large" type="primary">{t('auditStatus.reSubmit')}</Button>
+            audit_status === 2 && <Button onClick={() => { navigate({ to: '/account/create' }) }} size="large" type="primary">{t('auditStatus.reSubmit')}</Button>
           }
           {
-            userData.audit_status === 5 && <Button onClick={() => { setShowModal(true) }} size="large" type="primary">{t('auditStatus.contactAdmin')}</Button>
+            audit_status === 5 && <Button onClick={() => { setShowModal(true) }} size="large" type="primary">{t('auditStatus.contactAdmin')}</Button>
           }
         </div>
       </div>

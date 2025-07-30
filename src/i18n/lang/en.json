@@ -17,11 +17,11 @@
     "error": {
       "user_not_found": "Please complete user information",
       "login_required": "Please log in first",
-      "centralized_database_review_rejection": "Centralized database review rejection",
-      "wallet_already_bound": "KYC audit in progress",
+      "centralized_database_review_rejection": "KYC audit failed",
+      "wallet_already_bound": "kyc audit in progress",
       "kyc_audit_passed": "KYC audit passed",
       "kyc_audit_rejected": "KYC audit rejected",
-      "kyc_audit_rejected_desc": "Your KYC audit has been rejected, please resubmit your information~"
+      "kyc_audit_rejected_desc": "Sorry, your KYC file was rejected because it was not clear enough"
     },
     "link_wallet": "Link wallet",
     "kyc_status": "KYC audit status",
@@ -689,7 +689,7 @@
     "reSubmit": "Resubmit",
     "contactAdmin": "Contact Admin",
     "contactAdminDesc": "Please contact the administrator to solve",
-    "backendAudit": "Backend Audit",
+    "backendAudit": "Submit user information",
     "backendAuditPass": "Backend Audit Pass",
     "backendAuditFail": "Backend Audit Fail",
     "walletBindSuccess": "Wallet Bind Success",

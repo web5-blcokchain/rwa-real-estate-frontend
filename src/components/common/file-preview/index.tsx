@@ -86,7 +86,7 @@ export const FilePreview: FC<
       {files.map((file, index) => (
         <div
           key={`${file}-${index}`}
-          className="flex-1 space-y-2"
+          className="h-full flex-1 space-y-2"
         >
           {labels && labels[index] && (
             <div className="text-center text-3.5 text-[#b5b5b5]">{labels[index]}</div>

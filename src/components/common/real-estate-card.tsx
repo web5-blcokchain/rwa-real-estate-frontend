@@ -46,7 +46,7 @@ export const RealEstateCard: FC<{
     >
       <div className="relative h-56">
         {/* <IImage src={picture} className="size-full" /> */}
-        <ImageSwiper swiperClass="!rounded-0" autoplay={false} list={pictures} className="size-full h-full" />
+        <ImageSwiper navigation swiperClass="!rounded-0" autoplay={false} list={pictures} className="size-full h-full" />
         <CollectButton
           houseId={houseId}
           collect={collect}

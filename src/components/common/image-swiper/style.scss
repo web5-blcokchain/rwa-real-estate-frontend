@@ -69,3 +69,33 @@ body {
     object-fit: cover;
   }
 }
+
+// 鼠标悬停时显示导航按钮
+.swiper-content {
+  >.swiper-button-next,
+  >.swiper-button-prev {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: auto; // 确保按钮可以接收点击事件
+  }
+  
+  &:hover {
+    .swiper-button-next,
+    .swiper-button-prev {
+      opacity: 1;
+    }
+  }
+}
+.swiper-viewer{
+  .swiper-button-next,
+  .swiper-button-prev {
+    display: none;
+  }
+}
+
+// 阻止导航按钮的事件冒泡
+.swiper-button-next,
+.swiper-button-prev {
+  pointer-events: auto !important;
+  z-index: 10;
+}

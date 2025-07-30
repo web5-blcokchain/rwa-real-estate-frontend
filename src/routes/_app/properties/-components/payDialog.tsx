@@ -7,6 +7,7 @@ import './payDialog.scss'
  * @returns
  */
 export function PayDialog({ onClose, open }: { onClose: () => void, open: boolean }) {
+  const { t } = useTranslation()
   return (
     <Modal
       className="[&>div>.ant-modal-content]:!bg-background"
@@ -18,16 +19,16 @@ export function PayDialog({ onClose, open }: { onClose: () => void, open: boolea
       footer={null}
     >
       <div className="fccc gap-2 text-center text-base text-white">
-        <div className="i-ep-success-filled size-16 bg-#3b82f7"></div>
+        <div className="i-ep-success-filled size-16 bg-#e7bb41"></div>
         <div className="fcc gap-1 text-xl font-bold">
-          支付中请稍后
+          {t('payment.pay_loading')}
           <div className="pay-loading fyc">
             <div>.</div>
             <div>.</div>
             <div>.</div>
           </div>
         </div>
-        <div>代币支付中，中途不要退出，避免影响和第三方钱包浏览器或者钱包软件通信。支付完成自动跳转～</div>
+        <div>{t('payment.pay_loading_desc')}</div>
       </div>
     </Modal>
   )

@@ -40,7 +40,8 @@ export const PaymentMethod: FC<{
   const handleBindWallet = () => {
     // navigate({ to: '/profile/bind-wallet' })
     const wallet = wallets.find(wallet => wallet.walletClientType !== 'privy')
-
+    if (bindWalletLoading)
+      return
     if (!wallet) {
       toast.warning(t('payment_method.please_connect_wallet'))
       return
@@ -56,8 +57,9 @@ export const PaymentMethod: FC<{
         // 刷新用户状态
         getUserInfo()
       }
+    }).finally(() => {
+      setBindWalletLoading(false)
     })
-    setBindWalletLoading(false)
   }
 
   return (

@@ -1,6 +1,7 @@
+import type { SwiperRef } from 'swiper/react'
 import type { AutoplayOptions } from 'swiper/types'
-import { Autoplay, FreeMode, Navigation, Thumbs } from 'swiper/modules'
 
+import { Autoplay, FreeMode, Navigation, Thumbs } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import './style.scss'
 import 'swiper/css'
@@ -22,18 +23,46 @@ export const ImageSwiper: FC<{
   navigation
 }) => {
   const [thumbsSwiper, _setThumbsSwiper] = useState<string | null>(null)
+  const swiperRef = useRef<SwiperRef>(null)
   return (
-    <div className={cn(className)}>
+    <div
+      className={cn(className, 'swiper-content')}
+      style={{
+        '--swiper-navigation-color': '#e7bb41',
+        '--swiper-pagination-color': '#e7bb41',
+        '--swiper-navigation-size': '36px'
+      } as Record<string, string>}
+    >
+      { navigation && list.length >= 2 && (
+        <div
+          className="swiper-button-next"
+          onClick={(e) => {
+            e.stopPropagation()
+            swiperRef.current?.swiper.slideNext()
+          }}
+        >
+        </div>
+      )}
+      { navigation && list.length >= 2 && (
+        <div
+          className="swiper-button-prev"
+          onClick={(e) => {
+            e.stopPropagation()
+            swiperRef.current?.swiper.slidePrev()
+          }}
+        >
+        </div>
+      )}
       <Swiper
-        style={{
-          '--swiper-navigation-color': '#e7bb41',
-          '--swiper-pagination-color': '#e7bb41',
-          '--swiper-navigation-size': '36px'
-        } as Record<string, string>}
+        ref={swiperRef}
         spaceBetween={10}
-        navigation={navigation}
+        navigation={{
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+          enabled: navigation && list.length >= 2
+        }}
         thumbs={{ swiper: thumbsSwiper }}
-        modules={[FreeMode, Navigation, Thumbs, (autoplay ? Autoplay : undefined) as any].filter(res => res)}
+        modules={[FreeMode, (navigation && list.length >= 2 ? Navigation : undefined), Thumbs, (autoplay ? Autoplay : undefined) as any].filter(res => res)}
         className={cn('swiper-viewer !h-full', swiperClass)}
         autoplay={autoplay || {
           delay: 5000,
@@ -41,6 +70,8 @@ export const ImageSwiper: FC<{
         }}
         loop
       >
+        <div className="swiper-button-next"></div>
+
         {
           list.map(url => (
             <SwiperSlide key={url}>
@@ -48,6 +79,7 @@ export const ImageSwiper: FC<{
             </SwiperSlide>
           ))
         }
+        <div className="swiper-button-prev"></div>
       </Swiper>
       {/* <Swiper
         onSwiper={setThumbsSwiper as () => void}
