@@ -152,7 +152,7 @@ export default function DividendStatistics() {
       dataIndex: 'income_date',
       key: 'income_date',
       render: (_, record) => {
-        return <div>{dayjs(record.income_date).format('YYYY-MM-DD HH:mm:ss')}</div>
+        return <div>{dayjs((Number(record.income_date) || 0) * 1000).format('YYYY-MM-DD HH:mm:ss')}</div>
       }
     }
   ]

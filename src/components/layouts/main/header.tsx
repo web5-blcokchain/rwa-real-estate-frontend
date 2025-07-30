@@ -416,8 +416,8 @@ const UserMenu: FC = () => {
     <Dropdown menu={{ items: visibleItems }} placement="bottomRight">
       <div className="fyc gap-1 clickable">
         <div className="i-material-symbols-account-circle-outline size-5 bg-white"></div>
-        <div className="text-4 text-white">
-          { userData.email }
+        <div className="text-4 text-white" title={userData.email}>
+          { `${(userData.email || '')?.slice(0, 4)}...${(userData.email || '')?.slice(-4)}` }
         </div>
         <div className="i-ic-round-keyboard-arrow-down size-5 bg-white"></div>
       </div>

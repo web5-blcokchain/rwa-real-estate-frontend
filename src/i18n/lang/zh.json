@@ -733,12 +733,14 @@
     "reSubmit": "重新提交",
     "contactAdmin": "请联系管理员",
     "contactAdminDesc": "请联系管理员解决",
-    "backendAudit": "提交用户资料",
-    "backendAuditPass": "后台审核通过",
-    "backendAuditFail": "后台审核失败",
-    "walletBindSuccess": "钱包绑定成功",
-    "kycAuditPass": "KYC审核通过",
-    "kycAuditFail": "KYC审核失败"
+    "backendAudit": "KYC 认证{{status}}",
+    "walletBind": "钱包绑定{{status}}",
+    "kycAudit": "KYC审核{{status}}",
+    "submitUserInfo": "提交用户信息",
+    "submitUserInfoSuccess": "资料提交{{status}}",
+    "success": "成功",
+    "pass": "通过",
+    "fail": "失败"
   },
   "dividendStatistics": {
     "title": "分红统计",
