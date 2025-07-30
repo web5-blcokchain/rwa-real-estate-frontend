@@ -5,7 +5,7 @@ import axios from 'axios'
 axios.defaults.baseURL = Env.apiUrl
 axios.defaults.headers.common.server = true
 
-interface ResponseData<T> {
+export interface ResponseData<T> {
   code?: number
   data?: T
   error?: any
@@ -28,13 +28,28 @@ axios.interceptors.request.use(
   }
 )
 
-axios.interceptors.response.use((res: ResponseData<any>) => {
+const errorList: { message: string, time: number }[] = []
+axios.interceptors.response.use(async (res: ResponseData<any>) => {
   const code = _get(res.data, 'code', 0)
-
-  // 401 账户不存在不需要提示，因为是强制跳转创建账号页面
-  if (code !== 401 && code !== 1) {
+  // 401 账户不存在不需要提示，因为是强制跳转创建账号页面 TODO Expired token
+  let fullUrl = ''
+  const config = (res as any).config
+  if (config)
+    fullUrl = config.url
+  if (code === 401 && fullUrl.includes('/api/info/userInfo')) {
+    return res.data
+  }
+  if (code !== 1 && code !== 401) {
     const message = _get(res.data, 'msg', 'Response error')
-    toast.error(message)
+    if (message.includes('Token is expired') || message.includes('Expired token')) { // TODO
+      return
+    }
+    // 同一个提示信息一段时间只出现一次
+    const hasError = errorList.some(item => item.message === message && item.time > Date.now() - 5000)
+    if (!hasError) {
+      toast.error(message)
+      errorList.push({ message, time: Date.now() })
+    }
     throw new Error(message)
   }
 

@@ -14,7 +14,7 @@ export async function ensurePrivyNetwork(wallet: ConnectedWallet) {
   try {
     // 尝试切换到目标链
     await wallet.switchChain(Number.parseInt(Env.web3.chainId))
-    console.log('成功切换到 Hardhat 网络')
+    console.log('成功切换到网络')
   }
   catch (switchError: any) {
     // 如果目标链未添加，添加新链
@@ -25,10 +25,10 @@ export async function ensurePrivyNetwork(wallet: ConnectedWallet) {
           method: 'wallet_addEthereumChain',
           params: [goChain]
         })
-        console.log('成功添加并切换到 Hardhat 网络')
+        console.log('成功添加并切换到网络')
       }
       catch (addError) {
-        console.error('添加 Hardhat 网络失败:', addError)
+        console.error('添加网络失败:', addError)
       }
     }
   }

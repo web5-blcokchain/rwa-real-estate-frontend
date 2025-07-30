@@ -1,4 +1,5 @@
 import { GlobalDialog } from '@/components/dialog/chat-help'
+import GlobalCommon from '@/components/dialog/global-common'
 import MainLayout from '@/components/layouts/main'
 import { useRouteGuard } from '@/hooks/route-guard'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
@@ -14,8 +15,9 @@ function AppLayoutComponent() {
   useRouteGuard()
 
   return (
-    <div>
+    <div className="app-content h-100vh overflow-hidden overflow-y-scroll">
       <GlobalDialog />
+      <GlobalCommon />
       <PortalToast />
       <div className="bg-background text-text">
         <MainLayout>
@@ -28,7 +30,7 @@ function AppLayoutComponent() {
 
 const PortalToast: FC = () => {
   return ReactDOM.createPortal(
-    <ToastContainer />,
+    <ToastContainer position="top-center" hideProgressBar />,
     document.body
   )
 }

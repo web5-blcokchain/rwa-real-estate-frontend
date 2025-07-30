@@ -3,11 +3,15 @@ import apiBasic from '@/api/basicApi'
 import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
-import { PaymentMethod } from '@/components/common/payment-method'
+import { PaymentWallet } from '@/components/common/payment-wallect'
 import QuantitySelector from '@/components/common/quantity-selector'
 import { getContracts } from '@/contract'
 import { useCommonDataStore } from '@/stores/common-data'
+import { useUserStore } from '@/stores/user'
+import { envConfig } from '@/utils/envConfig'
+import { formatNumberNoRound } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
+import { generatePermitSignature } from '@/utils/web/utils'
 import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
@@ -15,6 +19,7 @@ import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { isAddress } from 'web3-validator'
+import { PayDialog } from '../-components/payDialog'
 
 // 最小购买数量常量
 const MIN_TOKEN_PURCHASE = 1 // 设置最小购买量为2个代币，根据合约要求调整
@@ -29,6 +34,7 @@ function RouteComponent() {
   const navigate = useNavigate()
 
   const [wallet, setWallet] = useState<ConnectedWallet | null>(null)
+  const { userData } = useUserStore()
 
   const { params } = useMatch({
     from: '/_app/properties/payment/$id'
@@ -42,6 +48,7 @@ function RouteComponent() {
   // 默认购买量设置为最小值
   const [tokens, setTokens] = useState(MIN_TOKEN_PURCHASE)
   const [btnLoading, setBtnLoading] = useState(false) // 新增loading状态
+  const [payDialogOpen, setPayDialogOpen] = useState(false)
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async (hash: string) => {
@@ -55,22 +62,33 @@ function RouteComponent() {
   })
 
   async function payment() {
+    // 判断当前用户是否是绑定的钱包/已经审核通过链
+    if (userData.audit_status !== 4) {
+      toast.error(t('payment.errors.please_wait_for_kyc'))
+      return
+    }
     if (!wallet) {
       toast.error(t('payment.errors.no_wallet'))
       return
     }
+    if (wallet.address !== userData.wallet_address) {
+      toast.error(t('payment.errors.please_use_bound_wallet'))
+      return
+    }
     setBtnLoading(true)
+    setPayDialogOpen(true)
     try {
       if (!window.ethereum) {
         toast.error(t('payment.errors.no_ethereum'))
         return
       }
 
-      const PropertyManager = getContracts('PropertyManager')
+      const PropertyManager = getContracts('PropertyToken')
       const SimpleERC20 = getContracts('SimpleERC20')
 
       // PropertyManager 合约地址应从配置或 item 里获取，不能用 propertyToken 地址
-      const propertyManagerAddress = PropertyManager.address || process.env.REACT_APP_PROPERTY_MANAGER_ADDRESS
+      const propertyManagerAddress = item.contract_address
+      const usdcAddress = envConfig.usdcAddress || SimpleERC20.address
       if (!propertyManagerAddress || !isAddress(propertyManagerAddress)) {
         toast.error(t('payment.errors.invalid_contract'))
         return
@@ -84,7 +102,7 @@ function RouteComponent() {
 
       // USDT合约
       const usdtContract = new ethers.Contract(
-        SimpleERC20.address,
+        usdcAddress,
         SimpleERC20.abi,
         signer
       )
@@ -97,36 +115,57 @@ function RouteComponent() {
 
       // 获取USDT精度
       const usdtDecimals = await usdtContract.decimals()
-      // 计算所需USDT金额
-      const tokenPrice = ethers.parseUnits(String(item.price), usdtDecimals)
-      const requiredUsdtAmount = tokenPrice * BigInt(tokens)
+      // 获取购买的房屋代币数量
 
-      // 检查USDT余额
+      // 获取房屋代币对应的usdc价格
+      let usdcPrice = await propertyManagerContract.issuePrice()
+      usdcPrice = ethers.formatUnits(usdcPrice, usdtDecimals)
+      const requiredUsdtAmount = String(tokens * Number(usdcPrice) * 1.02)
+      // 计算需要支付USDT余额 百分之2的手续费 （总数 * 价格 * 手续费）
+      const payUSDCAmount = ethers.parseUnits(requiredUsdtAmount, usdtDecimals)
       const usdtBalance = await usdtContract.balanceOf(signerAddress)
-      if (usdtBalance < requiredUsdtAmount) {
+      // TODO 使用合约获取价格,计算代币与USDC比例兑换之后的余额，之后进行判断
+      if (usdtBalance < payUSDCAmount) {
         toast.error(t('payment.errors.insufficient_eth'))
         return
       }
 
       // 检查USDT授权额度（授权给 PropertyManager 合约地址）
-      const usdtAllowance = await usdtContract.allowance(signerAddress, propertyManagerAddress)
-      if (usdtAllowance < requiredUsdtAmount) {
-        // 先清零授权
-        const resetTx = await usdtContract.approve(propertyManagerAddress, 0)
-        await resetTx.wait()
-        // 再授权
-        const approveTx = await usdtContract.approve(propertyManagerAddress, requiredUsdtAmount)
-        await approveTx.wait()
-      }
+      // const usdtAllowance = await usdtContract.allowance(signerAddress, propertyManagerAddress)
+      // if (usdtAllowance < requiredUsdtAmount) {
+      //   // 先清零授权
+      //   // const resetTx = await usdtContract.approve(propertyManagerAddress, 0)
+      //   // await resetTx.wait()
+      //   // 直接授权USDC所支付的数量
+      //   const approveTx = await usdtContract.approve(propertyManagerAddress, payUSDCAmount)
+      //   await approveTx.wait()
+      // }
 
       toast.info(t('payment.info.creating_transaction'))
 
       try {
         // propertyId 类型要与合约一致（通常为 string 或 bytes32）
-        const tx = await propertyManagerContract.initialBuyPropertyToken(
-          String(id),
-          tokens
+        // const tx = await propertyManagerContract.purchaseTokens(requiredUsdtAmount, usdcAddress)
+
+        const currentTime = Math.floor(Date.now() / 1000)
+        const deadline = currentTime + 3600 // 1 hour from now
+        const { v, r, s } = await generatePermitSignature(
+          signer,
+          usdtContract,
+          propertyManagerAddress,
+          ethers.parseUnits(requiredUsdtAmount, usdtDecimals),
+          deadline
         )
+        // 生成支付合约的精度数
+        const tx = await (propertyManagerContract.connect(signer) as any)
+          .purchaseTokens(
+            ethers.parseEther((tokens * 1.02).toString()),
+            usdtContract.getAddress(),
+            deadline,
+            v,
+            r,
+            s
+          )
         const receipt = await tx.wait()
         toast.success(t('payment.success.tx_sent'))
         const hash = receipt.hash
@@ -177,6 +216,7 @@ function RouteComponent() {
     }
     finally {
       setBtnLoading(false)
+      setPayDialogOpen(false)
     }
   }
 
@@ -197,11 +237,11 @@ function RouteComponent() {
   const [imageUrl] = joinImagesPath(item.image_urls)
 
   return (
-    <div className="max-w-7xl p-8 space-y-8">
+    <div className="mx-auto max-w-7xl p-8 space-y-8">
       <div className="text-center text-6 font-medium">{t('common.payment_title')}</div>
 
-      <div className="flex gap-6 rounded-xl bg-[#202329] p-6">
-        <div className="h-60 w-100">
+      <div className="flex gap-6 rounded-xl bg-[#202329] p-6 max-lg:flex-col">
+        <div className="h-60 w-100 max-lg:h-auto max-lg:w-full">
           <IImage src={imageUrl} className="size-full rounded" />
         </div>
         <div>
@@ -239,35 +279,41 @@ function RouteComponent() {
       <div className="rounded-xl bg-[#202329] p-6 space-y-4">
         <div className="text-4.5">{t('properties.payment.payment_details')}</div>
 
-        <div className="flex items-center justify-between text-4">
-          <div className="text-[#898989] space-y-4">
-            <div>{t('properties.payment.number')}</div>
-            <div>{t('properties.payment.subtotal')}</div>
+        <div className="text-4">
+          <div className="w-full text-[#898989] [&>div]:w-full [&>div]:fyc [&>div]:justify-between space-y-4">
             <div>
-              {t('properties.payment.platform_fee')}
-              {' '}
-              (2%)
+              <div>{t('properties.payment.number')}</div>
+              <div className="flex justify-end">
+                <QuantitySelector
+                  value={tokens}
+                  onChange={setTokens}
+                  min={1}
+                  disabled={isPending}
+                />
+              </div>
+            </div>
+            <div>
+              <div>{t('properties.payment.subtotal')}</div>
+              <div className="text-right">
+                $
+                {formatNumberNoRound(tokens * Number(item.price), 8)}
+              </div>
+            </div>
+            <div>
+              <div>
+                {t('properties.payment.platform_fee')}
+                {' '}
+                (2%)
+              </div>
+              <div className="text-right">
+                $
+                {formatNumberNoRound(tokens * Number(item.price) * 0.02, 8)}
+              </div>
             </div>
           </div>
 
           <div className="space-y-4">
-            <div className="flex justify-end">
-              <QuantitySelector
-                value={tokens}
-                onChange={setTokens}
-                min={1}
-                disabled={isPending}
-              />
-            </div>
 
-            <div className="text-right">
-              $
-              {tokens * Number(item.price)}
-            </div>
-            <div className="text-right">
-              $
-              {(tokens * Number(item.price) * 0.02).toFixed(2)}
-            </div>
           </div>
         </div>
 
@@ -277,33 +323,39 @@ function RouteComponent() {
           <div>{t('properties.payment.total_amount')}</div>
           <div className="text-primary">
             $
-            {(tokens * Number(item.price) * 1.02).toFixed(2)}
+            {formatNumberNoRound(tokens * Number(item.price) * 1.02, 8)}
           </div>
         </div>
       </div>
 
       <div className="rounded-xl bg-[#202329] p-6 space-y-4">
-        <div className="text-4.5">{t('properties.payment.payment_method')}</div>
-        <PaymentMethod walletState={[wallet, setWallet]} />
+        <div className="text-4.5">{t('properties.payment.bind_wallet')}</div>
+        <PaymentWallet walletState={[wallet, setWallet]} />
+        <div className="text-3.5 text-[#898989]">
+          <div>{t('properties.payment.dear_user')}</div>
+          <div>{t('properties.payment.bind_wallet_content_1')}</div>
+          <div>{t('properties.payment.bind_wallet_content_2')}</div>
+          <div>{t('properties.payment.bind_wallet_content_3')}</div>
+          <div>{t('properties.payment.bind_wallet_content_4')}</div>
+        </div>
+
       </div>
 
-      <div className="rounded-xl bg-[#202329] p-6 text-4 text-[#898989] space-y-2">
-        <p>{t('properties.payment.dear_user')}</p>
+      {/* <div className="rounded-xl bg-[#202329] p-6 text-4 text-[#898989] space-y-2">
         <p>
           {t('properties.payment.please_verify')}
-
         </p>
         <p>
           {t('properties.payment.please_verify_1')}
         </p>
-      </div>
+      </div> */}
 
       <div>
-        <div className="text-center text-3.5 text-[#898989]">
+        {/* <div className="text-center text-3.5 text-[#898989]">
           {t('properties.payment.expire')}
-          14:59
-        </div>
-        <div className="grid grid-cols-3 mt-2">
+          {dayjs().format('HH:mm')}
+        </div> */}
+        <div className="mt-2 fcc gap-4">
           <div>
             <Button
               className="text-white bg-transparent!"
@@ -325,9 +377,9 @@ function RouteComponent() {
               {t('properties.payment.confirm_payment')}
             </Button>
           </div>
-          <div></div>
         </div>
       </div>
+      <PayDialog open={payDialogOpen} onClose={() => setPayDialogOpen(false)} />
     </div>
   )
 }

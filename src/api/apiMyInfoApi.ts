@@ -76,10 +76,15 @@ function register(data: RegisterParams) {
   return apiClient.post<RegisterResponse>('/api/user/register', data)
 }
 
+function submitInfo(data: RegisterParams) {
+  return apiClient.post<RegisterResponse>('/api/info/submitInfo ', data)
+}
+
 export interface AboutMeParams {
   page?: number
   pageSize?: number
   keyword?: string
+  status?: number
 }
 
 export interface PropertieItem {
@@ -94,6 +99,7 @@ export interface PropertieItem {
   total_current: number
   create_date: number
   update_date: number
+  /** 状态-1锁定中 0 为未领取 1为已领取 2为赎回 3为领取失败 */
   status: number
   address: string
   property_type: string
@@ -104,6 +110,9 @@ export interface PropertieItem {
   image_urls: string
   longitude: string | null
   latitude: string | null
+  draw_time: string
+  drwa_hash: string
+  contract_address: string
 }
 export interface AboutMeResponse {
   list: PropertieItem[]
@@ -113,24 +122,66 @@ export interface AboutMeResponse {
 }
 // 获取我的资产列表
 function getMeInfo(data: AboutMeParams) {
-  return apiClient.post<ResponseData<AboutMeResponse>>('/api/assets/myProperties', data)
+  return apiClient.post<AboutMeResponse>('/api/assets/myProperties', data)
+}
+
+export interface PropertyInvestment {
+  id: number // 投资记录 ID
+  user_id: number // 用户 ID
+  properties_id: number // 关联的房产 ID
+  number: number // 购买的份额数
+  total_current: string // 当前总价值（字符串表示精度）
+  create_date: number // 创建时间戳（秒）
+  update_date: number // 更新时间戳（秒）
+  current_price: string // 当前单价
+  address: string // 地址
+  property_type: string // 房产类型（如“独立式住宅”）
+  bedrooms: number // 卧室数量
+  expected_annual_return: string // 预期年回报率（%）
+  property_description: string // 房产描述
+  location: string // 位置说明
+  image_urls: string // 房产图 URL（如多个建议改为 string[]）
+  longitude: string // 经度（如 "1000,2000"，建议规范为 string[] 或两个字段）
+  latitude: string | null // 纬度（可能为 null）
+  name: string // 房产名称
+}
+
+export interface PropertyInvestmentResponse {
+  list: PropertyInvestment[]
+  count: number
+  page: number
+  pageSize: number
+}
+function getMeInfoSummary(data: AboutMeParams) {
+  return apiClient.post<PropertyInvestmentResponse>('/api/assets/myPropertiesTotal', data)
 }
 
 export interface historyResponse {
   id: number
-  user_id: number
+  income_date: string
   type: number
-  properties_id: number
-  income_amount: number
+  properties_id: string
   number: number
+  income_amount: string
+  total_amount: string
+  service_charge: string
+  /** 状态 0为未领取 1为已领取 2为领取失败 */
   status: number
-  income_id: number
-  income_date: number
-  address: string
+  amount: string
+  user_address: string
+  merkle_proof: string
+  tx_hash: string
+  remake: string
+}
+interface EarningsInfoResponse {
+  list: historyResponse[]
+  count: number
+  page: number
+  pageSize: number
 }
 // 收益记录
-function getHistory() {
-  return apiClient.post<ResponseData<historyResponse>>('/api/info/earningsHistory')
+function getHistory(params: { page: number, pageSize: number }) {
+  return apiClient.post<EarningsInfoResponse>('/api/info/earningsHistory', params)
 }
 
 export interface EarningsResponse {
@@ -146,8 +197,8 @@ export interface EarningsResponse {
   address: string
 }
 // 收益记录
-function getEarningsHistory() {
-  return apiClient.post<ResponseData<EarningsResponse>>('/api/info/earningsHistory')
+function getEarningsHistory(params: { page: number, pageSize: number }) {
+  return apiClient.post<ResponseData<EarningsResponse>>('/api/info/earningsHistory', params)
 }
 
 export interface UserResponse {
@@ -170,6 +221,29 @@ function getUserInfo() {
   return apiClient.post<UserResponse>('/api/info/userInfo')
 }
 
+interface EarningsInfoSummary {
+  current_month_income: number
+  total_income: number
+  avg_month_income: number
+}
+// 获取收益详情
+export async function getEarningsInfo() {
+  return apiClient.post<EarningsInfoSummary>('/api/info/getIncomeSummary')
+}
+
+// interface EarningsInfoResponse {
+//   list: EarningsInfo[]
+//   count: number
+//   page: number
+//   pageSize: number
+// }
+// // 获取收益列表
+// export async function getEarningsList(params: string) {
+//   return apiClient.post<EarningsInfoResponse>('/api/info/earningsHistory', {
+//     type: params
+//   })
+// }
+
 const apiMyInfoApi = {
   uploadFile,
   logins,
@@ -177,7 +251,9 @@ const apiMyInfoApi = {
   getMeInfo,
   getHistory,
   getEarningsHistory,
-  getUserInfo
+  getUserInfo,
+  submitInfo,
+  getMeInfoSummary
 }
 
 export default apiMyInfoApi

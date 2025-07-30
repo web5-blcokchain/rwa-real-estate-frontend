@@ -2,11 +2,14 @@ import type { TableProps } from 'antd'
 import { getTransactions } from '@/api/transaction'
 import TableComponent from '@/components/common/table-component'
 import { useQuery } from '@tanstack/react-query'
-import { DatePicker, Pagination } from 'antd'
+import { ConfigProvider, DatePicker, Pagination } from 'antd'
+import enLocale from 'antd/locale/en_US'
+import jpLocale from 'antd/locale/ja_JP'
+import zhLocale from 'antd/locale/zh_CN'
 import dayjs from 'dayjs'
 
 function Recording() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   const [keyword, setKeyword] = useState('')
   const [page, setPage] = useState(1)
@@ -30,7 +33,7 @@ function Recording() {
 
   const columns: TableProps['columns'] = [
     {
-      title: 'Date',
+      title: <div>{t('profile.common.date')}</div>,
       dataIndex: 'create_date',
       render(value) {
         return (
@@ -41,12 +44,12 @@ function Recording() {
       }
     },
     {
-      title: 'Asset',
+      title: <div>{t('profile.common.asset')}</div>,
       key: 'name',
       dataIndex: 'name'
     },
     {
-      title: 'Type',
+      title: <div>{t('profile.common.type')}</div>,
       key: 'type',
       dataIndex: 'type',
       render(value) {
@@ -74,12 +77,12 @@ function Recording() {
       }
     },
     {
-      title: 'Price',
+      title: <div>{t('profile.common.price')}</div>,
       key: 'price',
       dataIndex: 'price'
     },
     {
-      title: 'Total Money',
+      title: <div>{t('profile.common.total_money')}</div>,
       key: 'total_money',
       dataIndex: 'total_money'
     }
@@ -91,7 +94,7 @@ function Recording() {
 
   return (
     <div className="text-white space-y-6">
-      <div className="grid grid-cols-4 gap-4 rounded-xl bg-[#1e2024] p-6">
+      <div className="grid grid-cols-4 gap-4 rounded-xl bg-[#1e2024] p-6 max-lg:grid-cols-1">
         <div className="fyc flex-inline b b-white rounded-xl b-solid px-4 py-2 space-x-4">
           <div className="i-iconamoon-search size-5 shrink-0 bg-[#b5b5b5]"></div>
           <input
@@ -102,15 +105,16 @@ function Recording() {
             onChange={e => handleSearch(e.target.value)}
           />
         </div>
-
-        <DatePicker
-          placeholder={t('profile.transactions.start_date')}
-          className="of-hidden b b-white rounded-xl b-solid"
-        />
-        <DatePicker
-          placeholder={t('profile.transactions.end_date')}
-          className="of-hidden b b-white rounded-xl b-solid"
-        />
+        <ConfigProvider locale={i18n.language === 'zh' ? zhLocale : i18n.language === 'jp' ? jpLocale : enLocale}>
+          <DatePicker
+            placeholder={t('profile.transactions.start_date')}
+            className="of-hidden b b-white rounded-xl b-solid"
+          />
+          <DatePicker
+            placeholder={t('profile.transactions.end_date')}
+            className="of-hidden b b-white rounded-xl b-solid"
+          />
+        </ConfigProvider>
       </div>
 
       <Waiting
@@ -120,7 +124,7 @@ function Recording() {
       >
         <TableComponent
           columns={columns}
-          data={transactionsData}
+          data={transactionsData || []}
         />
       </Waiting>
 

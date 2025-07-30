@@ -86,11 +86,11 @@ function RouteComponent() {
   const [imageUrl] = joinImagesPath(item.image_urls)
 
   return (
-    <div className="max-w-7xl p-8 space-y-8">
+    <div className="mx-auto max-w-7xl p-8 space-y-8 max-lg:p-4">
       <div className="text-center text-6 font-medium">{t('common.redemption_title')}</div>
 
-      <div className="flex gap-6 rounded-xl bg-[#202329] p-6">
-        <div className="h-60 w-100">
+      <div className="flex gap-6 rounded-xl bg-[#202329] p-6 max-lg:flex-col">
+        <div className="h-60 w-100 max-lg:h-auto max-lg:w-full">
           <IImage src={imageUrl} className="size-full rounded" />
         </div>
         <div>
@@ -129,37 +129,45 @@ function RouteComponent() {
         <div className="text-4.5">{t('properties.payment.payment_details')}</div>
 
         <div className="flex items-center justify-between text-4">
-          <div className="text-[#898989] space-y-4">
-            <div>{t('properties.payment.tokens_held')}</div>
-            <div>{t('properties.payment.number')}</div>
-            <div>{t('properties.payment.subtotal')}</div>
+          <div className="w-full text-[#898989] [&>div]:w-full [&>div]:fyc [&>div]:justify-between space-y-4">
             <div>
-              {t('properties.payment.platform_fee')}
-              {' '}
-              (2%)
+              <div>{t('properties.payment.tokens_held')}</div>
+              <div className="text-right text-[#898989]">{item.tokens_held}</div>
+            </div>
+            <div>
+              <div>{t('properties.payment.number')}</div>
+              <div className="flex justify-end">
+                <QuantitySelector
+                  value={tokens}
+                  onChange={setTokens}
+                  min={1}
+                  max={item.tokens_held}
+                  disabled={isPending}
+                />
+              </div>
+            </div>
+            <div>
+              <div>{t('properties.payment.subtotal')}</div>
+              <div className="text-right">
+                $
+                {tokens * Number(item.token_price)}
+              </div>
+            </div>
+            <div>
+              <div>
+                {t('properties.payment.platform_fee')}
+                {' '}
+                (2%)
+              </div>
+              <div className="text-right">
+                $
+                {tokens * Number(item.token_price) * 0.02}
+              </div>
             </div>
           </div>
 
           <div className="space-y-4">
-            <div className="text-right text-[#898989]">{item.tokens_held}</div>
-            <div className="flex justify-end">
-              <QuantitySelector
-                value={tokens}
-                onChange={setTokens}
-                min={1}
-                max={item.tokens_held}
-                disabled={isPending}
-              />
-            </div>
 
-            <div className="text-right">
-              $
-              {tokens * Number(item.token_price)}
-            </div>
-            <div className="text-right">
-              $
-              {tokens * Number(item.token_price) * 0.02}
-            </div>
           </div>
         </div>
 
@@ -187,7 +195,7 @@ function RouteComponent() {
         <p>
           {t('properties.payment.please_verify_1')}
 
-          Your account must be fully verified with a valid government-issued ID or passport.
+          {t('properties.payment.appeal_title')}
         </p>
       </div>
 

@@ -1,6 +1,6 @@
 import apiBasic from '@/api/basicApi'
 import { RealEstateCard } from '@/components/common/real-estate-card'
-import { joinImagePath } from '@/utils/url'
+import { joinImagesPath } from '@/utils/url'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
 import { Button } from 'antd'
@@ -30,7 +30,7 @@ function RouteComponent() {
   }
 
   return (
-    <div className="p-8">
+    <div className="px-107px max-md:p-8">
       <div className="text-8 font-medium">
         {t('properties.title')}
       </div>
@@ -40,7 +40,7 @@ function RouteComponent() {
       </div>
 
       <div className="mt-8">
-        <div className="fyc flex-inline b b-white rounded-xl b-solid p-4 space-x-4">
+        <div className="fyc flex-inline b b-white rounded-xl b-solid p-4 max-lg:w-full space-x-4">
           <div className="i-iconamoon-search size-5 bg-[#b5b5b5]"></div>
           <input
             type="text"
@@ -57,13 +57,13 @@ function RouteComponent() {
         className="h-32 fcc"
         iconClass="size-8"
       >
-        <div className="grid grid-cols-1 mt-8 gap-8 md:grid-cols-3">
+        <div className="grid grid-cols-3 mt-8 gap-8 max-lg:grid-cols-2 max-md:grid-cols-1">
           {data && Array.isArray(data.list) && data.list.map((item: Record<string, any>) => (
             <RealEstateCard
               key={item.id}
               houseId={item.id}
               collect={item.is_collect}
-              picture={joinImagePath(item.image_urls)}
+              pictures={joinImagesPath(item.image_urls)}
               title={item.name}
               location={item.location}
               area={item.area}
@@ -72,6 +72,9 @@ function RouteComponent() {
               price={item.price}
               tokenPrice={item.tokenPrice}
               property_type={item.property_type}
+              expected_annual_return={item.expected_annual_return}
+              annual_return_max={item.annual_return_max}
+              annual_return_min={item.annual_return_min}
               className="clickable-99"
               onClick={() => {
                 navigate({ to: '/properties/detail/$id', params: { id: item.id } })

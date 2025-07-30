@@ -24,9 +24,9 @@ export default function LoginPrivyPanel() {
 
     setRegisterData({
       token: token!,
-      email: user.email?.address
+      email: user.email?.address || user.google?.email
     })
-  }, [user?.email?.address, token])
+  }, [user?.email?.address, user?.google?.email, token])
 
   if (!ready) {
     return (
@@ -57,7 +57,7 @@ export default function LoginPrivyPanel() {
     )
   }
 
-  if (!user?.email) {
+  if (!user?.email && !user?.google?.email) {
     return (
       <div className="fccc gap-8">
         <div className="text-8">{t('create.message.link_email')}</div>
@@ -81,7 +81,7 @@ export default function LoginPrivyPanel() {
       <div className="text-8">{t('create.logged_in_privy')}</div>
       <div className="fyc gap-2">
         <div className="i-material-symbols-check-circle-rounded bg-green"></div>
-        <div>{user?.email?.address || ''}</div>
+        <div>{user?.email?.address || user?.google?.email || ''}</div>
       </div>
       <div>
         <Button

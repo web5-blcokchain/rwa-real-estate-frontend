@@ -16,9 +16,16 @@
     "profile": "Profile",
     "error": {
       "user_not_found": "Please complete user information",
-      "login_required": "Please log in first"
+      "login_required": "Please log in first",
+      "centralized_database_review_rejection": "KYC audit failed",
+      "wallet_already_bound": "kyc audit in progress",
+      "kyc_audit_passed": "KYC audit passed",
+      "kyc_audit_rejected": "KYC audit rejected",
+      "kyc_audit_rejected_desc": "Sorry, your KYC file was rejected because it was not clear enough"
     },
-    "link_wallet": "Link wallet"
+    "link_wallet": "Link wallet",
+    "kyc_status": "KYC audit status",
+    "user_audit_status": "User audit application"
   },
   "payment": {
     "errors": {
@@ -52,7 +59,7 @@
       "transaction_timeout": "Transaction wait timeout, please check MetaMask notifications",
       "amount_below_minimum": "Token amount below minimum requirement (Min: {{min}})",
       "contract_not_initialized": "Contract not initialized",
-      "insufficient_eth": "Insufficient ETH balance, please ensure you have enough ETH to pay for transaction fees",
+      "insufficient_eth": "Insufficient USDC balance, please ensure you have enough USDC to pay for transaction fees",
       "transaction_failed": "Transaction execution failed, please try again later",
       "invalid_order_id": "Invalid order ID",
       "order_id_not_found": "Order ID not found",
@@ -65,7 +72,9 @@
       "invalid_token_price": "Token price is invalid or undefined",
       "invalid_property": "Invalid property ID",
       "token_approve_failed": "Token authorization failed",
-      "insufficient_token": "Insufficient token balance"
+      "insufficient_token": "Insufficient token balance",
+      "please_wait_for_kyc": "Please wait for KYC audit to pass",
+      "please_use_bound_wallet": "Please use the bound wallet to pay"
     },
     "info": {
       "eth_required": "Transaction requires sending ETH",
@@ -117,7 +126,9 @@
       "walletConnect": "WalletConnect",
       "walletContent": "Connect using WalletConnect",
       "coinbase": "Coinbase Wallet",
-      "coinbaseContent": "Connect to your Coinbase wallet"
+      "coinbaseContent": "Connect to your Coinbase wallet",
+      "please_bind_wallet": "Please bind wallet",
+      "bind_wallet_success": "Bind wallet successfully"
     },
     "verification": {
       "title": "Choose Your Identity Type",
@@ -127,11 +138,15 @@
       "institutional": "Institutional Investor",
       "organizations": "For companies and organizations",
       "notice": " Different verification requirements apply to individual and institutional investors.Please select the appropriate type to proceed with the verification process.",
+      "notice_desc": "Please note that you can only select one identity type.",
       "personal": {
         "title": "Personal Identity Verification",
         "subTitle": "Please upload your personal identity documents for KYC verification",
         "identity": "Identity Document",
-        "upload_title": "Upload Identity Card / Passport",
+        "upload_title": "Upload {{type}} ",
+        "upload_title_passport": "Passport",
+        "upload_title_id_card": "ID Card",
+        "upload_title_driver_license": "Driver License",
         "upload_subTitle": "Front and back sides required, JPG/PNG/PDF up to 5MB",
         "files": "Browse Files",
         "poof": "Proof of Address",
@@ -141,7 +156,11 @@
         "facial_title": "Take a Selfie",
         "facial_subTitle": "Clear facial photo in good lighting",
         "notice": "All submitted documents must be authentic and unmodified. Please ensure images are clear and complete. The verification process typically takes 1-2 business days. Your personal information is protected with bank-level encryption.",
-        "continue": "Continue"
+        "continue": "Continue",
+        "upload": "Submit",
+        "upload_error": "Please upload all documents",
+        "upload_error_user": "The identity you submitted for the first time does not match the current submission, please submit as a user",
+        "upload_error_business": "The identity you submitted for the first time does not match the current submission, please submit as a business"
       },
       "business": {
         "title": "Business Verification",
@@ -166,16 +185,17 @@
       "next": "Next",
       "link_email": "Bind the email"
     },
-    "step1": "Log in to Privy",
-    "logged_in_privy": "Logged in Privy",
+    "step1": "Log in",
+    "logged_in_privy": "Logged",
     "message": {
       "link_email": "Please bind your email address",
-      "create_success": "Account created successfully"
+      "create_success": "Account created successfully",
+      "reload_success": "Resubmit successfully"
     },
-    "upload_id_card_front": "Upload ID card front",
-    "upload_id_card_back": "Upload ID card back",
-    "id_card_front": "ID Card Front",
-    "id_card_back": "ID Card Back",
+    "upload_id_card_front": "Upload {{type}} front",
+    "upload_id_card_back": "Upload {{type}} back",
+    "id_card_front": "{{type}} front",
+    "id_card_back": "{{type}} back",
     "reupload": "Reupload",
     "step3": "Identity Verification",
     "step2": "Bond the wallet",
@@ -221,6 +241,65 @@
       "content": "Join our community of property investors and start your journey towards financial freedom.",
       "button": "Start Investing",
       "button2": "Learn More"
+    },
+    "explanation": {
+      "title": "Redefining the Future of Real Estate Investment",
+      "content": "Transform assets into globally accessible financial instruments with true crypto-native utility",
+      "button": "Learn More"
+    },
+    "rwaType": {
+      "rwaTitle": "A New Model for Real World Asset Tokens",
+      "rwaDesc": "Exchange, lend, borrow, cycle, and earn real returns from institutional-grade assets",
+      "coinTypes": {
+        "title-1": "RWA Minting System",
+        "content-1": "Real-world asset-collateralized stablecoin issuance mechanism",
+        "title-2": "RWA Coin Earnings",
+        "content-2": "Automatically or manually distribute cash flows generated by RWA assets to token holders",
+        "title-3": "RWA Coin Trading",
+        "content-3": "Tokenize real-world items (such as bonds, houses, gold) on the blockchain"
+      }
+    },
+    "statistics": {
+      "totalVolume": "Total Transaction Volume",
+      "activeInvestors": "Active Investors",
+      "tokenizedProperties": "Tokenized Properties",
+      "annualYield": "Annual Yield"
+    },
+    "investmentFeature": {
+      "frictionless": "Fragmented and frictionless real estate investment",
+      "anyone": "Anyone can invest in real estate - simple, affordable, and worry-free",
+      "ownership": "Fractional Ownership",
+      "lowEntry": "Invest in premium real estate globally for as little as $100.",
+      "compliance": "Regulatory Compliance",
+      "kyc": "A fully regulated platform with robust KYC/AML procedures. Your investment is safe and compliant.",
+      "liquidity": "Liquid Investment",
+      "secondaryMarket": "Trade your property tokens 24/7 on our secondary market. Unprecedented liquidity in real estate.",
+      "video": "Video Play",
+      "videoDesc": "Watch our video to learn how to invest and earn returns."
+    },
+    "earn": {
+      "title": "Earn Returns from RWA",
+      "content": "Real-world assets are still the best investment you can make."
+    },
+    "investorGuide": {
+      "newbieInvest": "Even if you are a beginner, you can invest like a pro",
+      "getInfo": "Get great real estate deals, professional analysis, and join a global community of top investors instantly",
+      "zeroDown": "Zero Down Payment Entry",
+      "groupBuy": "Co-invest in property and collect rent with others",
+      "rentAndAppreciate": "Earn rent while the property appreciates",
+      "dailyRent": "Daily rent settlement (not monthly or quarterly), profit from property sales",
+      "rentNoWorry": "Earn rent without worrying about chores",
+      "autoManage": "Be a landlord without hassle, you make the key decisions, we handle daily management",
+      "control": "The investment steering wheel is always in your hands",
+      "flexibleInvest": "Reinvest your rent if you wish, or sell your property anytime"
+    },
+    "document": {
+      "blog": "Blog",
+      "resource": "Resource",
+      "community": "Community",
+      "doc": "Documentation",
+      "upgrade": "Smart Contract Upgrade: More Flexible Subscription",
+      "upgradeDesc": "SuperstateTokenV5 introduces new smart contract features to simplify targeted subscription and redemption, as well as improved event tracking."
     }
   },
   "properties": {
@@ -232,20 +311,32 @@
       "bedrooms": "Bedrooms",
       "market_value": "Market Value",
       "monthly_rent": "Monthly Rent",
-      "return": "Expected Annual Return",
+      "return": "Expected annual return",
       "including": "Including",
       "rental": "rental yield and",
+      "return_range": "Expected return range between {{min}} and {{max}} (including fixed rental income and property appreciation)",
       "capital": "capital appreciation",
       "average": "Average 30-day",
       "amount_placeholder": "Enter investment amount",
       "ratio": "Investment Ratio",
       "invest": "Invest Now",
       "property_title": "Property Description",
+      "location_description": "Location Description",
       "property_includes": "The property includes:",
       "location": "Location",
       "market_analysis": "Market Analysis",
       "trends": "Regional Price Trends",
-      "analysis": "Rental Income Analysis"
+      "analysis": "Rental Income Analysis",
+      "invest_calculator": "Investment Calculator",
+      "invest_calculator_placeholder": "Enter investment amount",
+      "average_days": "Average {{n}} days",
+      "lock_period": "Lock Period Description",
+      "lock_period_title": "Purchase Lock Period Description",
+      "lock_period_content": "To ensure the security of platform funds and investment fairness, each initial purchase of real estate tokens is set with a lock period. During the lock period, the assets cannot be transferred or sold.",
+      "lock_period_content_1": "Lock Period Duration: 2 days after purchase (or as specified in the property details)",
+      "lock_period_content_2": "Lock Period Restrictions: No transfer, no secondary market trading, no withdrawal",
+      "lock_period_content_3": "Lock Period End: Automatically unlocked, users can freely circulate or sell their tokens",
+      "lock_period_content_4": "Purpose: To prevent short-term arbitrage and malicious operations, ensuring the stability of the real estate token system"
     },
     "payment": {
       "token_price": "Token Price",
@@ -255,10 +346,10 @@
       "subtotal": "Subtotal",
       "platform_fee": "Platform Fee",
       "total_amount": "Total Amount",
-      "payment_method": "Payment Method",
+      "payment_method": "Use the following wallet address to pay",
       "credit_card": "Credit Card",
       "cryptocurrency": "Cryptocurrency",
-      "dear_user": "Dear User,",
+      "dear_user": "Dear User:",
       "please_verify": "To ensure the security of OTC transactions, you must meet the following requirements and complete the necessary verification process:",
       "please_verify_1": " Your account must be fully verified with a valid government-issued ID or passport.",
       "expire": "Payment will expire in",
@@ -268,7 +359,17 @@
       "select_asset": "Select Asset",
       "search_asset": "Search Asset",
       "select_asset_prompt": "Please select an asset to create a buy order",
-      "redemption_success": "Redemption successful"
+      "redemption_success": "Redemption successful",
+      "annual_yield": "Annual Yield",
+      "valuation": "Valuation",
+      "create_sell_order": "Sell",
+      "redeem": "Redeem",
+      "appeal_title": "Your account must be fully verified with a valid government-issued ID or passport.",
+      "bind_wallet": "Use the following wallet address you have previously bound to pay",
+      "bind_wallet_content_1": "We are about to interact with the blockchain. It is expected that the transaction will be completed in 10-20 seconds. Please wait patiently. If you encounter any problems during the process,",
+      "bind_wallet_content_2": "1、Please check your network connection;",
+      "bind_wallet_content_3": "2、Ensure that you have installed the browser plugin;",
+      "bind_wallet_content_4": "3、If you are using a mobile phone, ensure that you have MetaMask or other wallets installed."
     }
   },
   "help": {
@@ -306,11 +407,17 @@
     "menu_history": "History",
     "toyota_camry": "Toyota Camry",
     "toyota_balance": "Toyota Balance",
-    "monthly_rental_income": "Monthly Rental Income(JPY)",
+    "monthly_rental_income": "Monthly Rental Income(USD)",
     "annual_yield": "Annual Yield",
     "menu_edit": "Edit settings",
     "menu_recording": "Recording",
-    "menu_transaction_status": "Transaction Status"
+    "menu_transaction_status": "Transaction Status",
+    "menu_assets": "Asset List",
+    "menu_assets_summary": "Purchase Record",
+    "menu_distribution_record": "Token Distribution Record",
+    "menu_message": "Message Center",
+    "menu_dividend_statistics": "Dividend Statistics",
+    "menu_appeal": "Appeal Information"
   },
   "footer": {
     "about": "About",
@@ -325,7 +432,8 @@
     "help_center": "Help Center",
     "contact_us": "Contact Us",
     "legal": "Legal",
-    "follow_us": "Follow Us"
+    "follow_us": "Follow Us",
+    "reserved": "All rights reserved"
   },
   "system": {
     "confirm": "Confirm",
@@ -342,7 +450,9 @@
     "sign_in_with_wallet": "Sign in with your wallet",
     "sign_in_with_apple": "Sign in with Apple",
     "sign_in_with_google": "Sign in with Google",
-    "login_with_email": "Login with Email"
+    "login_with_email": "Login with Email",
+    "login_title": "Great to have you back!",
+    "login_content": "Start your digital asset journey"
   },
   "action": {
     "sell": "Sell",
@@ -354,10 +464,20 @@
     "sell_title": "Sell Confirmation",
     "click_to_change": "Click to change image",
     "empty": "No data available",
+    "no_data": "No Data",
     "all": "All",
     "save_success": "Save successfully",
     "save_failed": "Saving failed",
-    "redemption_title": "Redemption confirmation"
+    "redemption_title": "Redemption confirmation",
+    "month": "[Month]",
+    "search": "Search",
+    "load_more": "Load More",
+    "search_placeholder": "Search address, type",
+    "asset_type": "Asset Type",
+    "reupload": "Reupload",
+    "copy_success": "Copied to clipboard",
+    "copy_failed": "Failed to copy to clipboard",
+    "all_images": "View all images"
   },
   "profile": {
     "transactions": {
@@ -396,13 +516,112 @@
       "merkle_root_mismatch": "Merkle root mismatch",
       "invalid_merkle_proof": "Invalid Merkle proof",
       "receive_success": "Earnings claimed successfully",
-      "receive_failed": "Failed to claim earnings"
+      "receive_failed": "Failed to claim earnings",
+      "date": "Date",
+      "asset": "Asset",
+      "amount": "Amount",
+      "tokens": "Tokens",
+      "status": "Status",
+      "wallet_address": "Wallet Address"
     },
     "recording": {
       "primary_subscription": "Invest",
       "asset_redemption": "Redemption",
       "sell_order": "Sell",
       "buy_order": "Buy"
+    },
+    "data_count": {
+      "totalAssetValue": "Total Asset Value",
+      "expectedIncomeThisMonth": "Expected Income This Month",
+      "averageMonthlyIncome": "Average Monthly Income (USD)",
+      "yieldPerformance": "Yield Performance",
+      "vsLastMonth": "vs last month",
+      "industryAverage": "Industry avg",
+      "tokenHoldings": "Token Holdings",
+      "asset": "Asset",
+      "amount": "Amount",
+      "valueJpy": "Value (USD)",
+      "share": "Share",
+      "change24h": "24h Change",
+      "action": "Action",
+      "earningsHistory": "Earnings History",
+      "time": "Time",
+      "type": "Type",
+      "amountJpy": "Amount (USD)",
+      "status": "Status",
+      "draw_time": "Pending issuance period",
+      "order_id": "Order ID",
+      "purchase_price": "Purchase Price",
+      "token_contract_address": "Token Contract Address",
+      "payment_currency": "Payment Currency",
+      "purchase_time": "Purchase Time",
+      "transaction_hash": "Transaction Hash",
+      "add_to_wallet": "Add to Wallet",
+      "token_name": "Token Name",
+      "add_token_success": "Token added successfully",
+      "add_token_failed": "Failed to add token"
+    },
+    "propertyTokens": {
+      "title": "Tokens Held"
+    },
+    "history": {
+      "incomeRecords": "Historical Income Records",
+      "totalTransactions": "Total Transactions",
+      "transactionCount": "Number of Transactions",
+      "transactionVolume": "Average Transaction",
+      "successRate": "Success Rate",
+      "recentTransactions": "Recent Transactions",
+      "incomeHistory": "Historical Income Records",
+      "thisMonth": "This Month",
+      "lastMonth": "Last Month",
+      "decemberBudget": "{{month}} Budget",
+      "income": "Income",
+      "received": "Received",
+      "budget": "Budget",
+      "expenses": "Expenses",
+      "spent": "Spent",
+      "week": "Last 7 Days",
+      "month": "Last 30 Days",
+      "halfYear": "Last 6 Months",
+      "year": "Last 1 Year",
+      "all": "All",
+      "view_detailed": "View Detailed Analysis Report",
+      "lastMonth_vs_thisMonth": "Last Month vs This Month",
+      "lastYear_vs_thisYear": "Last Year vs This Year"
+    },
+    "transaction_status": {
+      "all": "All",
+      "apartment": "Apartment",
+      "house": "House",
+      "land": "Land",
+      "commercial": "Commercial",
+      "asset_type": "Asset Type",
+      "small": "Small",
+      "medium": "Medium",
+      "large": "Large",
+      "high": "High"
+    },
+    "common": {
+      "date": "Date",
+      "asset": "Asset",
+      "type": "Type",
+      "price": "Price",
+      "total_money": "Total Money",
+      "number_of_tokens": "Number of Tokens",
+      "status": "Status"
+    },
+    "coin": {
+      "unclaimed": "Unclaimed",
+      "claimed": "Claimed",
+      "withdraw": "Redeem",
+      "failed": "Distribution Failed",
+      "locked": "Locked",
+      "distribution": "Distributing"
+    },
+    "myAssets": {
+      "distributionRecord": "Distribution Record",
+      "summaryRecord": "Summary Record",
+      "assetList": "Asset List"
     }
   },
   "transaction": {
@@ -411,6 +630,31 @@
     },
     "create_sell_order": {
       "gas_estimation_failed": "Gas estimation failed"
+    },
+    "hash": {
+      "token_distribution": "Token Distribution",
+      "token_distribution_complete": "Token Distribution Complete",
+      "token_distribution_failed": "Token Distribution Failed",
+      "tokens_have_been_successfully_transferred_to_your_wallet": "Tokens have been successfully transferred to your wallet",
+      "real_estate_token": "Real Estate Token",
+      "smart_contract_address": "Smart Contract Address",
+      "token_contract_address": "Token Contract Address",
+      "estimated_execution_time": "Estimated Execution Time",
+      "property_token_distribution": "Property Token Distribution",
+      "property_location": "Property Location",
+      "registration_number": "Registration Number",
+      "annual_yield": "Annual Yield",
+      "smart_contract_audited_by_certik": "Smart Contract Audited by CertiK",
+      "transaction_status": "Transaction Status",
+      "estimated_token_arrival_time": "Estimated token arrival time: {{num}} seconds",
+      "transaction_hash": "Transaction Hash",
+      "smart_contract_status": "Smart Contract Status",
+      "block_confirmation_confirmed": "Block Confirmation",
+      "success": "Success",
+      "confirmed": "confirmed",
+      "pending": "pending",
+      "view_in_explorer": "View in Explorer",
+      "confirm_in_wallet": "Confirm in Wallet"
     }
   },
   "investment": {
@@ -424,6 +668,60 @@
   },
   "payment_method": {
     "user_bound_wallet": "Bound wallet",
-    "not_connected_wallet": "Unconnected wallet"
+    "not_connected_wallet": "Unconnected wallet",
+    "bind_wallet_success": "Bind successfully",
+    "bind_wallet_loading": "Binding",
+    "please_connect_wallet": "Please connect wallet",
+    "click_to_bind_wallet": "Click to bind wallet"
+  },
+  "help-content": {
+    "title": "How can we help you?",
+    "placeholder": "Please enter your question",
+    "selfService": "Self Service",
+    "resetLoginPassword": "Reset Login Password",
+    "changeFundPassword": "Change Fund Password",
+    "changePhoneNumber": "Change Phone Number",
+    "bindEmail": "Bind Email",
+    "changeGoogleAuthenticator": "Change Google Authenticator",
+    "recoveryRequest": "Recovery Request"
+  },
+  "auditStatus": {
+    "reSubmit": "Resubmit",
+    "contactAdmin": "Contact Admin",
+    "contactAdminDesc": "Please contact the administrator to solve",
+    "backendAudit": "Submit user information",
+    "backendAuditPass": "Backend Audit Pass",
+    "backendAuditFail": "Backend Audit Fail",
+    "walletBindSuccess": "Wallet Bind Success",
+    "kycAuditPass": "KYC Audit Pass",
+    "kycAuditFail": "KYC Audit Fail"
+  },
+  "dividendStatistics": {
+    "title": "Dividend Statistics",
+    "currentMonthIncome": "Current Month Income",
+    "totalIncome": "Total Income",
+    "avgMonthIncome": "Average Monthly Income",
+    "thisMonth": "This Month",
+    "last3Months": "Last 3 Months",
+    "last6Months": "Last 6 Months",
+    "property": "Property",
+    "all": "All",
+    "house": "House",
+    "business": "Business",
+    "personal": "Personal",
+    "status": "Status",
+    "sale": "Sold",
+    "unclaimed": "Unclaimed",
+    "rent": "Processing",
+    "sold": "Failed",
+    "id": "Property ID",
+    "name": "RWA Name",
+    "price": "Dividend Amount",
+    "handlingFee": "Handling Fee",
+    "checkInPrice": "Actual Check-in",
+    "checkInStatus": "Check-in Status",
+    "hash": "Transaction Hash",
+    "time": "Check-in Time",
+    "distribution": "Distributing"
   }
 }

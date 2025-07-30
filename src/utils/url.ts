@@ -1,9 +1,11 @@
+import { envConfig } from './envConfig'
+
 export function joinImagePath(path: string) {
   if (!path) {
     return ''
   }
 
-  return `${import.meta.env.VITE_PUBLIC_API_URL}${path}`
+  return `${envConfig.apiUrl}${path}`
 }
 
 export function joinImagesPath(paths?: string) {

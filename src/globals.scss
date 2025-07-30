@@ -1,12 +1,12 @@
 :root {
   --primary: #f0b90b;
   --background: #ffffff;
-  --foreground: #181A1E;
+  --foreground: #191a1f;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #181A1E;
+    --background: #191a1f;
     --foreground: #ededed;
   }
 }
@@ -41,3 +41,16 @@ a {
     color-scheme: dark;
   }
 }
+
+.ant-modal .ant-modal-header {
+  background:transparent;
+}
+
+:root {
+  a:hover,.main-hover:hover{
+    color: var(--primary);
+    transition: all 0.3s ease;
+  }
+}
+
+

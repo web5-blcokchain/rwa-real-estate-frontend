@@ -172,7 +172,7 @@ function RouteComponent() {
           </div>
           <div className="fyc gap-2">
             <div className="text-[#898989]">Total Investment:</div>
-            <div className="text-6 text-primary">¥0.00</div>
+            <div className="text-6 text-primary">$0.00</div>
           </div>
         </div>
 

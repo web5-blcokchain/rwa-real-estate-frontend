@@ -1,5 +1,8 @@
 import basicApi from '@/api/basicApi'
+import { useUserStore } from '@/stores/user'
+import { usePrivy } from '@privy-io/react-auth'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { toast } from 'react-toastify'
 
 export const CollectButton: FC<{
   houseId: number
@@ -13,7 +16,9 @@ export const CollectButton: FC<{
 }) => {
   const queryClient = useQueryClient()
   const [defaultValue, setDefaultValue] = useState(collect)
-
+  const { authenticated } = usePrivy()
+  const { t } = useTranslation()
+  const { userData } = useUserStore()
   // 监听外部传入的collect属性变化
   useEffect(() => {
     setDefaultValue(collect)
@@ -28,7 +33,7 @@ export const CollectButton: FC<{
       if (queryKey) {
         await queryClient.refetchQueries({ queryKey })
       }
-      return res.data
+      return res
     }
   })
   const {
@@ -40,11 +45,11 @@ export const CollectButton: FC<{
       if (queryKey) {
         await queryClient.refetchQueries({ queryKey })
       }
-      return res.data
+      return res
     }
   })
 
-  const isLoading = (queryKey && queryClient.isFetching({ queryKey }) > 0) || collectIsPending || unCollectIsPending
+  const isLoading = collectIsPending || unCollectIsPending
 
   return (
     <div
@@ -73,18 +78,27 @@ export const CollectButton: FC<{
             e.stopPropagation()
             e.preventDefault()
 
+            if (!authenticated) {
+              toast.error(t('header.error.login_required'))
+              return
+            }
+            // 判定是不是已经认证成功
+            if ([0].includes(userData.audit_status) || !userData.audit_status) {
+              toast.error(t('header.error.wallet_already_bound'))
+              return
+            }
             if (isLoading) {
               return
             }
-
+            let resopnse
             if (defaultValue) {
-              await unCollectMutate()
+              resopnse = await unCollectMutate()
             }
             else {
-              await collectMutate()
+              resopnse = await collectMutate()
             }
-
-            setDefaultValue(defaultValue ? 0 : 1)
+            if (resopnse.code === 1)
+              setDefaultValue(defaultValue ? 0 : 1)
           }}
         >
         </div>

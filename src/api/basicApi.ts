@@ -22,6 +22,8 @@ interface DataListDetailParams {
 }
 
 export interface DetailResponse {
+  annual_return_max: string
+  annual_return_min: string
   Inception_number: number
   address: string
   area: string
@@ -51,6 +53,8 @@ export interface DetailResponse {
   updated_date: string
   valuation_report: string
   is_collect: 0 | 1
+  token_name: string
+  token_symbol: string
 }
 
 // 详情接口参数

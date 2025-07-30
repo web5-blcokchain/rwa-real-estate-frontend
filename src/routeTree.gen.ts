@@ -21,12 +21,17 @@ import { Route as AppTransactionCreateBuyOrderIndexImport } from './routes/_app/
 const AppIndexLazyImport = createFileRoute('/_app/')()
 const AppPropertiesIndexLazyImport = createFileRoute('/_app/properties/')()
 const AppProfileIndexLazyImport = createFileRoute('/_app/profile/')()
+const AppNewsIndexLazyImport = createFileRoute('/_app/news/')()
 const AppInvestmentIndexLazyImport = createFileRoute('/_app/investment/')()
 const AppHomeIndexLazyImport = createFileRoute('/_app/home/')()
+const AppHelpIndexLazyImport = createFileRoute('/_app/help/')()
+const AppGuidanceIndexLazyImport = createFileRoute('/_app/guidance/')()
+const AppAuditStatusIndexLazyImport = createFileRoute('/_app/auditStatus/')()
 const AppAboutIndexLazyImport = createFileRoute('/_app/about/')()
 const AppTransactionHashLazyImport = createFileRoute(
   '/_app/transaction/$hash',
 )()
+const AppBuyIdLazyImport = createFileRoute('/_app/buy/$id')()
 const AppPropertiesInstitutionalIndexLazyImport = createFileRoute(
   '/_app/properties/institutional/',
 )()
@@ -54,6 +59,7 @@ const AppPropertiesPaymentIdLazyImport = createFileRoute(
 const AppPropertiesDetailIdLazyImport = createFileRoute(
   '/_app/properties/detail/$id',
 )()
+const AppNewsDetailIdLazyImport = createFileRoute('/_app/news/detail/$id')()
 
 // Create/Update Routes
 
@@ -84,6 +90,14 @@ const AppProfileIndexLazyRoute = AppProfileIndexLazyImport.update({
   import('./routes/_app/profile/index.lazy').then((d) => d.Route),
 )
 
+const AppNewsIndexLazyRoute = AppNewsIndexLazyImport.update({
+  id: '/news/',
+  path: '/news/',
+  getParentRoute: () => AppRoute,
+} as any).lazy(() =>
+  import('./routes/_app/news/index.lazy').then((d) => d.Route),
+)
+
 const AppInvestmentIndexLazyRoute = AppInvestmentIndexLazyImport.update({
   id: '/investment/',
   path: '/investment/',
@@ -98,6 +112,30 @@ const AppHomeIndexLazyRoute = AppHomeIndexLazyImport.update({
   getParentRoute: () => AppRoute,
 } as any).lazy(() =>
   import('./routes/_app/home/index.lazy').then((d) => d.Route),
+)
+
+const AppHelpIndexLazyRoute = AppHelpIndexLazyImport.update({
+  id: '/help/',
+  path: '/help/',
+  getParentRoute: () => AppRoute,
+} as any).lazy(() =>
+  import('./routes/_app/help/index.lazy').then((d) => d.Route),
+)
+
+const AppGuidanceIndexLazyRoute = AppGuidanceIndexLazyImport.update({
+  id: '/guidance/',
+  path: '/guidance/',
+  getParentRoute: () => AppRoute,
+} as any).lazy(() =>
+  import('./routes/_app/guidance/index.lazy').then((d) => d.Route),
+)
+
+const AppAuditStatusIndexLazyRoute = AppAuditStatusIndexLazyImport.update({
+  id: '/auditStatus/',
+  path: '/auditStatus/',
+  getParentRoute: () => AppRoute,
+} as any).lazy(() =>
+  import('./routes/_app/auditStatus/index.lazy').then((d) => d.Route),
 )
 
 const AppAboutIndexLazyRoute = AppAboutIndexLazyImport.update({
@@ -115,6 +153,12 @@ const AppTransactionHashLazyRoute = AppTransactionHashLazyImport.update({
 } as any).lazy(() =>
   import('./routes/_app/transaction/$hash.lazy').then((d) => d.Route),
 )
+
+const AppBuyIdLazyRoute = AppBuyIdLazyImport.update({
+  id: '/buy/$id',
+  path: '/buy/$id',
+  getParentRoute: () => AppRoute,
+} as any).lazy(() => import('./routes/_app/buy/$id.lazy').then((d) => d.Route))
 
 const AppPropertiesInstitutionalIndexLazyRoute =
   AppPropertiesInstitutionalIndexLazyImport.update({
@@ -207,6 +251,14 @@ const AppPropertiesDetailIdLazyRoute = AppPropertiesDetailIdLazyImport.update({
   import('./routes/_app/properties/detail/$id.lazy').then((d) => d.Route),
 )
 
+const AppNewsDetailIdLazyRoute = AppNewsDetailIdLazyImport.update({
+  id: '/news/detail/$id',
+  path: '/news/detail/$id',
+  getParentRoute: () => AppRoute,
+} as any).lazy(() =>
+  import('./routes/_app/news/detail/$id.lazy').then((d) => d.Route),
+)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -225,6 +277,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexLazyImport
       parentRoute: typeof AppImport
     }
+    '/_app/buy/$id': {
+      id: '/_app/buy/$id'
+      path: '/buy/$id'
+      fullPath: '/buy/$id'
+      preLoaderRoute: typeof AppBuyIdLazyImport
+      parentRoute: typeof AppImport
+    }
     '/_app/transaction/$hash': {
       id: '/_app/transaction/$hash'
       path: '/transaction/$hash'
@@ -237,6 +296,27 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AppAboutIndexLazyImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/auditStatus/': {
+      id: '/_app/auditStatus/'
+      path: '/auditStatus'
+      fullPath: '/auditStatus'
+      preLoaderRoute: typeof AppAuditStatusIndexLazyImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/guidance/': {
+      id: '/_app/guidance/'
+      path: '/guidance'
+      fullPath: '/guidance'
+      preLoaderRoute: typeof AppGuidanceIndexLazyImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/help/': {
+      id: '/_app/help/'
+      path: '/help'
+      fullPath: '/help'
+      preLoaderRoute: typeof AppHelpIndexLazyImport
       parentRoute: typeof AppImport
     }
     '/_app/home/': {
@@ -253,6 +333,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppInvestmentIndexLazyImport
       parentRoute: typeof AppImport
     }
+    '/_app/news/': {
+      id: '/_app/news/'
+      path: '/news'
+      fullPath: '/news'
+      preLoaderRoute: typeof AppNewsIndexLazyImport
+      parentRoute: typeof AppImport
+    }
     '/_app/profile/': {
       id: '/_app/profile/'
       path: '/profile'
@@ -265,6 +352,13 @@ declare module '@tanstack/react-router' {
       path: '/properties'
       fullPath: '/properties'
       preLoaderRoute: typeof AppPropertiesIndexLazyImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/news/detail/$id': {
+      id: '/_app/news/detail/$id'
+      path: '/news/detail/$id'
+      fullPath: '/news/detail/$id'
+      preLoaderRoute: typeof AppNewsDetailIdLazyImport
       parentRoute: typeof AppImport
     }
     '/_app/properties/detail/$id': {
@@ -344,12 +438,18 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppIndexLazyRoute: typeof AppIndexLazyRoute
+  AppBuyIdLazyRoute: typeof AppBuyIdLazyRoute
   AppTransactionHashLazyRoute: typeof AppTransactionHashLazyRoute
   AppAboutIndexLazyRoute: typeof AppAboutIndexLazyRoute
+  AppAuditStatusIndexLazyRoute: typeof AppAuditStatusIndexLazyRoute
+  AppGuidanceIndexLazyRoute: typeof AppGuidanceIndexLazyRoute
+  AppHelpIndexLazyRoute: typeof AppHelpIndexLazyRoute
   AppHomeIndexLazyRoute: typeof AppHomeIndexLazyRoute
   AppInvestmentIndexLazyRoute: typeof AppInvestmentIndexLazyRoute
+  AppNewsIndexLazyRoute: typeof AppNewsIndexLazyRoute
   AppProfileIndexLazyRoute: typeof AppProfileIndexLazyRoute
   AppPropertiesIndexLazyRoute: typeof AppPropertiesIndexLazyRoute
+  AppNewsDetailIdLazyRoute: typeof AppNewsDetailIdLazyRoute
   AppPropertiesDetailIdLazyRoute: typeof AppPropertiesDetailIdLazyRoute
   AppPropertiesPaymentIdLazyRoute: typeof AppPropertiesPaymentIdLazyRoute
   AppTransactionBuyIdLazyRoute: typeof AppTransactionBuyIdLazyRoute
@@ -364,12 +464,18 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppIndexLazyRoute: AppIndexLazyRoute,
+  AppBuyIdLazyRoute: AppBuyIdLazyRoute,
   AppTransactionHashLazyRoute: AppTransactionHashLazyRoute,
   AppAboutIndexLazyRoute: AppAboutIndexLazyRoute,
+  AppAuditStatusIndexLazyRoute: AppAuditStatusIndexLazyRoute,
+  AppGuidanceIndexLazyRoute: AppGuidanceIndexLazyRoute,
+  AppHelpIndexLazyRoute: AppHelpIndexLazyRoute,
   AppHomeIndexLazyRoute: AppHomeIndexLazyRoute,
   AppInvestmentIndexLazyRoute: AppInvestmentIndexLazyRoute,
+  AppNewsIndexLazyRoute: AppNewsIndexLazyRoute,
   AppProfileIndexLazyRoute: AppProfileIndexLazyRoute,
   AppPropertiesIndexLazyRoute: AppPropertiesIndexLazyRoute,
+  AppNewsDetailIdLazyRoute: AppNewsDetailIdLazyRoute,
   AppPropertiesDetailIdLazyRoute: AppPropertiesDetailIdLazyRoute,
   AppPropertiesPaymentIdLazyRoute: AppPropertiesPaymentIdLazyRoute,
   AppTransactionBuyIdLazyRoute: AppTransactionBuyIdLazyRoute,
@@ -390,12 +496,18 @@ const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 export interface FileRoutesByFullPath {
   '': typeof AppRouteWithChildren
   '/': typeof AppIndexLazyRoute
+  '/buy/$id': typeof AppBuyIdLazyRoute
   '/transaction/$hash': typeof AppTransactionHashLazyRoute
   '/about': typeof AppAboutIndexLazyRoute
+  '/auditStatus': typeof AppAuditStatusIndexLazyRoute
+  '/guidance': typeof AppGuidanceIndexLazyRoute
+  '/help': typeof AppHelpIndexLazyRoute
   '/home': typeof AppHomeIndexLazyRoute
   '/investment': typeof AppInvestmentIndexLazyRoute
+  '/news': typeof AppNewsIndexLazyRoute
   '/profile': typeof AppProfileIndexLazyRoute
   '/properties': typeof AppPropertiesIndexLazyRoute
+  '/news/detail/$id': typeof AppNewsDetailIdLazyRoute
   '/properties/detail/$id': typeof AppPropertiesDetailIdLazyRoute
   '/properties/payment/$id': typeof AppPropertiesPaymentIdLazyRoute
   '/transaction/buy/$id': typeof AppTransactionBuyIdLazyRoute
@@ -410,12 +522,18 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof AppIndexLazyRoute
+  '/buy/$id': typeof AppBuyIdLazyRoute
   '/transaction/$hash': typeof AppTransactionHashLazyRoute
   '/about': typeof AppAboutIndexLazyRoute
+  '/auditStatus': typeof AppAuditStatusIndexLazyRoute
+  '/guidance': typeof AppGuidanceIndexLazyRoute
+  '/help': typeof AppHelpIndexLazyRoute
   '/home': typeof AppHomeIndexLazyRoute
   '/investment': typeof AppInvestmentIndexLazyRoute
+  '/news': typeof AppNewsIndexLazyRoute
   '/profile': typeof AppProfileIndexLazyRoute
   '/properties': typeof AppPropertiesIndexLazyRoute
+  '/news/detail/$id': typeof AppNewsDetailIdLazyRoute
   '/properties/detail/$id': typeof AppPropertiesDetailIdLazyRoute
   '/properties/payment/$id': typeof AppPropertiesPaymentIdLazyRoute
   '/transaction/buy/$id': typeof AppTransactionBuyIdLazyRoute
@@ -432,12 +550,18 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_app': typeof AppRouteWithChildren
   '/_app/': typeof AppIndexLazyRoute
+  '/_app/buy/$id': typeof AppBuyIdLazyRoute
   '/_app/transaction/$hash': typeof AppTransactionHashLazyRoute
   '/_app/about/': typeof AppAboutIndexLazyRoute
+  '/_app/auditStatus/': typeof AppAuditStatusIndexLazyRoute
+  '/_app/guidance/': typeof AppGuidanceIndexLazyRoute
+  '/_app/help/': typeof AppHelpIndexLazyRoute
   '/_app/home/': typeof AppHomeIndexLazyRoute
   '/_app/investment/': typeof AppInvestmentIndexLazyRoute
+  '/_app/news/': typeof AppNewsIndexLazyRoute
   '/_app/profile/': typeof AppProfileIndexLazyRoute
   '/_app/properties/': typeof AppPropertiesIndexLazyRoute
+  '/_app/news/detail/$id': typeof AppNewsDetailIdLazyRoute
   '/_app/properties/detail/$id': typeof AppPropertiesDetailIdLazyRoute
   '/_app/properties/payment/$id': typeof AppPropertiesPaymentIdLazyRoute
   '/_app/transaction/buy/$id': typeof AppTransactionBuyIdLazyRoute
@@ -455,12 +579,18 @@ export interface FileRouteTypes {
   fullPaths:
     | ''
     | '/'
+    | '/buy/$id'
     | '/transaction/$hash'
     | '/about'
+    | '/auditStatus'
+    | '/guidance'
+    | '/help'
     | '/home'
     | '/investment'
+    | '/news'
     | '/profile'
     | '/properties'
+    | '/news/detail/$id'
     | '/properties/detail/$id'
     | '/properties/payment/$id'
     | '/transaction/buy/$id'
@@ -474,12 +604,18 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/buy/$id'
     | '/transaction/$hash'
     | '/about'
+    | '/auditStatus'
+    | '/guidance'
+    | '/help'
     | '/home'
     | '/investment'
+    | '/news'
     | '/profile'
     | '/properties'
+    | '/news/detail/$id'
     | '/properties/detail/$id'
     | '/properties/payment/$id'
     | '/transaction/buy/$id'
@@ -494,12 +630,18 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_app'
     | '/_app/'
+    | '/_app/buy/$id'
     | '/_app/transaction/$hash'
     | '/_app/about/'
+    | '/_app/auditStatus/'
+    | '/_app/guidance/'
+    | '/_app/help/'
     | '/_app/home/'
     | '/_app/investment/'
+    | '/_app/news/'
     | '/_app/profile/'
     | '/_app/properties/'
+    | '/_app/news/detail/$id'
     | '/_app/properties/detail/$id'
     | '/_app/properties/payment/$id'
     | '/_app/transaction/buy/$id'
@@ -538,12 +680,18 @@ export const routeTree = rootRoute
       "filePath": "_app.tsx",
       "children": [
         "/_app/",
+        "/_app/buy/$id",
         "/_app/transaction/$hash",
         "/_app/about/",
+        "/_app/auditStatus/",
+        "/_app/guidance/",
+        "/_app/help/",
         "/_app/home/",
         "/_app/investment/",
+        "/_app/news/",
         "/_app/profile/",
         "/_app/properties/",
+        "/_app/news/detail/$id",
         "/_app/properties/detail/$id",
         "/_app/properties/payment/$id",
         "/_app/transaction/buy/$id",
@@ -560,12 +708,28 @@ export const routeTree = rootRoute
       "filePath": "_app/index.lazy.tsx",
       "parent": "/_app"
     },
+    "/_app/buy/$id": {
+      "filePath": "_app/buy/$id.lazy.tsx",
+      "parent": "/_app"
+    },
     "/_app/transaction/$hash": {
       "filePath": "_app/transaction/$hash.lazy.tsx",
       "parent": "/_app"
     },
     "/_app/about/": {
       "filePath": "_app/about/index.lazy.tsx",
+      "parent": "/_app"
+    },
+    "/_app/auditStatus/": {
+      "filePath": "_app/auditStatus/index.lazy.tsx",
+      "parent": "/_app"
+    },
+    "/_app/guidance/": {
+      "filePath": "_app/guidance/index.lazy.tsx",
+      "parent": "/_app"
+    },
+    "/_app/help/": {
+      "filePath": "_app/help/index.lazy.tsx",
       "parent": "/_app"
     },
     "/_app/home/": {
@@ -576,12 +740,20 @@ export const routeTree = rootRoute
       "filePath": "_app/investment/index.lazy.tsx",
       "parent": "/_app"
     },
+    "/_app/news/": {
+      "filePath": "_app/news/index.lazy.tsx",
+      "parent": "/_app"
+    },
     "/_app/profile/": {
       "filePath": "_app/profile/index.lazy.tsx",
       "parent": "/_app"
     },
     "/_app/properties/": {
       "filePath": "_app/properties/index.lazy.tsx",
+      "parent": "/_app"
+    },
+    "/_app/news/detail/$id": {
+      "filePath": "_app/news/detail/$id.lazy.tsx",
       "parent": "/_app"
     },
     "/_app/properties/detail/$id": {

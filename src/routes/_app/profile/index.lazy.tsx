@@ -1,8 +1,14 @@
 import type { MenuProps } from 'antd'
 import { IImage } from '@/components/common/i-image'
+import Appeal from '@/components/profile/appeal'
+import { AssetsSummary } from '@/components/profile/assetsSummary'
+import { DistributionRecord } from '@/components/profile/distributionRecord'
+import DividendStatistics from '@/components/profile/dividendStatistics'
 import { Earnings } from '@/components/profile/earnings'
 import { ProfileEdit } from '@/components/profile/edit'
 import History from '@/components/profile/history'
+import Message from '@/components/profile/message'
+import { MyAssets } from '@/components/profile/myAssets'
 import Overview from '@/components/profile/overview'
 import PropertyTokens from '@/components/profile/propertyTokens'
 import Recording from '@/components/profile/recording'
@@ -47,11 +53,17 @@ function RouteComponent() {
   const items: MenuItem[] = [
     getItem(`${t('aboutMe.menu_overview')}`, ProfileTab.Overview),
     getItem(`${t('aboutMe.menu_edit')}`, ProfileTab.Edit),
+    getItem(`${t('aboutMe.menu_message')}`, ProfileTab.Message),
     getItem(`${t('aboutMe.menu_property_tokens')}`, ProfileTab.PropertyTokens),
-    getItem(`${t('aboutMe.menu_earnings')}`, ProfileTab.Earnings),
-    getItem(`${t('aboutMe.menu_history')}`, ProfileTab.History),
-    getItem(`${t('aboutMe.menu_recording')}`, ProfileTab.Recording),
-    getItem(`${t('aboutMe.menu_transaction_status')}`, ProfileTab.TransactionStatus)
+    // getItem(`${t('aboutMe.menu_earnings')}`, ProfileTab.Earnings),
+    // getItem(`${t('aboutMe.menu_history')}`, ProfileTab.History),
+    // getItem(`${t('aboutMe.menu_recording')}`, ProfileTab.Recording),
+    // getItem(`${t('aboutMe.menu_transaction_status')}`, ProfileTab.TransactionStatus),
+    getItem(`${t('aboutMe.menu_assets_summary')}`, ProfileTab.Assets),
+    // getItem(`${t('aboutMe.menu_assets_summary')}`, ProfileTab.AssetsSummary),
+    getItem(`${t('aboutMe.menu_distribution_record')}`, ProfileTab.DistributionRecord),
+    getItem(`${t('aboutMe.menu_dividend_statistics')}`, ProfileTab.DividendStatistics),
+    getItem(`${t('aboutMe.menu_appeal')}`, ProfileTab.Appeal)
   ]
 
   const handleMenuClick: MenuProps['onClick'] = (e) => {
@@ -78,19 +90,39 @@ function RouteComponent() {
         return <Recording />
       case ProfileTab.TransactionStatus:
         return <TransactionStatus />
+      case ProfileTab.Assets:
+        return <MyAssets />
+      case ProfileTab.AssetsSummary:
+        return <AssetsSummary />
+      case ProfileTab.DistributionRecord:
+        return <DistributionRecord />
+      case ProfileTab.Message:
+        return <Message />
+      case ProfileTab.DividendStatistics:
+        return <DividendStatistics />
+      case ProfileTab.Appeal:
+        return <Appeal />
     }
   }
 
   return (
-    <Layout className="aboutMe">
-      <Sider className="sider bg-[#181a1e]">
-        <div className="flex justify-start pb-4 pr-4 pt-4">
+    <Layout className="aboutMe max-lg:w-full max-lg:flex max-lg:!flex-col">
+      <Sider className="sider w-fit bg-[#191a1f] max-lg:!max-w-full max-lg:!w-full" width={256}>
+        <div className="flex justify-start px-4 pb-6 pt-34px">
           <div className="img-wrap size-16 shrink-0">
-            <IImage
-              src={joinImagePath(userData?.avatar)}
-              alt="avatar"
-              className="size-full shrink-0 bg-[#797b80]"
-            />
+            {userData?.avatar
+              ? (
+                  <IImage
+                    src={joinImagePath(userData?.avatar)}
+                    alt="avatar"
+                    className="size-full shrink-0 bg-[#797b80]"
+                  />
+                )
+              : (
+                  <div className="size-full rounded-full bg-#252932 p-2">
+                    <div className="i-material-symbols-person h-full w-full text-[#9e9e9e]"></div>
+                  </div>
+                )}
           </div>
           <div className="justify-space-between ml-3 mt-1 flex flex-col">
             <div className="text-[#b5b5b5]">{t('aboutMe.welcome')}</div>
@@ -103,12 +135,12 @@ function RouteComponent() {
           selectedKeys={[selectedTab]}
           mode="inline"
           items={items}
-          className="bg-[#181a1e]"
+          className="bg-[#191a1f]"
           onClick={handleMenuClick}
         />
       </Sider>
 
-      <Layout className="page-layout-wrap bg-[#181a1e]">
+      <Layout className="page-layout-wrap bg-[#191a1f] max-lg:!w-full">
         <Content>
           {renderContent()}
         </Content>

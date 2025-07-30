@@ -16,9 +16,16 @@
     "profile": "プロファイル",
     "error": {
       "user_not_found": "Please complete user information",
-      "login_required": "Please log in first"
+      "login_required": "Please log in first",
+      "centralized_database_review_rejection": "KYC 審査未通過",
+      "wallet_already_bound": "kyc審査中",
+      "kyc_audit_passed": "KYC審査通過",
+      "kyc_audit_rejected": "KYC審査拒否",
+      "kyc_audit_rejected_desc": "申し訳ありませんが、あなたが提出したKYCファイルは、明確度が不足しているため、審査に不合格でした"
     },
-    "link_wallet": "リンク財布"
+    "link_wallet": "リンク財布",
+    "kyc_status": "KYC審査状態",
+    "user_audit_status": "ユーザー認証申請"
   },
   "payment": {
     "errors": {
@@ -52,7 +59,7 @@
       "transaction_timeout": "トランザクション待機タイムアウト。MetaMask通知を確認してください",
       "amount_below_minimum": "トークン数量が最小購入要件を下回っています (最小: {{min}})",
       "contract_not_initialized": "コントラクトが初期化されていません",
-      "insufficient_eth": "ETH残高が不足しています。取引手数料を支払うのに十分なETHを確保してください",
+      "insufficient_eth": "USDC残高が不足しています。取引手数料を支払うのに十分なUSDCを確保してください",
       "transaction_failed": "トランザクションの実行に失敗しました。後でもう一度お試しください",
       "invalid_order_id": "無効な注文ID",
       "order_id_not_found": "注文IDが見つかりません",
@@ -65,7 +72,9 @@
       "invalid_token_price": "トークン価格が無効または未定義です",
       "invalid_property": "無効な物件ID",
       "token_approve_failed": "トークンの承認に失敗しました",
-      "insufficient_token": "トークン残高が不足しています"
+      "insufficient_token": "トークン残高が不足しています",
+      "please_wait_for_kyc": "KYC審査が完了するまでお待ちください",
+      "please_use_bound_wallet": "バインドされたウォレットを使用して支払いしてください"
     },
     "info": {
       "eth_required": "トランザクションにはETHの送信が必要です",
@@ -117,7 +126,9 @@
       "walletConnect": "WalletConnect",
       "walletContent": "ウォレット接続を使用して接続します",
       "coinbase": "Coinbase Wallet",
-      "coinbaseContent": "誰かのコインベースウォレットに接続します"
+      "coinbaseContent": "誰かのコインベースウォレットに接続します",
+      "please_bind_wallet": "ウォレットをバインドしてください",
+      "bind_wallet_success": "ウォレットが正常にバインドされました"
     },
     "verification": {
       "title": "アイデンティティタイプを選択してください",
@@ -127,11 +138,15 @@
       "institutional": "機関投資家",
       "organizations": "企業や組織向け",
       "notice": "個人および機関の投資家には、さまざまな検証要件が適用されます.検証プロセスを進めるには、適切なタイプを選択してください.",
+      "notice_desc": "あなたは、あなたが選択できるのは1つのアイデンティティタイプのみです。",
       "personal": {
         "title": "個人のアイデンティティの検証",
         "subTitle": "フォークYC検証を誰かにアップロードしてください",
         "identity": "IDドキュメント",
-        "upload_title": "IDカード /パスポートをアップロードします",
+        "upload_title": "{{type}}をアップロードします",
+        "upload_title_passport": "パスポート",
+        "upload_title_id_card": "IDカード",
+        "upload_title_driver_license": "運転免許証",
         "upload_subTitle": "正面と裏側が必要で、JPG/PNG/PDFまで5MBまで",
         "files": "ファイルを参照します",
         "poof": "住所の証明",
@@ -141,7 +156,11 @@
         "facial_title": "自己を取る",
         "facial_subTitle": "良い照明で顔の写真を明確にします",
         "notice": "提出されたすべてのドキュメントは、本物であり、修正されていない必要があります。画像が明確で完全であることを確認してください。検証プロセスには通常、1〜2営業日かかります。お客様の個人情報は、銀行レベルの暗号化で保護されています。",
-        "continue": "続行します"
+        "continue": "続行します",
+        "upload_error": "すべてのドキュメントをアップロードしてください",
+        "upload_error_user": "あなたが最初に提出した身分証明書と現在の提出が一致していません。ユーザー身分で提出してください",
+        "upload_error_business": "あなたが最初に提出した身分証明書と現在の提出が一致していません。ビジネス身分で提出してください",
+        "upload": "提出します"
       },
       "business": {
         "title": "ビジネス検証",
@@ -164,18 +183,19 @@
     },
     "button": {
       "next": "つぎ",
-      "link_email": "Bind the email"
+      "link_email": "メールアドレスを連携してください"
     },
-    "step1": "Log in to Privy",
-    "logged_in_privy": "Logged in Privy",
+    "step1": "にログイン",
+    "logged_in_": "にログイン済み",
     "message": {
-      "link_email": "Please bind your email address",
-      "create_success": "Account created successfully"
+      "link_email": "メールアドレスを連携してください",
+      "create_success": "アカウントが正常に作成されました",
+      "reload_success": "再提出できました"
     },
-    "upload_id_card_front": "Upload ID card front",
-    "upload_id_card_back": "Upload ID card back",
-    "id_card_front": "身分証明書の表面",
-    "id_card_back": "身分証明書の裏面",
+    "upload_id_card_front": "{{type}}正面をアップロードします",
+    "upload_id_card_back": "{{type}}反面をアップロードします",
+    "id_card_front": "{{type}}正面",
+    "id_card_back": "{{type}}反面",
     "reupload": "再アップロード",
     "step3": "ID検証",
     "step2": "財布をバインドする",
@@ -221,6 +241,65 @@
       "content": "私たちの不動産投資家コミュニティに参加して、あなたの財務自由の旅を始めます。",
       "button": "投資を開始する",
       "button2": "学習の詳細"
+    },
+    "explanation": {
+      "title": "不動産投資の未来を再定義する",
+      "content": "資産をグローバルにアクセス可能な金融商品へ、本物の暗号ネイティブなユーティリティを実現",
+      "button": "もっと詳しく"
+    },
+    "rwaType": {
+      "rwaTitle": "実世界資産トークンの新しいモデル",
+      "rwaDesc": "機関投資家向け資産で交換・貸出・借入・循環・実収益を獲得",
+      "coinTypes": {
+        "title-1": "RWA鋳造システム",
+        "content-1": "実世界資産担保型ステーブルコイン発行メカニズム",
+        "title-2": "RWAコイン収益受取",
+        "content-2": "RWA資産が生み出すキャッシュフローを自動または手動でトークン保有者に分配",
+        "title-3": "RWAコイン取引",
+        "content-3": "現実世界のもの（国債・住宅・金など）をブロックチェーン上でトークン化"
+      }
+    },
+    "statistics": {
+      "totalVolume": "総取引量",
+      "activeInvestors": "アクティブ投資家",
+      "tokenizedProperties": "トークン化資産",
+      "annualYield": "年間利回り"
+    },
+    "investmentFeature": {
+      "frictionless": "断片的かつ摩擦のない不動産投資",
+      "anyone": "誰でも不動産投資ができる－シンプル・手頃・安心",
+      "ownership": "部分所有権",
+      "lowEntry": "100ドルから世界中の優良不動産に投資可能。",
+      "compliance": "規制遵守",
+      "kyc": "強力なKYC/AML手続きによる完全規制プラットフォーム。あなたの投資は安全かつコンプライアンス遵守。",
+      "liquidity": "流動性投資",
+      "secondaryMarket": "当社のセカンダリーマーケットで24時間365日トークン取引。不動産史上初の流動性。",
+      "video": "動画再生",
+      "videoDesc": "動画で投資方法と収益獲得方法を学びましょう。"
+    },
+    "earn": {
+      "title": "RWAで収益を得る",
+      "content": "実世界資産は今でも最良の投資先です。"
+    },
+    "investorGuide": {
+      "newbieInvest": "初心者でもプロのように投資できる",
+      "getInfo": "お得な不動産情報・専門分析・世界の投資家コミュニティにすぐ参加",
+      "zeroDown": "頭金ゼロで参入",
+      "groupBuy": "他の人と共同で物件を購入し家賃収入を得る",
+      "rentAndAppreciate": "家賃を得ながら物件価値も上昇",
+      "dailyRent": "家賃は日次精算（毎月や四半期ではなく）、売却益も獲得",
+      "rentNoWorry": "家賃収入を得ても手間いらず",
+      "autoManage": "大家業も手間なし、重要な決定はあなた、日常管理はお任せ",
+      "control": "投資のハンドルは常にあなたの手に",
+      "flexibleInvest": "家賃を再投資も売却も自由自在"
+    },
+    "document": {
+      "blog": "ブログ",
+      "resource": "リソース",
+      "community": "コミュニティ",
+      "doc": "ドキュメント",
+      "upgrade": "スマートコントラクトアップグレード：より柔軟なサブスクリプション",
+      "upgradeDesc": "SuperstateTokenV5は、ターゲット型サブスクリプションと償還の簡素化、イベント追跡の強化など新機能を追加しました。"
     }
   },
   "properties": {
@@ -232,20 +311,32 @@
       "bedrooms": "ベッドルーム",
       "market_value": "市場価値",
       "monthly_rent": "家賃",
-      "return": "予想される年間収益率",
+      "return": "年間リターンを期待しています",
       "including": "を含む",
       "rental": "賃貸料収益率と",
+      "return_range": "予想収益率は{{min}} から {{max}} の間です（固定家賃収入と不動産価値上昇を含む）",
       "capital": "の資本増値",
       "average": "平均30日",
       "amount_placeholder": "投資金額の入力",
       "ratio": "投資比",
       "invest": "即時投資",
       "property_title": "住宅源の説明",
+      "location_description": "位置説明",
       "property_includes": "この不動産には次のものが含まれます。",
       "location": "位置",
       "market_analysis": "市場分析",
       "trends": "地域別価格トレンド",
-      "analysis": "賃料収入分析"
+      "analysis": "賃料収入分析",
+      "invest_calculator": "投資計算機",
+      "invest_calculator_placeholder": "投資金額の入力",
+      "average_days": "平均{{n}}日",
+      "lock_period": "鎖定期説明",
+      "lock_period_title": "購入鎖定期説明",
+      "lock_period_content": "プラットフォーム資金の安全と投資公平性を確保するため、不動産トークンの初期購入には鎖定期が設定されています。鎖定期中、資産は移転または売却できません。",
+      "lock_period_content_1": "鎖定期の長さ：購入後2日（または不動産の詳細に記載されている場合）",
+      "lock_period_content_2": "鎖定期の制限：転送、セカンダリーマーケット取引、引き出しができません",
+      "lock_period_content_3": "鎖定期の終了：自動的に解除され、ユーザーはトークンを自由に流通または売却できます",
+      "lock_period_content_4": "目的：短期の投機と悪意のある操作を防止し、不動産トークンシステムの安定性を確保するため"
     },
     "payment": {
       "token_price": "トークン価格",
@@ -255,10 +346,10 @@
       "subtotal": "小計",
       "platform_fee": "プラットフォーム料金",
       "total_amount": "合計金額",
-      "payment_method": "支払い方法",
+      "payment_method": "以下のウォレットアドレスで支払います",
       "credit_card": "クレジットカード",
       "cryptocurrency": "デジタル暗号化通貨",
-      "dear_user": "尊敬するユーザー,",
+      "dear_user": "尊敬するユーザー:",
       "please_verify": "場外取引を安全にするためには、次の要件を満たし、必要な検証プロセスを完了する必要があります。",
       "please_verify_1": "アカウントは、有効な政府発行の身分証明書またはパスポートを使用して完全に検証する必要があります。",
       "expire": "支払は期限切れになります",
@@ -268,7 +359,17 @@
       "select_asset": "資産を選択",
       "search_asset": "資産を検索",
       "select_asset_prompt": "購入注文を作成するには資産を選択してください",
-      "redemption_success": "買い戻しに成功する"
+      "redemption_success": "買い戻しに成功する",
+      "annual_yield": "年間利回り",
+      "valuation": "評価",
+      "create_sell_order": "売却",
+      "redeem": "買い戻す",
+      "appeal_title": "アカウントは、有効な政府発行の身分証明書またはパスポートを使用して完全に検証する必要があります。",
+      "bind_wallet": "以前お支払いしたウォレットを使います ",
+      "bind_wallet_content_1": "わたしたちはブロックチェーンの相互作用を行う予定です。約10～20秒で取引が完了すると予想されます。お待ちください。もし途中で問題が発生した場合は、",
+      "bind_wallet_content_2": "1、ネットワーク接続を確認してください。",
+      "bind_wallet_content_3": "2、ブラウザプラグインをインストールしてください。",
+      "bind_wallet_content_4": "3、携帯電話で操作する場合は、MetaMaskなどのウォレットをインストールしてください。"
     }
   },
   "help": {
@@ -310,7 +411,13 @@
     "annual_yield": "年間生産高",
     "menu_edit": "Edit settings",
     "menu_recording": "取引記録",
-    "menu_transaction_status": "取引ステータス"
+    "menu_transaction_status": "取引ステータス",
+    "menu_assets": "資産リスト",
+    "menu_assets_summary": "購入記録",
+    "menu_distribution_record": "代币发放記録",
+    "menu_message": "メッセージセンター",
+    "menu_dividend_statistics": "配当統計",
+    "menu_appeal": "申訴情報"
   },
   "footer": {
     "about": "について",
@@ -325,7 +432,8 @@
     "help_center": "ヘルプセンター",
     "contact_us": "連絡先",
     "legal": "合法的",
-    "follow_us": "私たちに注目"
+    "follow_us": "私たちに注目",
+    "reserved": "すべての権利を留保します"
   },
   "system": {
     "confirm": "確認",
@@ -342,7 +450,9 @@
     "sign_in_with_wallet": "Sign in with your wallet",
     "sign_in_with_apple": "Sign in with Apple",
     "sign_in_with_google": "Sign in with Google",
-    "login_with_email": "Login with Email"
+    "login_with_email": "Login with Email",
+    "login_title": "帰ってきてくれて嬉しいです!",
+    "login_content": "デジタルアセットの旅を始める"
   },
   "action": {
     "sell": "販売",
@@ -357,7 +467,17 @@
     "all": "全部",
     "save_success": "保存に成功した",
     "save_failed": "保存に失敗した",
-    "redemption_title": "買い戻し確認"
+    "redemption_title": "買い戻し確認",
+    "month": "げつ",
+    "no_data": "仮無数の根拠です",
+    "search": "検索します",
+    "load_more": "もっとロードします",
+    "search_placeholder": "アドレス、タイプで検索",
+    "asset_type": "資産タイプ",
+    "reupload": "再アップロード",
+    "copy_success": "コピーに成功した",
+    "copy_failed": "コピーに失敗した",
+    "all_images": "すべての画像を表示"
   },
   "profile": {
     "transactions": {
@@ -396,13 +516,108 @@
       "merkle_root_mismatch": "Merkleルートが一致しません",
       "invalid_merkle_proof": "Merkle証明が無効です",
       "receive_success": "収益の受け取りに成功しました",
-      "receive_failed": "収益の受け取りに失敗しました"
+      "receive_failed": "収益の受け取りに失敗しました",
+      "date": "日付",
+      "asset": "資産",
+      "amount": "金額",
+      "tokens": "トークン",
+      "status": "ステータス",
+      "wallet_address": "ウォレットアドレス"
     },
     "recording": {
       "primary_subscription": "投資",
       "asset_redemption": "買い戻す",
       "sell_order": "売ります",
       "buy_order": "買います"
+    },
+    "data_count": {
+      "totalAssetValue": "総資産価値",
+      "expectedIncomeThisMonth": "今月の予想収益",
+      "averageMonthlyIncome": "月平均収入（円）",
+      "yieldPerformance": "利回り実績",
+      "vsLastMonth": "前月比",
+      "industryAverage": "業界平均",
+      "tokenHoldings": "トークン保有",
+      "asset": "資産",
+      "amount": "数量",
+      "valueJpy": "価値（USD）",
+      "share": "割合",
+      "change24h": "24時間変動",
+      "action": "操作",
+      "earningsHistory": "収益履歴",
+      "time": "時間",
+      "type": "タイプ",
+      "amountJpy": "金額（USD）",
+      "status": "ステータス",
+      "draw_time": "発行待ち期間です",
+      "order_id": "注文番号",
+      "purchase_price": "購入価格",
+      "token_contract_address": "トークンコントラクトアドレス",
+      "payment_currency": "支払い通貨",
+      "purchase_time": "購入時間",
+      "transaction_hash": "取引ハッシュです",
+      "add_to_wallet": "ウォレットに追加",
+      "token_name": "トークン名",
+      "add_token_success": "トークンをウォレットに追加しました",
+      "add_token_failed": "トークンをウォレットに追加に失敗しました"
+    },
+    "propertyTokens": {
+      "title": "保有しているトークンです"
+    },
+    "history": {
+      "incomeRecords": "過去の収益記録",
+      "totalTransactions": "総取引数",
+      "transactionCount": "取引件数",
+      "transactionVolume": "平均取引です",
+      "successRate": "成功率",
+      "recentTransactions": "最近の取引",
+      "incomeHistory": "過去の収益記録",
+      "thisMonth": "今月",
+      "lastMonth": "先月",
+      "decemberBudget": "{{month}}予算",
+      "income": "収入",
+      "received": "受取済み",
+      "budget": "予算",
+      "expenses": "支出",
+      "spent": "使用済み",
+      "week": "過去7日",
+      "month": "過去30日",
+      "halfYear": "半年経ちました",
+      "year": "過去1年",
+      "all": "全部です",
+      "view_detailed": "詳細分析レポートを見ます",
+      "lastMonth_vs_thisMonth": "先月と今月",
+      "lastYear_vs_thisYear": "昨年と今年"
+    },
+    "transaction_status": {
+      "all": "すべて",
+      "apartment": "アパート",
+      "house": "一戸建て",
+      "land": "土地",
+      "commercial": "商業用不動産",
+      "asset_type": "資産タイプ"
+    },
+    "common": {
+      "date": "日付",
+      "asset": "資産",
+      "type": "タイプ",
+      "price": "価格",
+      "total_money": "合計金額",
+      "number_of_tokens": "トークン数",
+      "status": "ステータス"
+    },
+    "coin": {
+      "unclaimed": "未配布",
+      "claimed": "配布済み",
+      "withdraw": "償還",
+      "failed": "配布失敗",
+      "locked": "ロック中",
+      "distribution": "配布中"
+    },
+    "myAssets": {
+      "distributionRecord": "発行記録",
+      "summaryRecord": "資産記録",
+      "assetList": "資産リスト"
     }
   },
   "transaction": {
@@ -411,6 +626,31 @@
     },
     "create_sell_order": {
       "gas_estimation_failed": "Gas見積もりに失敗しました"
+    },
+    "hash": {
+      "token_distribution": "トークン分配",
+      "token_distribution_complete": "トークン分配完了",
+      "token_distribution_failed": "トークン分配失敗",
+      "tokens_have_been_successfully_transferred_to_your_wallet": "トークンは正常にあなたの財布に転送されました",
+      "real_estate_token": "不動産トークン",
+      "smart_contract_address": "スマートコントラクトアドレス",
+      "token_contract_address": "トークンコントラクトアドレス",
+      "estimated_execution_time": "推定実行時間",
+      "property_token_distribution": "不動産トークン分配",
+      "property_location": "不動産位置",
+      "registration_number": "登録番号",
+      "annual_yield": "年間収益",
+      "smart_contract_audited_by_certik": "CertiKによるスマートコントラクトの監査",
+      "transaction_status": "取引ステータス",
+      "estimated_token_arrival_time": "推定トークン到着時間: {{num}} 秒",
+      "transaction_hash": "取引ハッシュ",
+      "smart_contract_status": "スマートコントラクトステータス",
+      "block_confirmation_confirmed": "ブロック確認",
+      "success": "成功",
+      "confirmed": "確認済み",
+      "pending": "保留中",
+      "view_in_explorer": "ブラウザで表示",
+      "confirm_in_wallet": "ウォレットで確認"
     }
   },
   "investment": {
@@ -424,6 +664,60 @@
   },
   "payment_method": {
     "user_bound_wallet": "バインドされた財布",
-    "not_connected_wallet": "バインドされていないウォレット"
+    "not_connected_wallet": "バインドされていないウォレット",
+    "bind_wallet_success": "バインド成功",
+    "bind_wallet_loading": "バインド中",
+    "please_connect_wallet": "ウォレットを接続してください",
+    "click_to_bind_wallet": "ウォレットをバインドする"
+  },
+  "help-content": {
+    "title": "どのようなご用件でしょうか？",
+    "placeholder": "ご質問を入力してください",
+    "selfService": "セルフサービス",
+    "resetLoginPassword": "ログインパスワードをリセット",
+    "changeFundPassword": "資金パスワードを変更",
+    "changePhoneNumber": "電話番号を変更",
+    "bindEmail": "メールアドレスを紐付ける",
+    "changeGoogleAuthenticator": "Google認証を変更",
+    "recoveryRequest": "復旧申請"
+  },
+  "auditStatus": {
+    "reSubmit": "再提出",
+    "contactAdmin": "管理者に連絡",
+    "contactAdminDesc": "管理者に連絡して解決してください",
+    "backendAudit": "ユーザーデータを提出します",
+    "backendAuditPass": "後台審査通過",
+    "backendAuditFail": "後台審査失敗",
+    "walletBindSuccess": "財布バインド成功",
+    "kycAuditPass": "KYC審査通過",
+    "kycAuditFail": "KYC審査失敗"
+  },
+  "dividendStatistics": {
+    "title": "配当統計",
+    "currentMonthIncome": "今月の累計配当",
+    "totalIncome": "累計配当",
+    "avgMonthIncome": "平均月配当",
+    "thisMonth": "今月",
+    "last3Months": "過去3ヶ月",
+    "last6Months": "過去6ヶ月",
+    "property": "不動産",
+    "all": "すべて",
+    "house": "住宅",
+    "business": "商業",
+    "personal": "個人",
+    "status": "ステータス",
+    "sale": "到着済み",
+    "rent": "処理中",
+    "unclaimed": "未引き出し",
+    "sold": "失敗",
+    "id": "不動産ID",
+    "name": "RWA名称",
+    "price": "配当金額",
+    "handlingFee": "手数料",
+    "checkInPrice": "実際の到着",
+    "checkInStatus": "到着ステータス",
+    "hash": "取引ハッシュ",
+    "time": "到着時間",
+    "distribution": "配布中"
   }
 }

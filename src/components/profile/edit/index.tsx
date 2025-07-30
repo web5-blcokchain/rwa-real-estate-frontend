@@ -121,7 +121,7 @@ export const ProfileEdit: FC = () => {
   }
 
   return (
-    <div className="p-8 text-white">
+    <div className="p-8 text-white max-lg:p-0">
       <div className="text-8 font-medium">
         {t('profile.edit.account_management')}
       </div>
@@ -129,7 +129,7 @@ export const ProfileEdit: FC = () => {
         {t('profile.edit.account_management_desc')}
       </div>
 
-      <div className="mt-8 rounded-xl bg-[#1e2024] p-8">
+      <div className="mt-8 rounded-xl bg-[#1e2024] p-8 max-lg:p-6">
         <div className="mb-8 text-6 font-medium">{t('profile.edit.basic_info')}</div>
 
         <div className="mb-8 flex flex-col items-center gap-6 sm:flex-row sm:items-start">
@@ -186,7 +186,7 @@ export const ProfileEdit: FC = () => {
               />
             </Form.Item>
 
-            <Form.Item
+            {/* <Form.Item
               label={<span className="text-4 text-white">{t('profile.edit.phone')}</span>}
               name="mobile"
               className="mb-6"
@@ -196,7 +196,7 @@ export const ProfileEdit: FC = () => {
                 size="large"
                 placeholder={t('profile.edit.phone_placeholder')}
               />
-            </Form.Item>
+            </Form.Item> */}
 
             <Form.Item
               label={<span className="text-4 text-white">{t('profile.edit.email')}</span>}

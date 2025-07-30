@@ -1,0 +1,68 @@
+.home-content {
+  --conent-h: 0px;
+  height: calc(100vh - var(--conent-h));
+  background: url('/src/assets/images/home-content-bg.png') no-repeat center center;
+  background-size: cover;
+}
+
+.home-explanation {
+  background: url('/src/assets/images/home/home-explanation-bg.png') no-repeat center center;
+  background-size: cover;
+}
+
+.ant-tabs-tab {
+  width: fit-content;
+}
+.home-tables .ant-tabs .ant-tabs-tab{
+  font-size: 26px;
+  line-height: 32px;
+  @media (max-width: 768px) {
+    & {
+       font-size: 12px;
+       line-height: 30px;
+     }
+   }
+   @media (max-width: 1024px) {
+    & {
+       font-size: 18px;
+       line-height: 24px;
+     }
+   }
+   @media (max-width: 1280px) {
+    & {
+       font-size: 20px;
+       line-height: 24px;
+     }
+   }
+}
+
+
+@media (max-width: 767.9px) {
+  .home-tables .ant-tabs  .ant-tabs-nav{
+    margin-bottom: 12px;
+  }
+}
+.ant-tabs-ink-bar {
+  height: 3px !important;
+  @media (max-width: 768px) {
+   & {
+      height: 1px !important;
+    }
+  }
+  @media (max-width: 1024px) {
+    &{
+      height: 2px !important;
+    }
+  }
+}
+
+.content-min-h{
+  min-height: calc(100vh - var(--conent-h));
+}
+
+
+.ant-tabs-nav {
+  &::before {
+    opacity: 0;
+  }
+}

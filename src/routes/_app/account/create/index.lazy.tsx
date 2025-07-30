@@ -13,7 +13,7 @@ function RouteComponent() {
     <StepsProvider>
       <div className="fccc gap-12">
         <CreateAccountSteps />
-        <div className="w-full flex-1 py-12">
+        <div className="w-full flex-1 py-12 max-lg:px-16px">
           <AccountPanel />
         </div>
       </div>

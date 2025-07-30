@@ -8,12 +8,16 @@ export function getOverView() {
   return apiClient.post('/api/info/overView')
 }
 
-export function getChartIncomeStatistics() {
-  return apiClient.get('/api/chart/income_statistics')
+export function getChartIncomeStatistics(data: {
+  data_number: string
+}) {
+  return apiClient.post('/api/chart/income_statistics', data)
 }
 
-export function getChartIncomeTrend() {
-  return apiClient.get('/api/chart/income_trend')
+export function getChartIncomeTrend(data: {
+  type: string
+}) {
+  return apiClient.post('/api/chart/income_trend', data)
 }
 
 export function getEarningList() {
@@ -39,4 +43,13 @@ export function redemption(data: {
   number: string
 }) {
   return apiClient.post('/api/assets/redemption', data)
+}
+
+/**
+ * 绑定钱包
+ * @param data 钱包地址
+ * @returns
+ */
+export function bindWallet(data: { wallet_address: string }) {
+  return apiClient.post('/api/info/bindWallet', data)
 }

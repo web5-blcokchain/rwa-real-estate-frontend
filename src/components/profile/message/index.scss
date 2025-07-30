@@ -1,0 +1,15 @@
+// 输入框placeholder文字颜色
+.input-placeholder {
+  
+  .ant-select-selection-placeholder {
+    color: #ffffffd9 !important;
+  }
+  >*{
+    font-size: 16px !important;
+    @media (max-width: 1023.9px){
+      &{
+        font-size: 14px !important;
+      }
+    }
+  }
+}

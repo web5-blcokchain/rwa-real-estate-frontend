@@ -31,8 +31,7 @@ export async function ensureEthersNetwork() {
     console.error('未检测到 Web3 钱包（如 MetaMask）')
     return
   }
-
-  const targetChainId = Number.parseInt(Env.web3.chainId, 10)
+  const targetChainId = `0x${Number(Env.chainId).toString(16)}`
 
   try {
     const currentChainId = await window.ethereum.request({ method: 'eth_chainId' })
@@ -58,14 +57,14 @@ export async function ensureEthersNetwork() {
           method: 'wallet_addEthereumChain',
           params: [{
             chainId: targetChainId,
-            chainName: 'Hardhat Testnet',
-            rpcUrls: [Env.web3.rpc],
+            chainName: Env.chainName,
+            rpcUrls: Env.rpcUrls,
             nativeCurrency: {
-              name: 'ETH',
-              symbol: 'ETH',
-              decimals: 18
+              name: Env.nativeCurrency.name,
+              symbol: Env.nativeCurrency.symbol,
+              decimals: Env.nativeCurrency.decimals
             },
-            blockExplorerUrls: []
+            blockExplorerUrls: Env.blockExplorerUrls
           }]
         })
         console.log('成功添加并切换到目标网络')

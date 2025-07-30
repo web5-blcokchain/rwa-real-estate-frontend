@@ -16,11 +16,20 @@
     "profile": "个人资料",
     "error": {
       "user_not_found": "请完善用户信息",
-      "login_required": "请先登陆"
+      "login_required": "请先登陆",
+      "centralized_database_review_rejection": "KYC 审核未通过",
+      "wallet_already_bound": "kyc审核中",
+      "kyc_audit_passed": "KYC审核通过",
+      "kyc_audit_rejected": "KYC审核拒绝",
+      "kyc_audit_rejected_desc": "很抱歉，您提交的KYC文件因清晰度不足未通过审核"
     },
-    "link_wallet": "连接钱包"
+    "link_wallet": "连接钱包",
+    "kyc_status": "KYC审核状态",
+    "user_audit_status": "用户认证申请"
   },
   "payment": {
+    "pay_loading": "支付中请稍后",
+    "pay_loading_desc": "代币支付中，中途不要退出，避免影响和第三方钱包浏览器或者钱包软件通信。支付完成自动跳转～",
     "errors": {
       "no_wallet": "请选择钱包",
       "no_ethereum": "请安装MetaMask或使用Web3浏览器",
@@ -52,7 +61,7 @@
       "transaction_timeout": "交易等待超时，请检查MetaMask通知",
       "amount_below_minimum": "代币数量低于最小购买要求 (最小: {{min}})",
       "contract_not_initialized": "合约未初始化",
-      "insufficient_eth": "ETH 余额不足，请确保有足够的 ETH 支付交易费用",
+      "insufficient_eth": "USDC 余额不足，请确保有足够的 USDC 支付交易费用",
       "transaction_failed": "交易执行失败，请稍后重试",
       "invalid_order_id": "无效的订单ID",
       "order_id_not_found": "找不到订单ID",
@@ -65,7 +74,11 @@
       "invalid_token_price": "代币价格无效或未定义",
       "invalid_property": "无效的房产ID",
       "token_approve_failed": "代币授权失败",
-      "insufficient_token": "代币余额不足"
+      "insufficient_token": "代币余额不足",
+      "please_wait_for_kyc": "请等待KYC审核通过",
+      "please_use_bound_wallet": "请使用绑定的钱包进行支付",
+      "token_max_pay": "代币数量不能超过库存 (最大: {{max}})",
+      "token_sold_out": "当前代币已售罄"
     },
     "info": {
       "eth_required": "交易需要发送ETH",
@@ -117,7 +130,9 @@
       "walletConnect": "WalletConnect",
       "walletContent": "使用 WalletConnect 连接",
       "coinbase": "Coinbase Wallet",
-      "coinbaseContent": "连接到您的Coinbase钱包"
+      "coinbaseContent": "连接到您的Coinbase钱包",
+      "please_bind_wallet": "请绑定钱包",
+      "bind_wallet_success": "绑定钱包成功"
     },
     "verification": {
       "title": "选择您的身份类型",
@@ -127,11 +142,15 @@
       "institutional": "机构投资者",
       "organizations": "对于公司和组织",
       "notice": "个人投资者和机构投资者的验证要求不同.请选择适当的类型以继续验证过程.",
+      "notice_desc": "请注意，您只能选择一种身份类型。",
       "personal": {
         "title": "个人身份验证",
         "subTitle": "请上传您的个人身份证明文件以进行KYC验证",
         "identity": "身份证明文件",
-        "upload_title": "上传身份证/护照",
+        "upload_title": "上传{{type}} ",
+        "upload_title_passport": "护照",
+        "upload_title_id_card": "身份证",
+        "upload_title_driver_license": "驾照",
         "upload_subTitle": "需要正反两面，JPG/PNG/PDF格式，大小不超过5MB",
         "files": "浏览文件",
         "poof": "地址证明",
@@ -141,7 +160,11 @@
         "facial_title": "自拍",
         "facial_subTitle": "在良好照明条件下拍摄的清晰面部照片",
         "notice": "所有提交的文件必须真实且未经修改。请确保图像清晰完整。验证过程通常需要1-2个工作日。您的个人信息受到银行级别加密的保护。",
-        "continue": "继续"
+        "continue": "继续",
+        "upload": "提交",
+        "upload_error": "请上传所有资料",
+        "upload_error_user": "您第一次提交的身份与当前提交不一致，请选择用户身份提交",
+        "upload_error_business": "您第一次提交的身份与当前提交不一致，请选择企业身份提交"
       },
       "business": {
         "title": "业务验证",
@@ -166,16 +189,17 @@
       "next": "下一步",
       "link_email": "绑定邮箱"
     },
-    "step1": "登陆 Privy",
-    "logged_in_privy": "已登陆 Privy",
+    "step1": "登陆",
+    "logged_in_privy": "已登陆",
     "message": {
       "link_email": "请绑定邮箱",
-      "create_success": "创建账号成功"
+      "create_success": "创建账号成功",
+      "reload_success": "重新提交成功"
     },
-    "upload_id_card_front": "上传身份证正面",
-    "upload_id_card_back": "上传身份证反面",
-    "id_card_front": "身份证正面",
-    "id_card_back": "身份证反面",
+    "upload_id_card_front": "上传{{type}}正面",
+    "upload_id_card_back": "上传{{type}}反面",
+    "id_card_front": "{{type}}正面",
+    "id_card_back": "{{type}}反面",
     "reupload": "重新上传",
     "step3": "身份验证",
     "step2": "绑定钱包",
@@ -221,6 +245,65 @@
       "content": "加入我们的房地产投资者社区，开始您迈向财务自由的旅程。",
       "button": "开始投资",
       "button2": "了解更多"
+    },
+    "explanation": {
+      "title": "重新定义房地产的投资未来",
+      "content": "将资产转化为全球可访问的金融工具，具有真正的加密原生效用",
+      "button": "了解更多"
+    },
+    "rwaType": {
+      "rwaTitle": "真实世界资产代币新模式",
+      "rwaDesc": "从机构级资产中交换、借出、借入、循环和赚取真实收益",
+      "coinTypes": {
+        "title-1": "RWA铸稳系统",
+        "content-1": "真实世界资产抵押型稳定币发行机制",
+        "title-2": "RWA Coin领取收益",
+        "content-2": "将RWA资产产生的现金流自动或手动分配给代币持有者",
+        "title-3": "RWA Coin交易",
+        "content-3": "把现实世界的东西(比如国债、房子、黄金)变成区块链上的代币"
+      }
+    },
+    "statistics": {
+      "totalVolume": "总交易量",
+      "activeInvestors": "积极投资者",
+      "tokenizedProperties": "标记化属性",
+      "annualYield": "年回报率"
+    },
+    "investmentFeature": {
+      "frictionless": "零碎和无摩擦的房地产投资",
+      "anyone": "任何人都可以投资房地产-简单、实惠且无忧",
+      "ownership": "部分所有权",
+      "lowEntry": "以低至 100 美元的价格投资优质房地产在全球拥有一处高价值房产。",
+      "compliance": "法规遵从性",
+      "kyc": "具有强大 KYC/AML 程序的完全监管平台您的投资是安全且合规的。",
+      "liquidity": "流动性投资",
+      "secondaryMarket": "在我们的二级市场上 24/7 全天候交易您的财产代币。房地产从来没有过的流动性。",
+      "video": "视频播放",
+      "videoDesc": "观看我们的视频，了解如何投资和赚取收益。"
+    },
+    "earn": {
+      "title": "从RWA中赚取收益",
+      "content": "真实世界的资产仍然是您可以进行的最佳投资。"
+    },
+    "investorGuide": {
+      "newbieInvest": "就算你是新手，也能学老手那样投资",
+      "getInfo": "马上获取超划算的房产买卖信息、专业分析，还能加入全球投资高手的交流圈子",
+      "zeroDown": "0首付入股",
+      "groupBuy": "和别人一起合伙买房收租",
+      "rentAndAppreciate": "躺着收租，转手涨价",
+      "dailyRent": "租金日结(不是每月或每季度)，卖房赚差价",
+      "rentNoWorry": "躺着收租，还不用管琐事",
+      "autoManage": "零操心当房东， 重要决定你来做，日常管理交给我",
+      "control": "投资方向盘，永远在你手里",
+      "flexibleInvest": "租金想继续投资就投资，想卖房随时都能卖"
+    },
+    "document": {
+      "blog": "博客",
+      "resource": "资源",
+      "community": "社区",
+      "doc": "文档",
+      "upgrade": "智能合约升级:更灵活的订阅",
+      "upgradeDesc": "SuperstateTokenV5增加了新的智能合约功能，以简化定向订阅和赎回，以及改进的事件跟踪。"
     }
   },
   "properties": {
@@ -232,20 +315,32 @@
       "bedrooms": "卧室",
       "market_value": "市场价值",
       "monthly_rent": "月租金",
-      "return": "预期年回报率",
+      "return": "预期年度回报",
       "including": "包括",
       "rental": "租金收益率和",
+      "return_range": "预计收益率在{{min}} 到 {{max}}之间（包括固定租金收益和房屋增值收益）",
       "capital": "资本增值",
       "average": "平均30天",
       "amount_placeholder": "输入投资金额",
       "ratio": "投资比例",
       "invest": "立刻投资",
       "property_title": "物业描述",
+      "location_description": "位置描述",
       "property_includes": "该物业包括:",
       "location": "位置",
       "market_analysis": "市场分析",
       "trends": "区域价格趋势",
-      "analysis": "租金收入分析"
+      "analysis": "租金收入分析",
+      "invest_calculator": "投资计算器",
+      "invest_calculator_placeholder": "请输入投资净金额",
+      "average_days": "平均{{n}}天",
+      "lock_period": "锁定期说明",
+      "lock_period_title": "购买锁定期说明",
+      "lock_period_content": "为保障平台资金安全与投资公平性，每笔房产代币初始购买均设有 锁定期，在锁定期间内，该部分资产将无法进行转让或出售。",
+      "lock_period_content_1": "锁定期时长：购买后 2天（或以房产具体说明为准）",
+      "lock_period_content_2": "锁定期内限制：不能转账、不能在二级市场交易、不能提现",
+      "lock_period_content_3": "锁定期结束后：自动解锁，用户可自由流通或出售所持代币",
+      "lock_period_content_4": "目的说明：用于防止短期套利与恶意操作，保障房产代币系统的稳定运行"
     },
     "payment": {
       "token_price": "代币价格",
@@ -255,10 +350,10 @@
       "subtotal": "小计",
       "platform_fee": "平台费用",
       "total_amount": "总金额",
-      "payment_method": "支付方式",
+      "payment_method": "使用以下钱包地址支付",
       "credit_card": "信用卡",
       "cryptocurrency": "加密货币",
-      "dear_user": "亲爱的用户,",
+      "dear_user": "亲爱的用户:",
       "please_verify": "为确保场外交易的安全性，您必须满足以下要求并完成必要的验证流程：",
       "please_verify_1": "您的帐户必须用政府签发的有效身份证件或护照进行全面核实。",
       "expire": "付款到账时间为",
@@ -268,7 +363,17 @@
       "select_asset": "选择资产",
       "search_asset": "搜索资产",
       "select_asset_prompt": "请选择一个资产来创建买单",
-      "redemption_success": "赎回成功"
+      "redemption_success": "赎回成功",
+      "annual_yield": "年回报率",
+      "valuation": "估值",
+      "create_sell_order": "卖出",
+      "redeem": "赎回",
+      "appeal_title": "您的账户必须用政府签发的有效身份证件或护照进行全面核实。",
+      "bind_wallet": "使用以下您曾经绑定的钱包付款",
+      "bind_wallet_content_1": "由于我们即将区块链交互，预计需要10～20秒完成交易，请耐心等待，如中途遇到问题",
+      "bind_wallet_content_2": "1、请检查网络连接；",
+      "bind_wallet_content_3": "2、确保您安装了浏览器插件；",
+      "bind_wallet_content_4": "3、如果是手机中操作确保您的手机中装有MetaMask等钱包；"
     }
   },
   "help": {
@@ -306,11 +411,17 @@
     "menu_history": "历史",
     "toyota_camry": "Toyota Camry",
     "toyota_balance": "Toyota Balance",
-    "monthly_rental_income": "每月租金收入（日元）",
+    "monthly_rental_income": "每月租金收入（美元）",
     "annual_yield": "每年的产量",
     "menu_edit": "编辑设置",
     "menu_recording": "交易记录",
-    "menu_transaction_status": "交易状态"
+    "menu_transaction_status": "交易状态",
+    "menu_assets": "资产列表",
+    "menu_assets_summary": "购买记录",
+    "menu_distribution_record": "代币发放记录",
+    "menu_message": "消息中心",
+    "menu_dividend_statistics": "分红统计",
+    "menu_appeal": "申诉信息"
   },
   "footer": {
     "about": "关于",
@@ -320,12 +431,13 @@
     "products": "产品",
     "properties": "属性",
     "token_market": "代币市场",
-    "deFi_services": "去中心化金融服务",
+    "deFi_services": "DEFI服务",
     "support": "支持",
     "help_center": "帮助中心",
     "contact_us": "联系我们",
     "legal": "法律",
-    "follow_us": "关注我们"
+    "follow_us": "关注我们",
+    "reserved": "保留所有权利"
   },
   "system": {
     "confirm": "确认",
@@ -342,7 +454,9 @@
     "sign_in_with_wallet": "使用钱包注册",
     "sign_in_with_apple": "使用 Apple 账号",
     "sign_in_with_google": "使用 Google 账号",
-    "login_with_email": "使用邮箱登陆"
+    "login_with_email": "使用邮箱登陆",
+    "login_title": "很高兴你回来了！",
+    "login_content": "开启你的数字资产之旅"
   },
   "common": {
     "click_to_change": "点击更换图片",
@@ -352,7 +466,17 @@
     "all": "全部",
     "save_success": "保存成功",
     "save_failed": "保存失败",
-    "redemption_title": "赎回确认"
+    "redemption_title": "赎回确认",
+    "month": "月",
+    "no_data": "暂无数据",
+    "search": "搜索",
+    "load_more": "加载更多",
+    "search_placeholder": "搜索地址,类型",
+    "asset_type": "资产类型",
+    "reupload": "重新提交",
+    "copy_success": "复制成功",
+    "copy_failed": "复制失败",
+    "all_images": "查看全部图片"
   },
   "action": {
     "sell": "卖出",
@@ -396,13 +520,152 @@
       "merkle_root_mismatch": "Merkle 根不匹配",
       "invalid_merkle_proof": "Merkle证明无效",
       "receive_success": "收益领取成功",
-      "receive_failed": "收益领取失败"
+      "receive_failed": "收益领取失败",
+      "date": "日期",
+      "asset": "资产",
+      "amount": "金额",
+      "tokens": "代币",
+      "status": "状态",
+      "wallet_address": "钱包地址"
     },
     "recording": {
       "primary_subscription": "投资",
       "asset_redemption": "赎回",
       "sell_order": "卖出",
       "buy_order": "买入"
+    },
+    "data_count": {
+      "totalAssetValue": "总资产价值",
+      "expectedIncomeThisMonth": "本月预期收益",
+      "averageMonthlyIncome": "平均每月收入（美元）",
+      "yieldPerformance": "收益表现",
+      "vsLastMonth": "较上月",
+      "industryAverage": "行业平均",
+      "tokenHoldings": "代币持仓",
+      "asset": "资产",
+      "amount": "数量",
+      "valueJpy": "价值（美元）",
+      "share": "占比",
+      "change24h": "24小时变化",
+      "action": "操作",
+      "earningsHistory": "收益记录",
+      "time": "时间",
+      "type": "类型",
+      "amountJpy": "金额（美元）",
+      "status": "状态",
+      "draw_time": "待发放时间",
+      "order_id": "订单编号",
+      "purchase_price": "购买价格",
+      "token_contract_address": "代币合约地址",
+      "payment_currency": "支付币种",
+      "purchase_time": "购买时间",
+      "transaction_hash": "交易hash",
+      "add_to_wallet": "添加代币到钱包",
+      "token_name": "代币名",
+      "add_token_success": "添加代币成功",
+      "add_token_failed": "添加代币失败"
+    },
+    "propertyTokens": {
+      "title": "持有的代币"
+    },
+    "history": {
+      "incomeRecords": "历史收入记录",
+      "totalTransactions": "交易总数",
+      "transactionCount": "交易笔数",
+      "transactionVolume": "平均交易",
+      "successRate": "成功率",
+      "recentTransactions": "最近交易",
+      "incomeHistory": "历史收入记录",
+      "thisMonth": "本月",
+      "lastMonth": "上月",
+      "decemberBudget": "{{month}}预算",
+      "income": "收入",
+      "received": "已接收",
+      "budget": "预算",
+      "expenses": "支出",
+      "spent": "已支出",
+      "week": "最近7天",
+      "month": "最近30天",
+      "halfYear": "最近半年",
+      "year": "最近一年",
+      "all": "全部",
+      "view_detailed": "查看详细分析报表",
+      "lastMonth_vs_thisMonth": "本月与上月",
+      "lastYear_vs_thisYear": "本年和去年",
+      "primary_subscription": "资产投资",
+      "asset_redemption": "赎回",
+      "secondary_market_disposition": "二级市场出售",
+      "secondary_market_acquisition": "二级市场购买"
+    },
+    "transaction_status": {
+      "all": "全部",
+      "apartment": "公寓",
+      "house": "住宅",
+      "land": "土地",
+      "commercial": "商业地产",
+      "asset_type": "资产类型"
+    },
+    "common": {
+      "date": "日期",
+      "asset": "资产",
+      "type": "类型",
+      "price": "价格",
+      "total_money": "总金额",
+      "number_of_tokens": "代币数量",
+      "status": "状态"
+
+    },
+    "coin": {
+      "unclaimed": "未发放",
+      "claimed": "已发放",
+      "withdraw": "赎回",
+      "failed": "发放失败",
+      "locked": "锁定中",
+      "distribution": "发放中"
+    },
+    "myAssets": {
+      "distributionRecord": "发放记录",
+      "summaryRecord": "汇总资产记录",
+      "assetList": "资产列表"
+    },
+    "appeal": {
+      "title": "申诉信息",
+      "appealType": {
+        "title": "申诉类型",
+        "options": {
+          "1": "交易类型实际未到账",
+          "2": "金额不符",
+          "3": "其他问题"
+        }
+      },
+      "appealReason": {
+        "title": "申诉原因",
+        "placeholder": "请具体描述您遇到的问题..."
+      },
+      "uploadEvidence": {
+        "title": "上传凭证",
+        "placeholder": "（交易hash、分红记录截图、钱包交易记录）"
+      },
+      "contactInformation": {
+        "title": "联系方式",
+        "realName": "真实姓名",
+        "realNamePlaceholder": "请输入您的真实姓名",
+        "phone": "联系电话",
+        "phonePlaceholder": "请输入您的联系电话",
+        "email": "邮箱",
+        "emailPlaceholder": "请输入您的邮箱"
+      },
+      "submit": "提交申诉",
+      "cancel": "取消",
+      "submitDesc": {
+        "title": "注意事项",
+        "content": {
+          "1": "申诉处理期间请勿重复提交。",
+          "2": "虚假申诉可能导致帐户受限。",
+          "3": "正常工作期间响应更快（9:00-18:00）。",
+          "4": "紧急问题请拨打客服热线: +031 234-5678"
+        }
+      }
     }
   },
   "transaction": {
@@ -411,6 +674,31 @@
     },
     "create_sell_order": {
       "gas_estimation_failed": "Gas 估算失败"
+    },
+    "hash": {
+      "token_distribution": "代币分配",
+      "token_distribution_complete": "代币分配完成",
+      "token_distribution_failed": "代币分配失败",
+      "tokens_have_been_successfully_transferred_to_your_wallet": "代币已成功转移到您的钱包",
+      "real_estate_token": "房地产代币",
+      "smart_contract_address": "智能合约地址",
+      "token_contract_address": "代币合约地址",
+      "estimated_execution_time": "预计执行时间",
+      "property_token_distribution": "房地产代币分配",
+      "property_location": "房地产位置",
+      "registration_number": "注册号码",
+      "annual_yield": "年收益率",
+      "smart_contract_audited_by_certik": "智能合约由CertiK审计",
+      "transaction_status": "交易状态",
+      "estimated_token_arrival_time": "预计代币到达时间: {{num}} 秒",
+      "transaction_hash": "交易哈希",
+      "smart_contract_status": "智能合约状态",
+      "block_confirmation_confirmed": "区块确认",
+      "success": "成功",
+      "confirmed": "已确认",
+      "pending": "待确认",
+      "view_in_explorer": "在浏览器中查看",
+      "confirm_in_wallet": "在钱包中确认"
     }
   },
   "investment": {
@@ -424,6 +712,60 @@
   },
   "payment_method": {
     "user_bound_wallet": "绑定钱包",
-    "not_connected_wallet": "未连接绑定钱包"
+    "not_connected_wallet": "未连接绑定钱包",
+    "bind_wallet_success": "绑定成功",
+    "bind_wallet_loading": "绑定中",
+    "please_connect_wallet": "请连接钱包",
+    "click_to_bind_wallet": "点击绑定钱包"
+  },
+  "help-content": {
+    "title": "我们能帮您什么？",
+    "placeholder": "请输入您的问题",
+    "selfService": "自助服务",
+    "resetLoginPassword": "重置登录密码",
+    "changeFundPassword": "修改资金密码",
+    "changePhoneNumber": "更换手机号",
+    "bindEmail": "邮箱绑定",
+    "changeGoogleAuthenticator": "修改谷歌验证器",
+    "recoveryRequest": "找回申请"
+  },
+  "auditStatus": {
+    "reSubmit": "重新提交",
+    "contactAdmin": "请联系管理员",
+    "contactAdminDesc": "请联系管理员解决",
+    "backendAudit": "提交用户资料",
+    "backendAuditPass": "后台审核通过",
+    "backendAuditFail": "后台审核失败",
+    "walletBindSuccess": "钱包绑定成功",
+    "kycAuditPass": "KYC审核通过",
+    "kycAuditFail": "KYC审核失败"
+  },
+  "dividendStatistics": {
+    "title": "分红统计",
+    "currentMonthIncome": "本月累计分红",
+    "totalIncome": "历史累计分红",
+    "avgMonthIncome": "平均每月分红",
+    "thisMonth": "本月",
+    "last3Months": "近3个月",
+    "last6Months": "近半年",
+    "property": "房产",
+    "all": "全部",
+    "house": "住宅",
+    "business": "商业",
+    "personal": "个人",
+    "status": "状态",
+    "sale": "已到账",
+    "rent": "处理中",
+    "unclaimed": "未领取",
+    "sold": "失败",
+    "id": "房产ID",
+    "name": "RWA名称",
+    "price": "分红金额",
+    "handlingFee": "手续费",
+    "checkInPrice": "实际到账",
+    "checkInStatus": "到账状态",
+    "hash": "交易Hash",
+    "time": "到账时间",
+    "distribution": "发放中"
   }
 }

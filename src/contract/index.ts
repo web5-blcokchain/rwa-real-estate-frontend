@@ -1,6 +1,7 @@
 // 此文件由脚本自动生成
-const devModules = import.meta.glob('./dev/*.json', { eager: true })
+// const devModules = import.meta.glob('./dev/*.json', { eager: true })
 const prodModules = import.meta.glob('./prod/*.json', { eager: true })
+const devTestModules = import.meta.glob('./dev/*.json', { eager: true })
 
 /**
  * 获取合约 ABI 和地址
@@ -8,7 +9,7 @@ const prodModules = import.meta.glob('./prod/*.json', { eager: true })
  */
 export function getContracts(contractName: string) {
   const mode = import.meta.env.MODE === 'production' ? 'prod' : 'dev'
-  const modules = mode === 'prod' ? prodModules : devModules
+  const modules = mode === 'prod' ? prodModules : devTestModules
   const fileKey = `./${mode}/${contractName}.json`
   const mod = modules[fileKey] as Record<string, any>
   if (!mod) {

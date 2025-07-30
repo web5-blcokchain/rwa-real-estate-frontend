@@ -49,7 +49,7 @@ function RouteComponent() {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-8 max-lg:p-4">
       <div>
         <Tabs
           activeKey={orderType}
@@ -75,11 +75,11 @@ function RouteComponent() {
         'rounded-md bg-[#1e2024] p-6'
       )}
       >
-        <div className="fbc">
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-4 md:grid-cols-3 xl:grid-cols-5">
+        <div className="fbc max-lg:flex-col max-lg:gap-6">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-4 md:grid-cols-3 xl:grid-cols-5 max-lg:w-full">
             <Input
               size="large"
-              placeholder="Search address, type"
+              placeholder={t('common.search_placeholder')}
               className={cn(
                 'bg-transparent! text-white!',
                 '[&>input]:(placeholder-text-[#898989])'
@@ -95,7 +95,7 @@ function RouteComponent() {
 
             <Select
               size="large"
-              placeholder="Asset Type"
+              placeholder={t('common.asset_type')}
               className={cn(
                 '[&_.ant-select-selector]:(bg-transparent! text-white!)',
                 '[&_.ant-select-selection-placeholder]:(text-[#898989]!)',
@@ -109,13 +109,13 @@ function RouteComponent() {
             />
           </div>
 
-          <div className="flex-1">
+          <div className="flex-1 max-lg:w-full">
             {
               orderType === InvestmentTab.WantToBuy && (
                 <Button
                   type="primary"
                   size="large"
-                  className="text-black!"
+                  className="max-lg:w-full text-black!"
                   onClick={() => navigate({
                     to: '/transaction/create-buy-order'
                   })}

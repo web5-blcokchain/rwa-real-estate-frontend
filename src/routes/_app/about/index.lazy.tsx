@@ -67,7 +67,7 @@ function RouteComponent() {
 
   if (isLoading) {
     return (
-      <div className="w-full p-8 h-dvh">
+      <div className="w-full fcc p-8 h-dvh">
         <Spin />
       </div>
     )

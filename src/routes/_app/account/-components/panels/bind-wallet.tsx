@@ -63,6 +63,7 @@ export default function BindWalletPanel() {
                   onClick={linkWallet}
                 >
                   {t('create.bind-wallet.connect')}
+                  1
                 </Button>
               )
             : (

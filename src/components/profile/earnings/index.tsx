@@ -35,7 +35,7 @@ export const Earnings: FC = () => {
 
   const columns: TableProps['columns'] = [
     {
-      title: 'Date',
+      title: <div>{t('profile.earnings.date')}</div>,
       dataIndex: 'income_date',
       render(value) {
         return (
@@ -46,22 +46,22 @@ export const Earnings: FC = () => {
       }
     },
     {
-      title: 'Asset',
+      title: <div>{t('profile.earnings.asset')}</div>,
       key: 'property_name',
       dataIndex: 'property_name'
     },
     {
-      title: 'Amount',
+      title: <div>{t('profile.earnings.amount')}</div>,
       key: 'income_amount',
       dataIndex: 'income_amount'
     },
     {
-      title: 'Tokens',
+      title: <div>{t('profile.earnings.tokens')}</div>,
       key: 'number',
       dataIndex: 'number'
     },
     {
-      title: 'Status',
+      title: <div>{t('profile.earnings.status')}</div>,
       key: 'status',
       dataIndex: 'status',
       render(value) {
@@ -90,7 +90,7 @@ export const Earnings: FC = () => {
       }
     },
     {
-      title: 'Wallet Address',
+      title: <div>{t('profile.earnings.wallet_address')}</div>,
       key: 'user_address',
       dataIndex: 'user_address',
       render(value: string) {
@@ -99,7 +99,7 @@ export const Earnings: FC = () => {
             <div>{shortAddress(value)}</div>
             <div
               className="i-mingcute-copy-2-fill bg-[#b5b5b5] clickable"
-              onClick={() => copy(value)}
+              onClick={() => copy(value, t)}
             />
           </div>
         )

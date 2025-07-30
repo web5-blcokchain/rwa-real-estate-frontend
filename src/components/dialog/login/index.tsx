@@ -1,7 +1,6 @@
+// import ISeparator from '@/components/common/i-separator
 import type { PrivyClientConfig } from '@privy-io/react-auth'
 import type { Dispatch, SetStateAction } from 'react'
-import ISeparator from '@/components/common/i-separator'
-import { LoginButton } from '@/components/common/login-button'
 import { usePrivy } from '@privy-io/react-auth'
 import { Button, Modal } from 'antd'
 import './styles.scss'
@@ -46,14 +45,14 @@ export const LoginDialog: FC<{
       onCancel={() => setOpen(false)}
     >
       <div className="mx-a max-w-128 w-full py-16">
-        <div className="text-center text-8 font-medium">Great to have you back!</div>
-        <div className="text-center text-4 text-[#898989]">Start your digital asset journey</div>
+        <div className="text-center text-8 font-medium">{t('login.login_title')}</div>
+        <div className="text-center text-4 text-[#898989]">{t('login.login_content')}</div>
 
-        <div className="py-12 text-center">
+        <div className="fyc flex-col gap-4 py-12 text-center">
           <Button
             type="primary"
             size="large"
-            className="text-black!"
+            className="w-180px text-black!"
             onClick={() => login({
               loginMethods: ['email']
             })}
@@ -63,11 +62,26 @@ export const LoginDialog: FC<{
               <div>{t('login.login_with_email')}</div>
             </div>
           </Button>
+          <Button
+            type="primary"
+            size="large"
+            className="w-180px text-black!"
+            onClick={() => handlePrivyLogin(['google'])}
+          >
+            <div className="fyc gap-2">
+              <div className="i-ion-logo-google"></div>
+              <div>
+                {' '}
+                {t('login.sign_in_with_google')}
+              </div>
+            </div>
+
+          </Button>
         </div>
 
-        <ISeparator text="or" className="my-4" />
+        {/* <ISeparator text="or" className="my-4" /> */}
 
-        <div className="space-y-6">
+        {/* <div className="space-y-6">
           <LoginButton
             icon="i-mingcute-wallet-4-fill"
             className="w-full"
@@ -91,7 +105,7 @@ export const LoginDialog: FC<{
           >
             {t('login.sign_in_with_apple')}
           </LoginButton>
-        </div>
+        </div> */}
       </div>
     </Modal>
   )

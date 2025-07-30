@@ -1,7 +1,7 @@
 import type { PriceTrendResponse } from '@/api/basicApi'
 import apiBasic from '@/api/basicApi'
-import { TitleCard } from '@/components/common/title-card'
 import { useQuery } from '@tanstack/react-query'
+import dayjs from 'dayjs'
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
 interface trendDataResponse {
@@ -9,7 +9,9 @@ interface trendDataResponse {
   price: number
 }
 
-export const RegionalPriceTrendsCard: FC = () => {
+export const RegionalPriceTrendsCard: FC<{
+  className?: string
+}> = ({ className }) => {
   const { t } = useTranslation()
 
   const { data: trendData = [] } = useQuery<trendDataResponse[]>({
@@ -18,7 +20,7 @@ export const RegionalPriceTrendsCard: FC = () => {
       const response = await apiBasic.getPriceTrend()
       const arrData = response.data?.map((item: PriceTrendResponse) => {
         return {
-          name: item.date,
+          name: dayjs(item.date).format('MM-DD'),
           price: Number(item.price)
         }
       })
@@ -27,21 +29,19 @@ export const RegionalPriceTrendsCard: FC = () => {
   })
 
   return (
-    <TitleCard title={t('properties.detail.trends')}>
-      <div className="h-32">
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart
-            data={trendData}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line type="linear" dataKey="price" stroke="#f0b90b" />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
-    </TitleCard>
+    <div className={cn('h-320px max-lg:h-280px', className)}>
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart
+          data={trendData}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Line type="linear" dataKey="price" name={t('profile.common.price')} stroke="#f0b90b" />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
   )
 }

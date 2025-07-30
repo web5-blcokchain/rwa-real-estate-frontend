@@ -1,0 +1,110 @@
+import type { ConnectedWallet } from '@privy-io/react-auth'
+import type { Dispatch, SetStateAction } from 'react'
+import { bindWallet } from '@/api/profile'
+import { useUserStore } from '@/stores/user'
+import { ensurePrivyNetwork } from '@/utils/privy'
+import { usePrivy, useWallets } from '@privy-io/react-auth'
+
+export const PaymentWallet: FC<{
+  walletState: [ConnectedWallet | null, Dispatch<SetStateAction<ConnectedWallet | null>>]
+} & React.HTMLAttributes<HTMLDivElement>> = ({
+  walletState,
+  className
+}) => {
+  const { ready, wallets } = useWallets()
+  const { userData, setUserData, getUserInfo } = useUserStore()
+  const { t } = useTranslation()
+
+  const [_selectedWallet, setSelectedWallet] = walletState
+  // const {} = use
+
+  useEffect(() => {
+    if (!userData.wallet_address) {
+      return
+    }
+
+    const wallet = wallets.find(wallet => wallet.walletClientType !== 'privy')
+    if (wallet) {
+      setSelectedWallet(wallet)
+      ensurePrivyNetwork(wallet)
+    }
+    else {
+      setSelectedWallet(null)
+    }
+  }, [userData, wallets])
+
+  const [bindWalletLoading, setBindWalletLoading] = useState(false)
+  // const isConnectedWallet = wallets.some(wallet => wallet.walletClientType !== "privy")
+  // 获取当前链接的钱包
+  // 绑定钱包
+  const handleBindWallet = () => {
+    // navigate({ to: '/profile/bind-wallet' })
+    const wallet = wallets.find(wallet => wallet.walletClientType !== 'privy')
+
+    if (!wallet) {
+      toast.warning(t('payment_method.please_connect_wallet'))
+      return
+    }
+    setBindWalletLoading(true)
+    bindWallet({ wallet_address: wallet.address }).then((res) => {
+      if (res.code === 1) {
+        toast.success(t('create.wallet.bind_wallet_success'))
+        setUserData({
+          ...userData,
+          wallet_address: wallet.address
+        })
+        // 刷新用户状态
+        getUserInfo()
+      }
+    })
+    setBindWalletLoading(false)
+  }
+  const { connectWallet } = usePrivy()
+
+  return (
+    <div className={cn(
+      'rounded-md bg-[#333947] p-2',
+      className
+    )}
+    >
+      <Waiting
+        for={ready}
+        className="fcc"
+
+      >
+
+        {
+          !wallets.some(wallet => wallet.walletClientType !== 'privy')
+            ? (
+                <div onClick={() => connectWallet()} className="w-full cursor-pointer truncate text-center text-base text-[#898989]">{t('payment_method.please_connect_wallet')}</div>
+              )
+            : userData.wallet_address
+              ? (
+                  <div className="max-w-full fbc gap-x-2 overflow-hidden text-center max-lg:flex-col">
+                    <div className="max-w-full flex-1 truncate text-base text-[#898989]">{userData.wallet_address}</div>
+                  </div>
+                )
+              : (
+                  <div className="fbc">
+                    {/* <div className="text-red">{t('payment_method.not_connected_wallet')}</div> */}
+                    {/* <div className="text-3.5 text-[#898989]">{userData.wallet_address}</div> */}
+                    {
+                      bindWalletLoading
+                        ? (
+                            <div className="w-full fcc gap-1">
+                              <div>{t('payment_method.bind_wallet_loading')}</div>
+                              <div className="i-line-md-loading-loop bg-white"></div>
+                            </div>
+                          )
+                        : (
+                            <div className="w-full cursor-pointer text-center text-base text-[#898989]" onClick={handleBindWallet}>{t('payment_method.click_to_bind_wallet')}</div>
+                          )
+                    }
+                  </div>
+                )
+
+        }
+      </Waiting>
+    </div>
+  )
+}

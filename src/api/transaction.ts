@@ -1,6 +1,23 @@
+import type { ResponseData } from './client'
 import apiClient from './client'
 
-export function getTransactions(data: Record<string, any>) {
+interface transactionHistory {
+  create_date: number
+  name: string
+  type: number
+  price: string
+  number: number
+  status: number
+  total_money: string
+}
+
+export interface DataListResponse<T> {
+  count: number
+  list: T[]
+  page: number
+  pageSize: number
+}
+export function getTransactions(data: Record<string, any>): Promise<ResponseData<DataListResponse<transactionHistory>>> {
   return apiClient.post('/api/assets/transactionHistory', data)
 }
 

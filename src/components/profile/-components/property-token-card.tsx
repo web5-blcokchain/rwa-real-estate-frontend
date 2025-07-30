@@ -28,6 +28,7 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
 }) => {
   const navigate = useNavigate()
   const investmentItems = useCommonDataStore(state => state.investmentItems)
+  const { t } = useTranslation()
 
   const createSellOrder = (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -55,31 +56,31 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
     })
   }
 
-  const redemption = (e: React.MouseEvent) => {
-    e.stopPropagation()
+  // const redemption = (e: React.MouseEvent) => {
+  //   e.stopPropagation()
 
-    investmentItems.set(properties_id, {
-      id: properties_id,
-      name,
-      location: address,
-      property_type,
-      token_price: current_price,
-      tokens_held: number,
-      total_amount: total_current,
-      rental_yield: expected_annual_return,
-      image_urls,
-      sell_order_id,
-      order_type: InvestmentOrderType.Buy,
-      contract_address,
-      token_number,
-      total_selling
-    })
+  //   investmentItems.set(properties_id, {
+  //     id: properties_id,
+  //     name,
+  //     location: address,
+  //     property_type,
+  //     token_price: current_price,
+  //     tokens_held: number,
+  //     total_amount: total_current,
+  //     rental_yield: expected_annual_return,
+  //     image_urls,
+  //     sell_order_id,
+  //     order_type: InvestmentOrderType.Buy,
+  //     contract_address,
+  //     token_number,
+  //     total_selling
+  //   })
 
-    navigate({
-      to: '/transaction/redemption/$id',
-      params: { id: `${properties_id}` }
-    })
-  }
+  //   navigate({
+  //     to: '/transaction/redemption/$id',
+  //     params: { id: `${properties_id}` }
+  //   })
+  // }
 
   const [firstImage] = joinImagesPath(image_urls)
 
@@ -91,7 +92,7 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
       )}
       {...props}
     >
-      <div className="relative h-56">
+      <div className="relative h-56 max-lg:h-auto max-lg:w-full">
         <IImage
           src={firstImage}
           className="size-full"
@@ -110,14 +111,14 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
 
         <div className="flex flex-wrap items-center justify-between">
           <div className="w-1/2 flex flex-col justify-start py-3">
-            <div className="text-sm text-[#b5b5b5]">Token Price</div>
+            <div className="text-sm text-[#b5b5b5]">{t('properties.payment.token_price')}</div>
             <div className="text-4">
               {`$${numeral(current_price).format('0,0.00')}`}
             </div>
           </div>
 
           <div className="w-1/2 flex flex-col justify-start py-3">
-            <div className="text-sm text-[#b5b5b5]">Tokens Held</div>
+            <div className="text-sm text-[#b5b5b5]">{t('properties.payment.tokens_held')}</div>
             <div className="text-4">
               {number}
               /
@@ -126,7 +127,7 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
           </div>
 
           <div className="w-1/2 flex flex-col justify-start py-3">
-            <div className="text-sm text-[#b5b5b5]">Annual Yield</div>
+            <div className="text-sm text-[#b5b5b5]">{t('properties.payment.annual_yield')}</div>
             <div className="text-4">
               {expected_annual_return}
               %
@@ -134,7 +135,7 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
           </div>
 
           <div className="w-1/2 flex flex-col justify-start py-3">
-            <div className="text-sm text-[#b5b5b5]">Valuation</div>
+            <div className="text-sm text-[#b5b5b5]">{t('properties.payment.valuation')}</div>
             <div className="text-4">
               {`$${numeral(current_price).format('0,0')}`}
             </div>
@@ -143,21 +144,22 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
 
         <div className="flex items-center justify-between text-sm">
           <Button
+            disabled
             type="primary"
             size="large"
-            className="mr-2 w-1/2 text-black!"
+            className="mr-2 w-full text-black!"
             onClick={createSellOrder}
           >
-            Create Sell Order
+            {t('properties.payment.create_sell_order')}
           </Button>
 
-          <Button
+          {/* <Button
             size="large"
             className="w-1/2 border-[#9e9e9e] bg-[#202329] text-[#9e9e9e]!"
             onClick={redemption}
           >
-            Redeem
-          </Button>
+            {t('properties.payment.redeem')}
+          </Button> */}
         </div>
       </div>
     </div>

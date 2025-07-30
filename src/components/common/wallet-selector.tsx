@@ -66,7 +66,7 @@ export const WalletSelector: FC<{
                 }
               </div>
               <span>{wallet.meta.name}</span>
-              <span className="text-3.5 text-[#898989]">{wallet.address}</span>
+              <span className="truncate text-3.5 text-[#898989] max-lg:w-full">{wallet.address}</span>
             </div>
           ))}
         </div>
