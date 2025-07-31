@@ -7,10 +7,11 @@ import { joinImagePath } from '@/utils/url'
 import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { Button, Select, Upload } from 'antd'
+import { VisibleType } from '.'
 import UploadCard from '../../upload-card'
 import './individual.scss'
 
-export default function IndividualVerification() {
+export default function IndividualVerification({ setCurrentVisible }: { setCurrentVisible: (visible: VisibleType) => void }) {
   const { t } = useTranslation()
   const { registerData, setCode: setExist, setRegisterData, clearRegisterData, getUserInfo, userData } = useUserStore()
   const navigate = useNavigate()
@@ -134,7 +135,11 @@ export default function IndividualVerification() {
     driver_license: 'create.verification.personal.upload_title_driver_license'
   }
   return (
-    <div className="fccc gap-2">
+    <div className="mx-auto w-fit fccc gap-2">
+      <div className="w-full fyc gap-1 clickable" onClick={() => setCurrentVisible(VisibleType.Select)}>
+        <div className="i-material-symbols:arrow-back-rounded size-7 bg-white"></div>
+        <div>返回</div>
+      </div>
       <div className="max-w-md text-center text-8 font-medium">{t('create.verification.personal.title')}</div>
       <div className="max-w-md text-center text-4 text-[#898989]">{t('create.verification.personal.subTitle')}</div>
 
@@ -227,7 +232,7 @@ export default function IndividualVerification() {
         <div className="fec">
           <Button
             size="large"
-            className={cn('bg-transparent! !text-black !b-#e7bb41')}
+            className={cn('bg-transparent! !text-black !bg-#e7bb41')}
             loading={isPending || reloadCreatePending}
             onClick={() => {
               if (verifyUpload()) {

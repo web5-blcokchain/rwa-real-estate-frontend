@@ -32,7 +32,9 @@ export default function LoginPrivyPanel() {
 
   useEffect(() => {
     // 1的时候表示已审核 2:中心化数据库审核拒绝 3.钱包绑定成功 4.kyc审核通过 5 kyc审核拒绝
-    if (userData.audit_status && [2, 5].includes(userData.audit_status)) {
+    if (userData.audit_status && ![2, 5].includes(userData.audit_status)) {
+      console.log(1221)
+
       navigate({
         to: '/home'
       })

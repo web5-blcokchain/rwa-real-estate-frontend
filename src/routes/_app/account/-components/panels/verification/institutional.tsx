@@ -7,10 +7,11 @@ import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { Button } from 'antd'
 import { useTranslation } from 'react-i18next'
+import { VisibleType } from '.'
 import UploadCard from '../../upload-card'
 import './individual.scss'
 
-export default function InstitutionalVerification() {
+export default function InstitutionalVerification({ setCurrentVisible }: { setCurrentVisible: (visible: VisibleType) => void }) {
   const { t } = useTranslation()
   const { registerData, setRegisterData, setCode: setExist, clearRegisterData, getUserInfo, userData } = useUserStore()
   const navigate = useNavigate()
@@ -110,7 +111,11 @@ export default function InstitutionalVerification() {
   }
 
   return (
-    <div className="fccc gap-2">
+    <div className="mx-auto w-fit fccc gap-2">
+      <div className="w-full fyc gap-1 clickable" onClick={() => setCurrentVisible(VisibleType.Select)}>
+        <div className="i-material-symbols:arrow-back-rounded size-7 bg-white"></div>
+        <div>返回</div>
+      </div>
       <div className="max-w-md text-center text-8 font-medium">{t('create.verification.business.title')}</div>
       <div className="max-w-md text-center text-4 text-[#898989]">{t('create.verification.business.subTitle')}</div>
 

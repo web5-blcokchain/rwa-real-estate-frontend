@@ -47,7 +47,7 @@ export function useRouteGuard() {
         UserCode.NotAudited
       ]).has(code))
       && loggedInBlackList.includes(currentPath)
-      && userData.audit_status !== 2
+      && ![2, 5].includes(userData.audit_status)
     ) {
       navigate({
         to: '/'
@@ -85,9 +85,9 @@ export function useRouteGuard() {
       }
     }
     if (code === UserCode.NotExist) {
-      toast.error(t('header.error.user_not_found'))
+      toast.error(t(userData.id ? 'header.error.user_not_found' : 'header.error.login_required'))
       navigate({
-        to: '/account/create'
+        to: userData.id ? '/account/create' : '/home'
       })
     }
     prevPathRef.current = location.pathname

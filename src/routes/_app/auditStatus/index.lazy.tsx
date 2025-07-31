@@ -86,9 +86,7 @@ function RouteComponent() {
                 navigate({
                   to: '/account/create'
                 })
-                setTimeout(() => {
-                  close()
-                }, 200)
+                close()
               }}
             >
               {t('common.reupload')}
