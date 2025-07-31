@@ -691,12 +691,14 @@
     "reSubmit": "Resubmit",
     "contactAdmin": "Contact Admin",
     "contactAdminDesc": "Please contact the administrator to solve",
-    "backendAudit": "Submit user information",
-    "backendAuditPass": "Backend Audit Pass",
-    "backendAuditFail": "Backend Audit Fail",
-    "walletBindSuccess": "Wallet Bind Success",
-    "kycAuditPass": "KYC Audit Pass",
-    "kycAuditFail": "KYC Audit Fail"
+    "backendAudit": "KYC Authentication {{status}}",
+    "walletBind": "Wallet Binding {{status}}",
+    "kycAudit": "KYC Audit {{status}}",
+    "submitUserInfo": "Submit user information",
+    "submitUserInfoSuccess": "Information submitted{{status}}",
+    "success": "Success",
+    "pass": "Pass",
+    "fail": "Fail"
   },
   "dividendStatistics": {
     "title": "Dividend Statistics",
