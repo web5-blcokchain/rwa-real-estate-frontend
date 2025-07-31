@@ -91,13 +91,13 @@ export const PaymentWallet: FC<{
                     {
                       bindWalletLoading
                         ? (
-                            <div className="w-full fcc gap-1">
+                            <div className="w-full fcc gap-1 text-primary">
                               <div>{t('payment_method.bind_wallet_loading')}</div>
                               <div className="i-line-md-loading-loop bg-white"></div>
                             </div>
                           )
                         : (
-                            <div className="w-full cursor-pointer text-center text-base text-[#898989]" onClick={handleBindWallet}>{t('payment_method.click_to_bind_wallet')}</div>
+                            <div className="w-full cursor-pointer text-center text-base text-primary" onClick={handleBindWallet}>{t('payment_method.click_to_bind_wallet')}</div>
                           )
                     }
                   </div>

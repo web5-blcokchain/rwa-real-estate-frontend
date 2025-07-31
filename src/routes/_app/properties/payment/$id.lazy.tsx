@@ -159,7 +159,7 @@ function RouteComponent() {
         // 生成支付合约的精度数
         const tx = await (propertyManagerContract.connect(signer) as any)
           .purchaseTokens(
-            ethers.parseEther((tokens * 1.02).toString()),
+            ethers.parseEther((tokens * 1.02).toFixed(18).toString()), // 截断小数点，防止位数太多导致函数报错
             usdtContract.getAddress(),
             deadline,
             v,
@@ -238,7 +238,7 @@ function RouteComponent() {
 
   return (
     <div className="mx-auto max-w-7xl p-8 space-y-8">
-      <div className="text-center text-6 font-medium">{t('common.payment_title')}</div>
+      {/* <div className="text-center text-6 font-medium">{t('common.payment_title')}</div> */}
 
       <div className="flex gap-6 rounded-xl bg-[#202329] p-6 max-lg:flex-col">
         <div className="h-60 w-100 max-lg:h-auto max-lg:w-full">
