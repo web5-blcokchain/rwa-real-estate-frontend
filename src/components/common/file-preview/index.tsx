@@ -99,14 +99,14 @@ export const FilePreview: FC<
                     className={cn(
                       'w-full of-hidden',
                       'b-white b-1 b-solid hover:b-primary-1 transition-colors duration-200',
-                      'clickable-99',
+                      'clickable-99 min-h-50px',
                       imageContainerClass
                     )}
                     onClick={() => onImageClick?.(file, index)}
                   >
                     <IImage
                       src={file}
-                      imgClass={cn('w-full aspect-[3/2] object-cover', imageClass)}
+                      imgClass={cn('w-full min-h-50px aspect-[3/2] object-cover', imageClass)}
                     />
                   </div>
                 )
