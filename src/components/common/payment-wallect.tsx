@@ -81,7 +81,7 @@ export const PaymentWallet: FC<{
             : userData.wallet_address
               ? (
                   <div className="max-w-full fbc gap-x-2 overflow-hidden text-center max-lg:flex-col">
-                    <div className="max-w-full flex-1 truncate text-base text-[#898989]">{userData.wallet_address}</div>
+                    <div className="max-w-full flex-1 truncate text-base text-primary">{userData.wallet_address}</div>
                   </div>
                 )
               : (

@@ -41,9 +41,9 @@ function RouteComponent() {
       case 3:
         return { step: 2, title: 1 }
       case 4:
-        return { step: 4, title: 3 }
-      case 5:
         return { step: 3, title: 3 }
+      case 5:
+        return { step: 2, title: 3 }
       default:
         return { step: 0, title: 0 }
     }

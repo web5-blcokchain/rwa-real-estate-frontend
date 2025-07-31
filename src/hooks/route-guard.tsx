@@ -79,6 +79,7 @@ export function useRouteGuard() {
 
     const hasLoginUrl = ['/profile', '/properties/payment']
     // console.log(currentPath, hasLoginUrl)
+    const dialog_audit_status = JSON.parse(localStorage.getItem('audit_status') || 'false')
     if (hasLoginUrl.some(item => currentPath.includes(item))) {
       if (userData.audit_status === 0) {
         toast.error(t('header.error.wallet_already_bound'))
@@ -86,8 +87,9 @@ export function useRouteGuard() {
           to: '/account/create'
         })
       }
-      else if (userData.audit_status === 2) {
-        window.history.back()
+      else if ([2, 5].includes(userData.audit_status) && !dialog_audit_status) {
+        localStorage.setItem('audit_status', JSON.stringify(true))
+        // window.history.back()
         setTimeout(() => {
           openMessageDialog((
             <div className="fccc gap-2">
@@ -114,28 +116,6 @@ export function useRouteGuard() {
         }, 200)
 
         // 返回上一级页面
-      }
-      else if (userData.audit_status === 5) {
-        toast.error(t('header.error.kyc_audit_rejected'))
-        window.history.back()
-        setTimeout(() => {
-          openMessageDialog((
-            <div className="fccc gap-2">
-              <div className="i-arcticons-voteinfo size-12 bg-white"></div>
-              <div className="text-center text-8 font-bold max-lg:text-6">{t('header.error.kyc_audit_rejected')}</div>
-              <div className="text-4 text-#5e6570">{t('auditStatus.contactAdminDesc')}</div>
-              {/* <Button type="primary" onClick={() => {
-                navigate({
-                  to: '/account/create'
-                })
-              }}>
-                {t('common.reupload')}
-              </Button> */}
-
-            </div>
-          ), t('header.error.kyc_audit_rejected')
-          )
-        }, 200)
       }
     }
     if (code === UserCode.NotExist) {

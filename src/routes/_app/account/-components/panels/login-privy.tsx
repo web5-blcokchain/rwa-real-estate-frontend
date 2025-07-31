@@ -1,13 +1,15 @@
 import { useUserStore } from '@/stores/user'
 import { getToken } from '@/utils/user'
 import { usePrivy } from '@privy-io/react-auth'
+import { useNavigate } from '@tanstack/react-router'
 import { Button } from 'antd'
 import { useSteps } from '../steps-provider'
 
 export default function LoginPrivyPanel() {
   const { t } = useTranslation()
   const { user, ready, authenticated, login, linkEmail } = usePrivy()
-  const { setRegisterData } = useUserStore()
+  const { setRegisterData, userData } = useUserStore()
+  const navigate = useNavigate()
 
   const { next } = useSteps()
   const token = getToken()
@@ -27,6 +29,15 @@ export default function LoginPrivyPanel() {
       email: user.email?.address || user.google?.email
     })
   }, [user?.email?.address, user?.google?.email, token])
+
+  useEffect(() => {
+    // 1的时候表示已审核 2:中心化数据库审核拒绝 3.钱包绑定成功 4.kyc审核通过 5 kyc审核拒绝
+    if (userData.audit_status && [1, 3, 4].includes(userData.audit_status)) {
+      navigate({
+        to: '/home'
+      })
+    }
+  }, [userData])
 
   if (!ready) {
     return (
