@@ -1,9 +1,7 @@
 import { UserCode } from '@/enums/user'
-import { useMessageDialogStore } from '@/stores/message-dialog'
 import { useUserStore } from '@/stores/user'
 import { getToken } from '@/utils/user'
 import { useLocation, useNavigate } from '@tanstack/react-router'
-import { Button } from 'antd'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
@@ -18,7 +16,6 @@ export function useRouteGuard() {
   const { code, userData } = useUserStore()
   const { t } = useTranslation()
   const prevPathRef = useRef<string | null>(null)
-  const { open: openMessageDialog, close } = useMessageDialogStore()
   const token = getToken()
 
   useEffect(() => {
@@ -79,43 +76,12 @@ export function useRouteGuard() {
 
     const hasLoginUrl = ['/profile', '/properties/payment']
     // console.log(currentPath, hasLoginUrl)
-    const dialog_audit_status = JSON.parse(localStorage.getItem('audit_status') || 'false')
     if (hasLoginUrl.some(item => currentPath.includes(item))) {
       if (userData.audit_status === 0) {
         toast.error(t('header.error.wallet_already_bound'))
         navigate({
           to: '/account/create'
         })
-      }
-      else if ([2, 5].includes(userData.audit_status) && !dialog_audit_status) {
-        localStorage.setItem('audit_status', JSON.stringify(true))
-        // window.history.back()
-        setTimeout(() => {
-          openMessageDialog((
-            <div className="fccc gap-2">
-              <div className="i-carbon:close-outline size-16 bg-#ec5b56"></div>
-              <div className="text-center text-8 font-bold max-lg:text-6">{t('header.error.centralized_database_review_rejection')}</div>
-              <div className="text-4 text-#5e6570">{t('header.error.kyc_audit_rejected_desc')}</div>
-              <Button
-                type="primary"
-                onClick={() => {
-                  navigate({
-                    to: '/account/create'
-                  })
-                  setTimeout(() => {
-                    close()
-                  }, 200)
-                }}
-              >
-                {t('common.reupload')}
-              </Button>
-
-            </div>
-          ), t('header.error.centralized_database_review_rejection')
-          )
-        }, 200)
-
-        // 返回上一级页面
       }
     }
     if (code === UserCode.NotExist) {

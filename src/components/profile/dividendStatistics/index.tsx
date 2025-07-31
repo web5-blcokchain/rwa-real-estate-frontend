@@ -157,6 +157,8 @@ export default function DividendStatistics() {
     }
   ]
 
+  const [timeAction, setTimeAction] = useState('')
+
   return (
     <div className="flex flex-col gap-4">
       <div className="text-whit text-2xl max-lg:text-xl">{t('dividendStatistics.title')}</div>
@@ -191,10 +193,10 @@ export default function DividendStatistics() {
       </Waiting>
       <div>
         <div className="mt-4 fyc gap-5 text-base max-lg:flex-col max-lg:items-start max-lg:text-sm">
-          <div className="fyc gap-5 [&>div]:cursor-pointer">
-            <div>{t('dividendStatistics.thisMonth')}</div>
-            <div>{t('dividendStatistics.last3Months')}</div>
-            <div>{t('dividendStatistics.last6Months')}</div>
+          <div className="fyc gap-5 [&>div]:cursor-pointer [&>div]:rounded-md [&>.action]:bg-#212328 [&>div]:px-4 [&>div]:py-1 [&>div]:transition-all [&>div]:duration-300">
+            <div onClick={() => setTimeAction(timeAction === '0' ? '' : '0')} className={cn(timeAction === '0' ? 'action' : '')}>{t('dividendStatistics.thisMonth')}</div>
+            <div onClick={() => setTimeAction(timeAction === '1' ? '' : '1')} className={cn(timeAction === '1' ? 'action' : '')}>{t('dividendStatistics.last3Months')}</div>
+            <div onClick={() => setTimeAction(timeAction === '2' ? '' : '2')} className={cn(timeAction === '2' ? 'action' : '')}>{t('dividendStatistics.last6Months')}</div>
           </div>
           <div className="fyc gap-5">
             <Select placeholder={t('dividendStatistics.property')} className="input-placeholder w-80px max-lg:w-100px [&>div]:!b-0 [&>div]:!bg-transparent" options={propertyTypeList} value={propertyType} onChange={setPropertyType} />

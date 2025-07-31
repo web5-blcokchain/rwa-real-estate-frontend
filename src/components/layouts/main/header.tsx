@@ -161,9 +161,6 @@ function RightMenu() {
       const data = _get(res, 'data', {})
       setUserData(data)
       setUserObj(data)
-      if (res.data?.audit_status && ![2, 5].includes(res.data.audit_status)) {
-        localStorage.setItem('audit_status', JSON.stringify(false))
-      }
       return data
     }
   })
