@@ -98,7 +98,7 @@ function RouteComponent() {
       }, 200)
       // 返回上一级页面
     }
-  }, [userData.audit_date])
+  }, [userData])
 
   return (
     <div className="fccc p-12 max-lg:p-6">
@@ -111,7 +111,7 @@ function RouteComponent() {
         audit_status === 1 && (
           <PaymentMethod
             walletState={[wallet, setWallet]}
-            className="mt-10 w-full bg-[#202329] max-lg:mt-50"
+            className="mt-2 w-full bg-[#202329] max-lg:mt-2"
           />
         )
       }
