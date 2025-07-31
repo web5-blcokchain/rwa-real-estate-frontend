@@ -28,6 +28,8 @@
     "user_audit_status": "User audit application"
   },
   "payment": {
+    "pay_loading": "Payment in progress, please wait",
+    "pay_loading_desc": "Token payment in progress, do not exit during the process to avoid affecting communication with third-party wallet browsers or wallet software. Payment will automatically redirect after completion.",
     "errors": {
       "no_wallet": "Please select a wallet",
       "no_ethereum": "Please install MetaMask or use a Web3 browser",
@@ -319,7 +321,7 @@
       "average": "Average 30-day",
       "amount_placeholder": "Enter investment amount",
       "ratio": "Investment Ratio",
-      "invest": "Invest Now",
+      "invest": "Ask buy token ",
       "property_title": "Property Description",
       "location_description": "Location Description",
       "property_includes": "The property includes:",

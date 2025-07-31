@@ -219,7 +219,7 @@
       "ownership_content": "以最低100美元投资优质房地产，拥有全球高价值物业的一部分",
       "compliance": "监管合规",
       "compliance_content": "一个完全受监管的平台，具备强大的KYC/AML程序。您的投资安全且合规。",
-      "investment": "液体投资",
+      "investment": "立即投资",
       "investment_content": "在我们的二级市场上，您可以全天候交易房地产代币。前所未有的流动性为房地产市场提供支持。"
     },
     "featured": "精选物业",
@@ -323,7 +323,7 @@
       "average": "平均30天",
       "amount_placeholder": "输入投资金额",
       "ratio": "投资比例",
-      "invest": "立刻投资",
+      "invest": "求购代币",
       "property_title": "物业描述",
       "location_description": "位置描述",
       "property_includes": "该物业包括:",
@@ -733,12 +733,14 @@
     "reSubmit": "重新提交",
     "contactAdmin": "请联系管理员",
     "contactAdminDesc": "请联系管理员解决",
-    "backendAudit": "提交用户资料",
-    "backendAuditPass": "后台审核通过",
-    "backendAuditFail": "后台审核失败",
-    "walletBindSuccess": "钱包绑定成功",
-    "kycAuditPass": "KYC审核通过",
-    "kycAuditFail": "KYC审核失败"
+    "backendAudit": "KYC 认证{{status}}",
+    "walletBind": "钱包绑定{{status}}",
+    "kycAudit": "KYC审核{{status}}",
+    "submitUserInfo": "提交用户信息",
+    "submitUserInfoSuccess": "资料提交{{status}}",
+    "success": "成功",
+    "pass": "通过",
+    "fail": "失败"
   },
   "dividendStatistics": {
     "title": "分红统计",

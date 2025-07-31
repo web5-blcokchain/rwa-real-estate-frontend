@@ -2,7 +2,6 @@ import INotice from '@/components/common/i-notice'
 import { AccountType } from '@/enums/create-account'
 import { useUserStore } from '@/stores/user'
 import { useState } from 'react'
-import { useSteps } from '../../steps-provider'
 import IndividualVerification from './individual'
 import InstitutionalVerification from './institutional'
 
@@ -13,7 +12,7 @@ interface Verification {
   onClick: () => void
 }
 
-enum VisibleType {
+export enum VisibleType {
   Select,
   Individual,
   Institutional
@@ -30,14 +29,14 @@ export default function VerificationPanel() {
     case VisibleType.Select:
       return <SelectVerification setCurrentVisible={setCurrentVisible} />
     case VisibleType.Individual:
-      return <IndividualVerification />
+      return <IndividualVerification setCurrentVisible={setCurrentVisible} />
     case VisibleType.Institutional:
-      return <InstitutionalVerification />
+      return <InstitutionalVerification setCurrentVisible={setCurrentVisible} />
   }
 }
 
 function SelectVerification({ setCurrentVisible }: VerificationPanelProps) {
-  const { setHandler } = useSteps()
+  // const { setHandler } = useSteps()
   const { t } = useTranslation()
   const { setRegisterData } = useUserStore()
 
@@ -52,11 +51,11 @@ function SelectVerification({ setCurrentVisible }: VerificationPanelProps) {
           type: AccountType.Individual
         })
 
-        setHandler({
-          onReturn() {
-            setCurrentVisible(VisibleType.Select)
-          }
-        })
+        // setHandler({
+        //   onReturn() {
+        //     setCurrentVisible(VisibleType.Select)
+        //   }
+        // })
       }
     },
     {
@@ -69,11 +68,11 @@ function SelectVerification({ setCurrentVisible }: VerificationPanelProps) {
           type: AccountType.Institutional
         })
 
-        setHandler({
-          onReturn() {
-            setCurrentVisible(VisibleType.Select)
-          }
-        })
+        // setHandler({
+        //   onReturn() {
+        //     setCurrentVisible(VisibleType.Select)
+        //   }
+        // })
       }
     }
   ]

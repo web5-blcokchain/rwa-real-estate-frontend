@@ -1,5 +1,6 @@
 import type { ConnectedWallet } from '@privy-io/react-auth'
 import { PaymentMethod } from '@/components/common/payment-method'
+import { useMessageDialogStore } from '@/stores/message-dialog'
 import { useUserStore } from '@/stores/user'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
 import { Button, Modal, Steps } from 'antd'
@@ -16,33 +17,88 @@ function RouteComponent() {
   useEffect(() => {
     getUserInfo()
   }, [])
-  const audit_status: number = userData.audit_status
+  const [audit_status, setAudit_status] = useState(userData.audit_status ?? 0)
   const items = [
-    { title: <div className="max-lg:pb-7">{t('auditStatus.backendAudit')}</div> },
-    { title: <div className="max-lg:pb-7">{audit_status === 2 ? t('auditStatus.backendAuditFail') : t('auditStatus.backendAuditPass')}</div> },
-    { title: <div className="max-lg:pb-7">{t('auditStatus.walletBindSuccess')}</div> },
-    { title: <div className="max-lg:pb-7">{audit_status === 5 ? t('auditStatus.kycAuditFail') : t('auditStatus.kycAuditPass')}</div> }
+    { title: <div className="max-lg:pb-7">{t('auditStatus.backendAudit', { status: '' })}</div> },
+    { title: <div className="max-lg:pb-7">{t('auditStatus.walletBind', { status: '' })}</div> },
+    { title: <div className="max-lg:pb-7">{t('auditStatus.kycAudit', { status: '' })}</div> }
+  ]
+  const userStatus = [
+    'auditStatus.submitUserInfo',
+    'auditStatus.submitUserInfoSuccess',
+    'auditStatus.walletBind',
+    'auditStatus.kycAudit'
   ]
   const [wallet, setWallet] = useState<ConnectedWallet | null>(null)
   const [showModal, setShowModal] = useState(false)
   const nowStep = (step: number) => {
     switch (step) {
       case 0:
-        return { step: 1, title: 0 }
+        return { step: 0, title: 0 }
       case 1:
-        return { step: 2, title: 1 }
+        return { step: 1, title: 1 }
       case 2:
         return { step: 1, title: 1 }
       case 3:
-        return { step: 3, title: 2 }
+        return { step: 2, title: 1 }
       case 4:
-        return { step: 4, title: 3 }
-      case 5:
         return { step: 3, title: 3 }
+      case 5:
+        return { step: 2, title: 3 }
       default:
         return { step: 0, title: 0 }
     }
   }
+
+  const userStatusText = useMemo(() => {
+    switch (audit_status) {
+      case 0:
+        return t(userStatus[0])
+      case 1:
+        return t(userStatus[1], { status: t('auditStatus.success') })
+      case 2:
+        return t(userStatus[1], { status: t('auditStatus.fail') })
+      case 3:
+        return t(userStatus[2], { status: t('auditStatus.pass') })
+      case 4:
+        return t(userStatus[3], { status: t('auditStatus.pass') })
+      case 5:
+        return t(userStatus[3], { status: t('auditStatus.fail') })
+      default:
+        return t(userStatus[0])
+    }
+  }, [userStatus])
+
+  const { open: openMessageDialog, close } = useMessageDialogStore()
+  useEffect(() => {
+    setAudit_status(userData.audit_status ?? 0)
+    if ([2, 5].includes(userData.audit_status)) {
+      // window.history.back()
+      setTimeout(() => {
+        openMessageDialog((
+          <div className="fccc gap-2">
+            <div className="i-carbon:close-outline size-16 bg-#ec5b56"></div>
+            <div className="text-center text-8 font-bold max-lg:text-6">{t('header.error.centralized_database_review_rejection')}</div>
+            <div className="text-4 text-#5e6570">{t('header.error.kyc_audit_rejected_desc')}</div>
+            <Button
+              type="primary"
+              onClick={() => {
+                navigate({
+                  to: '/account/create'
+                })
+                close()
+              }}
+            >
+              {t('common.reupload')}
+            </Button>
+
+          </div>
+        ), t('header.error.centralized_database_review_rejection')
+        )
+      }, 200)
+      // 返回上一级页面
+    }
+  }, [userData.audit_date])
 
   return (
     <div className="fccc p-12 max-lg:p-6">
@@ -61,16 +117,15 @@ function RouteComponent() {
       }
       {/* 当前步骤说明 */}
       <div className="mt-20 fccc gap-6 max-lg:mt-10 max-lg:gap-4">
-        {[0, 1, 3, 4].includes(audit_status)
+        {[1, 3, 4].includes(audit_status)
           ? <div className="i-iconoir-pc-check size-24 bg-white"></div>
           : <div className="i-iconoir-pc-warning size-24 bg-white"></div>}
-        <div className="text-8 font-bold max-lg:text-4">{items[(nowStep(audit_status).title) === 4 ? 3 : nowStep(audit_status).title].title}</div>
+        <div className="text-8 font-bold max-lg:text-4">
+          {userStatusText}
+        </div>
         <div>
           {
-            audit_status === 2 && <Button onClick={() => { navigate({ to: '/account/create' }) }} size="large" type="primary">{t('auditStatus.reSubmit')}</Button>
-          }
-          {
-            audit_status === 5 && <Button onClick={() => { setShowModal(true) }} size="large" type="primary">{t('auditStatus.contactAdmin')}</Button>
+            [0, 2, 5].includes(audit_status) && <Button onClick={() => { navigate({ to: '/account/create' }) }} size="large" type="primary">{t('auditStatus.reSubmit')}</Button>
           }
         </div>
       </div>

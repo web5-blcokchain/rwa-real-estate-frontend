@@ -1,7 +1,7 @@
 import numbro from 'numbro'
 
 /**
- * 格式化数字，整数用 numbro，小数部分保留两位
+ * 格式化数字，整数用 numbro，小数部分最长保留 {mantissa} 位,最小保留 {min} 位,自动截断末尾的0
  * @param {number|string} value - 要处理的值
  * @returns {string}
  */
@@ -18,9 +18,10 @@ export function formatNumberNoRound(value: number | string | undefined, mantissa
   // decimals = decimals.padEnd(2,'0')
   decimals = decimals.slice(0, Math.max(Math.min(mantissa, decimals.length), min))
 
-  return numbro(value).format({
+  return numbro(Number.parseInt(value.toString())).format({
     mantissa: 0,
     // mantissa:mantissa,
+    thousandSeparated: true,
     ...format
   }) + (decimals.length > 0 ? `.${decimals}` : '')
 }

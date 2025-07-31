@@ -1,9 +1,7 @@
 import { UserCode } from '@/enums/user'
-import { useMessageDialogStore } from '@/stores/message-dialog'
 import { useUserStore } from '@/stores/user'
 import { getToken } from '@/utils/user'
 import { useLocation, useNavigate } from '@tanstack/react-router'
-import { Button } from 'antd'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
@@ -18,7 +16,6 @@ export function useRouteGuard() {
   const { code, userData } = useUserStore()
   const { t } = useTranslation()
   const prevPathRef = useRef<string | null>(null)
-  const { open: openMessageDialog, close } = useMessageDialogStore()
   const token = getToken()
 
   useEffect(() => {
@@ -50,7 +47,7 @@ export function useRouteGuard() {
         UserCode.NotAudited
       ]).has(code))
       && loggedInBlackList.includes(currentPath)
-      && userData.audit_status !== 2
+      && ![2, 5].includes(userData.audit_status)
     ) {
       navigate({
         to: '/'
@@ -86,62 +83,11 @@ export function useRouteGuard() {
           to: '/account/create'
         })
       }
-      else if (userData.audit_status === 2) {
-        window.history.back()
-        setTimeout(() => {
-          openMessageDialog((
-            <div className="fccc gap-2">
-              <div className="i-carbon:close-outline size-16 bg-#ec5b56"></div>
-              <div className="text-center text-8 font-bold max-lg:text-6">{t('header.error.centralized_database_review_rejection')}</div>
-              <div className="text-4 text-#5e6570">{t('header.error.kyc_audit_rejected_desc')}</div>
-              <Button
-                type="primary"
-                onClick={() => {
-                  navigate({
-                    to: '/account/create'
-                  })
-                  setTimeout(() => {
-                    close()
-                  }, 200)
-                }}
-              >
-                {t('common.reupload')}
-              </Button>
-
-            </div>
-          ), t('header.error.centralized_database_review_rejection')
-          )
-        }, 200)
-
-        // 返回上一级页面
-      }
-      else if (userData.audit_status === 5) {
-        toast.error(t('header.error.kyc_audit_rejected'))
-        window.history.back()
-        setTimeout(() => {
-          openMessageDialog((
-            <div className="fccc gap-2">
-              <div className="i-arcticons-voteinfo size-12 bg-white"></div>
-              <div className="text-center text-8 font-bold max-lg:text-6">{t('header.error.kyc_audit_rejected')}</div>
-              <div className="text-4 text-#5e6570">{t('auditStatus.contactAdminDesc')}</div>
-              {/* <Button type="primary" onClick={() => {
-                navigate({
-                  to: '/account/create'
-                })
-              }}>
-                {t('common.reupload')}
-              </Button> */}
-
-            </div>
-          ), t('header.error.kyc_audit_rejected')
-          )
-        }, 200)
-      }
     }
     if (code === UserCode.NotExist) {
-      toast.error(t('header.error.user_not_found'))
+      toast.error(t(userData.id ? 'header.error.user_not_found' : 'header.error.login_required'))
       navigate({
-        to: '/account/create'
+        to: userData.id ? '/account/create' : '/home'
       })
     }
     prevPathRef.current = location.pathname

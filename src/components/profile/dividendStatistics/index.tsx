@@ -152,10 +152,12 @@ export default function DividendStatistics() {
       dataIndex: 'income_date',
       key: 'income_date',
       render: (_, record) => {
-        return <div>{dayjs(record.income_date).format('YYYY-MM-DD HH:mm:ss')}</div>
+        return <div>{dayjs((Number(record.income_date) || 0) * 1000).format('YYYY-MM-DD HH:mm:ss')}</div>
       }
     }
   ]
+
+  const [timeAction, setTimeAction] = useState('')
 
   return (
     <div className="flex flex-col gap-4">
@@ -191,10 +193,10 @@ export default function DividendStatistics() {
       </Waiting>
       <div>
         <div className="mt-4 fyc gap-5 text-base max-lg:flex-col max-lg:items-start max-lg:text-sm">
-          <div className="fyc gap-5 [&>div]:cursor-pointer">
-            <div>{t('dividendStatistics.thisMonth')}</div>
-            <div>{t('dividendStatistics.last3Months')}</div>
-            <div>{t('dividendStatistics.last6Months')}</div>
+          <div className="fyc gap-5 [&>div]:cursor-pointer [&>div]:rounded-md [&>.action]:bg-#212328 [&>div]:px-4 [&>div]:py-1 [&>div]:transition-all [&>div]:duration-300">
+            <div onClick={() => setTimeAction(timeAction === '0' ? '' : '0')} className={cn(timeAction === '0' ? 'action' : '')}>{t('dividendStatistics.thisMonth')}</div>
+            <div onClick={() => setTimeAction(timeAction === '1' ? '' : '1')} className={cn(timeAction === '1' ? 'action' : '')}>{t('dividendStatistics.last3Months')}</div>
+            <div onClick={() => setTimeAction(timeAction === '2' ? '' : '2')} className={cn(timeAction === '2' ? 'action' : '')}>{t('dividendStatistics.last6Months')}</div>
           </div>
           <div className="fyc gap-5">
             <Select placeholder={t('dividendStatistics.property')} className="input-placeholder w-80px max-lg:w-100px [&>div]:!b-0 [&>div]:!bg-transparent" options={propertyTypeList} value={propertyType} onChange={setPropertyType} />
