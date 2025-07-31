@@ -179,7 +179,7 @@ export default function InstitutionalVerification({ setCurrentVisible }: { setCu
         <div className="fec">
           <Button
             size="large"
-            className="!b-#e7bb41 bg-transparent! !text-black"
+            className="!bg-#e7bb41 !text-black"
             loading={isPending || reloadCreatePending}
             onClick={() => {
               if (verifyUpload()) {

@@ -202,7 +202,7 @@ function RightMenu() {
   }, [authenticated, user, mutateAsync])
   const { logout } = usePrivy()
   const navigate = useNavigate()
-  const { clearUserData } = useUserStore()
+  const { clearUserData, clearRegisterData } = useUserStore()
   async function handleLogout() {
     logout()
       .then(
@@ -213,6 +213,7 @@ function RightMenu() {
       .then(() => {
         clearUserData()
         clearToken()
+        clearRegisterData()
         setCode(UserCode.NotExist)
       })
   }
@@ -337,7 +338,7 @@ const UserMenu: FC = () => {
   const navigate = useNavigate()
   const { logout } = usePrivy()
   const { t } = useTranslation()
-  const { setCode, clearUserData, userData } = useUserStore()
+  const { setCode, clearUserData, userData, clearRegisterData } = useUserStore()
   async function handleLogout() {
     logout()
       .then(
@@ -348,7 +349,7 @@ const UserMenu: FC = () => {
       .then(() => {
         clearUserData()
         clearToken()
-
+        clearRegisterData()
         setCode(UserCode.NotExist)
       })
   }

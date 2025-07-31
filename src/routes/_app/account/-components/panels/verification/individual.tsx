@@ -39,6 +39,7 @@ export default function IndividualVerification({ setCurrentVisible }: { setCurre
         ...prev,
         [data.key]: true
       }))
+      // debugger
       const res = await apiMyInfo.uploadFile(formData)
       setRegisterData({
         // ...registerData,
@@ -114,12 +115,11 @@ export default function IndividualVerification({ setCurrentVisible }: { setCurre
   const beforeUpload = (file: File, key: string) => {
     updateFile({ file, key })
   }
-
   const idCardImages = [
     idCardFrontUrl,
     idCardBackUrl
   ]
-    .filter(Boolean)
+    // .filter(Boolean)
     .map(url => joinImagePath(url))
 
   // TODO 身份证类型添加
