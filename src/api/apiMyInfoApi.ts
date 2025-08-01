@@ -179,8 +179,22 @@ interface EarningsInfoResponse {
   page: number
   pageSize: number
 }
+
+interface HistoryParams {
+  page: number
+  pageSize: number
+  property_type?: number
+  /**
+   * 状态 0为未发放 1为已发放 2为发放失败 5为发放中
+   */
+  status?: number
+  /**
+   * 时间筛选 1: this_month 本月 2: three_months 近三个月 3: six_months 近半年
+   */
+  timeFilter?: string
+}
 // 收益记录
-function getHistory(params: { page: number, pageSize: number }) {
+function getHistory(params: HistoryParams) {
   return apiClient.post<EarningsInfoResponse>('/api/info/earningsHistory', params)
 }
 
@@ -229,6 +243,16 @@ interface EarningsInfoSummary {
 // 获取收益详情
 export async function getEarningsInfo() {
   return apiClient.post<EarningsInfoSummary>('/api/info/getIncomeSummary')
+}
+
+// 获取房产类型
+interface AssetTypeResponse {
+  id: number
+  name: string
+  code: string
+}
+export async function getAssetType() {
+  return apiClient.post<AssetTypeResponse[]>('/api/assets/pType')
 }
 
 // interface EarningsInfoResponse {

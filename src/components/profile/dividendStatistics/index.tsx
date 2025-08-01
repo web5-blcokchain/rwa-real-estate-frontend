@@ -1,6 +1,6 @@
 import type { historyResponse } from '@/api/apiMyInfoApi'
 import type { TableProps } from 'antd'
-import apiMyInfoApi, { getEarningsInfo } from '@/api/apiMyInfoApi'
+import apiMyInfoApi, { getAssetType, getEarningsInfo } from '@/api/apiMyInfoApi'
 import copyIcon from '@/assets/icons/copy.svg'
 import { useQuery } from '@tanstack/react-query'
 import { ConfigProvider, Empty, Select, Table } from 'antd'
@@ -15,20 +15,20 @@ import '/src/components/common/table-component/styles.scss'
 export default function DividendStatistics() {
   const { t, i18n } = useTranslation()
   const locale = i18n.language === 'en' ? enUS : i18n.language === 'zh' ? zhCN : jaJP
-  const propertyTypeList = [
-    { label: <div>{t('dividendStatistics.all')}</div>, value: 'all' },
-    { label: <div>{t('dividendStatistics.house')}</div>, value: 'house' },
-    { label: <div>{t('dividendStatistics.business')}</div>, value: 'business' },
-    { label: <div>{t('dividendStatistics.personal')}</div>, value: 'personal' }
-  ]
+  const [propertyTypeList, setPropertyTypeList] = useState([
+    { label: <div>{t('dividendStatistics.all')}</div>, value: 0 }
+  ])
+  // 0为未发放 1为已发放 2为发放失败 5为发放中
   const houseStatusList = [
-    { label: <div>{t('dividendStatistics.all')}</div>, value: 'all' },
-    { label: <div>{t('dividendStatistics.sale')}</div>, value: 'sale' },
-    { label: <div>{t('dividendStatistics.rent')}</div>, value: 'rent' },
-    { label: <div>{t('dividendStatistics.sold')}</div>, value: 'sold' }
+    { label: <div>{t('dividendStatistics.all')}</div>, value: 'all' }, // 全部
+    { label: <div>{t('dividendStatistics.sale')}</div>, value: ' 1' }, // 已到账
+    { label: <div>{t('dividendStatistics.unclaimed')}</div>, value: '0' }, // 未发放
+    { label: <div>{t('dividendStatistics.distribution')}</div>, value: '5' }, // 发放中
+    { label: <div>{t('dividendStatistics.sold')}</div>, value: '2' } // 失败
   ]
   const [propertyType, setPropertyType] = useState()
   const [houseStatus, setHouseStatus] = useState()
+  // 获取分红综合信息
   const { data: earningsInfo, isFetching: earningsLoading } = useQuery({
     queryKey: ['earningsInfo'],
     queryFn: async () => {
@@ -36,27 +36,48 @@ export default function DividendStatistics() {
       return data.data
     }
   })
-  const [pagination, _setPagination] = useState({
+
+  // 获取房产类型
+  const { data: assetType } = useQuery({
+    queryKey: ['assetType'],
+    queryFn: async () => {
+      const data = await getAssetType()
+      return data.data
+    }
+  })
+  useEffect(() => {
+    setPropertyTypeList([
+      { label: <div>{t('dividendStatistics.all')}</div>, value: 0 },
+      ...assetType?.map(item => ({ label: <div>{item.name}</div>, value: item.id })) || []
+    ])
+  }, [assetType])
+
+  const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
     total: 100,
     showQuickJumper: true,
     showSizeChanger: false
   })
+  const [timeAction, setTimeAction] = useState('')
+  // 获取分红列表
   const { data: earningsList, isFetching: earningsListLoading } = useQuery({
-    queryKey: ['earningsList', pagination.current, pagination.pageSize],
+    queryKey: ['earningsList', pagination.current, pagination.pageSize, timeAction, houseStatus, propertyType],
     queryFn: async () => {
       const data = await apiMyInfoApi.getHistory({
         page: pagination.current,
-        pageSize: pagination.pageSize
+        pageSize: pagination.pageSize,
+        timeFilter: timeAction === '' ? undefined : (timeAction === '0' ? 'this_month' : timeAction === '1' ? 'three_months' : timeAction === '2' ? 'six_months' : ''),
+        status: (houseStatus === 'all' || !houseStatus) ? undefined : Number(houseStatus),
+        property_type: (!propertyType) ? undefined : propertyType
       })
-      return data.data?.list || []
+      return data.data
     }
   })
   useEffect(() => {
-    _setPagination({
+    setPagination({
       ...pagination,
-      total: earningsList?.length || 0
+      total: earningsList?.count || 0
     })
   }, [earningsList])
 
@@ -157,8 +178,6 @@ export default function DividendStatistics() {
     }
   ]
 
-  const [timeAction, setTimeAction] = useState('')
-
   return (
     <div className="flex flex-col gap-4">
       <div className="text-whit text-2xl max-lg:text-xl">{t('dividendStatistics.title')}</div>
@@ -199,7 +218,7 @@ export default function DividendStatistics() {
             <div onClick={() => setTimeAction(timeAction === '2' ? '' : '2')} className={cn(timeAction === '2' ? 'action' : '')}>{t('dividendStatistics.last6Months')}</div>
           </div>
           <div className="fyc gap-5">
-            <Select placeholder={t('dividendStatistics.property')} className="input-placeholder w-80px max-lg:w-100px [&>div]:!b-0 [&>div]:!bg-transparent" options={propertyTypeList} value={propertyType} onChange={setPropertyType} />
+            <Select placeholder={t('dividendStatistics.property')} className="input-placeholder w-160px max-lg:w-100px [&>div]:!b-0 [&>div]:!bg-transparent" options={propertyTypeList} value={propertyType} onChange={setPropertyType} />
             <Select placeholder={t('dividendStatistics.status')} className="input-placeholder w-120px max-lg:w-100px [&>div]:!b-0 [&>div]:!bg-transparent" options={houseStatusList} value={houseStatus} onChange={setHouseStatus} />
           </div>
         </div>
@@ -210,7 +229,7 @@ export default function DividendStatistics() {
               className="custom-table w-full"
               columns={tableColumns}
               loading={earningsListLoading}
-              dataSource={earningsList}
+              dataSource={earningsList?.list || []}
               rowClassName={() => 'custom-table-row'}
               pagination={pagination}
               // loading={loading}
