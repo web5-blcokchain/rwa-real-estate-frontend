@@ -18,9 +18,9 @@ function Document({ data, index }: { data: any, index: number }) {
           {t(data.content)}
         </div>
       </div>
-      <div className="fyc gap-20px max-lg:gap-4 max-xl:gap-8 max-md:text-12px max-md:leading-30px">
+      <div className="fyc justify-between gap-20px leading-30px max-lg:gap-1 max-xl:gap-8 max-md:text-11px">
         <span key={documentType[index]}>{t(documentType[index])}</span>
-        <span>{dayjs(data.date).format(`M${t('common.month')}D，YYYY`)}</span>
+        <span>{dayjs(data.date).format(`M-D，YYYY`)}</span>
       </div>
     </div>
   )

@@ -218,7 +218,7 @@ function RouteComponent() {
                         price={card?.price || ''}
                         house_life={card?.house_life || ''}
                         bedrooms={card?.bedrooms || ''}
-                        className={cn('select-none clickable-99 max-lg:block w-full', index === 3 && 'hidden')}
+                        className={cn('select-none clickable-99 max-lg:flex w-full', index === 3 && 'hidden')}
                         onClick={() => {
                           navigate({
                             to: '/properties/detail/$id',
@@ -284,6 +284,7 @@ function RouteComponent() {
               onChange={setActiveKey}
               className="mt-77px max-lg:mt-22px"
               defaultActiveKey="1"
+              tabPosition="top"
               items={[
                 { label: t(documentType[0]), key: '1', children: tabOfDocument(0) },
                 { label: t(documentType[1]), key: '2', children: tabOfDocument(1) },

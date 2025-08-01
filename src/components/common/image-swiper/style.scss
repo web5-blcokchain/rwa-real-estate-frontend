@@ -44,7 +44,7 @@ body {
 
 .swiper-pagination {
   --uno: mt-4;
-  
+
   height: 20%;
   box-sizing: border-box;
   padding: 10px 0;
@@ -55,7 +55,7 @@ body {
     height: 100%;
     opacity: 0.4;
   }
-  
+
   .swiper-slide-thumb-active {
     opacity: 1;
   }
@@ -72,21 +72,36 @@ body {
 
 // 鼠标悬停时显示导航按钮
 .swiper-content {
+
   >.swiper-button-next,
   >.swiper-button-prev {
     opacity: 0;
     transition: opacity 0.3s ease;
     pointer-events: auto; // 确保按钮可以接收点击事件
+    background: rgba(255, 255, 255, 0.5);
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+
+    &::after {
+      font-size: 24px !important;
+      font-weight: 700;
+      opacity: .7;
+
+    }
   }
-  
+
   &:hover {
+
     .swiper-button-next,
     .swiper-button-prev {
       opacity: 1;
     }
   }
 }
-.swiper-viewer{
+
+.swiper-viewer {
+
   .swiper-button-next,
   .swiper-button-prev {
     display: none;

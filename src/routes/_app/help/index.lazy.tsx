@@ -24,7 +24,7 @@ function RouteComponent() {
   ]
 
   return (
-    <div className="px-120px max-lg:px-20px max-xl:px-60px">
+    <div className="header-padding">
       <div className="mt-111px fccc max-lg:mt-24px max-xl:mt-60px">
         <div className="mb-6 text-40px font-bold max-lg:mb-2 max-xl:mb-4 max-lg:text-24px max-xl:text-32px">{t('help-content.title')}</div>
         <Input className="help-input h-52px bg-white text-5 max-lg:h-32px max-xl:h-44px max-lg:text-2 max-xl:text-3 !text-#B5B5B5" size="large" placeholder={t('help-content.placeholder')} prefix={<div className="i-bitcoin-icons:search-filled bg-#B5B5B5" />} />

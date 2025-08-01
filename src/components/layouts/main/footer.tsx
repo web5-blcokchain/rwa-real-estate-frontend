@@ -4,14 +4,14 @@ import { Link } from '@tanstack/react-router'
 export default function MainFooter() {
   const { t } = useTranslation()
   return (
-    <footer className="mt-32 bg-[#1e2024] px-8 py-14 max-lg:mt-6 max-lg:py-7">
+    <footer className="header-padding mt-32 bg-[#1e2024] py-14 max-lg:mt-6 max-lg:py-7">
       <div className="flex items-center gap-y-12 md:grid-cols-4 max-md:flex-col">
         <div className="flex items-center gap-11 pr-132px max-md:w-full max-md:pr-0 max-xl:pr-82px">
-          <img className="w-171px max-lg:w-81px max-xl:w-121px" src={logo} alt="" />
-          <div className="mt-4 fyc gap-2 text-text">
-            <div className="i-bxl-telegram size-12 max-lg:size-6 max-xl:size-8"></div>
-            <div className="i-ri-linkedin-fill size-12 max-lg:size-6 max-xl:size-8"></div>
-            <div className="i-mdi-twitter size-12 max-lg:size-6 max-xl:size-8"></div>
+          <img className="h-18 max-md:h-16" src={logo} alt="" />
+          <div className="mt-4 fyc gap-4 text-text max-lg:gap-2">
+            <div className="i-bxl-telegram size-10 max-lg:size-6 max-xl:size-8"></div>
+            <div className="i-ri-linkedin-fill size-10 max-lg:size-6 max-xl:size-8"></div>
+            <div className="i-mdi-twitter size-10 max-lg:size-6 max-xl:size-8"></div>
           </div>
         </div>
         <div className="grid grid-cols-3 flex-1 [&_li]:w-fit max-md:w-full [&_li]:cursor-pointer [&_li:hover]:text-[#e7bb41]">

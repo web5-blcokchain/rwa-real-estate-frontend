@@ -30,7 +30,7 @@ function RouteComponent() {
   }
 
   return (
-    <div className="px-107px max-md:p-8">
+    <div className="header-padding max-md:p-8">
       <div className="text-8 font-medium">
         {t('properties.title')}
       </div>

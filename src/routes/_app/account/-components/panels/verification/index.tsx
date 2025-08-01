@@ -79,8 +79,8 @@ function SelectVerification({ setCurrentVisible }: VerificationPanelProps) {
 
   return (
     <div className="fccc gap-2">
-      <div className="text-8 font-medium">{t('create.verification.title')}</div>
-      <div className="text-4 text-[#898989]">{t('create.verification.subTitle')}</div>
+      <div className="text-center text-8 font-medium max-md:text-2xl">{t('create.verification.title')}</div>
+      <div className="text-center text-4 text-[#898989] max-md:text-sm">{t('create.verification.subTitle')}</div>
 
       <div className="mt-10 max-w-xl w-full space-y-6">
         {

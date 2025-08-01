@@ -27,7 +27,13 @@ export const RentalIncomeAnalysisCard: FC<{
   })
 
   return (
-    <div className={cn('h-320px max-lg:h-280px', className)}>
+    <div
+      className={cn('h-320px max-lg:h-280px', className)}
+      style={{
+        '--recharts-bar-selected-fill': 'transparent',
+        '--recharts-bar-selected-stroke': 'transparent'
+      } as React.CSSProperties}
+    >
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           data={BarData}
@@ -40,8 +46,13 @@ export const RentalIncomeAnalysisCard: FC<{
             contentStyle={{ backgroundColor: '#333', border: 'none' }}
             labelStyle={{ color: '#fff' }}
             itemStyle={{ color: '#fff' }}
+            cursor={{ fill: 'transparent' }}
           />
-          <Bar dataKey="value" fill="#f0b90b" />
+          <Bar
+            dataKey="value"
+            fill="#f0b90b"
+            style={{ cursor: 'default' }}
+          />
         </BarChart>
       </ResponsiveContainer>
     </div>

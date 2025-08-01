@@ -108,36 +108,38 @@ function RouteComponent() {
   return (
     <Layout className="aboutMe max-lg:w-full max-lg:flex max-lg:!flex-col">
       <Sider className="sider w-fit bg-[#191a1f] max-lg:!max-w-full max-lg:!w-full" width={256}>
-        <div className="flex justify-start px-4 pb-6 pt-34px">
-          <div className="img-wrap size-16 shrink-0">
-            {userData?.avatar
-              ? (
-                  <IImage
-                    src={joinImagePath(userData?.avatar)}
-                    alt="avatar"
-                    className="size-full shrink-0 bg-[#797b80]"
-                  />
-                )
-              : (
-                  <div className="size-full rounded-full bg-#252932 p-2">
-                    <div className="i-material-symbols-person h-full w-full text-[#9e9e9e]"></div>
-                  </div>
-                )}
+        <div>
+          <div className="flex justify-start px-4 pb-6 pt-34px">
+            <div className="img-wrap size-16 shrink-0">
+              {userData?.avatar
+                ? (
+                    <IImage
+                      src={joinImagePath(userData?.avatar)}
+                      alt="avatar"
+                      className="size-full shrink-0 bg-[#797b80]"
+                    />
+                  )
+                : (
+                    <div className="size-full rounded-full bg-#252932 p-2">
+                      <div className="i-material-symbols-person h-full w-full text-[#9e9e9e]"></div>
+                    </div>
+                  )}
+            </div>
+            <div className="justify-space-between ml-3 mt-1 flex flex-col">
+              <div className="text-[#b5b5b5]">{t('aboutMe.welcome')}</div>
+              <div className="mt-2 text-4 font-bold">{shortAddress(_get(userData, 'wallet_address', ''))}</div>
+            </div>
           </div>
-          <div className="justify-space-between ml-3 mt-1 flex flex-col">
-            <div className="text-[#b5b5b5]">{t('aboutMe.welcome')}</div>
-            <div className="mt-2 text-4 font-bold">{shortAddress(_get(userData, 'wallet_address', ''))}</div>
-          </div>
+          <Menu
+            theme="dark"
+            defaultSelectedKeys={[selectedTab]}
+            selectedKeys={[selectedTab]}
+            mode="inline"
+            items={items}
+            className="bg-[#191a1f]"
+            onClick={handleMenuClick}
+          />
         </div>
-        <Menu
-          theme="dark"
-          defaultSelectedKeys={[selectedTab]}
-          selectedKeys={[selectedTab]}
-          mode="inline"
-          items={items}
-          className="bg-[#191a1f]"
-          onClick={handleMenuClick}
-        />
       </Sider>
 
       <Layout className="page-layout-wrap bg-[#191a1f] max-lg:!w-full">

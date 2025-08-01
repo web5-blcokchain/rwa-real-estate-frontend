@@ -29,7 +29,7 @@ const INotice: FC<Props> = ({
       </div>
 
       <div className={cn(
-        'text-[#d2d2d2]',
+        'text-[#d2d2d2] max-md:text-sm',
         textClass
       )}
       >

@@ -140,8 +140,8 @@ export default function IndividualVerification({ setCurrentVisible }: { setCurre
         <div className="i-material-symbols:arrow-back-rounded size-7 bg-white"></div>
         <div>返回</div>
       </div>
-      <div className="max-w-md text-center text-8 font-medium">{t('create.verification.personal.title')}</div>
-      <div className="max-w-md text-center text-4 text-[#898989]">{t('create.verification.personal.subTitle')}</div>
+      <div className="max-w-md text-center text-8 font-medium max-md:mt-3 max-md:text-2xl">{t('create.verification.personal.title')}</div>
+      <div className="max-w-md text-center text-4 text-[#898989] max-md:text-sm">{t('create.verification.personal.subTitle')}</div>
 
       <div className="mt-8 max-w-lg w-full space-y-6">
         <UploadCard
@@ -176,9 +176,9 @@ export default function IndividualVerification({ setCurrentVisible }: { setCurre
               }}
             >
               <Button type="primary" size="large" className="w-full">
-                <div className="fyc gap-2">
+                <div className="fyc gap-2 overflow-hidden">
                   <span className="i-material-symbols-upload-rounded bg-black text-5 max-lg:text-sm"></span>
-                  <span className="text-black max-lg:text-sm">{t('create.upload_id_card_front', { type: t(typeText[isTypeValue as keyof typeof typeText]) })}</span>
+                  <span className="flex-1 truncate text-black max-lg:text-sm max-md:text-12px">{t('create.upload_id_card_front', { type: t(typeText[isTypeValue as keyof typeof typeText]) })}</span>
                 </div>
               </Button>
             </Upload>
@@ -190,9 +190,9 @@ export default function IndividualVerification({ setCurrentVisible }: { setCurre
               }}
             >
               <Button type="primary" size="large" className="w-full">
-                <div className="fyc gap-2">
+                <div className="fyc gap-2 overflow-hidden">
                   <span className="i-material-symbols-upload-rounded bg-black text-5 max-lg:text-sm"></span>
-                  <span className="text-black max-lg:text-sm">{t('create.upload_id_card_back', { type: t(typeText[isTypeValue as keyof typeof typeText]) })}</span>
+                  <span className="flex-1 truncate text-black max-lg:text-sm max-md:text-12px">{t('create.upload_id_card_back', { type: t(typeText[isTypeValue as keyof typeof typeText]) })}</span>
                 </div>
               </Button>
             </Upload>
@@ -232,7 +232,7 @@ export default function IndividualVerification({ setCurrentVisible }: { setCurre
         <div className="fec">
           <Button
             size="large"
-            className={cn('bg-transparent! !text-black !bg-#e7bb41')}
+            className={cn('max-md:text-sm !text-black !bg-#e7bb41')}
             loading={isPending || reloadCreatePending}
             onClick={() => {
               if (verifyUpload()) {

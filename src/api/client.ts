@@ -1,4 +1,4 @@
-import { TOKEN_KEY, TOKEN_TYPE_KEY } from '@/constants/user'
+import { TOKEN_KEY, TOKEN_LANG_KEY, TOKEN_TYPE_KEY } from '@/constants/user'
 import { Env } from '@/lib/global'
 import axios from 'axios'
 
@@ -15,10 +15,11 @@ axios.interceptors.request.use(
   (config: any) => {
     const token = localStorage.getItem(TOKEN_KEY)
     const type = localStorage.getItem(TOKEN_TYPE_KEY)
-
+    const lang = localStorage.getItem(TOKEN_LANG_KEY) || 'en'
     if (token) {
       config.headers.Authorization = token
       config.headers.type = Number.parseInt(type!)
+      config.headers['think-lang'] = lang!
     }
 
     return config

@@ -103,7 +103,7 @@ function RouteComponent() {
   }, [assetDetail])
 
   return (
-    <div className="px-12 space-y-8 max-lg:px-4">
+    <div className="header-padding space-y-8">
       <Waiting
         for={!isLoading}
         className="h-32 fcc"
@@ -158,12 +158,12 @@ function RouteComponent() {
               </div>
 
               <div className="my-4 flex gap-2 overflow-hidden max-lg:flex-col">
-                <div className="w-fit truncate rounded-6px bg-#848E9C px-2.5 text-18px max-lg:max-w-full">
+                <div className="w-fit truncate rounded-6px bg-#848E9C px-2.5 text-18px max-lg:max-w-full max-md:text-16px">
                   {t('properties.detail.property_type')}
                   :
                   {assetDetail?.property_type || ''}
                 </div>
-                <div className="w-fit truncate rounded-6px bg-#848E9C px-2.5 text-18px max-lg:max-w-full">
+                <div className="w-fit truncate rounded-6px bg-#848E9C px-2.5 text-18px max-lg:max-w-full max-md:text-16px">
                   {t('properties.detail.bedrooms')}
                   :
                   {assetDetail?.bedrooms || ''}
@@ -185,7 +185,7 @@ function RouteComponent() {
             </div>
             <div className="absolute bottom-6 right-0 z-10 max-w-50% rounded-lg bg-#F0B90B px-6 py-18px text-black max-lg:relative max-lg:max-w-full space-y-2">
               <div>
-                <div className="text-4.5 font-bold">{t('properties.detail.return')}</div>
+                <div className="text-4.5 font-bold max-md:text-16px">{t('properties.detail.return')}</div>
                 <div className="text-10 font-bold max-lg:text-7.5">
                   {assetDetail?.expected_annual_return}
                   %
@@ -284,7 +284,7 @@ function RouteComponent() {
             footer={null}
           >
             <div className="">
-              <div className="mb-6 text-2xl font-bold">{t('properties.detail.lock_period_title')}</div>
+              <div className="mb-6 text-2xl">{t('properties.detail.lock_period_title')}</div>
               <div className="text-base">{t('properties.detail.lock_period_content')}</div>
               <ul className="mt-2 list-disc text-sm [&>li]:ml-4 space-y-1">
                 <li>{t('properties.detail.lock_period_content_1')}</li>

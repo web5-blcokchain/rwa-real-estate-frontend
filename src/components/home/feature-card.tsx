@@ -24,7 +24,7 @@ const FeatureCard: FC<
   return (
     <div
       className={cn(
-        'of-hidden rounded-5 bg-#1f2328 flex flex-col max-xl:rounded-3 max-lg:rounded-2',
+        'of-hidden flex flex-col rounded-5 bg-#1f2328 flex flex-col max-xl:rounded-3 max-lg:rounded-2',
         className
       )}
       {...props}
@@ -42,7 +42,7 @@ const FeatureCard: FC<
           <div title={title} className="truncate text-7 leading-10 max-lg:text-3 max-xl:text-5 max-lg:leading-5 max-xl:leading-7">{title}</div>
           <div
             title={location}
-            className="line-clamp-2 mb-4 mt-2 text-6 text-[#b5b5b5] leading-7 max-lg:mb-1 max-lg:mt-1 max-xl:mb-2 max-xl:mt-1 max-lg:text-2 max-xl:text-4 max-lg:leading-4 max-xl:leading-5"
+            className="line-clamp-2 mb-4 mt-2 text-6 text-[#b5b5b5] leading-7 max-lg:mb-1 max-lg:mt-1 max-xl:mb-2 max-xl:mt-1 max-lg:text-2 max-xl:text-4 max-lg:leading-3.5 max-xl:leading-5"
           >
             {location}
           </div>

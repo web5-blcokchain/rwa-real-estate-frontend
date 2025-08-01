@@ -39,7 +39,7 @@ function RouteComponent() {
   }, [i18n.language])
 
   return (
-    <div className="news-tables px-102px max-lg:px-24px max-md:px-12px">
+    <div className="header-padding news-tables">
       <ConfigProvider
         theme={{
           // 1. 单独使用暗色算法
@@ -57,7 +57,7 @@ function RouteComponent() {
           activeKey={activeKey}
           key={tabsKey}
           onChange={setActiveKey}
-          className="mt-77px max-lg:mt-0px"
+          className="mt-8 max-lg:mt-0px"
           defaultActiveKey="1"
           items={[
             { label: t(documentType[0]), key: '1', children: tabOfDocument(0) },

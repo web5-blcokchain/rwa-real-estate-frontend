@@ -1,5 +1,6 @@
 import type { RegisterParams, UserResponse } from '@/api/apiMyInfoApi'
 import type { StateCreator } from 'zustand'
+import { TOKEN_LANG_KEY } from '@/constants/user'
 import { UserCode } from '@/enums/user'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
@@ -30,7 +31,7 @@ const store: StateCreator<StoreState, [], [['zustand/persist', Partial<StoreStat
       set({ code })
     },
     setLanguage: (language: string) => {
-      localStorage.setItem('language', language)
+      localStorage.setItem(TOKEN_LANG_KEY, language)
       set({ language })
     },
     setUserData: (obj: Partial<UserResponse>) => {

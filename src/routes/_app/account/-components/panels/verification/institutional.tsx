@@ -116,8 +116,8 @@ export default function InstitutionalVerification({ setCurrentVisible }: { setCu
         <div className="i-material-symbols:arrow-back-rounded size-7 bg-white"></div>
         <div>返回</div>
       </div>
-      <div className="max-w-md text-center text-8 font-medium">{t('create.verification.business.title')}</div>
-      <div className="max-w-md text-center text-4 text-[#898989]">{t('create.verification.business.subTitle')}</div>
+      <div className="max-w-md text-center text-8 font-medium max-md:mt-3 max-md:text-2xl">{t('create.verification.business.title')}</div>
+      <div className="max-w-md text-center text-4 text-[#898989] max-md:text-sm">{t('create.verification.business.subTitle')}</div>
 
       <div className="mt-8 max-w-lg w-full space-y-6">
         <UploadCard
@@ -179,7 +179,7 @@ export default function InstitutionalVerification({ setCurrentVisible }: { setCu
         <div className="fec">
           <Button
             size="large"
-            className="!bg-#e7bb41 !text-black"
+            className="!bg-#e7bb41 max-md:text-sm !text-black"
             loading={isPending || reloadCreatePending}
             onClick={() => {
               if (verifyUpload()) {

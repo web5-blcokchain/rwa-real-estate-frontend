@@ -49,7 +49,7 @@ function RouteComponent() {
   }
 
   return (
-    <div className="p-8 max-lg:p-4">
+    <div className="header-padding py-8 max-lg:py-4">
       <div>
         <Tabs
           activeKey={orderType}

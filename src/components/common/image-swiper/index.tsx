@@ -28,8 +28,8 @@ export const ImageSwiper: FC<{
     <div
       className={cn(className, 'swiper-content')}
       style={{
-        '--swiper-navigation-color': '#e7bb41',
-        '--swiper-pagination-color': '#e7bb41',
+        '--swiper-navigation-color': 'black',
+        '--swiper-pagination-color': 'black',
         '--swiper-navigation-size': '36px'
       } as Record<string, string>}
     >

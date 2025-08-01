@@ -37,10 +37,10 @@ export default function MainHeader() {
   }, [wallets])
 
   return (
-    <header className="sticky left-0 top-0 z-10 z-99 fbc gap-3 bg-background px-107px py-6px text-text max-md:px-8px max-md:py-1">
+    <header className="header-padding sticky left-0 top-0 z-10 z-99 fbc gap-3 bg-background py-6px text-text max-md:py-1">
       <div className="fyc gap-8">
         <div className="text-5 text-primary">
-          <Link to="/home"><img src={logo} className="h-18 transform max-md:h-10 -translate-y-6%" /></Link>
+          <Link to="/home"><img src={logo} className="h-18 transform max-md:h-14 -translate-y-6%" /></Link>
         </div>
         <NavMenu className="fyc gap-8 lt-md:hidden" />
       </div>
