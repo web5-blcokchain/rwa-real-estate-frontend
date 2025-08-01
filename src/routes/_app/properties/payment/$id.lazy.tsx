@@ -125,6 +125,14 @@ function RouteComponent() {
       const payUSDCAmount = ethers.parseUnits(requiredUsdtAmount, usdtDecimals)
       const usdtBalance = await usdtContract.balanceOf(signerAddress)
       // TODO 使用合约获取价格,计算代币与USDC比例兑换之后的余额，之后进行判断
+      if (Number(usdcPrice) <= 0) {
+        toast.error(t('payment.errors.get_token_price_failed'))
+        return
+      }
+      if (Number(requiredUsdtAmount) <= 0) {
+        toast.error(t('payment.errors.token_price_must_be_greater_than_0'))
+        return
+      }
       if (usdtBalance < payUSDCAmount) {
         toast.error(t('payment.errors.insufficient_eth'))
         return
@@ -168,7 +176,7 @@ function RouteComponent() {
           )
         const receipt = await tx.wait()
         toast.success(t('payment.success.tx_sent'))
-        const hash = receipt.hash
+        const hash = receipt.hash as string
 
         // 后端同步
         mutateAsync(hash)
@@ -372,7 +380,7 @@ function RouteComponent() {
               className="w-48 disabled:bg-gray-2 text-black!"
               onClick={payment}
               loading={btnLoading || isPending}
-              disabled={btnLoading || isPending}
+              disabled={btnLoading || isPending || tokens <= 0}
             >
               {t('properties.payment.confirm_payment')}
             </Button>

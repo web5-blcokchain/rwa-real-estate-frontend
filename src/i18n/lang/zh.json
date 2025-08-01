@@ -78,7 +78,9 @@
       "please_wait_for_kyc": "请等待KYC审核通过",
       "please_use_bound_wallet": "请使用绑定的钱包进行支付",
       "token_max_pay": "代币数量不能超过库存 (最大: {{max}})",
-      "token_sold_out": "当前代币已售罄"
+      "token_sold_out": "当前代币已售罄",
+      "get_token_price_failed": "获取代币价格失败",
+      "token_price_must_be_greater_than_0": "支付金额必须大于0"
     },
     "info": {
       "eth_required": "交易需要发送ETH",
@@ -758,7 +760,7 @@
     "status": "状态",
     "sale": "已到账",
     "rent": "处理中",
-    "unclaimed": "未领取",
+    "unclaimed": "未发放",
     "sold": "失败",
     "id": "房产ID",
     "name": "RWA名称",

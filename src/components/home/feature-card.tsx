@@ -39,8 +39,11 @@ const FeatureCard: FC<
       </div>
       <div className="h-full flex flex-1 flex-col justify-between px-5 pb-6 pt-5 max-lg:px-2 max-md:px-6px max-xl:px-3 max-lg:pb-2 max-lg:pt-2 max-md:pb-2 max-md:pt-2 max-xl:pb-4 max-xl:pt-3">
         <div>
-          <div className="truncate text-7 leading-10 max-lg:text-3 max-xl:text-5 max-lg:leading-5 max-xl:leading-7">{title}</div>
-          <div className="pb-4 pt-2 text-6 text-[#b5b5b5] leading-7 max-lg:pb-1 max-lg:pt-1 max-xl:pb-2 max-xl:pt-1 max-lg:text-2 max-xl:text-4 max-lg:leading-4 max-xl:leading-5">
+          <div title={title} className="truncate text-7 leading-10 max-lg:text-3 max-xl:text-5 max-lg:leading-5 max-xl:leading-7">{title}</div>
+          <div
+            title={location}
+            className="line-clamp-2 mb-4 mt-2 text-6 text-[#b5b5b5] leading-7 max-lg:mb-1 max-lg:mt-1 max-xl:mb-2 max-xl:mt-1 max-lg:text-2 max-xl:text-4 max-lg:leading-4 max-xl:leading-5"
+          >
             {location}
           </div>
           <div className="fbc">

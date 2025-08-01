@@ -101,8 +101,8 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
       </div>
 
       <div className="px-6 py-8 space-y-2">
-        <div className="fbc text-5">
-          <div className="text-4 font-medium">{name}</div>
+        <div className="fbc gap-2 text-5">
+          <div title={name} className="flex-1 truncate text-4 font-medium">{name}</div>
 
           <div className="rounded bg-[#8465bb] bg-opacity-50 px-2 py-1 text-3 text-purple">
             {property_type}

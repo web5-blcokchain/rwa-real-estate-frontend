@@ -76,7 +76,9 @@
       "token_approve_failed": "Token authorization failed",
       "insufficient_token": "Insufficient token balance",
       "please_wait_for_kyc": "Please wait for KYC audit to pass",
-      "please_use_bound_wallet": "Please use the bound wallet to pay"
+      "please_use_bound_wallet": "Please use the bound wallet to pay",
+      "get_token_price_failed": "Failed to get token price",
+      "token_price_must_be_greater_than_0": "Payment amount must be greater than 0"
     },
     "info": {
       "eth_required": "Transaction requires sending ETH",
@@ -715,7 +717,7 @@
     "personal": "Personal",
     "status": "Status",
     "sale": "Sold",
-    "unclaimed": "Unclaimed",
+    "unclaimed": "Unpaid",
     "rent": "Processing",
     "sold": "Failed",
     "id": "Property ID",

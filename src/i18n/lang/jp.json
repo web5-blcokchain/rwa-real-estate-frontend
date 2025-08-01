@@ -76,7 +76,9 @@
       "token_approve_failed": "トークンの承認に失敗しました",
       "insufficient_token": "トークン残高が不足しています",
       "please_wait_for_kyc": "KYC審査が完了するまでお待ちください",
-      "please_use_bound_wallet": "バインドされたウォレットを使用して支払いしてください"
+      "please_use_bound_wallet": "バインドされたウォレットを使用して支払いしてください",
+      "get_token_price_failed": "トークン価格の取得に失敗しました",
+      "token_price_must_be_greater_than_0": "支払い金額は0より大きくなければなりません"
     },
     "info": {
       "eth_required": "トランザクションにはETHの送信が必要です",
@@ -712,7 +714,7 @@
     "status": "ステータス",
     "sale": "到着済み",
     "rent": "処理中",
-    "unclaimed": "未引き出し",
+    "unclaimed": "未発行",
     "sold": "失敗",
     "id": "不動産ID",
     "name": "RWA名称",
