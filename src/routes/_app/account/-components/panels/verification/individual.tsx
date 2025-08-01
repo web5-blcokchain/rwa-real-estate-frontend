@@ -156,6 +156,7 @@ export default function IndividualVerification({ setCurrentVisible }: { setCurre
           beforeUpload={(file, index) => {
             beforeUpload(file, index === 0 ? 'id_card_front_url' : 'id_card_back_url')
           }}
+          accept="image/png,image/jpg,application/pdf"
           other={(
             <Select className="w-200px" defaultValue={isType[0].value} onChange={setIsTypeValue}>
               {isType.map(item => (
@@ -205,6 +206,7 @@ export default function IndividualVerification({ setCurrentVisible }: { setCurre
           title={t('create.verification.personal.proof_title')}
           subTitle={t('create.verification.personal.proof_subTitle')}
           icon={new URL('@/assets/icons/document.svg', import.meta.url).href}
+          accept="image/png,image/jpg,application/pdf"
           beforeUpload={(file) => {
             beforeUpload(file, 'address_url')
           }}
@@ -218,6 +220,7 @@ export default function IndividualVerification({ setCurrentVisible }: { setCurre
           title={t('create.verification.personal.facial_title')}
           subTitle={t('create.verification.personal.facial_subTitle')}
           icon={new URL('@/assets/icons/user-circular.svg', import.meta.url).href}
+          accept="image/png,image/jpg,application/pdf"
           beforeUpload={(file) => {
             beforeUpload(file, 'photo_url')
           }}

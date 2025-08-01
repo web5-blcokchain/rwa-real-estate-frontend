@@ -40,8 +40,10 @@ axios.interceptors.response.use(async (res: ResponseData<any>) => {
   if (code === 401 && fullUrl.includes('/api/info/userInfo')) {
     return res.data
   }
+  const lang = localStorage.getItem(TOKEN_LANG_KEY) || 'en'
+  const defaultMessage = lang === 'en' ? 'Response error' : lang === 'ja' ? 'エラーが発生しました' : 'Response error'
   if (code !== 1 && code !== 401) {
-    const message = _get(res.data, 'msg', 'Response error')
+    const message = _get(res.data, 'msg', defaultMessage)
     if (message.includes('Token is expired') || message.includes('Expired token')) { // TODO
       return
     }

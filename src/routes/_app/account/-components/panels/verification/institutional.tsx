@@ -130,6 +130,7 @@ export default function InstitutionalVerification({ setCurrentVisible }: { setCu
             beforeUpload(file, 'business_registration_document')
           }}
           src={joinImagePath(businessRegistrationUrl)}
+          accept="image/png,image/jpg,application/pdf"
         >
         </UploadCard>
 
@@ -143,6 +144,7 @@ export default function InstitutionalVerification({ setCurrentVisible }: { setCu
             beforeUpload(file, 'shareholder_structure_url')
           }}
           src={joinImagePath(shareholderStructureUrl)}
+          accept="image/png,image/jpg,application/pdf"
         >
         </UploadCard>
 
@@ -156,6 +158,7 @@ export default function InstitutionalVerification({ setCurrentVisible }: { setCu
             beforeUpload(file, 'legal_representative_documents_url')
           }}
           src={joinImagePath(legalRepresentativeUrl)}
+          accept="image/png,image/jpg,application/pdf"
         >
         </UploadCard>
 
@@ -169,6 +172,7 @@ export default function InstitutionalVerification({ setCurrentVisible }: { setCu
             beforeUpload(file, 'financial_documents_url')
           }}
           src={joinImagePath(financialDocumentsUrl)}
+          accept="image/png,image/jpg,application/pdf"
         >
         </UploadCard>
 

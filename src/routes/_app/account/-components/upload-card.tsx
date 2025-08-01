@@ -40,6 +40,7 @@ const UploadCard: FC<{
   number?: number
   className?: string
   width?: string
+  accept?: string
 }> = ({
   label,
   title,
@@ -53,7 +54,8 @@ const UploadCard: FC<{
   loading = false,
   number = 1,
   className = '',
-  width
+  width,
+  accept
 }) => {
   const fileType = useMemo(() => {
     // 判断url是图片还是文件
@@ -77,6 +79,7 @@ const UploadCard: FC<{
           {
             Array.from({ length: number }).map((_, index) => (
               <Upload
+                accept={accept}
                 style={{ width }}
                 key={index}
                 className={cn('UploadCard space-y-4', number > 1 && 'fyc')}
