@@ -309,7 +309,7 @@
   "properties": {
     "title": "US Real Estate Assets",
     "subTitle": "Premium New York real estate investment opportunities through blockchain technology",
-    "search": "Search by New York location, property type",
+    "search": "Search by house location and property type",
     "detail": {
       "property_type": "Property Type",
       "bedrooms": "Bedrooms",

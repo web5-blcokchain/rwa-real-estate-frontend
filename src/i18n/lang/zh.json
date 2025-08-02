@@ -311,7 +311,7 @@
   "properties": {
     "title": "美国房地产资产",
     "subTitle": "利用区块链技术投资纽约优质房地产机会",
-    "search": "按纽约地点和物业类型搜索",
+    "search": "按房屋地点和物业类型搜索",
     "detail": {
       "property_type": "物业类型",
       "bedrooms": "卧室",

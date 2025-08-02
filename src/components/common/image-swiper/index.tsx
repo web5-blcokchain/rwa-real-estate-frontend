@@ -74,7 +74,7 @@ export const ImageSwiper: FC<{
 
         {
           list.map(url => (
-            <SwiperSlide key={url}>
+            <SwiperSlide key={url + Date.now() + (Math.random())}>
               <img src={url} className="w-full max-h-128!" />
             </SwiperSlide>
           ))

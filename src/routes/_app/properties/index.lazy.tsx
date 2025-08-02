@@ -1,9 +1,9 @@
 import apiBasic from '@/api/basicApi'
 import { RealEstateCard } from '@/components/common/real-estate-card'
 import { joinImagesPath } from '@/utils/url'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
-import { Button } from 'antd'
+import { Button, Spin } from 'antd'
 import { useState } from 'react'
 
 export const Route = createLazyFileRoute('/_app/properties/')({
@@ -16,17 +16,38 @@ function RouteComponent() {
   const [keyword, setKeyword] = useState('')
   const [page, setPage] = useState(1)
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['properties', page, keyword],
-    queryFn: async () => {
-      const res = await apiBasic.getDataList({ page, keyword })
-      return res.data
-    }
-  })
+  async function searchDataList() {
+    const res = await apiBasic.getDataList({ page, keyword })
+    return res.data
+  }
 
+  const { data, isLoading, refetch, isRefetching } = useQuery({
+    queryKey: ['properties', page],
+    queryFn: async () => {
+      return searchDataList()
+    }
+    // enabled: false,
+  })
+  const [searchTime, setSearchTime] = useState(0)
+  const [timer, setTimer] = useState<NodeJS.Timeout | null>(null)
+
+  const queryClient = useQueryClient()
   const handleSearch = (value: string) => {
     setKeyword(value)
     setPage(1)
+    // 防抖，2秒空闲后执行
+    const clockTimer = 500
+    if (Date.now() - searchTime > clockTimer) {
+      if (timer) {
+        clearTimeout(timer)
+      }
+      setTimer(setTimeout(() => {
+        queryClient.cancelQueries({ queryKey: ['properties', page] })
+        refetch()
+
+        setSearchTime(Date.now())
+      }, clockTimer))
+    }
   }
 
   return (
@@ -57,31 +78,41 @@ function RouteComponent() {
         className="h-32 fcc"
         iconClass="size-8"
       >
-        <div className="grid grid-cols-3 mt-8 gap-8 max-lg:grid-cols-2 max-md:grid-cols-1">
-          {data && Array.isArray(data.list) && data.list.map((item: Record<string, any>) => (
-            <RealEstateCard
-              key={item.id}
-              houseId={item.id}
-              collect={item.is_collect}
-              pictures={joinImagesPath(item.image_urls)}
-              title={item.name}
-              location={item.location}
-              area={item.area}
-              bedrooms={item.bedrooms}
-              house_life={item.house_life}
-              price={item.price}
-              tokenPrice={item.tokenPrice}
-              property_type={item.property_type}
-              expected_annual_return={item.expected_annual_return}
-              annual_return_max={item.annual_return_max}
-              annual_return_min={item.annual_return_min}
-              className="clickable-99"
-              onClick={() => {
-                navigate({ to: '/properties/detail/$id', params: { id: item.id } })
-              }}
-            />
-          ))}
-        </div>
+        <Spin spinning={!isLoading && isRefetching}>
+          { data && data.list && data.list.length > 0
+            ? (
+                <div className="grid grid-cols-3 mt-8 gap-8 max-lg:grid-cols-2 max-md:grid-cols-1">
+                  {data && Array.isArray(data.list) && data.list.map((item: Record<string, any>) => (
+                    <RealEstateCard
+                      key={item.id}
+                      houseId={item.id}
+                      collect={item.is_collect}
+                      pictures={joinImagesPath(item.image_urls)}
+                      title={item.name}
+                      location={item.location}
+                      area={item.area}
+                      bedrooms={item.bedrooms}
+                      house_life={item.house_life}
+                      price={item.price}
+                      tokenPrice={item.tokenPrice}
+                      property_type={item.property_type}
+                      expected_annual_return={item.expected_annual_return}
+                      annual_return_max={item.annual_return_max}
+                      annual_return_min={item.annual_return_min}
+                      className="clickable-99"
+                      onClick={() => {
+                        navigate({ to: '/properties/detail/$id', params: { id: item.id } })
+                      }}
+                    />
+                  ))}
+                </div>
+              )
+            : (
+                <div className="py-12 text-center text-4 text-[#898989]">
+                  {t('common.empty')}
+                </div>
+              )}
+        </Spin>
       </Waiting>
 
       {!isLoading && data?.list && data.list.length > 20 && (
