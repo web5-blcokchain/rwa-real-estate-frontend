@@ -411,13 +411,20 @@ const UserMenu: FC = () => {
   ]
   const visibleItems = items?.filter(item => (item as any)?.show !== 'hidden')
   // const connectWalletAddress = wallets.find(wallet => wallet.walletClientType !== 'privy')
+  const { user } = usePrivy()
+  const userEmail = useMemo(() => {
+    const email = (userData.email || user?.email?.address || user?.google?.email) as string
+    if (!email)
+      return ''
+    else return `${email?.slice(0, 4)}...${email?.slice(-4)}`
+  }, [user, userData])
 
   return (
     <Dropdown menu={{ items: visibleItems }} placement="bottomRight">
       <div className="fyc gap-1 clickable">
         <div className="i-material-symbols-account-circle-outline size-5 bg-white"></div>
         <div className="text-4 text-white" title={userData.email}>
-          { `${(userData.email || '')?.slice(0, 4)}...${(userData.email || '')?.slice(-4)}` }
+          { userEmail }
         </div>
         <div className="i-ic-round-keyboard-arrow-down size-5 bg-white"></div>
       </div>

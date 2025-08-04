@@ -1,6 +1,7 @@
 import { UserCode } from '@/enums/user'
 import { useUserStore } from '@/stores/user'
 import { getToken } from '@/utils/user'
+import { usePrivy } from '@privy-io/react-auth'
 import { useLocation, useNavigate } from '@tanstack/react-router'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -17,6 +18,7 @@ export function useRouteGuard() {
   const { t } = useTranslation()
   const prevPathRef = useRef<string | null>(null)
   const token = getToken()
+  const { user } = usePrivy()
 
   useEffect(() => {
     // 白名单路径列表，支持字符串和正则
@@ -84,8 +86,9 @@ export function useRouteGuard() {
         })
       }
     }
+    const email = user?.email || user?.google?.email
     if (code === UserCode.NotExist) {
-      toast.error(t(userData.id ? 'header.error.user_not_found' : 'header.error.login_required'))
+      toast.error(t(userData.id || email ? 'header.error.user_not_found' : 'header.error.login_required'))
       navigate({
         to: userData.id ? '/account/create' : '/home'
       })

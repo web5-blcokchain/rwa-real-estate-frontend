@@ -11,7 +11,7 @@ export const PaymentMethod: FC<{
   walletState,
   className
 }) => {
-  const { ready, wallets } = useWallets()
+  const { wallets } = useWallets()
   const { userData, setUserData, getUserInfo } = useUserStore()
   const { t } = useTranslation()
 
@@ -69,7 +69,7 @@ export const PaymentMethod: FC<{
     )}
     >
       <Waiting
-        for={ready}
+        for={!!userData.id}
         className="fcc"
       >
         {
