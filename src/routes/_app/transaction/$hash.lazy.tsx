@@ -6,7 +6,7 @@ import { shortAddress } from '@/utils/wallet'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch } from '@tanstack/react-router'
 import { Button, Progress } from 'antd'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Web3 from 'web3'
 
@@ -34,7 +34,7 @@ function RouteComponent() {
 
   // 使用交易确认逻辑
   // 使用 ref 跟踪是否是首次查询
-  const isFirstCheck = useRef(true)
+  const [isFirstCheck, setIsFirstCheck] = useState(false)
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -69,7 +69,7 @@ function RouteComponent() {
           if (receipt.status) {
             console.log('Payment successful')
             // 只有非首次查询才显示 toast
-            if (!isFirstCheck.current) {
+            if (!isFirstCheck) {
               toast.success(t('payment.success.payment_success'))
             }
             setStatus('success')
@@ -80,7 +80,7 @@ function RouteComponent() {
           else {
             console.log('Transaction failed')
             // 只有非首次查询才显示 toast
-            if (!isFirstCheck.current) {
+            if (!isFirstCheck) {
               toast.error(t('payment.errors.tx_failed'))
             }
             setStatus('failed')
@@ -91,7 +91,7 @@ function RouteComponent() {
         else {
           console.log('Transaction not yet confirmed.')
           // 只有非首次查询才显示 toast
-          if (!isFirstCheck.current) {
+          if (!isFirstCheck) {
             toast.info(t('payment.info.tx_pending'))
           }
           // 增加进度但不到100%，表示处理中
@@ -99,8 +99,8 @@ function RouteComponent() {
         }
 
         // 首次检查完成后更新标志
-        if (isFirstCheck.current) {
-          isFirstCheck.current = false
+        if (isFirstCheck) {
+          setIsFirstCheck(true)
         }
       }
       catch (error) {
@@ -126,10 +126,10 @@ function RouteComponent() {
       return <Pending />
     }
     else if (status === 'success') {
-      return <Result />
+      return <Result tokenName={data?.property?.token_name || ''} />
     }
     else {
-      return <Error />
+      return <Error tokenName={data?.property?.token_name || ''} />
     }
   }
 
@@ -156,12 +156,12 @@ function RouteComponent() {
             <div className="fbc text-3.5">
               <div>{t('transaction.hash.smart_contract_address')}</div>
               <div className="fyc gap-2">
-                <div>{shortAddress(_get(data, 'token.smart_contract_address'))}</div>
+                <div>{shortAddress(data?.token?.smart_contract_address || '')}</div>
                 <div
                   className="i-mingcute-copy-2-fill bg-[#b5b5b5] clickable"
                   onClick={
                     () => copy(
-                      _get(data, 'token.smart_contract_address'),
+                      data?.token?.smart_contract_address || '',
                       t
                     )
                   }
@@ -173,12 +173,12 @@ function RouteComponent() {
             <div className="fbc text-3.5">
               <div>{t('transaction.hash.token_contract_address')}</div>
               <div className="fyc gap-2">
-                <div>{shortAddress(_get(data, 'token.token_contract_address'))}</div>
+                <div>{shortAddress(data?.token?.token_contract_address || '')}</div>
                 <div
                   className="i-mingcute-copy-2-fill bg-[#b5b5b5] clickable"
                   onClick={
                     () => copy(
-                      _get(data, 'token.token_contract_address'),
+                      data?.token?.token_contract_address || '',
                       t
                     )
                   }
@@ -189,7 +189,7 @@ function RouteComponent() {
 
             <div className="fbc text-3.5">
               <div>{t('transaction.hash.estimated_execution_time')}</div>
-              <div>{_get(data, 'token.estimated_execution_time')}</div>
+              <div>{data?.token?.estimated_execution_time}</div>
             </div>
           </div>
 
@@ -217,13 +217,13 @@ function RouteComponent() {
                 </span>
                 <span>{_get(data, 'property.registration_number')}</span>
               </li>
-              <li>
+              {/* <li>
                 <span>
                   {t('transaction.hash.annual_yield')}
                   :
                 </span>
                 <span>{_get(data, 'property.annual_yield')}</span>
-              </li>
+              </li> */}
               <li>{_get(data, 'property.audit')}</li>
             </ul>
           </div>
@@ -232,7 +232,7 @@ function RouteComponent() {
         <div className="rounded-xl bg-[#212328] p-6 space-y-4">
           <div className="fbc">
             <div className="font-medium">{t('transaction.hash.transaction_status')}</div>
-            <div className="text-[#898989]">{t('transaction.hash.estimated_token_arrival_time', { num: 25 })}</div>
+            <div className="text-[#898989]">{t('transaction.hash.estimated_token_arrival_time', { num: Number.parseInt(data?.transaction?.estimated_arrival_time || '25') })}</div>
           </div>
 
           <Progress
@@ -247,11 +247,11 @@ function RouteComponent() {
           <div className="fbc text-3.5">
             <div>{t('transaction.hash.transaction_hash')}</div>
             <div className="fyc gap-2">
-              <div>{shortAddress(_get(data, 'transaction.hash'))}</div>
+              <div>{shortAddress(data?.transaction?.hash || '')}</div>
               <div
                 className="i-mingcute-copy-2-fill bg-[#b5b5b5] clickable"
                 onClick={
-                  () => copy(_get(data, 'transaction.hash'), t)
+                  () => copy(data?.transaction?.hash || '', t)
                 }
               >
               </div>
@@ -293,7 +293,7 @@ function RouteComponent() {
   )
 }
 
-const Result: FC = () => {
+const Result: FC<{ tokenName: string }> = ({ tokenName }) => {
   const { t } = useTranslation()
   return (
     <>
@@ -305,13 +305,13 @@ const Result: FC = () => {
 
       <div className="rounded-xl bg-[#252932] p-4">
         <div className="text-3.5 text-[#b5b5b5]">{t('transaction.hash.real_estate_token')}</div>
-        <div className="text-4 font-medium">JPRE-0023</div>
+        <div className="text-4 font-medium">{tokenName}</div>
       </div>
     </>
   )
 }
 
-const Error: FC = () => {
+const Error: FC<{ tokenName: string }> = ({ tokenName }) => {
   const { t } = useTranslation()
   return (
     <>
@@ -323,7 +323,7 @@ const Error: FC = () => {
 
       <div className="rounded-xl bg-[#252932] p-4">
         <div className="text-3.5 text-[#b5b5b5]">{t('transaction.hash.real_estate_token')}</div>
-        <div className="text-4 font-medium">JPRE-0023</div>
+        <div className="text-4 font-medium">{tokenName}</div>
       </div>
     </>
   )
