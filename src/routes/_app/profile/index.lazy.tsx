@@ -2,6 +2,9 @@ import type { MenuProps } from 'antd'
 import { IImage } from '@/components/common/i-image'
 import Appeal from '@/components/profile/appeal'
 import { AssetsSummary } from '@/components/profile/assetsSummary'
+import DefaultWarning from '@/components/profile/defaultWarning'
+import WarningInfo from '@/components/profile/defaultWarning/info'
+import WarningRedemptionInfo from '@/components/profile/defaultWarning/redemption'
 import { DistributionRecord } from '@/components/profile/distributionRecord'
 import DividendStatistics from '@/components/profile/dividendStatistics'
 import { Earnings } from '@/components/profile/earnings'
@@ -12,6 +15,7 @@ import { MyAssets } from '@/components/profile/myAssets'
 import Overview from '@/components/profile/overview'
 import PropertyTokens from '@/components/profile/propertyTokens'
 import Recording from '@/components/profile/recording'
+import RedemptionList from '@/components/profile/redemptionList'
 import { TransactionStatus } from '@/components/profile/transaction-status'
 import { ProfileTab } from '@/enums/profile'
 import { useProfileStore } from '@/stores/profile'
@@ -63,47 +67,75 @@ function RouteComponent() {
     // getItem(`${t('aboutMe.menu_assets_summary')}`, ProfileTab.AssetsSummary),
     getItem(`${t('aboutMe.menu_distribution_record')}`, ProfileTab.DistributionRecord),
     getItem(`${t('aboutMe.menu_dividend_statistics')}`, ProfileTab.DividendStatistics),
-    getItem(`${t('aboutMe.menu_appeal')}`, ProfileTab.Appeal)
+    getItem(`${t('aboutMe.menu_appeal')}`, ProfileTab.Appeal),
+    getItem(`${t('aboutMe.menu_default_warning')}`, ProfileTab.DefaultWarning),
+    getItem(`${t('aboutMe.menu_redemption_list')}`, ProfileTab.RedemptionList)
   ]
 
   const handleMenuClick: MenuProps['onClick'] = (e) => {
     setSelectedTab(e.key as ProfileTab)
+    setSecondaryMenu(undefined)
   }
 
   useEffect(() => {
     // 这里可以添加一些逻辑，比如根据 selectedTab 获取数据
   }, [selectedTab])
 
+  const [secondaryMenu, setSecondaryMenu] = useState<ProfileTab>()
+  const [secondaryMenuProps, setSecondaryMenuProps] = useState<any>()
+
   const renderContent = () => {
-    switch (selectedTab) {
-      case ProfileTab.Overview:
-        return <Overview />
-      case ProfileTab.Edit:
-        return <ProfileEdit />
-      case ProfileTab.PropertyTokens:
-        return <PropertyTokens />
-      case ProfileTab.Earnings:
-        return <Earnings />
-      case ProfileTab.History:
-        return <History />
-      case ProfileTab.Recording:
-        return <Recording />
-      case ProfileTab.TransactionStatus:
-        return <TransactionStatus />
-      case ProfileTab.Assets:
-        return <MyAssets />
-      case ProfileTab.AssetsSummary:
-        return <AssetsSummary />
-      case ProfileTab.DistributionRecord:
-        return <DistributionRecord />
-      case ProfileTab.Message:
-        return <Message />
-      case ProfileTab.DividendStatistics:
-        return <DividendStatistics />
-      case ProfileTab.Appeal:
-        return <Appeal />
+    if (!secondaryMenu) {
+      switch (selectedTab) {
+        case ProfileTab.Overview:
+          return <Overview />
+        case ProfileTab.Edit:
+          return <ProfileEdit />
+        case ProfileTab.PropertyTokens:
+          return <PropertyTokens />
+        case ProfileTab.Earnings:
+          return <Earnings />
+        case ProfileTab.History:
+          return <History />
+        case ProfileTab.Recording:
+          return <Recording />
+        case ProfileTab.TransactionStatus:
+          return <TransactionStatus />
+        case ProfileTab.Assets:
+          return <MyAssets />
+        case ProfileTab.AssetsSummary:
+          return <AssetsSummary />
+        case ProfileTab.DistributionRecord:
+          return <DistributionRecord /> // 代币发放记录
+        case ProfileTab.Message:
+          return <Message /> // 消息中心
+        case ProfileTab.DividendStatistics:
+          return <DividendStatistics /> // 分红统计
+        case ProfileTab.Appeal:
+          return <Appeal /> // 申诉信息
+        case ProfileTab.DefaultWarning:
+          return <DefaultWarning setSecondaryMenu={setSecondaryMenu} setSecondaryMenuProps={setSecondaryMenuProps} /> // 违约警告
+        case ProfileTab.RedemptionList:
+          return <RedemptionList /> // 赎回列表
+      }
     }
+    else {
+      switch (secondaryMenu) {
+        case ProfileTab.WarningInfo:
+          return <WarningInfo secondaryMenuProps={secondaryMenuProps} /> // 违约警告详情
+        case ProfileTab.WarningRedemptionInfo:
+          return <WarningRedemptionInfo secondaryMenuProps={secondaryMenuProps} /> // 赎回详情
+      }
+    }
+    setTimeout(() => {
+      document.querySelector('.app-content')?.scrollTo(0, 0)
+      console.log(123)
+    }, 200)
   }
+
+  useEffect(() => {
+    document.querySelector('.app-content')?.scrollTo(0, 0)
+  }, [secondaryMenu, selectedTab])
 
   return (
     <Layout className="aboutMe max-lg:w-full max-lg:flex max-lg:!flex-col">

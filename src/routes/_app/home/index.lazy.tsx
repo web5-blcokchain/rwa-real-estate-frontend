@@ -96,19 +96,20 @@ function RouteComponent() {
   return (
     <div className="" style={{ '--conent-h': `${headerH || 80}px` } as any}>
       <div
-        className="home-content fxc flex-col pl-[118px] max-lg:py-9 max-lg:pl-[24px] max-md:pl-2 max-xl:pl-[60px] max-lg:!h-fit"
+        className="home-content fxc flex-col pl-[118px] max-lg:py-9 max-lg:pl-[24px] max-md:pl-4 max-xl:pl-[60px] max-lg:!h-fit"
       >
         <div
-          className={cn(i18n.language === 'en' ? 'text-[80px] leading-[92px]' : 'text-[100px] leading-[120px]', 'w-[700px]   max-lg:w-[500px] max-md:w-196px max-xl:w-[600px] max-lg:text-[48px] max-md:text-22px max-xl:text-[62px] max-lg:leading-[64px] max-md:leading-32px max-xl:leading-[90px]')}
+          className={cn('3xl:text-[100px] 3xl:leading-[113px]  text-[70px] leading-[90px]', `w-50% max-lg:text-[48px] max-md:text-22px max-xl:text-[62px] 
+            max-lg:leading-[64px] max-md:leading-32px max-xl:leading-[80px]`)}
         >
           {t('home.explanation.title')}
         </div>
 
         <div
-          className="mt-[97px] w-[560px] flex flex-col gap-[33px] max-lg:mt-[60px] max-md:mt-30px max-xl:mt-[80px] max-lg:w-[400px] max-md:w-[205px] max-xl:w-[460px] max-lg:gap-[28px] max-md:gap-22px max-xl:gap-[30px]"
+          className="mt-[97px] w-55% flex flex-col gap-[33px] max-lg:mt-[60px] max-md:mt-30px max-xl:mt-[80px] max-lg:gap-[28px] max-md:gap-22px max-xl:gap-[30px]"
         >
           <div
-            className="text-[30px] leading-[42px] max-lg:text-[20px] max-md:text-10px max-xl:text-[24px] max-lg:leading-[30px] max-md:leading-15px max-xl:leading-[36px]"
+            className="text-[28px] leading-[42px] 3xl:text-[36px] max-lg:text-[20px] max-md:text-10px xl:text-[24px] max-lg:leading-[30px] max-md:leading-15px max-xl:leading-[36px]"
           >
             {t('home.explanation.content')}
           </div>
@@ -166,18 +167,18 @@ function RouteComponent() {
 
       <div className="content-min-h home-explanation w-full fccc gap-11 pb-68px pl-125px pr-161px pt-93px text-center max-lg:gap-4 max-md:gap-4 max-xl:gap-7 max-lg:pb-24px max-lg:pl-12px max-lg:pr-12px max-lg:pt-32px max-md:pb-32px max-md:pl-14px max-md:pr-7 max-md:pt-12px max-xl:pb-40px max-xl:pl-40px max-xl:pr-40px max-xl:pt-60px !max-lg:min-h-auto">
         <div>
-          <div className="text-36px font-500 leading-10 max-lg:text-18px max-md:text-4 max-xl:text-28px max-lg:leading-6 max-md:leading-6 max-xl:leading-8">{t('home.investmentFeature.frictionless')}</div>
-          <div className="pt-14px text-22px font-500 leading-10 max-md:pt-0 max-lg:text-14px max-md:text-10px max-xl:text-18px max-lg:leading-5 max-md:leading-4 max-xl:leading-7">{t('home.investmentFeature.anyone')}</div>
+          <div className="text-36px font-500 leading-10 3xl:text-5xl max-lg:text-18px max-md:text-4 max-xl:text-28px max-lg:leading-6 max-md:leading-6 max-xl:leading-8">{t('home.investmentFeature.frictionless')}</div>
+          <div className="pt-14px text-22px font-500 leading-10 max-md:pt-0 3xl:text-26px max-lg:text-14px max-md:text-10px max-xl:text-18px max-lg:leading-5 max-md:leading-4 max-xl:leading-7">{t('home.investmentFeature.anyone')}</div>
         </div>
         <div className="w-full fyc justify-between">
           <div className="flex flex-col gap-11 max-lg:gap-3 max-md:gap-1 max-xl:gap-6">
             {coinExplanation.map((item, index) => (
               <div key={index} className="">
                 <div className="fyc gap-7px max-lg:gap-1px max-xl:gap-3px">
-                  <img className={cn('size-10 max-xl:size-8 max-lg:size-6 max-md:size-10px')} src={item.icon} />
-                  <div className="text-26px font-500 leading-10 max-lg:text-16px max-md:text-10px max-xl:text-20px max-lg:leading-5 max-md:leading-6 max-xl:leading-7">{t(item.title)}</div>
+                  <img className={cn('3xl:size-14 size-10 max-xl:size-8 max-lg:size-6 max-md:size-10px')} src={item.icon} />
+                  <div className="text-26px font-500 leading-10 3xl:text-3xl max-lg:text-16px max-md:text-10px max-xl:text-20px max-lg:leading-5 max-md:leading-6 max-xl:leading-7">{t(item.title)}</div>
                 </div>
-                <div className="mt-3 w-490px text-left text-20px text-#a7a9ad leading-7 max-md:mt-1 max-lg:w-180px max-xl:w-320px max-lg:text-12px max-md:text-8px max-xl:text-14px max-lg:leading-3 max-xl:leading-5">
+                <div className="mt-3 w-490px text-left text-20px text-#a7a9ad leading-7 max-md:mt-1 3xl:w-600px max-lg:w-180px max-xl:w-320px 3xl:text-26px max-lg:text-12px max-md:text-8px max-xl:text-14px 3xl:leading-32px max-lg:leading-3 max-xl:leading-5">
                   {t(item.content)}
                 </div>
               </div>

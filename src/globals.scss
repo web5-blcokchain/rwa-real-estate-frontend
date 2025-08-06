@@ -57,4 +57,11 @@ a {
   @apply px-107px max-lg:px-82px max-md:px-24px;
 }
 
-
+// 隐藏滚动条
+.scrollbar-hidden{
+  scrollbar-width: none; /* 隐藏滚动条 */
+  -ms-overflow-style: none; /* 隐藏滚动条 */
+  &::-webkit-scrollbar {
+    display: none; /* 隐藏滚动条 */
+  }
+}

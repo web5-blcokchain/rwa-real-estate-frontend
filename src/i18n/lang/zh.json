@@ -249,8 +249,8 @@
       "button2": "了解更多"
     },
     "explanation": {
-      "title": "重新定义房地产的投资未来",
-      "content": "将资产转化为全球可访问的金融工具，具有真正的加密原生效用",
+      "title": "可信赖的全球综合资产代币化交易平台",
+      "content": "AI × RWA 时代的资产发行与交易枢纽",
       "button": "了解更多"
     },
     "rwaType": {
@@ -423,7 +423,9 @@
     "menu_distribution_record": "代币发放记录",
     "menu_message": "消息中心",
     "menu_dividend_statistics": "分红统计",
-    "menu_appeal": "申诉信息"
+    "menu_appeal": "申诉信息",
+    "menu_default_warning": "违约警告",
+    "menu_redemption_list": "赎回列表"
   },
   "footer": {
     "about": "关于",
@@ -478,7 +480,10 @@
     "reupload": "重新提交",
     "copy_success": "复制成功",
     "copy_failed": "复制失败",
-    "all_images": "查看全部图片"
+    "all_images": "查看全部图片",
+    "operation": "操作",
+    "view": "查看",
+    "copy": "复制"
   },
   "action": {
     "sell": "卖出",
@@ -615,7 +620,6 @@
       "total_money": "总金额",
       "number_of_tokens": "代币数量",
       "status": "状态"
-
     },
     "coin": {
       "unclaimed": "未发放",
@@ -668,6 +672,104 @@
           "4": "紧急问题请拨打客服热线: +031 234-5678"
         }
       }
+    },
+    "warning": {
+      "asset_name": "资产名称",
+      "status": "违约状态",
+      "last_pay": "上期付款日",
+      "next_pay": "下期付款日",
+      "investment_amount": "投资额",
+      "current_valuation": "当前估值",
+      "hash": "赎回Hash",
+      "total_investment_assets": "总投资资产",
+      "expected_income_this_month": "本月预计收益",
+      "overdue_assets": "逾期资产",
+      "overdue_assets_num": "{{num}}笔",
+      "status_map": {
+        "1": "宽限期（D+8）",
+        "2": "追偿违约（D+35）",
+        "3": "追偿处理中",
+        "4": "清算中",
+        "5": "已解决"
+      },
+      "info": {
+        "recovery_amount": "追偿金额",
+        "rental_income": "营收租金",
+        "insurance_deductible": "保险免赔额",
+        "auction_amount": "拍卖金额",
+        "based_on_actual": "根据实际情况",
+        "process_progress": "流程进度",
+        "application_submitted": "申请提交",
+        "document_review": "材料审核",
+        "on_site_inspection": "现场勘查",
+        "in_progress": "进行中",
+        "final_review": "最终审核",
+        "property_freeze_submitted": "房产冻结申请已提交",
+        "compensation_payment": "赔付款发放",
+        "recovery_process": "追偿流程",
+        "insurance_deductible_desc": "约{{num}}%",
+        "status": {
+          "1": {
+            "title": "1. 确认违约",
+            "content-1": "核查条款：比对发行文件（白皮书/合约/协议），确认违约事件。",
+            "content-2": "取证：链上数据（合约执行失败）+ 链下证据（公告/财报/监管文件）。",
+            "content-3": "通知：向发行人发送补救要求（若协议允许）。"
+          },
+          "2": {
+            "title": "2. 法律准备",
+            "content-1": "定管辖：锁定协议约定的管辖法律与争议方式（诉讼/仲裁）。",
+            "content-2": "定对象：识别责任方（发行人/托管人/担保人），定位其资产。"
+          },
+          "3": {
+            "title": "3. 启动程序",
+            "content-1": "立案：在管辖地法院或仲裁机构（如ICC）提起诉讼/仲裁。",
+            "content-2": "冻结资产：申请临时冻结责任方资产（账户/加密货币）。"
+          },
+          "4": {
+            "title": "4. 争议裁决",
+            "content-1": "举证：提交违约证据，专家辅助证明损失",
+            "content-2": "裁决：法院/仲裁庭作出责任判定及赔偿判决"
+          },
+          "5": {
+            "title": "5. 执行回收",
+            "content-1": "跨境执行：在资产所在国申请裁决执行（依《纽约公约》）。",
+            "content-2": "处置分配：查封拍卖资产，按比例分配持有人。"
+          }
+        }
+      },
+      "redemption": {
+        "recovery_amount": "赎回金额",
+        "rental_income": "赎回收益",
+        "token_price": "代币价格",
+        "token_holdings": "持有代币",
+        "redemption_num": "{{num}}笔",
+        "redemption_application": "赎回申请",
+        "receive_wallet": "接收钱包",
+        "transaction_hash": "交易哈希",
+        "redemption_now": "立即赎回",
+        "modal": {
+          "success": {
+            "title": "赎回成功",
+            "content": "您的资产代币已成功赎回并转入指定钱包，交易已通过区块链网络确认。"
+          },
+          "error": {
+            "title": "赎回失败",
+            "content": "很抱歉，您的资产代币赎回操作未能完成，请查看失败原因并重新尝试。",
+            "button": "重新尝试",
+            "error": "失败原因",
+            "error_message": "网络交易费用不足导致交易失败。您的钱包余额不足以支付当前网络所需的Gas费用，请充值或调整Gas设置后重新尝试。"
+          }
+        }
+      }
+    },
+    "redemptionList": {
+      "investment_amount": "投资金额",
+      "redemption_income": "赎回收益",
+      "redemption_date": "赎回日期",
+      "transaction_hash": "交易Hash",
+      "income_date": "到账日期",
+      "processing": "处理中",
+      "completed": "已完成"
     }
   },
   "transaction": {

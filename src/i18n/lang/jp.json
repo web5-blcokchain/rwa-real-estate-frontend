@@ -247,7 +247,7 @@
       "button2": "学習の詳細"
     },
     "explanation": {
-      "title": "不動産投資の未来を再定義する",
+      "title": "AI × RWA時代の資産発行と取引のハブです",
       "content": "資産をグローバルにアクセス可能な金融商品へ、本物の暗号ネイティブなユーティリティを実現",
       "button": "もっと詳しく"
     },
@@ -421,7 +421,9 @@
     "menu_distribution_record": "代币发放記録",
     "menu_message": "メッセージセンター",
     "menu_dividend_statistics": "配当統計",
-    "menu_appeal": "申訴情報"
+    "menu_appeal": "申訴情報",
+    "menu_default_warning": "違約警告",
+    "menu_redemption_list": "買い戻しリスト"
   },
   "footer": {
     "about": "について",
@@ -481,7 +483,10 @@
     "reupload": "再アップロード",
     "copy_success": "コピーに成功した",
     "copy_failed": "コピーに失敗した",
-    "all_images": "すべての画像を表示"
+    "all_images": "すべての画像を表示",
+    "operation": "操作",
+    "view": "表示",
+    "copy": "複製します"
   },
   "profile": {
     "transactions": {
@@ -622,6 +627,143 @@
       "distributionRecord": "発行記録",
       "summaryRecord": "資産記録",
       "assetList": "資産リスト"
+    },
+    "appeal": {
+      "title": "申立情報",
+      "appealType": {
+        "title": "申立タイプ",
+        "options": {
+          "1": "取引が実際に入金されていない",
+          "2": "金額が一致しない",
+          "3": "その他の問題"
+        }
+      },
+      "appealReason": {
+        "title": "申立理由",
+        "placeholder": "発生した問題を具体的に記述してください..."
+      },
+      "uploadEvidence": {
+        "title": "証拠をアップロード",
+        "placeholder": "（取引ハッシュ、配当記録のスクリーンショット、ウォレット取引記録）"
+      },
+      "contactInformation": {
+        "title": "連絡先情報",
+        "realName": "氏名",
+        "realNamePlaceholder": "氏名を入力してください",
+        "phone": "電話番号",
+        "phonePlaceholder": "電話番号を入力してください",
+        "email": "メールアドレス",
+        "emailPlaceholder": "メールアドレスを入力してください"
+      },
+      "submit": "申立を送信",
+      "cancel": "キャンセル",
+      "submitDesc": {
+        "title": "注意事項",
+        "content": {
+          "1": "審査期間中に重複して申立を行わないでください。",
+          "2": "虚偽の申立はアカウント制限の原因となる可能性があります。",
+          "3": "営業時間内（9:00〜18:00）の対応がより迅速です。",
+          "4": "緊急の場合はカスタマーサポートホットライン：+031 234-5678 にお電話ください"
+        }
+      }
+    },
+    "warning": {
+      "asset_name": "資産名",
+      "status": "違約警告",
+      "last_pay": "前回支払日",
+      "next_pay": "次回支払日",
+      "investment_amount": "投資額",
+      "current_valuation": "現在の評価",
+      "hash": "買い戻しハッシュ",
+      "total_investment_assets": "総投資資産",
+      "expected_income_this_month": "今月の予想収益",
+      "overdue_assets": "遅延資産",
+      "overdue_assets_num": "{{num}}項目",
+      "status_map": {
+        "1": "寛限期（D+8）",
+        "2": "追償違約（D+35）",
+        "3": "追償処理中",
+        "4": "清算中",
+        "5": "解決済み"
+      },
+      "info": {
+        "recovery_amount": "追償金額",
+        "rental_income": "収益収入",
+        "insurance_deductible": "保険免責額",
+        "auction_amount": "拍賣金額",
+        "based_on_actual": "実際の状況に基づいて",
+        "process_progress": "プロセス進行",
+        "application_submitted": "申請提出",
+        "document_review": "資料審査",
+        "on_site_inspection": "現場調査",
+        "in_progress": "進行中",
+        "final_review": "最終審査",
+        "property_freeze_submitted": "不動産凍結申請",
+        "compensation_payment": "賠償金支払い",
+        "recovery_process": "追償プロセス",
+        "insurance_deductible_desc": "約{{num}}%",
+        "status": {
+          "1": {
+            "title": "1. 違約確認",
+            "content-1": "条項確認：発行ファイル（ホワイトペーパー/契約/契約）を比較して違約事件を確認します。",
+            "content-2": "証拠：オンチェーンデータ（契約実行失敗）+ オフチェーン証拠（公告/財務報告/監督ファイル）。",
+            "content-3": "通知：発行者に補救要求を送信します（契約で許可されている場合）。"
+          },
+          "2": {
+            "title": "2. 法律準備",
+            "content-1": "管轄地確定：契約で定められた管轄地と紛争解決方法（訴訟/仲裁）を確定します。",
+            "content-2": "責任者特定：責任者（発行者/保管者/保証人）を特定し、資産を特定します。"
+          },
+          "3": {
+            "title": "3. プログラム開始",
+            "content-1": "訴訟：管轄地の裁判所または仲裁機関（ICCなど）で訴訟/仲裁を提起します。",
+            "content-2": "資産凍結：責任者の資産を一時的に凍結する申請を行います（アカウント/暗号通貨）。"
+          },
+          "4": {
+            "title": "4. 紛争裁決",
+            "content-1": "証拠：違約証拠を提出し、専門家による損害証明を補助します。",
+            "content-2": "裁決：裁判所/仲裁庭が責任判定と賠償判決を行います。"
+          },
+          "5": {
+            "title": "5. 実行回収",
+            "content-1": "国際実行：資産所在国で裁決実行を申請します（ニューヨーク条約に基づく）。",
+            "content-2": "処分分配：資産を封印し、拍賣し、持ち主に比例配分します。"
+          }
+        }
+      },
+      "redemption": {
+        "recovery_amount": "買い戻し金額",
+        "rental_income": "買い戻し収益",
+        "token_price": "トークン価格",
+        "token_holdings": "トークン保有",
+        "redemption_num": "{{num}}項目",
+        "redemption_application": "買い戻し申請",
+        "receive_wallet": "受取財布",
+        "transaction_hash": "取引ハッシュ",
+        "redemption_now": "買い戻し",
+        "modal": {
+          "success": {
+            "title": "償還成功",
+            "content": "資産トークンが正常に償還され、指定されたウォレットに転送されました。取引はブロックチェーンネットワークで確認されました。"
+          },
+          "error": {
+            "title": "償還失敗",
+            "content": "申し訳ありませんが、資産トークンの償還操作を完了できませんでした。失敗理由を確認して再試行してください。",
+            "button": "再試行",
+            "error": "失敗理由",
+            "error_message": "ネットワーク手数料不足により取引が失敗しました。ウォレットの残高が現在のガス代を支払うには不足しています。ウォレットに資金を追加するか、ガス設定を調整して再試行してください。"
+          }
+        }
+      }
+    },
+    "redemptionList": {
+      "investment_amount": "投資金額",
+      "redemption_income": "買い戻し収益",
+      "redemption_date": "買い戻し日",
+      "transaction_hash": "取引ハッシュ",
+      "income_date": "入金日",
+      "processing": "処理中",
+      "completed": "完了"
     }
   },
   "transaction": {

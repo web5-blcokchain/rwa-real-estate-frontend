@@ -1,35 +1,45 @@
 .ant-tabs-tab {
   width: fit-content;
 }
-.news-tables .ant-tabs .ant-tabs-tab{
+
+.news-tables .ant-tabs .ant-tabs-tab {
   font-size: 36px;
   line-height: 40px;
 }
 
-@media (max-width: 1280px) {
-  .news-tables .ant-tabs .ant-tabs-tab{
-    font-size: 28px;
-    line-height: 32px;
+.news-tables .ant-tabs .ant-tabs-tab {
+  font-size: 26px;
+  line-height: 32px;
+
+
+  @media (max-width: 1280px) {
+    & {
+      font-size: 20px;
+      line-height: 24px;
+    }
   }
-}
-@media (max-width: 1024px) {
-  .news-tables .ant-tabs .ant-tabs-tab{
-    font-size: 20px;
-       line-height: 24px;
+
+  @media (max-width: 1024px) {
+    & {
+      font-size: 16px;
+      line-height: 20px;
+    }
   }
-}
-@media (max-width: 767.9px) {
-  .news-tables .ant-tabs .ant-tabs-tab{
-    font-size: 16px;
-    line-height:18px;
+
+  @media (max-width: 767.9px) {
+    & {
+      font-size: 16px;
+      line-height: 18px;
+    }
   }
 }
 
 .ant-tabs-ink-bar {
   height: 4px !important;
 }
+
 @media (max-width: 1024px) {
-  .ant-tabs-ink-bar{
+  .ant-tabs-ink-bar {
     height: 1px !important;
   }
 }

@@ -59,9 +59,9 @@ export default function Appeal() {
           </UploadMultifileCard>
         </Form.Item>
         <Form.Item name="appeal" label={<div>{t('profile.appeal.contactInformation.title')}</div>}>
-          <div className="ml-4 w-60% flex flex-col gap-2 [&>div>div]:w-80px max-lg:w-full">
+          <div className="ml-4 w-60% flex flex-col gap-2 [&>div>div]:min-w-80px max-lg:w-full">
             <div className="flex gap-2">
-              <div>
+              <div className="">
                 {t('profile.appeal.contactInformation.realName')}
                 :
               </div>

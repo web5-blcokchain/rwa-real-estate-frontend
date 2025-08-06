@@ -11,5 +11,9 @@ export enum ProfileTab {
   DistributionRecord = 'DistributionRecord',
   Message = 'Message',
   DividendStatistics = 'DividendStatistics',
-  Appeal = 'Appeal'
+  Appeal = 'Appeal',
+  DefaultWarning = 'DefaultWarning',
+  RedemptionList = 'RedemptionList',
+  WarningInfo = 'WarningInfo',
+  WarningRedemptionInfo = 'WarningRedemptionInfo'
 }

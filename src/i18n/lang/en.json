@@ -247,8 +247,8 @@
       "button2": "Learn More"
     },
     "explanation": {
-      "title": "Redefining the Future of Real Estate Investment",
-      "content": "Transform assets into globally accessible financial instruments with true crypto-native utility",
+      "title": "A reliable global comprehensive asset tokenization trading platform",
+      "content": "An asset issuance and trading hub in the AI × RWA era",
       "button": "Learn More"
     },
     "rwaType": {
@@ -421,7 +421,9 @@
     "menu_distribution_record": "Token Distribution Record",
     "menu_message": "Message Center",
     "menu_dividend_statistics": "Dividend Statistics",
-    "menu_appeal": "Appeal Information"
+    "menu_appeal": "Appeal Information",
+    "menu_default_warning": "Default Warning",
+    "menu_redemption_list": "Redemption List"
   },
   "footer": {
     "about": "About",
@@ -481,7 +483,10 @@
     "reupload": "Reupload",
     "copy_success": "Copied to clipboard",
     "copy_failed": "Failed to copy to clipboard",
-    "all_images": "View all images"
+    "all_images": "View all images",
+    "operation": "Operation",
+    "view": "View",
+    "copy": "Copy"
   },
   "profile": {
     "transactions": {
@@ -626,6 +631,143 @@
       "distributionRecord": "Distribution Record",
       "summaryRecord": "Summary Record",
       "assetList": "Asset List"
+    },
+    "appeal": {
+      "title": "Appeal Information",
+      "appealType": {
+        "title": "Appeal Type",
+        "options": {
+          "1": "Transaction not received",
+          "2": "Incorrect amount",
+          "3": "Other issues"
+        }
+      },
+      "appealReason": {
+        "title": "Reason for Appeal",
+        "placeholder": "Please describe the issue you encountered in detail..."
+      },
+      "uploadEvidence": {
+        "title": "Upload Evidence",
+        "placeholder": "(Transaction hash, dividend record screenshot, wallet transaction record)"
+      },
+      "contactInformation": {
+        "title": "Contact Information",
+        "realName": "Full Name",
+        "realNamePlaceholder": "Please enter your full name",
+        "phone": "Phone Number",
+        "phonePlaceholder": "Please enter your phone number",
+        "email": "Email",
+        "emailPlaceholder": "Please enter your email address"
+      },
+      "submit": "Submit Appeal",
+      "cancel": "Cancel",
+      "submitDesc": {
+        "title": "Notes",
+        "content": {
+          "1": "Do not submit duplicate appeals during the review process.",
+          "2": "False appeals may result in account restrictions.",
+          "3": "Faster responses during business hours (9:00–18:00).",
+          "4": "For urgent issues, please call the customer service hotline: +031 234-5678"
+        }
+      }
+    },
+    "warning": {
+      "asset_name": "Asset Name",
+      "status": "Default Warning",
+      "last_pay": "Last Payment Date",
+      "next_pay": "Next Payment Date",
+      "investment_amount": "Investment Amount",
+      "current_valuation": "Current Valuation",
+      "hash": "Redemption Hash",
+      "total_investment_assets": "Total Investment Assets",
+      "expected_income_this_month": "Expected Income This Month",
+      "overdue_assets": "Overdue Assets",
+      "overdue_assets_num": "{{num}} items",
+      "status_map": {
+        "1": "Grace Period (D+8)",
+        "2": "Recoverable Default (D+35)",
+        "3": "Recoverable Processing",
+        "4": "Liquidation",
+        "5": "Resolved"
+      },
+      "info": {
+        "recovery_amount": "Recovery Amount",
+        "rental_income": "Rental Income",
+        "insurance_deductible": "Insurance Deductible",
+        "auction_amount": "Auction Amount",
+        "based_on_actual": "Based on actual",
+        "process_progress": "Process Progress",
+        "application_submitted": "Application Submitted",
+        "document_review": "Document Review",
+        "on_site_inspection": "On Site Inspection",
+        "in_progress": "In Progress",
+        "final_review": "Final Review",
+        "property_freeze_submitted": "Property Freeze Submitted",
+        "compensation_payment": "Compensation Payment",
+        "recovery_process": "Recovery Process",
+        "insurance_deductible_desc": "About {{num}}%",
+        "status": {
+          "1": {
+            "title": "1. Confirm Default",
+            "content-1": "Check Terms: Compare the issuance file (white paper/contract/agreement) to confirm the default event.",
+            "content-2": "Evidence: On-chain data (contract execution failure) + off-chain evidence (announcement/financial report/regulatory file).",
+            "content-3": "Notification: Send a remedial request to the issuer (if allowed by the agreement)."
+          },
+          "2": {
+            "title": "2. Legal Preparation",
+            "content-1": "Determine Jurisdiction: Lock in the jurisdiction and dispute resolution method agreed upon in the agreement (litigation/arbitration).",
+            "content-2": "Identify Responsibility: Identify the responsible party (issuer/custodian/guarantor) and locate their assets."
+          },
+          "3": {
+            "title": "3. Start Program",
+            "content-1": "Filing: File a lawsuit/arbitration in the jurisdiction's court or arbitration institution (e.g., ICC).",
+            "content-2": "Freeze Assets: Apply for temporary freezing of the responsible party's assets (account/cryptocurrency)."
+          },
+          "4": {
+            "title": "4. Dispute Resolution",
+            "content-1": "Prosecution: Submit default evidence and expert assistance to prove the loss.",
+            "content-2": "Judgment: The court/arbitration tribunal makes a responsibility determination and compensation judgment."
+          },
+          "5": {
+            "title": "5. Execution Recovery",
+            "content-1": "Cross-border execution: Apply for judgment execution in the asset's country (according to the New York Convention).",
+            "content-2": "Disposition and Allocation: Seize and auction the assets, allocate them proportionally to the holders."
+          }
+        }
+      },
+      "redemption": {
+        "recovery_amount": "Redemption Amount",
+        "rental_income": "Redemption Income",
+        "token_price": "Token Price",
+        "token_holdings": "Token Holdings",
+        "redemption_num": "{{num}} items",
+        "redemption_application": "Redemption Application",
+        "receive_wallet": "Receive Wallet",
+        "transaction_hash": "Transaction Hash",
+        "redemption_now": "Redemption Now",
+        "modal": {
+          "success": {
+            "title": "Redeem Successful",
+            "content": "Your asset tokens have been successfully redeemed and transferred to the designated wallet. The transaction has been confirmed on the blockchain network."
+          },
+          "error": {
+            "title": "Redeem Failed",
+            "content": "Unfortunately, your asset token redemption could not be completed. Please check the reason for failure and try again.",
+            "button": "Retry",
+            "error": "Failure Reason",
+            "error_message": "The transaction failed due to insufficient network fees. Your wallet balance is not enough to cover the current gas cost. Please top up your wallet or adjust the gas settings and try again."
+          }
+        }
+      }
+    },
+    "redemptionList": {
+      "investment_amount": "Investment Amount",
+      "redemption_income": "Redemption Income",
+      "redemption_date": "Redemption Date",
+      "transaction_hash": "Transaction Hash",
+      "income_date": "Income Date",
+      "processing": "Processing",
+      "completed": "Completed"
     }
   },
   "transaction": {
