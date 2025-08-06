@@ -68,14 +68,15 @@ export const ImageSwiper: FC<{
           delay: 5000,
           disableOnInteraction: false
         }}
-        loop
+        slidesPerView={1}
+        loop={list.length > 1}
       >
         <div className="swiper-button-next"></div>
 
         {
           list.map(url => (
             <SwiperSlide key={url + Date.now() + (Math.random())}>
-              <img src={url} className="w-full max-h-128!" />
+              {url && <img src={url} className="w-full max-h-128!" />}
             </SwiperSlide>
           ))
         }

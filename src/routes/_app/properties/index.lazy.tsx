@@ -3,7 +3,10 @@ import { RealEstateCard } from '@/components/common/real-estate-card'
 import { joinImagesPath } from '@/utils/url'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
-import { Button, Spin } from 'antd'
+import { ConfigProvider, Pagination, Spin } from 'antd'
+import enUS from 'antd/locale/en_US'
+import jaJP from 'antd/locale/ja_JP'
+import zhCN from 'antd/locale/zh_CN'
 import { useState } from 'react'
 
 export const Route = createLazyFileRoute('/_app/properties/')({
@@ -13,11 +16,13 @@ export const Route = createLazyFileRoute('/_app/properties/')({
 function RouteComponent() {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const locale = i18n.language === 'en' ? enUS : i18n.language === 'zh' ? zhCN : jaJP
   const [keyword, setKeyword] = useState('')
   const [page, setPage] = useState(1)
+  const pageSize = 12
 
   async function searchDataList() {
-    const res = await apiBasic.getDataList({ page, keyword })
+    const res = await apiBasic.getDataList({ page, keyword, pageSize })
     return res.data
   }
 
@@ -42,6 +47,7 @@ function RouteComponent() {
         clearTimeout(timer)
       }
       setTimer(setTimeout(() => {
+        // 取消之前的请求
         queryClient.cancelQueries({ queryKey: ['properties', page] })
         refetch()
 
@@ -79,7 +85,7 @@ function RouteComponent() {
         iconClass="size-8"
       >
         <Spin spinning={!isLoading && isRefetching}>
-          { data && data.list && data.list.length > 0
+          {data && data.list && data.list.length > 0
             ? (
                 <div className="grid grid-cols-3 mt-8 gap-8 max-lg:grid-cols-2 max-md:grid-cols-1">
                   {data && Array.isArray(data.list) && data.list.map((item: Record<string, any>) => (
@@ -114,8 +120,21 @@ function RouteComponent() {
               )}
         </Spin>
       </Waiting>
-
-      {!isLoading && data?.list && data.list.length > 20 && (
+      <div className="mt-12 fcc">
+        <ConfigProvider locale={locale}>
+          {data?.list && data.list.length > 0 && (
+            <Pagination
+              defaultCurrent={page}
+              pageSize={pageSize}
+              total={data?.count}
+              onChange={page => setPage(page)}
+              showQuickJumper
+              showSizeChanger={false}
+            />
+          )}
+        </ConfigProvider>
+      </div>
+      {/* {!isLoading && data?.list && data.list.length > 20 && (
         <div className="mt-8 text-center">
           <Button
             type="primary"
@@ -126,7 +145,7 @@ function RouteComponent() {
             {t('system.loadMore')}
           </Button>
         </div>
-      )}
+      )} */}
     </div>
   )
 }
