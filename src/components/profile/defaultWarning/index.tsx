@@ -157,7 +157,7 @@ export default function DefaultWarning({ setSecondaryMenu, setSecondaryMenuProps
         return (
           <div className="flex gap-1">
             <Button
-              disabled={record.status < 6}
+              disabled={record.status < 1}
               type="primary"
               onClick={() => {
                 setSecondaryMenu(ProfileTab.WarningRedemptionInfo)
@@ -193,15 +193,15 @@ export default function DefaultWarning({ setSecondaryMenu, setSecondaryMenuProps
     }
   ]
 
-  const testButton = () => {
-    setSecondaryMenu(ProfileTab.WarningRedemptionInfo)
-    setSecondaryMenuProps({
-      id: 22,
-      name: '',
-      address: '',
-      contract_address: '0x5666A1066654388145FaD28876BF3633208ea07F'
-    })
-  }
+  // const testButton = () => {
+  //   setSecondaryMenu(ProfileTab.WarningRedemptionInfo)
+  //   setSecondaryMenuProps({
+  //     id: 22,
+  //     name: '',
+  //     address: '',
+  //     contract_address: '0x5666A1066654388145FaD28876BF3633208ea07F'
+  //   })
+  // }
 
   return (
     <div>
@@ -238,7 +238,7 @@ export default function DefaultWarning({ setSecondaryMenu, setSecondaryMenuProps
           />
         </ConfigProvider>
       </div>
-      <Button onClick={() => testButton()}>测试按钮</Button>
+      {/* <Button onClick={() => testButton()}>测试按钮</Button> */}
     </div>
   )
 }

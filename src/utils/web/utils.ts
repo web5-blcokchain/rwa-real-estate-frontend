@@ -81,3 +81,122 @@ export async function getNameToContract(e: EIP1193Provider, contractName: string
   )
   return propertyContract
 }
+
+export class SmartErrorParses {
+  private static combinedInterface: ethers.Interface | null = null
+  private static initialized = false
+
+  /**
+   * 从合约中收集所有错误ABI，构建统一的Interface用于错误解析
+   */
+  static async initialize(contracts: any[]) {
+    if (this.initialized)
+      return
+
+    // 收集所有合约的错误片段
+    const allErrorFragments: any[] = []
+
+    for (const contract of contracts) {
+      if (contract.interface && contract.interface.fragments) {
+        for (const fragment of contract.interface.fragments) {
+          if (fragment.type === 'error') {
+            allErrorFragments.push(fragment)
+          }
+        }
+      }
+    }
+
+    // 构建包含所有错误的统一Interface
+    if (allErrorFragments.length > 0) {
+      this.combinedInterface = new ethers.Interface(allErrorFragments)
+    }
+
+    this.initialized = true
+  }
+
+  /**
+   * 解析错误并返回合约定义的错误名称
+   * 使用ethers.js原生错误解析，实现真正的自动化
+   */
+  static parseError(error: any): string {
+    // 方案1: 使用ethers.js原生parseError方法（最可靠且自动化）
+    if (this.combinedInterface) {
+      // 尝试从error.data解析
+      if (error.data && typeof error.data === 'string') {
+        try {
+          const decodedError = this.combinedInterface.parseError(error.data)
+          if (decodedError) {
+            return decodedError.name
+          }
+        }
+        catch (parseErr) {
+          // parseError失败，继续尝试其他方法
+          console.error('解析失败', parseErr)
+        }
+      }
+
+      // 尝试从错误消息中提取错误码并使用parseError
+      if (error.message && typeof error.message === 'string') {
+        const errorCodeMatch = error.message.match(/return data: (0x[a-fA-F0-9]+)/)
+        if (errorCodeMatch) {
+          try {
+            const decodedError = this.combinedInterface.parseError(errorCodeMatch[1])
+            if (decodedError) {
+              return decodedError.name
+            }
+          }
+          catch (parseErr) {
+            // parseError失败，继续尝试其他方法
+            console.error('解析失败', parseErr)
+          }
+        }
+      }
+    }
+
+    // 方案2: 从错误消息中提取自定义错误名称（后备方案）
+    if (error.message && typeof error.message === 'string') {
+      // 匹配自定义错误格式: "reverted with custom error 'ErrorName()'"
+      const customErrorMatch = error.message.match(/reverted with custom error '(\w+)(?:\(\))?'/)
+      if (customErrorMatch) {
+        return customErrorMatch[1]
+      }
+
+      // 匹配原因字符串格式: "reverted with reason string 'ErrorMessage'"
+      const reasonMatch = error.message.match(/reverted with reason string '([^']+)'/)
+      if (reasonMatch) {
+        return reasonMatch[1]
+      }
+    }
+
+    // 方案3: 使用ethers.js的错误解析作为最后后备
+    if (error.reason) {
+      return error.reason
+    }
+
+    // 返回原始错误信息
+    return error.message || 'Unknown error'
+  }
+
+  /**
+   * 计算错误签名（用于调试）
+   */
+  static calculateErrorSignature(errorName: string): string {
+    return ethers.id(`${errorName}()`).substring(0, 10)
+  }
+
+  /**
+   * 获取已知错误信息（用于调试）
+   */
+  static getKnownErrors(): string[] {
+    if (!this.combinedInterface)
+      return []
+
+    const errors: string[] = []
+    for (const fragment of this.combinedInterface.fragments) {
+      if (fragment.type === 'error') {
+        errors.push((fragment as any)?.name)
+      }
+    }
+    return errors
+  }
+}

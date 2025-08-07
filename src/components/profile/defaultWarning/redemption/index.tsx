@@ -1,11 +1,11 @@
 import type { ethers } from 'ethers'
 import type { Dispatch, SetStateAction } from 'react'
-import { getRedemptionInfo } from '@/api/assets'
+import { getRedemptionInfo, redemptionWarningAssets } from '@/api/assets'
 import { useUserStore } from '@/stores/user'
 import { formatNumberNoRound } from '@/utils/number'
 import { getRedemptionManagerContract, redemptionWarningAsset } from '@/utils/web/redemptionManager'
 import { useWallets } from '@privy-io/react-auth'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Modal } from 'antd'
 import { toast } from 'react-toastify'
 
@@ -105,16 +105,16 @@ export default function WarningRedemptionInfo({ secondaryMenuProps }:
   const [redemptionType, setRedemptionType] = useState(0)
   const { userData } = useUserStore()
 
-  // const { mutateAsync } = useMutation({
-  //   mutationKey: ['redemptionWarning'],
-  //   mutationFn: async (data: {
-  //     id: string,
-  //     price: string;
-  //     tx_hash: string;
-  //   }) => {
-  //     return await redemptionWarningAssets(data)
-  //   }
-  // })
+  const { mutateAsync } = useMutation({
+    mutationKey: ['redemptionWarning'],
+    mutationFn: async (data: {
+      id: string
+      price: string
+      tx_hash: string
+    }) => {
+      return await redemptionWarningAssets(data)
+    }
+  })
   const [modelValue, setModelValue] = useState({
     message: '',
     hash: ''
@@ -131,26 +131,29 @@ export default function WarningRedemptionInfo({ secondaryMenuProps }:
       const ethProvider = await wallet.getEthereumProvider()
       const contact = await getRedemptionManagerContract(ethProvider)
       // 操作合约赎回资产
-      const tx = await redemptionWarningAsset(contact as ethers.Contract, secondaryMenuProps.contract_address)
+      const tx = await redemptionWarningAsset(ethProvider, contact as ethers.Contract, wallet.address, secondaryMenuProps.contract_address)
       if (tx) {
-        //  const res = await mutateAsync({
-        //     id:secondaryMenuProps.id.toString(),
-        //     price:(data?.total_current || 0)+'',
-        //     tx_hash:tx.hash
-        //   })
-        //   if(res.code===1){
-        //     setRedemptionType(0)
-        //     setModelValue({
-        //       message:'',
-        //       hash:tx.hash
-        //     })
-        //     setVisible(true)
-        //   }else throw new Error('')
-        setRedemptionType(0)
-        setModelValue({
-          message: '',
-          hash: tx.hash
+        const res = await mutateAsync({
+          id: secondaryMenuProps.id.toString(),
+          price: `${data?.total_current || 0}`,
+          tx_hash: tx.hash
         })
+        if (res.code === 1) {
+          setRedemptionType(0)
+          setModelValue({
+            message: '',
+            hash: tx.hash
+          })
+          setVisible(true)
+        }
+        else {
+          throw new Error('赎回失败')
+        }
+        // setRedemptionType(0)
+        // setModelValue({
+        //   message: '',
+        //   hash: tx.hash
+        // })
       }
       else {
         throw new Error('赎回失败')
