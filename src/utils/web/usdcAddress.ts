@@ -1,17 +1,8 @@
 import type { EIP1193Provider } from '@privy-io/react-auth'
-import { getContracts } from '@/contract'
-import { ethers } from 'ethers'
+import { getNameToContract } from './utils'
 
 export async function getContract(e: EIP1193Provider, address: string) {
-  const ethProvider = e || window.ethereum
-  const PropertyManager = getContracts('PropertyToken')
-  const provider = new ethers.BrowserProvider(ethProvider)
-  const signer = await provider.getSigner()
-  const propertyContract = new ethers.Contract(
-    address,
-    PropertyManager.abi,
-    signer
-  )
+  const propertyContract = await getNameToContract(e, 'PropertyToken', address)
   return propertyContract
 }
 

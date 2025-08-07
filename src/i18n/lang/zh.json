@@ -686,15 +686,19 @@
       "overdue_assets": "逾期资产",
       "overdue_assets_num": "{{num}}笔",
       "status_map": {
-        "1": "宽限期（D+8）",
-        "2": "追偿违约（D+35）",
-        "3": "追偿处理中",
-        "4": "清算中",
-        "5": "已解决"
+        "1": "正常",
+        "2": "宽限期",
+        "3": "升级逾期",
+        "4": "违约理赔期",
+        "5": "保险理赔",
+        "6": "清算",
+        "7": "拍卖成功",
+        "8": "拍卖失败",
+        "9": "已赎回"
       },
       "info": {
         "recovery_amount": "追偿金额",
-        "rental_income": "营收租金",
+        "rental_income": "应收租金",
         "insurance_deductible": "保险免赔额",
         "auction_amount": "拍卖金额",
         "based_on_actual": "根据实际情况",

@@ -1,7 +1,10 @@
+import type { AssetsWarningList } from '@/api/assets'
 import type { TableProps } from 'antd'
+import { getInvestmentDetails, getWarningList } from '@/api/assets'
 import copyIcon from '@/assets/icons/copy.svg'
 import { ProfileTab } from '@/enums/profile'
 import { formatNumberNoRound } from '@/utils/number'
+import { useQuery } from '@tanstack/react-query'
 import { Button, ConfigProvider, Empty, Table } from 'antd'
 import enUS from 'antd/locale/en_US'
 import jaJP from 'antd/locale/ja_JP'
@@ -12,36 +15,57 @@ import dayjs from 'dayjs'
 export default function DefaultWarning({ setSecondaryMenu, setSecondaryMenuProps }: { setSecondaryMenu: (menu: ProfileTab) => void, setSecondaryMenuProps: (props: any) => void }) {
   const { t } = useTranslation()
   const locale = i18n.language === 'en' ? enUS : i18n.language === 'zh' ? zhCN : jaJP
+  const { data: investmentDetails, isFetching: investmentDetailsLoading } = useQuery({
+    queryKey: ['getInvestmentDetails'],
+    queryFn: async () => {
+      const data = await getInvestmentDetails()
+      return data.data
+    }
+  })
+
   const totalInfo = useMemo(() => {
     return [{
       title: 'profile.warning.total_investment_assets',
-      num: `$${formatNumberNoRound(1240000)}`
+      num: `$${formatNumberNoRound(investmentDetails?.total_number, 8)}`
     }, {
       title: 'profile.warning.expected_income_this_month',
-      num: `$${formatNumberNoRound(38500)}`
+      num: `$${formatNumberNoRound(investmentDetails?.monthly_income, 8)}`
     }, {
       title: 'profile.warning.overdue_assets',
-      num: t('profile.warning.overdue_assets_num', { num: 8 })
+      num: t('profile.warning.overdue_assets_num', { num: investmentDetails?.count })
     }]
-  }, [locale])
+  }, [locale, investmentDetails])
 
-  interface tableData {
-    id: number
-    name: string
-    address: string
-    status: number
-    lastPay: string
-    nextPay: string
-    amount: number
-    buyAmount: number
-    hash: string
-  }
+  const [pagination, setPagination] = useState({
+    pageSize: 10,
+    current: 1,
+    total: 0,
+    showQuickJumper: true,
+    showSizeChanger: false
+  })
+
+  const { data, isFetching: isLoading } = useQuery({
+    queryKey: ['warningList', pagination.current, pagination.pageSize],
+    queryFn: async () => {
+      const data = await getWarningList({ page: pagination.current, pageSize: pagination.pageSize })
+      return data.data
+    }
+  })
+
+  useEffect(() => {
+    if (typeof data?.count === 'number') {
+      setPagination({
+        ...pagination,
+        total: data.count
+      })
+    }
+  }, [data])
 
   const copyText = (text: string) => {
     navigator.clipboard.writeText(text)
     toast.success(t('common.copy_success'))
   }
-  const tableColumns: TableProps<tableData>['columns'] = [
+  const tableColumns: TableProps<AssetsWarningList>['columns'] = [
     {
       title: <div>{t('profile.warning.asset_name')}</div>,
       dataIndex: 'id',
@@ -76,50 +100,50 @@ export default function DefaultWarning({ setSecondaryMenu, setSecondaryMenuProps
       dataIndex: 'status',
       key: 'status',
       render: (_, record) => {
-        return <div>{t(`profile.warning.status_map.${record.status + 1}`)}</div>
+        return <div>{t(record.status < 9 ? `profile.warning.status_map.${record.status + 1}` : '')}</div>
       }
     },
     {
       title: <div>{t('profile.warning.last_pay')}</div>,
-      dataIndex: 'lastPay',
-      key: 'lastPay',
+      dataIndex: 'rent_due_date',
+      key: 'rent_due_date',
       render: (_, record) => {
-        return <div>{dayjs(record.lastPay).format('YYYY-MM-DD')}</div>
+        return <div>{dayjs(record.rent_due_date).format('YYYY-MM-DD')}</div>
       }
     },
     {
       title: <div>{t('profile.warning.next_pay')}</div>,
-      dataIndex: 'nextPay',
-      key: 'nextPay',
+      dataIndex: 'next_rent_due_date',
+      key: 'next_rent_due_date',
       render: (_, record) => {
-        return <div>{dayjs(record.nextPay).format('YYYY-MM-DD')}</div>
+        return <div>{dayjs(record.next_rent_due_date).format('YYYY-MM-DD')}</div>
       }
     },
     {
       title: <div>{t('profile.warning.investment_amount')}</div>,
-      dataIndex: 'amount',
-      key: 'amount',
+      dataIndex: 'total_current',
+      key: 'total_current',
       render: (_, record) => {
-        return <div>{`$${formatNumberNoRound(record.amount)}`}</div>
+        return <div>{`$${formatNumberNoRound(record.number, 8)}`}</div>
       }
     },
     {
       title: <div>{t('profile.warning.current_valuation')}</div>,
-      dataIndex: 'buyAmount',
-      key: 'buyAmount',
+      dataIndex: 'price',
+      key: 'price',
       render: (_, record) => {
-        return <div>{`$${formatNumberNoRound(record.buyAmount)}`}</div>
+        return <div>{`$${formatNumberNoRound(Number(record.price) * Number(record.number), 8)}`}</div>
       }
     },
     {
       title: <div>{t('profile.warning.hash')}</div>,
-      dataIndex: 'hash',
-      key: 'hash',
+      dataIndex: 'tx_hash',
+      key: 'tx_hash',
       render: (_, record) => {
         return (
           <div>
             {
-              record.hash && (`${record.hash.slice(0, 6)}...${record.hash.slice(-4)}`)
+              record.tx_hash && (`${record.tx_hash.slice(0, 6)}...${record.tx_hash.slice(-4)}`)
             }
           </div>
         )
@@ -133,12 +157,15 @@ export default function DefaultWarning({ setSecondaryMenu, setSecondaryMenuProps
         return (
           <div className="flex gap-1">
             <Button
-              disabled={record.status !== 4}
+              disabled={record.status < 6}
               type="primary"
               onClick={() => {
                 setSecondaryMenu(ProfileTab.WarningRedemptionInfo)
                 setSecondaryMenuProps({
-                  id: record.id
+                  id: record.id,
+                  name: record.name,
+                  address: record.address,
+                  contract_address: record.contract_address
                 })
               }}
             >
@@ -149,7 +176,12 @@ export default function DefaultWarning({ setSecondaryMenu, setSecondaryMenuProps
               onClick={() => {
                 setSecondaryMenu(ProfileTab.WarningInfo)
                 setSecondaryMenuProps({
-                  id: record.id
+                  id: record.id,
+                  status: record.status,
+                  name: record.name,
+                  address: record.address,
+                  monthly_rent: record.monthly_rent,
+                  rent_due_date: record.rent_due_date
                 })
               }}
             >
@@ -161,84 +193,34 @@ export default function DefaultWarning({ setSecondaryMenu, setSecondaryMenuProps
     }
   ]
 
-  const [earningsList, _setEarningsList] = useState<tableData[]>([
-    {
-      id: 1,
-      name: '资产1',
-      address: '盐城市射阳县经济开发区滨湖公寓22号楼盐城市射阳县经济开发区滨湖公寓22号楼',
-      status: 0,
-      lastPay: '2025-01-01',
-      nextPay: '2025-01-01',
-      amount: 10000,
-      buyAmount: 10000,
-      hash: ''
-    },
-    {
-      id: 2,
-      name: '资产2',
-      address: '盐城市射阳县经济开发区滨湖公寓22号楼',
-      status: 1,
-      lastPay: '2025-01-01',
-      nextPay: '2025-01-01',
-      amount: 10000,
-      buyAmount: 10000,
-      hash: ''
-    },
-
-    {
-      id: 3,
-      name: '资产3',
-      address: '盐城市射阳县经济开发区滨湖公寓22号楼',
-      status: 2,
-      lastPay: '2025-01-01',
-      nextPay: '2025-01-01',
-      amount: 10000,
-      buyAmount: 10000,
-      hash: ''
-    },
-    {
-      id: 4,
-      name: '资产4',
-      address: '盐城市射阳县经济开发区滨湖公寓22号楼',
-      status: 3,
-      lastPay: '2025-01-01',
-      nextPay: '2025-01-01',
-      amount: 10000,
-      buyAmount: 10000,
-      hash: ''
-    },
-    {
-      id: 5,
-      name: '资产5',
-      address: '盐城市射阳县经济开发区滨湖公寓22号楼',
-      status: 4,
-      lastPay: '2025-01-01',
-      nextPay: '2025-01-01',
-      amount: 10000,
-      buyAmount: 10000,
-      hash: '0x1234567890'
-    }
-  ])
-  const pagination: TableProps<tableData>['pagination'] = {
-    pageSize: 10,
-    current: 1,
-    total: 100,
-    showQuickJumper: true,
-    showSizeChanger: false
+  const testButton = () => {
+    setSecondaryMenu(ProfileTab.WarningRedemptionInfo)
+    setSecondaryMenuProps({
+      id: 22,
+      name: '',
+      address: '',
+      contract_address: '0x5666A1066654388145FaD28876BF3633208ea07F'
+    })
   }
+
   return (
     <div>
-      <div className="grid grid-cols-4 gap-8 max-md:grid-cols-1 max-md:gap-4">
-        {
-          totalInfo.map((item) => {
-            return (
-              <div key={t(item.title)} className="rounded-md bg-#202329 p-6 space-y-3">
-                <div className="truncate text-base text-#B5B5B5" title={t(item.title)}>{t(item.title)}</div>
-                <div className="truncate text-2xl text-white" title={item.num}>{item.num}</div>
-              </div>
-            )
-          })
-        }
+      <div className={cn(investmentDetailsLoading && 'h-120px', 'fccc w-full')}>
+        <Waiting for={!investmentDetailsLoading}>
+          <div className="grid grid-cols-4 w-full gap-8 max-md:grid-cols-1 max-md:gap-4">
+
+            {
+              totalInfo.map((item) => {
+                return (
+                  <div key={t(item.title)} className="rounded-md bg-#202329 p-6 space-y-3">
+                    <div className="truncate text-base text-#B5B5B5" title={t(item.title)}>{t(item.title)}</div>
+                    <div className="truncate text-2xl text-white" title={item.num}>{item.num}</div>
+                  </div>
+                )
+              })
+            }
+          </div>
+        </Waiting>
       </div>
       <div className="mt-10">
         <ConfigProvider locale={locale}>
@@ -248,14 +230,15 @@ export default function DefaultWarning({ setSecondaryMenu, setSecondaryMenuProps
             className="custom-table w-full"
             columns={tableColumns}
             // loading={earningsListLoading}
-            dataSource={earningsList || []}
+            dataSource={data?.list || []}
             rowClassName={() => 'custom-table-row'}
             pagination={pagination}
-            // loading={loading}
+            loading={isLoading}
             locale={{ emptyText: <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description=""><div className="text-white">{t('common.no_data')}</div></Empty> }}
           />
         </ConfigProvider>
       </div>
+      <Button onClick={() => testButton()}>测试按钮</Button>
     </div>
   )
 }

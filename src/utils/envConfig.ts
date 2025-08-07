@@ -32,5 +32,7 @@ export const envConfig = {
   usdcAddress: import.meta.env.VITE_APP_USDC_ADDRESS,
 
   // 合约地址
-  rentCustodyAddress: import.meta.env.VITE_PUBLIC_RENT_CUSTODY_CONTRACT
+  rentCustodyAddress: import.meta.env.VITE_PUBLIC_RENT_CUSTODY_CONTRACT_ADDRESS,
+  redemptionManagerAddress: import.meta.env.VITE_PUBLIC_REDEMPTION_MANAGER_ADDRESS, // 赎回合约
+  treasuryAddress: import.meta.env.VITE_PUBLIC_TREASURY_ADDRESS // 国库合约
 }

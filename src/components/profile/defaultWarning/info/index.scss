@@ -10,6 +10,7 @@
     left: 0;
     height: 100%;
     width: calc(var(--step,4) * 20% + 6%);
+    max-width: 100%;
     background: #F6D659;
     border-radius: 12px;
     transition: width .3s ease;

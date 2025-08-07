@@ -1,3 +1,4 @@
+import type { EIP1193Provider } from '@privy-io/react-auth'
 import { getContracts } from '@/contract'
 import { ethers } from 'ethers'
 import { envConfig } from '../envConfig'
@@ -66,4 +67,17 @@ export async function generatePermitSignature(
   console.log('  Signature:', { v: sig.v, r: sig.r, s: sig.s })
 
   return sig
+}
+
+export async function getNameToContract(e: EIP1193Provider, contractName: string, address: string) {
+  const ethProvider = e || window.ethereum
+  const PropertyManager = getContracts(contractName)
+  const provider = new ethers.BrowserProvider(ethProvider)
+  const signer = await provider.getSigner()
+  const propertyContract = new ethers.Contract(
+    address,
+    PropertyManager.abi,
+    signer
+  )
+  return propertyContract
 }

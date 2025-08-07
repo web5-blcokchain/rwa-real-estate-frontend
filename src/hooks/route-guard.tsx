@@ -30,7 +30,6 @@ export function useRouteGuard() {
       '/help',
       '/guidance',
       /^\/news\/detail\/\d+$/,
-      '/account/create',
       '/properties',
       /^\/properties\/detail\/\d+$/,
       '/investment'
@@ -39,7 +38,6 @@ export function useRouteGuard() {
     const loggedInBlackList = [
       '/account/create'
     ]
-
     const currentPath = location.pathname
 
     // 如果用户已登录，且当前路径在黑名单中，则重定向到首页
@@ -76,23 +74,27 @@ export function useRouteGuard() {
     // TODO 判断当前用户是否审核通过
     // 1的时候表示已审核 2:中心化数据库审核拒绝 3.钱包绑定成功 4.kyc审核通过 5 kyc审核拒绝
 
-    const hasLoginUrl = ['/profile', '/properties/payment']
+    const hasLoginUrl = ['/profile', '/properties/payment', '/account/create']
     // console.log(currentPath, hasLoginUrl)
+
     if (hasLoginUrl.some(item => currentPath.includes(item))) {
+      const email = user?.email || user?.google?.email
       if (userData.audit_status === 0) {
         toast.error(t('header.error.wallet_already_bound'))
         navigate({
           to: '/account/create'
         })
       }
+      else if (code === UserCode.NotExist) {
+        if (!((userData.id || email) && currentPath.includes('/account/create'))) {
+          toast.error(t(!userData.id && !email ? 'header.error.login_required' : 'header.error.user_not_found'))
+          navigate({
+            to: !userData.id && !email ? '/home' : '/account/create'
+          })
+        }
+      }
     }
-    const email = user?.email || user?.google?.email
-    if (code === UserCode.NotExist) {
-      toast.error(t(userData.id || email ? 'header.error.user_not_found' : 'header.error.login_required'))
-      navigate({
-        to: userData.id ? '/account/create' : '/home'
-      })
-    }
+
     prevPathRef.current = location.pathname
     // 跳转路由后，返回页面顶部
     setTimeout(() => {
