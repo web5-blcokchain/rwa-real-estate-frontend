@@ -66,7 +66,7 @@ export default function RedemptionList() {
                             </div>
                             <div>
                               <div>{t('profile.redemptionList.redemption_date')}</div>
-                              <div>{dayjs(item.create_date * 1000).format('profile.redemptionList.YYYY-MM-DD')}</div>
+                              <div>{dayjs(item.create_date * 1000).format('YYYY-MM-DD')}</div>
                             </div>
                             <div>
                               <div>{t('profile.redemptionList.transaction_hash')}</div>
@@ -74,10 +74,10 @@ export default function RedemptionList() {
                             </div>
                             <div>
                               <div>{t('profile.redemptionList.income_date')}</div>
-                              <div>{dayjs(item.received_date * 1000).format('profile.redemptionList.YYYY-MM-DD')}</div>
+                              <div>{dayjs(item.received_date * 1000).format('YYYY-MM-DD')}</div>
                             </div>
                             <div className="fyc">
-                              <div className="w-fit rounded-md bg-#f6d659 px-4 py-1 !text-sm !text-black">{t(statusText[item.status])}</div>
+                              <div className="w-fit rounded-md bg-#f6d659 px-4 py-1 !text-sm !text-black">{t(`profile.redemptionList.${statusText[item.status]}`)}</div>
                             </div>
                           </div>
                         </div>

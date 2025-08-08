@@ -1,5 +1,5 @@
 import type { EIP1193Provider } from '@privy-io/react-auth'
-import type { ethers } from 'ethers'
+import { ethers } from 'ethers'
 import { envConfig } from '../envConfig'
 import { getPropertyTokenContract } from './propertyToken'
 import { getNameToContract, SmartErrorParses } from './utils'
@@ -20,16 +20,23 @@ export async function getRedemptionManagerContract(e: EIP1193Provider) {
  * @param redeemTokens 房屋代币地址
  * @returns
  */
-export async function redemptionWarningAsset(e: EIP1193Provider, contact: ethers.Contract, userAddress: string, redeemToken: string) {
+export async function redemptionWarningAsset(e: EIP1193Provider, contact: ethers.Contract, userAddress: string, redeemToken: string): Promise<{
+  tx: ethers.TransactionResponse
+  balance: number
+}> {
   try {
     const propertyTokenContract = await getPropertyTokenContract(e, redeemToken)
     // 用户授权给赎回合约，回收房屋代币
     // debugger
+    const decimals = await propertyTokenContract.decimals()
     const balance = await propertyTokenContract.balanceOf(userAddress)
     await propertyTokenContract.approve(envConfig.redemptionManagerAddress, balance)
     const tx = await contact.redeemTokens(redeemToken)
     tx.wait()
-    return tx
+    return {
+      tx,
+      balance: Number(ethers.formatUnits(balance, decimals))
+    }
   }
   catch (e) {
     const parsedError = SmartErrorParses.parseError(e)

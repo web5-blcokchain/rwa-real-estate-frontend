@@ -425,7 +425,7 @@
     "menu_dividend_statistics": "分红统计",
     "menu_appeal": "申诉信息",
     "menu_default_warning": "违约警告",
-    "menu_redemption_list": "赎回列表"
+    "menu_redemption_list": "赎回记录"
   },
   "footer": {
     "about": "关于",
@@ -742,11 +742,11 @@
         }
       },
       "redemption": {
-        "recovery_amount": "赎回金额",
+        "recovery_amount": "投资金额",
         "rental_income": "赎回收益",
         "token_price": "代币价格",
         "token_holdings": "持有代币",
-        "redemption_num": "{{num}}笔",
+        "redemption_num": "{{num}}个",
         "redemption_application": "赎回申请",
         "receive_wallet": "接收钱包",
         "transaction_hash": "交易哈希",

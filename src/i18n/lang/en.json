@@ -423,7 +423,7 @@
     "menu_dividend_statistics": "Dividend Statistics",
     "menu_appeal": "Appeal Information",
     "menu_default_warning": "Default Warning",
-    "menu_redemption_list": "Redemption List"
+    "menu_redemption_list": "Redemption Record"
   },
   "footer": {
     "about": "About",
@@ -740,11 +740,11 @@
         }
       },
       "redemption": {
-        "recovery_amount": "Redemption Amount",
+        "recovery_amount": "Investment Amount",
         "rental_income": "Redemption Income",
         "token_price": "Token Price",
         "token_holdings": "Token Holdings",
-        "redemption_num": "{{num}} items",
+        "redemption_num": "{{num}} pieces",
         "redemption_application": "Redemption Application",
         "receive_wallet": "Receive Wallet",
         "transaction_hash": "Transaction Hash",

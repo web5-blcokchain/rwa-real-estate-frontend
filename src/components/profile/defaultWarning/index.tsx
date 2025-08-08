@@ -100,7 +100,7 @@ export default function DefaultWarning({ setSecondaryMenu, setSecondaryMenuProps
       dataIndex: 'status',
       key: 'status',
       render: (_, record) => {
-        return <div>{t(record.status < 9 ? `profile.warning.status_map.${record.status + 1}` : '')}</div>
+        return <div>{t(record.status > 0 && record.status <= 9 ? `profile.warning.status_map.${record.status}` : '')}</div>
       }
     },
     {
@@ -157,7 +157,7 @@ export default function DefaultWarning({ setSecondaryMenu, setSecondaryMenuProps
         return (
           <div className="flex gap-1">
             <Button
-              disabled={record.status < 1}
+              disabled={record.status < 6}
               type="primary"
               onClick={() => {
                 setSecondaryMenu(ProfileTab.WarningRedemptionInfo)
@@ -165,7 +165,8 @@ export default function DefaultWarning({ setSecondaryMenu, setSecondaryMenuProps
                   id: record.id,
                   name: record.name,
                   address: record.address,
-                  contract_address: record.contract_address
+                  contract_address: record.contract_address,
+                  assets_id: record.properties_id
                 })
               }}
             >

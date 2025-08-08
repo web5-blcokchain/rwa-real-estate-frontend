@@ -3,6 +3,7 @@ import type { Dispatch, SetStateAction } from 'react'
 import { getRedemptionInfo, redemptionWarningAssets } from '@/api/assets'
 import { useUserStore } from '@/stores/user'
 import { formatNumberNoRound } from '@/utils/number'
+import { getPropertyTokenAmount } from '@/utils/web/propertyToken'
 import { getRedemptionManagerContract, redemptionWarningAsset } from '@/utils/web/redemptionManager'
 import { useWallets } from '@privy-io/react-auth'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -19,7 +20,7 @@ function RedemptionMoadl({ visibleInfo, redemptionType, message = '', hash = '' 
   const { t } = useTranslation()
   const copyText = (text: string) => {
     navigator.clipboard.writeText(text)
-    toast.success(t('profile.warning.redemption.common.copy_success'))
+    toast.success(t('common.copy_success'))
   }
 
   return (
@@ -43,7 +44,7 @@ function RedemptionMoadl({ visibleInfo, redemptionType, message = '', hash = '' 
                   <div>{t('profile.warning.redemption.modal.success.content')}</div>
                   <div className="fcc gap-2 rounded-md bg-#212328 px-2 py-1">
                     <div className="flex-1 truncate">0x7c5e8f3d9a1b4c2d6e44329f</div>
-                    <div onClick={() => copyText(hash)} className="w-fit cursor-pointer rounded-md bg-#898989 px-4 py-1">{t('profile.warning.redemption.common.copy')}</div>
+                    <div onClick={() => copyText(hash)} className="w-fit cursor-pointer rounded-md bg-#898989 px-4 py-1">{t('common.copy')}</div>
                   </div>
                 </div>
               )
@@ -68,7 +69,7 @@ function RedemptionMoadl({ visibleInfo, redemptionType, message = '', hash = '' 
 }
 
 export default function WarningRedemptionInfo({ secondaryMenuProps }:
-{ secondaryMenuProps: { id: number, name: string, address: string, contract_address: string } }) {
+{ secondaryMenuProps: { id: number, name: string, address: string, contract_address: string, assets_id: number } }) {
   const { t } = useTranslation()
 
   // 获取赎回信息
@@ -79,33 +80,13 @@ export default function WarningRedemptionInfo({ secondaryMenuProps }:
       return data.data
     }
   })
-
-  const redemptionInfo = useMemo(() => {
-    return [
-      {
-        title: 'profile.warning.redemption.recovery_amount',
-        value: `$${formatNumberNoRound(data?.total_current)}`
-      },
-      {
-        title: 'profile.warning.redemption.rental_income',
-        value: `$${formatNumberNoRound(data?.redemption_current)}`
-      },
-      {
-        title: 'profile.warning.redemption.token_price',
-        value: `$${formatNumberNoRound(Number(data?.price) * Number(data?.total_number))}`
-      },
-      {
-        title: 'profile.warning.redemption.token_holdings',
-        value: <span>{t('profile.warning.redemption.redemption_num', { num: data?.total_number || 0 })}</span>
-      }
-    ]
-  }, [data])
+  const [isRedemption, setIsRedemption] = useState(false)
   const { wallets } = useWallets()
   const [visible, setVisible] = useState(false)
   const [redemptionType, setRedemptionType] = useState(0)
   const { userData } = useUserStore()
 
-  const { mutateAsync } = useMutation({
+  const { mutateAsync, isPending: getRedemptionWarningInfoLoading } = useMutation({
     mutationKey: ['redemptionWarning'],
     mutationFn: async (data: {
       id: string
@@ -120,6 +101,7 @@ export default function WarningRedemptionInfo({ secondaryMenuProps }:
     hash: ''
   })
   const [redemptionLoading, setRedemptionLoading] = useState(false)
+  // 赎回资产
   async function redemptionWarningAmount() {
     setRedemptionLoading(true)
     try {
@@ -131,14 +113,15 @@ export default function WarningRedemptionInfo({ secondaryMenuProps }:
       const ethProvider = await wallet.getEthereumProvider()
       const contact = await getRedemptionManagerContract(ethProvider)
       // 操作合约赎回资产
-      const tx = await redemptionWarningAsset(ethProvider, contact as ethers.Contract, wallet.address, secondaryMenuProps.contract_address)
+      const { tx, balance } = await redemptionWarningAsset(ethProvider, contact as ethers.Contract, wallet.address, secondaryMenuProps.contract_address)
       if (tx) {
         const res = await mutateAsync({
-          id: secondaryMenuProps.id.toString(),
-          price: `${data?.total_current || 0}`,
+          id: secondaryMenuProps.assets_id.toString(),
+          price: `${balance}`,
           tx_hash: tx.hash
         })
         if (res.code === 1) {
+          setIsRedemption(true)
           setRedemptionType(0)
           setModelValue({
             message: '',
@@ -149,22 +132,17 @@ export default function WarningRedemptionInfo({ secondaryMenuProps }:
         else {
           throw new Error('赎回失败')
         }
-        // setRedemptionType(0)
-        // setModelValue({
-        //   message: '',
-        //   hash: tx.hash
-        // })
       }
       else {
         throw new Error('赎回失败')
       }
     }
-    catch (e) {
+    catch (e: any) {
       console.error(e)
       setRedemptionType(1)
       setVisible(true)
       setModelValue({
-        message: '',
+        message: e,
         hash: ''
       })
     }
@@ -173,20 +151,65 @@ export default function WarningRedemptionInfo({ secondaryMenuProps }:
     }
   }
 
+  const [redemptionInfo, setRedemptionInfo] = useState<{
+    title: string
+    value: string | React.ReactNode
+  }[]>([])
+  const [amountLoading, setAmountLoading] = useState(false)
+  useEffect(() => {
+    const func = async () => {
+      setAmountLoading(true)
+      // 通过合约获取资产数量
+      const wallet = wallets.find(wallet => wallet.walletClientType !== 'privy')
+      let amount = 0
+      if (!wallet && redemptionInfo.length > 0) {
+        setAmountLoading(false)
+        return
+      }
+      else if (wallet) {
+        const ethProvider = await wallet.getEthereumProvider()
+        amount = await getPropertyTokenAmount(ethProvider, secondaryMenuProps.contract_address, wallet.address)
+      }
+      setRedemptionInfo([
+        {
+          title: 'profile.warning.redemption.recovery_amount',
+          value: `$${formatNumberNoRound(data?.total_current)}`
+        },
+        {
+          title: 'profile.warning.redemption.rental_income',
+          value: `$${formatNumberNoRound(data?.redemption_current)}`
+        },
+        {
+          title: 'profile.warning.redemption.token_price',
+          value: `$${formatNumberNoRound(Number(data?.price) * Number(data?.total_number))}`
+        },
+        {
+          title: 'profile.warning.redemption.token_holdings',
+          value: <span>{amount ? t('profile.warning.redemption.redemption_num', { num: amount || 0 }) : '-'}</span>
+        }
+      ])
+      setAmountLoading(false)
+    }
+    func()
+  }, [data, wallets])
   return (
     <div>
-      <div className="grid grid-cols-4 gap-4 max-md:grid-cols-2">
-        {
-          redemptionInfo.map((item) => {
-            return (
-              <div className="rounded-md bg-#202329 p-6 space-y-3" key={item.title}>
-                <div className="text-base text-#898989">{t(item.title)}</div>
-                <div className="truncate text-2xl text-white" title={item.value as string}>{item.value}</div>
-              </div>
-            )
-          })
-        }
-      </div>
+
+      <Waiting className={cn('fcc', amountLoading || getRedemptionWarningInfoLoading ? 'h-120px' : '')} for={!amountLoading || getRedemptionWarningInfoLoading}>
+        <div className="grid grid-cols-4 gap-4 max-md:grid-cols-2">
+          {
+            redemptionInfo.map((item) => {
+              return (
+                <div className="rounded-md bg-#202329 p-6 space-y-3" key={item.title}>
+                  <div className="text-base text-#898989">{t(item.title)}</div>
+                  <div className="truncate text-2xl text-white" title={item.value as string}>{item.value}</div>
+                </div>
+              )
+            })
+          }
+        </div>
+      </Waiting>
+
       <div className="mt-10 text-white space-y-2">
         <div className="text-2xl max-md:text-xl">
           <div>{t('profile.warning.redemption.redemption_application')}</div>
@@ -204,7 +227,7 @@ export default function WarningRedemptionInfo({ secondaryMenuProps }:
         </div> */}
       </div>
       <div className="mt-35 fcc">
-        <Button loading={redemptionLoading} onClick={() => redemptionWarningAmount()} type="primary" size="large" className="text-black">{t('profile.warning.redemption.redemption_now')}</Button>
+        <Button disabled={isRedemption} loading={redemptionLoading} onClick={() => redemptionWarningAmount()} type="primary" size="large" className="text-black">{t('profile.warning.redemption.redemption_now')}</Button>
       </div>
       <RedemptionMoadl message={modelValue.message} hash={modelValue.hash} visibleInfo={[visible, setVisible]} redemptionType={redemptionType} />
     </div>

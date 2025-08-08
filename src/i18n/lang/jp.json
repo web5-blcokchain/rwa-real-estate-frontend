@@ -423,7 +423,7 @@
     "menu_dividend_statistics": "配当統計",
     "menu_appeal": "申訴情報",
     "menu_default_warning": "違約警告",
-    "menu_redemption_list": "買い戻しリスト"
+    "menu_redemption_list": "買い戻し記録"
   },
   "footer": {
     "about": "について",
@@ -736,11 +736,11 @@
         }
       },
       "redemption": {
-        "recovery_amount": "買い戻し金額",
+        "recovery_amount": "投資金額",
         "rental_income": "買い戻し収益",
         "token_price": "トークン価格",
         "token_holdings": "トークン保有",
-        "redemption_num": "{{num}}項目",
+        "redemption_num": "{{num}} 個",
         "redemption_application": "買い戻し申請",
         "receive_wallet": "受取財布",
         "transaction_hash": "取引ハッシュ",
