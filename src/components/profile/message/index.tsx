@@ -104,6 +104,7 @@ export default function Message() {
       <ConfigProvider locale={locale}>
         <Pagination
           showQuickJumper
+          showSizeChanger={false}
           align="end"
           total={total}
           pageSize={pageSize}

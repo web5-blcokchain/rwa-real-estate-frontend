@@ -177,6 +177,8 @@ export const TransactionStatus: FC = () => {
           current={page}
           pageSize={20}
           total={total}
+          showQuickJumper={false}
+          showSizeChanger={false}
           onChange={page => setPage(page)}
           className="mt-4"
         />

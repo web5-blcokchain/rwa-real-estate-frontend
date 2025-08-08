@@ -5,19 +5,15 @@ import explanation2 from '@/assets/icons/shield.svg'
 import coinType1 from '@/assets/images/home/coin-type-1.png'
 import coinType2 from '@/assets/images/home/coin-type-2.png'
 import coinType3 from '@/assets/images/home/coin-type-3.png'
-import document1 from '@/assets/images/home/document-1.png'
-import document2 from '@/assets/images/home/document-2.png'
-import document3 from '@/assets/images/home/document-3.png'
 import introduction1 from '@/assets/images/home/introduction-1.png'
 import introduction2 from '@/assets/images/home/introduction-2.png'
 import introduction3 from '@/assets/images/home/introduction-3.png'
 import introduction4 from '@/assets/images/home/introduction-4.png'
 import FeatureCard from '@/components/home/feature-card'
-import Document, { documentType } from '@/components/profile/document'
+import { NewsList } from '@/components/news/newsList'
 import { joinImagesPath } from '@/utils/url'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
-import { ConfigProvider, Tabs } from 'antd'
 import './index.scss'
 
 export const Route = createLazyFileRoute('/_app/home/')({
@@ -25,7 +21,7 @@ export const Route = createLazyFileRoute('/_app/home/')({
 })
 
 function RouteComponent() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const navigate = useNavigate()
 
   const {
@@ -68,30 +64,6 @@ function RouteComponent() {
     { title: 'home.investorGuide.rentNoWorry', content: 'home.investorGuide.autoManage', img: introduction3 },
     { title: 'home.investorGuide.control', content: 'home.investorGuide.flexibleInvest', img: introduction4 }
   ]
-
-  const documentList = [
-    { title: 'home.document.upgrade', content: 'home.document.upgradeDesc', type: 0, date: '2025/4/28', img: document1 },
-    { title: 'home.document.upgrade', content: 'home.document.upgradeDesc', type: 0, date: '2025/4/28', img: document2 },
-    { title: 'home.document.upgrade', content: 'home.document.upgradeDesc', type: 0, date: '2025/4/28', img: document3 }
-  ]
-  const [tabsKey, setTabsKey] = useState(0)
-  const [activeKey, setActiveKey] = useState('1')
-  useEffect(() => {
-    // 语言变化后触发 Tabs 的宽度重计算
-    setTabsKey(prev => prev + 1)
-  }, [i18n.language])
-
-  const tabOfDocument = (index: number) => {
-    return (
-      <div className="grid grid-cols-3 gap-[29px] rounded-14px max-md:grid-cols-2 max-lg:gap-3 max-xl:gap-6 max-md:[&>:last-child]:hidden">
-        {
-          documentList.map((res) => {
-            return <Document key={res.title} data={res} index={index} />
-          })
-        }
-      </div>
-    )
-  }
 
   return (
     <div className="" style={{ '--conent-h': `${headerH || 80}px` } as any}>
@@ -266,34 +238,7 @@ function RouteComponent() {
         </div>
 
         <div className="home-tables">
-          <ConfigProvider
-            theme={{
-              // 1. 单独使用暗色算法
-              components: {
-                Tabs: {
-
-                }
-              }
-
-              // 2. 组合使用暗色算法与紧凑算法
-              // algorithm: [theme.darkAlgorithm, theme.compactAlgorithm],
-            }}
-          >
-            <Tabs
-              activeKey={activeKey}
-              key={tabsKey}
-              onChange={setActiveKey}
-              className="mt-77px max-lg:mt-22px"
-              defaultActiveKey="1"
-              tabPosition="top"
-              items={[
-                { label: t(documentType[0]), key: '1', children: tabOfDocument(0) },
-                { label: t(documentType[1]), key: '2', children: tabOfDocument(1) },
-                { label: t(documentType[2]), key: '3', children: tabOfDocument(2) },
-                { label: t(documentType[3]), key: '4', children: tabOfDocument(3) }
-              ]}
-            />
-          </ConfigProvider>
+          <NewsList hasPagination={false} className="!px-0" />
         </div>
       </div>
     </div>

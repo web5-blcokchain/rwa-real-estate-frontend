@@ -185,7 +185,7 @@ export default function WarningRedemptionInfo({ secondaryMenuProps }:
         },
         {
           title: 'profile.warning.redemption.token_holdings',
-          value: <span>{amount ? t('profile.warning.redemption.redemption_num', { num: amount || 0 }) : '-'}</span>
+          value: <span>{wallet ? t('profile.warning.redemption.redemption_num', { num: amount || 0 }) : '-'}</span>
         }
       ])
       setAmountLoading(false)

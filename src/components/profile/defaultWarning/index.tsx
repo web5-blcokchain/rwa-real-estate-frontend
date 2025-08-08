@@ -157,7 +157,7 @@ export default function DefaultWarning({ setSecondaryMenu, setSecondaryMenuProps
         return (
           <div className="flex gap-1">
             <Button
-              disabled={record.status < 6}
+              disabled={record?.status < 6 || !!record?.tx_hash}
               type="primary"
               onClick={() => {
                 setSecondaryMenu(ProfileTab.WarningRedemptionInfo)

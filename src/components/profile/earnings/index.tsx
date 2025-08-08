@@ -279,6 +279,8 @@ export const Earnings: FC = () => {
 
       <div className="flex justify-end">
         <Pagination
+          showQuickJumper={false}
+          showSizeChanger={false}
           current={page}
           pageSize={20}
           total={total}
