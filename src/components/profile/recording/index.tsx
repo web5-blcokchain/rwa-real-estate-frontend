@@ -123,6 +123,7 @@ function Recording() {
         iconClass="size-8"
       >
         <TableComponent
+          key="recording-table"
           columns={columns}
           data={transactionsData || []}
         />

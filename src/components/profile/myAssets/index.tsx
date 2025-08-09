@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next'
 
 export function MyAssets() {
   const { t } = useTranslation()
-  const coinStatus = ['unclaimed', 'claimed', 'withdraw', 'failed']
+  const coinStatus = ['unclaimed', 'claimed', 'withdraw', 'failed', 'distribution']
   const copyText = (text: string) => {
     navigator.clipboard.writeText(text)
     toast.success(t('common.copy_success'))
@@ -196,6 +196,7 @@ export function MyAssets() {
           columns={columns}
           data={overviewData || []}
           loading={isFetching}
+          key="menu_assets_summary"
           pagination={
             {
               defaultCurrent: overPageInfo.page,

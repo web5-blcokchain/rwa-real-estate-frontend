@@ -53,9 +53,9 @@ function RedemptionMoadl({ visibleInfo, redemptionType, message = '', hash = '' 
                   <div className="i-codicon:error size-10 bg-white text-base"></div>
                   <div className="text-2xl">{t('profile.warning.redemption.modal.error.title')}</div>
                   <div>{t('profile.warning.redemption.modal.error.content')}</div>
-                  <div className="fccc gap-2">
+                  <div className="w-full fccc gap-2">
                     <Button type="primary" className="w-full">{t('profile.warning.redemption.modal.error.button')}</Button>
-                    <div className="px-3 text-left text-xs text-#6D6C6C [&>div]:w-full">
+                    <div className="w-full px-3 text-left text-xs text-#6D6C6C [&>div]:w-full">
                       <div>{t('profile.warning.redemption.modal.error.error')}</div>
                       <div>{t(message || 'profile.warning.redemption.modal.error.error_message')}</div>
                     </div>
@@ -110,6 +110,11 @@ export default function WarningRedemptionInfo({ secondaryMenuProps }:
         toast.error(t('payment_method.please_connect_wallet'))
         return
       }
+      // 判断是否连接钱包不对
+      if (wallet.address !== userData.wallet_address) {
+        toast.warn(t('payment.errors.please_use_bound_wallet'))
+        return
+      }
       const ethProvider = await wallet.getEthereumProvider()
       const contact = await getRedemptionManagerContract(ethProvider)
       // 操作合约赎回资产
@@ -130,11 +135,11 @@ export default function WarningRedemptionInfo({ secondaryMenuProps }:
           setVisible(true)
         }
         else {
-          throw new Error('赎回失败')
+          throw new Error(res.msg)
         }
       }
       else {
-        throw new Error('赎回失败')
+        throw new Error('钱包操作失败')
       }
     }
     catch (e: any) {
@@ -142,7 +147,7 @@ export default function WarningRedemptionInfo({ secondaryMenuProps }:
       setRedemptionType(1)
       setVisible(true)
       setModelValue({
-        message: e,
+        message: e.message,
         hash: ''
       })
     }

@@ -8,7 +8,8 @@ axios.defaults.headers.common.server = true
 export interface ResponseData<T> {
   code?: number
   data?: T
-  error?: any
+  msg?: string
+  time?: number
 }
 
 axios.interceptors.request.use(

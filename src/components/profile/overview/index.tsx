@@ -16,7 +16,7 @@ import TableComponent from '../../common/table-component'
 function Overview() {
   const [wallet, setWallet] = useState<ConnectedWallet | null>(null)
   const { t } = useTranslation()
-  const coinStatus = ['unclaimed', 'claimed', 'withdraw', 'failed']
+  const coinStatus = ['unclaimed', 'claimed', 'withdraw', 'failed', 'distribution']
 
   // 表格1配置
   const columns: TableProps<PropertieItem>['columns'] = [

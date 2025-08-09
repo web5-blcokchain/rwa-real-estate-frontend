@@ -114,6 +114,7 @@ export function AssetsSummary() {
           columns={columns}
           data={overviewData || []}
           loading={isFetching}
+          key="summaryRecord"
           pagination={
             {
               defaultCurrent: overPageInfo.page,

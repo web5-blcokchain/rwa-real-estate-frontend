@@ -120,7 +120,7 @@ function RouteComponent() {
       // 获取房屋代币对应的usdc价格
       let usdcPrice = await propertyManagerContract.issuePrice()
       usdcPrice = ethers.formatUnits(usdcPrice, usdtDecimals)
-      const requiredUsdtAmount = String(tokens * Number(usdcPrice) * 1.02)
+      const requiredUsdtAmount = String(tokens * Number(usdcPrice))
       // 计算需要支付USDT余额 百分之2的手续费 （总数 * 价格 * 手续费）
       const payUSDCAmount = ethers.parseUnits(requiredUsdtAmount, usdtDecimals)
       const usdtBalance = await usdtContract.balanceOf(signerAddress)
@@ -167,7 +167,7 @@ function RouteComponent() {
         // 生成支付合约的精度数
         const tx = await (propertyManagerContract.connect(signer) as any)
           .purchaseTokens(
-            ethers.parseEther((tokens * 1.02).toFixed(18).toString()), // 截断小数点，防止位数太多导致函数报错
+            ethers.parseEther((tokens).toFixed(18).toString()), // 截断小数点，防止位数太多导致函数报错
             usdtContract.getAddress(),
             deadline,
             v,
@@ -308,7 +308,7 @@ function RouteComponent() {
               </div>
             </div>
             <div>
-              <div>
+              {/* <div>
                 {t('properties.payment.platform_fee')}
                 {' '}
                 (2%)
@@ -316,7 +316,7 @@ function RouteComponent() {
               <div className="text-right">
                 $
                 {formatNumberNoRound(tokens * Number(item.price) * 0.02, 8)}
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -331,7 +331,7 @@ function RouteComponent() {
           <div>{t('properties.payment.total_amount')}</div>
           <div className="text-primary">
             $
-            {formatNumberNoRound(tokens * Number(item.price) * 1.02, 8)}
+            {formatNumberNoRound(tokens * Number(item.price), 8)}
           </div>
         </div>
       </div>

@@ -158,7 +158,7 @@ function RouteComponent() {
         />
       </div>
       <Waiting for={!isLoading} className="fcc py-8" iconClass="size-10">
-        <TableComponent columns={columns} data={collectionData}>
+        <TableComponent key="Collection_List" columns={columns} data={collectionData}>
           <div className="mb-2 text-5">Collection List</div>
         </TableComponent>
       </Waiting>

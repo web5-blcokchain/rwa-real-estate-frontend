@@ -15,7 +15,7 @@ import dayjs from 'dayjs'
 // 代币发放记录
 export function DistributionRecord() {
   const { t } = useTranslation()
-  const coinStatus = ['unclaimed', 'claimed', 'withdraw', 'failed']
+  const coinStatus = ['unclaimed', 'claimed', 'withdraw', 'failed', 'distribution']
   const { wallets } = useWallets()
 
   const [addCoinLoading, setAddCoinLoading] = useState(0)
@@ -175,6 +175,7 @@ export function DistributionRecord() {
         columns={columns}
         data={overviewData || []}
         loading={isFetching}
+        key="distributionRecord"
         pagination={
           {
             defaultCurrent: overPageInfo.page,

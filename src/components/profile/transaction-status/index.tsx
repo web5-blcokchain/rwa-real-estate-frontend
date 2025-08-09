@@ -167,6 +167,7 @@ export const TransactionStatus: FC = () => {
         iconClass="size-8"
       >
         <TableComponent
+          key="transactionsData"
           columns={columns}
           data={transactionsData}
         />

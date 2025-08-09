@@ -225,6 +225,7 @@ export default function DividendStatistics() {
         <div className="mt-4 rounded-md bg-#212328 p-4">
           <ConfigProvider locale={locale}>
             <Table
+              key="DividendStatistics-table"
               scroll={{ x: 'max-content' }}
               className="custom-table w-full"
               columns={tableColumns}

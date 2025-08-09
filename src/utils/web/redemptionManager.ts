@@ -42,6 +42,6 @@ export async function redemptionWarningAsset(e: EIP1193Provider, contact: ethers
     const parsedError = SmartErrorParses.parseError(e)
     console.error('解析内容', parsedError)
     console.error('原始内容', e)
-    throw new Error('赎回失败')
+    throw new Error('钱包操作失败')
   }
 }
