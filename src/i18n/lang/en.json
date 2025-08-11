@@ -568,7 +568,13 @@
       "add_to_wallet": "Add to Wallet",
       "token_name": "Token Name",
       "add_token_success": "Token added successfully",
-      "add_token_failed": "Failed to add token"
+      "add_token_failed": "Failed to add token",
+      "token": "Token",
+      "claims_status": {
+        "0": " Not claimed",
+        "1": " Claimed",
+        "2": " Claim Failed"
+      }
     },
     "propertyTokens": {
       "title": "Tokens Held"
@@ -759,7 +765,9 @@
             "content": "Unfortunately, your asset token redemption could not be completed. Please check the reason for failure and try again.",
             "button": "Retry",
             "error": "Failure Reason",
-            "error_message": "The transaction failed due to insufficient network fees. Your wallet balance is not enough to cover the current gas cost. Please top up your wallet or adjust the gas settings and try again."
+            "error_message": "The transaction failed due to insufficient network fees. Your wallet balance is not enough to cover the current gas cost. Please top up your wallet or adjust the gas settings and try again.",
+            "error_message_400001": "User cancels authorization",
+            "error_message_400002": "Wallet operation failed"
           }
         }
       }

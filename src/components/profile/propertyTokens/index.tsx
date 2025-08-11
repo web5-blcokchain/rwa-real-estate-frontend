@@ -12,25 +12,30 @@ function PropertyTokens() {
   const [total, setTotal] = useState(0)
   const [keyword, setKeyword] = useState('')
   const { t } = useTranslation()
+  const [refetchCount, setRefetchCount] = useState(0)
   const [tokenData, setTokenData] = useState<PropertyInvestment[]>([])
+  const pageSize = 20
 
   const getTokenData = async () => {
-    const res = await apiMyInfo.getMeInfoSummary({ page, pageSize: 20, keyword })
+    const res = await apiMyInfo.getMeInfoSummary({ page, pageSize, keyword })
     if (page === 1)
       setTokenData(res.data?.list || [])
     else setTokenData([...tokenData, ...(res.data?.list || [] as any[])])
     return res
   }
 
-  const { isLoading, isFetching, refetch: refetchPropertyTokens } = useQuery({
-    queryKey: ['overviewSummary', { page }],
+  const { isLoading, isFetching, refetch } = useQuery({
+    queryKey: ['overviewSummary'],
     queryFn: async () => {
       const res = await getTokenData()
       setTotal(res.data?.count || 0)
       return res.data?.list || []
     }
   })
-  if (isLoading && page <= 1 && !keyword) {
+  useEffect(() => {
+    refetch()
+  }, [page, refetchCount])
+  if (isLoading) {
     return (
       <div className="w-full fcc p-8 h-dvh">
         <Spin />
@@ -59,7 +64,7 @@ function PropertyTokens() {
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
                     setPage(1)
-                    refetchPropertyTokens()
+                    setRefetchCount(refetchCount + 1)
                   }
                 }}
                 value={keyword}
@@ -103,7 +108,7 @@ function PropertyTokens() {
           </div>
         )} */}
         {
-          (total > page * 20 && tokenData && tokenData.length > 20) && (
+          (total > page * pageSize) && (
             <div
               className="mt-4 fcc cursor-pointer text-center text-white"
               onClick={() => {

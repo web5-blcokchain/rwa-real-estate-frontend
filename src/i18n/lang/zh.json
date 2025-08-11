@@ -570,7 +570,13 @@
       "add_to_wallet": "添加代币到钱包",
       "token_name": "代币名",
       "add_token_success": "添加代币成功",
-      "add_token_failed": "添加代币失败"
+      "add_token_failed": "添加代币失败",
+      "token": "代币",
+      "claims_status": {
+        "0": "未领取",
+        "1": "已领取",
+        "2": "领取失败"
+      }
     },
     "propertyTokens": {
       "title": "持有的代币"

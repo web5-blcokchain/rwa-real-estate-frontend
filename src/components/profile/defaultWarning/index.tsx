@@ -13,8 +13,8 @@ import dayjs from 'dayjs'
 
 // 违约警告
 export default function DefaultWarning({ setSecondaryMenu, setSecondaryMenuProps }: { setSecondaryMenu: (menu: ProfileTab) => void, setSecondaryMenuProps: (props: any) => void }) {
-  const { t } = useTranslation()
-  const locale = i18n.language === 'en' ? enUS : i18n.language === 'zh' ? zhCN : jaJP
+  const { t, i18n } = useTranslation()
+  const locale = useMemo(() => i18n.language === 'en' ? enUS : i18n.language === 'zh' ? zhCN : jaJP, [i18n])
   const { data: investmentDetails, isFetching: investmentDetailsLoading } = useQuery({
     queryKey: ['getInvestmentDetails'],
     queryFn: async () => {
@@ -53,12 +53,12 @@ export default function DefaultWarning({ setSecondaryMenu, setSecondaryMenuProps
   })
 
   useEffect(() => {
-    if (typeof data?.count === 'number') {
-      setPagination({
-        ...pagination,
-        total: data.count
-      })
-    }
+    setPagination((oldPagination) => {
+      return {
+        ...oldPagination,
+        total: (data?.count || 0)
+      }
+    })
   }, [data])
 
   const copyText = (text: string) => {
@@ -233,7 +233,16 @@ export default function DefaultWarning({ setSecondaryMenu, setSecondaryMenuProps
             // loading={earningsListLoading}
             dataSource={data?.list || []}
             rowClassName={() => 'custom-table-row'}
-            pagination={pagination}
+            pagination={{
+              ...pagination,
+              onChange: (page, pageSize) => {
+                setPagination({
+                  ...pagination,
+                  current: page,
+                  pageSize
+                })
+              }
+            }}
             loading={isLoading}
             locale={{ emptyText: <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description=""><div className="text-white">{t('common.no_data')}</div></Empty> }}
           />

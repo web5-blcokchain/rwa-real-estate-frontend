@@ -27,12 +27,15 @@ function RouteComponent() {
   }
 
   const { data, isLoading, refetch, isRefetching } = useQuery({
-    queryKey: ['properties', page],
+    queryKey: ['properties'],
     queryFn: async () => {
       return searchDataList()
     }
     // enabled: false,
   })
+  useEffect(() => {
+    refetch()
+  }, [page])
   const [searchTime, setSearchTime] = useState(0)
   const [timer, setTimer] = useState<NodeJS.Timeout | null>(null)
 
@@ -90,6 +93,7 @@ function RouteComponent() {
                 <div className="grid grid-cols-3 mt-8 gap-8 max-lg:grid-cols-2 max-md:grid-cols-1">
                   {data && Array.isArray(data.list) && data.list.map((item: Record<string, any>) => (
                     <RealEstateCard
+                      monthly_rent={item.monthly_rent}
                       key={item.id}
                       houseId={item.id}
                       collect={item.is_collect}

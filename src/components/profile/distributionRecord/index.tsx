@@ -5,6 +5,7 @@ import copyIcon from '@/assets/icons/copy.svg'
 import group272Icon from '@/assets/icons/group272.png'
 import TableComponent from '@/components/common/table-component'
 import { envConfig } from '@/utils/envConfig'
+import { formatNumberNoRound } from '@/utils/number'
 import { addTokenToWallet } from '@/utils/wallet'
 import { useWallets } from '@privy-io/react-auth'
 import { useQuery } from '@tanstack/react-query'
@@ -77,7 +78,7 @@ export function DistributionRecord() {
       title: <div>{t('profile.data_count.amount')}</div>,
       dataIndex: 'number',
       key: 'Amount',
-      render: text => <a>{text}</a>
+      render: text => <div>{formatNumberNoRound(Number(text), 8)}</div>
     },
     // TODO 价值、占比、24小时变化
     {
@@ -86,7 +87,7 @@ export function DistributionRecord() {
       render: (_, record) => (
         <>
           <div className="flex items-center justify-start">
-            <div className="">{Number(record.total_current) * Number(record.current_price)}</div>
+            <div className="">{formatNumberNoRound(Number(record.total_current) * Number(record.current_price), 8)}</div>
           </div>
         </>
       )
@@ -162,8 +163,8 @@ export function DistributionRecord() {
     })
     return res
   }
-  const { data: overviewData, isFetching, refetch: refetchOverview } = useQuery({
-    queryKey: ['distributionRecord——overview'],
+  const { data: overviewData, isFetching } = useQuery({
+    queryKey: ['distributionRecord——overview', overPageInfo.page, overPageInfo.pageSize],
     queryFn: async () => {
       const res = await getOverviewData()
       return res.data?.list
@@ -187,7 +188,6 @@ export function DistributionRecord() {
                 page,
                 pageSize
               })
-              refetchOverview()
             }
           }
         }

@@ -18,6 +18,7 @@ export const RealEstateCard: FC<{
   expected_annual_return: number
   annual_return_max: number
   annual_return_min: number
+  monthly_rent: number
 } & React.HTMLAttributes<HTMLDivElement>> = ({
   pictures,
   title,
@@ -33,6 +34,7 @@ export const RealEstateCard: FC<{
   expected_annual_return,
   annual_return_max,
   annual_return_min,
+  monthly_rent,
   className,
   ...props
 }) => {
@@ -64,16 +66,24 @@ export const RealEstateCard: FC<{
           </div>
           <div className="line-clamp-1 text-sm text-[#b5b5b5]">{location}</div>
           <div className="fyc gap-1 [&>div]:flex-1 [&>div]:truncate">
-            <div>
+            <div title={numbro(price).format({
+              mantissa: 2,
+              thousandSeparated: true
+            })}
+            >
               市场价值:$
               {numbro(price).format({
                 mantissa: 2,
                 thousandSeparated: true
               })}
             </div>
-            <div>
+            <div title={numbro(monthly_rent).format({
+              mantissa: 2,
+              thousandSeparated: true
+            })}
+            >
               月租金:$
-              {numbro(price).format({
+              {numbro(monthly_rent).format({
                 mantissa: 2,
                 thousandSeparated: true
               })}
@@ -82,16 +92,16 @@ export const RealEstateCard: FC<{
         </div>
         <div className="fyc flex-1 bg-#e7bb41 py-2 text-black [&>div]:fccc [&>div]:flex-1">
           <div>
-            <div className="text-xl font-bold">
+            <div className="text-xl font-bold" title={`${formatNumberNoRound(`${expected_annual_return}`, 2)}%`}>
               {' '}
-              {expected_annual_return}
+              {formatNumberNoRound(`${expected_annual_return}`, 2)}
               %
             </div>
             <div className="mt-1 text-sm">租金收益</div>
           </div>
           <div>
             <div className="truncate text-xl font-bold" title={`${formatNumberNoRound(`${annual_return_min}`, 2)}% ~ ${formatNumberNoRound(`${annual_return_max}`, 2)}%`}>
-              {formatNumberNoRound(`${12.22}`, 2)}
+              {formatNumberNoRound(`${annual_return_min}`, 2)}
               %
               ~
               {formatNumberNoRound(`${annual_return_max}`, 2)}

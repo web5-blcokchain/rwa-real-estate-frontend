@@ -17,20 +17,24 @@ export default function RedemptionList() {
     showQuickJumper: true,
     showSizeChanger: false
   })
-  const { data, isFetching: isLoading } = useQuery({
-    queryKey: ['redemptionList', pagination.current, pagination.pageSize],
+  const getRedemptionList = async () => {
+    return await getWarningRedemptionList({ page: pagination.current, pageSize: pagination.pageSize })
+  }
+  const { data, isFetching: isLoading, refetch: redemptionListRefetch } = useQuery({
+    queryKey: ['redemptionList'],
     queryFn: async () => {
-      const data = await getWarningRedemptionList({ page: pagination.current, pageSize: pagination.pageSize })
+      const data = await getRedemptionList()
       return data.data
     }
   })
   useEffect(() => {
-    if (typeof data?.count === 'number') {
-      setPagination({
-        ...pagination,
-        total: data.count
-      })
-    }
+    redemptionListRefetch()
+  }, [pagination.current, pagination.pageSize])
+  useEffect(() => {
+    setPagination({
+      ...pagination,
+      total: (data?.total || 0)
+    })
   }, [data])
   const statusText = ['processing', 'completed']
 
@@ -43,7 +47,7 @@ export default function RedemptionList() {
                 <div>
                   {data?.list.map((item) => {
                     return (
-                      <div key={item.id} className="mt-3">
+                      <div key={item.id} className="b-b-1 b-b-#242933 py-3">
                         <div className="overflow-hidden">
                           <div className="truncate text-xl max-md:text-base" title={item.name}>{item.name}</div>
                           <div className="truncate text-2xl max-md:text-xl" title={item.address}>{item.address}</div>
@@ -89,9 +93,16 @@ export default function RedemptionList() {
                       <Pagination
                         pageSize={pagination.pageSize}
                         current={pagination.current}
-                        total={pagination.current}
+                        total={pagination.total}
                         showQuickJumper
                         showSizeChanger={false}
+                        onChange={(page, pageSize) => {
+                          setPagination({
+                            ...pagination,
+                            current: page,
+                            pageSize
+                          })
+                        }}
                       />
                     </ConfigProvider>
                   </div>

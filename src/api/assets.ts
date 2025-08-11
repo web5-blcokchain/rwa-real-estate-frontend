@@ -53,22 +53,34 @@ export interface WarningRedemption {
   address: string
   name: string
 }
+export interface WarningRedemptionResponse<T> {
+  page: number
+  pageSize: number
+  total: number
+  totalPages: number
+  list: T[]
+}
 /**
  * 获取预警资产赎回列表
  * @param data {page:number,pageSize:number}
+ * @param data.page 页码
+ * @param data.pageSize 每页总量
  * @returns WarningRedemption
  */
 export function getWarningRedemptionList(data: {
   page: number
   pageSize: number
 }) {
-  return apiClient.post<DataListResponse<WarningRedemption>>('/api/earlyWarning/redemptionList', data)
+  return apiClient.post<WarningRedemptionResponse<WarningRedemption>>('/api/earlyWarning/redemptionList', data)
 }
 
 /**
  * 赎回逾期资产
  * @param data
- * @returns
+ * @param data.id
+ * @param data.price
+ * @param data.tx_hash
+ * @returns 成功信息
  */
 export async function redemptionWarningAssets(data: {
   id: string
@@ -85,7 +97,7 @@ export interface InvestmentDetails {
 }
 /**
  * 获取逾期汇总记录
- * @returns
+ * @returns InvestmentDetails 逾期汇总记录
  */
 export async function getInvestmentDetails() {
   return apiClient.post<InvestmentDetails>('/api/earlyWarning/investmentDetails')
@@ -100,7 +112,7 @@ export interface RedemptionInfo {
 /**
  * 赎回汇总
  * @param id
- * @returns
+ * @returns RedemptionInfo 赎回汇总
  */
 export async function getRedemptionInfo(id: number) {
   return apiClient.post<RedemptionInfo>('/api/earlyWarning/redemptionDetail', { id })

@@ -88,11 +88,11 @@ function RouteComponent() {
     if (!secondaryMenu) {
       switch (selectedTab) {
         case ProfileTab.Overview:
-          return <Overview />
+          return <Overview /> // 概述
         case ProfileTab.Edit:
-          return <ProfileEdit />
+          return <ProfileEdit /> // 编辑设置
         case ProfileTab.PropertyTokens:
-          return <PropertyTokens />
+          return <PropertyTokens /> // 房产列表
         case ProfileTab.Earnings:
           return <Earnings />
         case ProfileTab.History:

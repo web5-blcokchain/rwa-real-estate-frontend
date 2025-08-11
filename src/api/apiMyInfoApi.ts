@@ -113,6 +113,7 @@ export interface PropertieItem {
   draw_time: string
   drwa_hash: string
   contract_address: string
+  code: string
 }
 export interface AboutMeResponse {
   list: PropertieItem[]
@@ -172,6 +173,9 @@ export interface historyResponse {
   merkle_proof: string
   tx_hash: string
   remake: string
+  contract_address: string
+  property_name: string
+  price: string
 }
 interface EarningsInfoResponse {
   list: historyResponse[]

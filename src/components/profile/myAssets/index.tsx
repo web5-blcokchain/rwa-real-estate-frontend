@@ -7,11 +7,11 @@ import copyIcon from '@/assets/icons/copy.svg'
 import group272Icon from '@/assets/icons/group272.png'
 import TableComponent from '@/components/common/table-component'
 import { envConfig } from '@/utils/envConfig'
+import { formatNumberNoRound } from '@/utils/number'
 import { useQuery } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
 import { Space } from 'antd'
 import dayjs from 'dayjs'
-import numbro from 'numbro'
 import { useTranslation } from 'react-i18next'
 
 export function MyAssets() {
@@ -48,7 +48,7 @@ export function MyAssets() {
               <div className="main-hover cursor-pointer" onClick={() => toBlockchain(record.contract_address)}>
                 {t('profile.data_count.token_name')}
                 :
-                {record.name}
+                {record.code}
               </div>
             </div>
           </div>
@@ -59,7 +59,7 @@ export function MyAssets() {
       title: <div>{t('profile.data_count.amount')}</div>,
       dataIndex: 'number',
       key: 'Amount',
-      render: text => <a>{text}</a>
+      render: text => <div>{formatNumberNoRound(Number(text), 8)}</div>
     },
     {
       title: <div>{t('profile.data_count.purchase_price')}</div>,
@@ -68,7 +68,7 @@ export function MyAssets() {
       render: (_, record) => (
         <>
           <div className="flex items-center justify-start">
-            <div>{numbro(Number(record.purchase_price) * Number(record.number)).format({ thousandSeparated: true, mantissa: 2, trimMantissa: true })}</div>
+            <div>{formatNumberNoRound(Number(record.purchase_price) * Number(record.number), 8)}</div>
           </div>
         </>
       )
@@ -79,7 +79,7 @@ export function MyAssets() {
       render: (_, record) => (
         <>
           <div className="flex items-center justify-start">
-            <div className="">{Number(record.total_current) * Number(record.purchase_price)}</div>
+            <div className="">{formatNumberNoRound(Number(record.total_current) * Number(record.purchase_price), 8)}</div>
           </div>
         </>
       )
@@ -145,7 +145,8 @@ export function MyAssets() {
   const [overPageInfo, setOverPageInfo] = useState({
     page: 1,
     pageSize: 10,
-    total: 0
+    total: 0,
+    refetch: 0
   })
   const [keyword, setKeyword] = useState('')
   const getOverviewData = async () => {
@@ -160,8 +161,8 @@ export function MyAssets() {
     })
     return res
   }
-  const { data: overviewData, isFetching, refetch: refetchOverview } = useQuery({
-    queryKey: ['overview'],
+  const { data: overviewData, isFetching } = useQuery({
+    queryKey: ['overview', overPageInfo.page, overPageInfo.pageSize, overPageInfo.refetch],
     queryFn: async () => {
       const res = await getOverviewData()
       return res.data?.list
@@ -183,9 +184,9 @@ export function MyAssets() {
               if (e.key === 'Enter') {
                 setOverPageInfo({
                   ...overPageInfo,
-                  page: 1
+                  page: 1,
+                  refetch: overPageInfo.refetch + 1
                 })
-                refetchOverview()
               }
             }}
           />
@@ -208,7 +209,6 @@ export function MyAssets() {
                   page,
                   pageSize
                 })
-                refetchOverview()
               }
             }
           }

@@ -77,7 +77,7 @@ export const PaymentMethod: FC<{
             ? (
                 <div className="max-w-full fbc gap-x-2 overflow-hidden max-lg:flex-col">
                   <div className="text-red">{t('payment_method.bind_wallet_success')}</div>
-                  <div className="flex-1max-w-full truncate text-3.5 text-[#898989]">{userData.wallet_address}</div>
+                  <div className="max-w-full flex-1 truncate text-3.5 text-[#898989]">{userData.wallet_address}</div>
                 </div>
               )
             : (

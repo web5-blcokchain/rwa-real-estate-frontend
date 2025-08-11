@@ -2,13 +2,13 @@ import type { historyResponse } from '@/api/apiMyInfoApi'
 import type { TableProps } from 'antd'
 import apiMyInfoApi, { getAssetType, getEarningsInfo } from '@/api/apiMyInfoApi'
 import copyIcon from '@/assets/icons/copy.svg'
+import { formatNumberNoRound } from '@/utils/number'
 import { useQuery } from '@tanstack/react-query'
 import { ConfigProvider, Empty, Select, Table } from 'antd'
 import enUS from 'antd/locale/en_US'
 import jaJP from 'antd/locale/ja_JP'
 import zhCN from 'antd/locale/zh_CN'
 import dayjs from 'dayjs'
-import numbro from 'numbro'
 import '../message/index.scss'
 import '/src/components/common/table-component/styles.scss'
 
@@ -105,7 +105,7 @@ export default function DividendStatistics() {
         return (
           <div>
             $
-            {numbro(record.total_amount).format({ mantissa: 2, thousandSeparated: true })}
+            {formatNumberNoRound(record.total_amount, 8)}
           </div>
         )
       }
@@ -120,7 +120,7 @@ export default function DividendStatistics() {
         return (
           <div>
             $
-            {numbro(totalAmount - incomeAmount).format({ mantissa: 2, thousandSeparated: true })}
+            {formatNumberNoRound(totalAmount - incomeAmount, 8)}
           </div>
         )
       }
@@ -133,7 +133,7 @@ export default function DividendStatistics() {
         return (
           <div>
             $
-            {numbro(record.income_amount).format({ mantissa: 2, thousandSeparated: true })}
+            {formatNumberNoRound(record.income_amount, 8)}
           </div>
         )
       }
@@ -232,7 +232,16 @@ export default function DividendStatistics() {
               loading={earningsListLoading}
               dataSource={earningsList?.list || []}
               rowClassName={() => 'custom-table-row'}
-              pagination={pagination}
+              pagination={{
+                ...pagination,
+                onChange: (page, pageSize) => {
+                  setPagination({
+                    ...pagination,
+                    current: page,
+                    pageSize
+                  })
+                }
+              }}
               // loading={loading}
               locale={{ emptyText: <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description=""><div className="text-white">{t('common.no_data')}</div></Empty> }}
             />
