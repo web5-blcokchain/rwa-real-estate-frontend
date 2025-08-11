@@ -1,7 +1,7 @@
 import type { EIP1193Provider } from '@privy-io/react-auth'
 import { ethers } from 'ethers'
 import { envConfig } from '../envConfig'
-import { getPropertyTokenContract } from './propertyToken'
+import { getPropertyTokenContract, getTokenPrice } from './propertyToken'
 import { getNameToContract, SmartErrorParses } from './utils'
 /**
  * 获取赎回合约实例
@@ -39,9 +39,57 @@ export async function redemptionWarningAsset(e: EIP1193Provider, contact: ethers
     }
   }
   catch (e) {
-    const parsedError = SmartErrorParses.parseError(e)
+    const error = (e as Error).message
+    await SmartErrorParses.initialize([contact])
+    const parsedError = SmartErrorParses.parseError(error)
     console.error('解析内容', parsedError)
-    console.error('原始内容', e)
-    throw new Error('钱包操作失败')
+    console.error('原始内容', JSON.stringify(e), error)
+    // 判断是否是取消授权
+    if (error.includes('User denied transaction')) {
+      throw new Error('400001') // 用户取消授权
+    }
+    throw new Error('400002') // 钱包操作失败
+  }
+}
+
+export async function getTokenPriceAndRedemption(e: EIP1193Provider, contact: ethers.Contract, data: {
+  /**
+   * 房屋代币地址
+   */
+  propertyToken: string
+  /**
+   * 用户房屋代币数量
+   */
+  userTokenAmount: number
+}): Promise<{
+  /**
+   * 投资时代币价格
+   */
+    currentPrice: number
+    /**
+     * 用户赎回后的净收益
+     */
+    netRedemptionAmount: number
+    /**
+     * 当前代币价格
+     */
+    nowCurrentPrice: number
+  }> {
+  try {
+    const propertyTokenContract = await getPropertyTokenContract(e, data.propertyToken)
+    // 获取代币价格
+    const tokenPrice = await getTokenPrice(propertyTokenContract)
+    // 获取代币精度
+    const decimals = await propertyTokenContract.decimals()
+    const tx = await contact.getTokenPriceAndRedemption(data.propertyToken, ethers.parseUnits(data.userTokenAmount.toString(), decimals))
+    return {
+      nowCurrentPrice: Number(ethers.formatUnits(tx[0], decimals)),
+      netRedemptionAmount: Number(ethers.formatUnits(tx[1], decimals)),
+      currentPrice: tokenPrice
+    }
+  }
+  catch (e: any) {
+    console.error(e)
+    throw new Error(e)
   }
 }

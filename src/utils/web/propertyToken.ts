@@ -19,3 +19,15 @@ export async function getPropertyTokenAmount(e: EIP1193Provider, address: string
     return 0
   }
 }
+
+export async function getTokenPrice(contact: ethers.Contract) {
+  try {
+    const usdcPrice = await contact.issuePrice()
+    const usdtDecimals = await contact.decimals()
+    return Number(ethers.formatUnits(usdcPrice, usdtDecimals))
+  }
+  catch (e) {
+    console.error(`获取代币价格失败:${e}`)
+    return 0
+  }
+}

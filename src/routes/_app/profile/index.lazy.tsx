@@ -102,7 +102,7 @@ function RouteComponent() {
         case ProfileTab.TransactionStatus:
           return <TransactionStatus />
         case ProfileTab.Assets:
-          return <MyAssets />
+          return <MyAssets /> // 购买记录
         case ProfileTab.AssetsSummary:
           return <AssetsSummary />
         case ProfileTab.DistributionRecord:

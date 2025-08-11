@@ -163,7 +163,7 @@ export function DistributionRecord() {
     return res
   }
   const { data: overviewData, isFetching, refetch: refetchOverview } = useQuery({
-    queryKey: ['overview'],
+    queryKey: ['distributionRecord——overview'],
     queryFn: async () => {
       const res = await getOverviewData()
       return res.data?.list
