@@ -4,10 +4,12 @@ import { createBuyOrder as createBuyOrderApi } from '@/api/investment'
 import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
-import { PaymentMethod } from '@/components/common/payment-method'
+import { PaymentWallet } from '@/components/common/payment-wallect'
 import QuantitySelector from '@/components/common/quantity-selector'
-import { getContracts } from '@/contract'
 import { joinImagesPath } from '@/utils/url'
+import { getPropertyTokenContract } from '@/utils/web/propertyToken'
+import { getTradeContract, listenerCreateSellEvent, createBuyOrder as toCreateBuyOrder } from '@/utils/web/tradeContract'
+import { getUsdcContract } from '@/utils/web/usdcAddress'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { createFileRoute, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button, Select, Spin } from 'antd'
@@ -61,12 +63,17 @@ function RouteComponent() {
   }
 
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: async (sell_order_id: number) => {
+    mutationFn: async (data: {
+      sell_order_id: number
+      token_price: number
+      hash: string
+    }) => {
       const res = await createBuyOrderApi({
         id: `${item.id}`,
         token_number: `${tokens}`,
-        token_price: item.price,
-        sell_order_id: `${sell_order_id}`
+        token_price: data.token_price.toString(),
+        sell_order_id: `${data.sell_order_id}`,
+        hash: data.hash
       })
       return res.data
     }
@@ -106,33 +113,22 @@ function RouteComponent() {
         return
       }
 
-      const SimpleERC20 = getContracts('SimpleERC20')
-      const TradingManager = getContracts('TradingManager')
-
       const ethProvider = await wallet.getEthereumProvider()
       const provider = new ethers.BrowserProvider(ethProvider)
       const signer = await provider.getSigner()
 
-      const usdtContract = new ethers.Contract(
-        SimpleERC20.address,
-        SimpleERC20.abi,
-        signer
-      )
-
-      const tradingManagerContract = new ethers.Contract(
-        TradingManager.address,
-        TradingManager.abi,
-        signer
-      )
-
+      const usdtContract = await getUsdcContract(ethProvider)
+      const tradingManagerContract = await getTradeContract(ethProvider)
       // 获取USDT decimals
       const usdtDecimals = await usdtContract.decimals()
 
       // 设置购买参数
-      const tokenAmount = BigInt(tokens)
-      const tokenPrice = ethers.parseUnits(`${item.price}`, 18)
-      const requiredUsdt = tokenAmount * tokenPrice
+      const tokenAmount = tokens
+      // 获取代币价格
+      const propertyContract = await getPropertyTokenContract(ethProvider, item.contract_address)
+      const tokenPrice = await propertyContract.issuePrice()
 
+      const requiredUsdt = BigInt(tokenAmount) * tokenPrice
       // 获取签名者地址
       const signerAddress = await signer.getAddress()
 
@@ -146,57 +142,25 @@ function RouteComponent() {
         return
       }
 
-      // 检查USDT授权额度
-      const currentAllowance = await usdtContract.allowance(
-        signerAddress,
-        TradingManager.address
-      )
-
-      // 如果授权额度不足，进行授权
-      if (currentAllowance < requiredUsdt) {
-        toast.info(t('payment.messages.approving_usdt'))
-
-        // 授权一个足够大的额度
-        const approveTx = await usdtContract.approve(
-          TradingManager.address,
-          requiredUsdt
-        )
-
-        toast.info(t('payment.messages.waiting_for_approval'))
-        await approveTx.wait()
-
-        // 再次检查授权额度
-        const newAllowance = await usdtContract.allowance(
-          signerAddress,
-          TradingManager.address
-        )
-
-        if (newAllowance < requiredUsdt) {
-          toast.error(t('payment.errors.approval_failed'))
-          return
-        }
-      }
-
       // 创建买单
       toast.info(t('payment.messages.creating_buy_order'))
-      const buyTx = await tradingManagerContract.createBuyOrder(
-        item.contract_address,
-        `${item.id}`,
-        tokenAmount,
-        tokenPrice
-      )
+      const [orderId, createData] = await Promise.all([
+        listenerCreateSellEvent(wallet.address, item.contract_address, false),
+        toCreateBuyOrder(tradingManagerContract, ethProvider, {
+          token: item.contract_address,
+          amount: tokenAmount
+        })
+      ])
 
       toast.info(t('payment.messages.waiting_for_confirmation'))
-      await buyTx.wait()
-
-      const orders = await tradingManagerContract.getUserOrders(wallet.address)
-
-      console.log('orders', orders)
-
-      const lastOrderId = orders[orders.length - 1]
+      await createData.tx.wait()
 
       // 调用后端API记录购买信息
-      await mutateAsync(lastOrderId)
+      await mutateAsync({
+        sell_order_id: orderId,
+        hash: createData.tx.hash,
+        token_price: createData.price
+      })
 
       toast.success(t('payment.messages.buy_order_created'))
       navigate({ to: '/investment' })
@@ -309,7 +273,7 @@ function RouteComponent() {
                         {tokens * Number(item.price)}
                       </div>
                     </div>
-                    <div>
+                    {/* <div>
                       <div>
                         {t('properties.payment.platform_fee')}
                         {' '}
@@ -319,7 +283,7 @@ function RouteComponent() {
                         $
                         {tokens * Number(item.price) * 0.02}
                       </div>
-                    </div>
+                    </div> */}
                   </div>
 
                   <div className="space-y-4">
@@ -328,13 +292,13 @@ function RouteComponent() {
 
                 <ISeparator className="bg-white" />
 
-                <div className="fbc">
+                {/* <div className="fbc">
                   <div>{t('properties.payment.total_amount')}</div>
                   <div className="text-primary">
                     $
                     {(tokens * Number(item.price) * 1.02).toFixed(2)}
                   </div>
-                </div>
+                </div> */}
 
                 <div className="text-xs text-[#f59e0b]">
                   {t('payment.info.min_tokens_required', { min: minTokenAmount })}
@@ -343,7 +307,7 @@ function RouteComponent() {
 
               <div className="rounded-xl bg-[#202329] p-6 space-y-4">
                 <div className="text-4.5">{t('properties.payment.payment_method')}</div>
-                <PaymentMethod walletState={[wallet, setWallet]} />
+                <PaymentWallet walletState={[wallet, setWallet]} />
               </div>
 
               <div className="rounded-xl bg-[#202329] p-6 text-4 text-[#898989] space-y-2">

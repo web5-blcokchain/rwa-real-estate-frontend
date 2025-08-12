@@ -11,7 +11,7 @@ import { useUserStore } from '@/stores/user'
 import { envConfig } from '@/utils/envConfig'
 import { formatNumberNoRound } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
-import { generatePermitSignature } from '@/utils/web/utils'
+import { generatePermitSignature, toPlainString18 } from '@/utils/web/utils'
 import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
@@ -120,7 +120,7 @@ function RouteComponent() {
       // 获取房屋代币对应的usdc价格
       let usdcPrice = await propertyManagerContract.issuePrice()
       usdcPrice = ethers.formatUnits(usdcPrice, usdtDecimals)
-      const requiredUsdtAmount = String(tokens * Number(usdcPrice))
+      const requiredUsdtAmount = toPlainString18(tokens * Number(usdcPrice))
       // 计算需要支付USDT余额 百分之2的手续费 （总数 * 价格 * 手续费）
       const payUSDCAmount = ethers.parseUnits(requiredUsdtAmount, usdtDecimals)
       const usdtBalance = await usdtContract.balanceOf(signerAddress)

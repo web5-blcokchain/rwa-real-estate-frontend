@@ -181,7 +181,7 @@ function RouteComponent() {
   const [imageUrl] = joinImagesPath(item.image_urls)
 
   return (
-    <div className="max-w-7xl p-8 space-y-8">
+    <div className="mx-auto max-w-7xl p-8 space-y-8">
       <div className="text-center text-6 font-medium">{t('common.payment_title')}</div>
 
       <div className="flex gap-6 rounded-xl bg-[#202329] p-6">

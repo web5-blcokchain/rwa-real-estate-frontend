@@ -1,5 +1,6 @@
 import type { EIP1193Provider } from '@privy-io/react-auth'
 import { getContracts } from '@/contract'
+import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { envConfig } from '../envConfig'
 
@@ -199,4 +200,69 @@ export class SmartErrorParses {
     }
     return errors
   }
+}
+
+// 添加交易确认等待函数，包含重试机制
+export async function waitForTransaction(txHash: string, operationName: string, maxRetries: number = 6) {
+  console.log(`开始等待${operationName}交易确认: ${txHash}`)
+  const provider = new ethers.JsonRpcProvider('https://rpc.ankr.com/bsc/d7e8351e2cfdf87df08764fac115074a3f93f103a88a309a26b110000d628143')
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      console.log(`${operationName}交易确认尝试 ${attempt}/${maxRetries}`)
+
+      // 获取交易收据
+      const receipt = await provider.getTransactionReceipt(txHash)
+
+      if (receipt) {
+        if (receipt.status === 1) {
+          console.log(`✅ ${operationName}交易成功确认！`)
+          return receipt
+        }
+        else {
+          console.error(`❌ ${operationName}交易失败`)
+          throw new Error(`${operationName}交易执行失败`)
+        }
+      }
+
+      // 如果交易收据不存在，等待一段时间后重试
+      console.log(`${operationName}交易正在被索引中，等待重试...`)
+      await new Promise(resolve => setTimeout(resolve, 3000)) // 等待3秒
+    }
+    catch (error: any) {
+      console.log(`${operationName}交易确认尝试 ${attempt} 失败:`, error.message)
+
+      // 如果是索引错误，继续重试
+      if (error.message.includes('transaction indexing is in progress')
+        || error.message.includes('could not coalesce error')) {
+        if (attempt < maxRetries) {
+          console.log(`等待${operationName}交易索引完成，${maxRetries - attempt}次重试剩余`)
+          await new Promise(resolve => setTimeout(resolve, 5000)) // 等待5秒
+          continue
+        }
+      }
+
+      // 其他错误或达到最大重试次数
+      if (attempt === maxRetries) {
+        console.error(`❌ ${operationName}交易确认失败，已达到最大重试次数`)
+        throw new Error(`${operationName}交易确认超时，请检查交易状态`)
+      }
+    }
+  }
+
+  throw new Error(`${operationName}交易确认超时`)
+}
+
+export function toPlainString18(num: number | string) {
+  if (!Number(num))
+    return '0'
+  const bn = new BigNumber(num)
+
+  // 获取原始小数位数
+  const decimals = bn.decimalPlaces() || 0
+
+  // 要保留的小数位数，不超过18位，且不少于原始小数位数
+  const keepDecimals = Math.min(decimals, 18)
+
+  // toFixed(keepDecimals) 会自动四舍五入并返回字符串，不会用科学计数法
+  return bn.toFixed(keepDecimals, BigNumber.ROUND_DOWN)
 }

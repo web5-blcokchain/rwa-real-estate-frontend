@@ -67,7 +67,7 @@ export const InvestmentCard: FC<InvestmentCardProps> = ({
 
   return (
     <div
-      className="fyc gap-8 bg-[#1e2024] p-6 space-y-4"
+      className="fyc gap-8 bg-[#1e2024] p-6 max-lg:flex-col space-y-4 max-lg:p-0"
     >
       <div className="h-64 w-84 shrink-0 overflow-hidden rounded-lg">
         <IImage
@@ -80,7 +80,7 @@ export const InvestmentCard: FC<InvestmentCardProps> = ({
       <div className="h-full w-full">
         <div className="text-5 font-medium">{item.name}</div>
 
-        <div className="fb gap-4">
+        <div className="grid grid-cols-4 gap-4 max-lg:grid-cols-2">
           <IInfoField
             label={t('properties.detail.location')}
             value={item.address}
@@ -108,36 +108,38 @@ export const InvestmentCard: FC<InvestmentCardProps> = ({
           />
         </div>
 
-        <div className="fbc">
-          <div className="fyc gap-8">
-            <IInfoField
-              label={t('properties.payment.number')}
-              value={`${item.tokens_held}/${item.total_selling}`}
-              labelClass="text-[#898989]"
-              valueClass="text-white"
-            />
-            <IInfoField
-              label={t('properties.detail.return')}
-              value={`${item.rental_yield}%`}
-              labelClass="text-[#898989]"
-              valueClass="text-white"
-            />
-          </div>
-
-          <div className="fyc gap-2">
-            <div className="size-8 overflow-hidden rounded-full">
-              <IImage src={joinImagePath(item.avatar)} alt="avatar" className="size-full" />
+        <div className="fbc max-lg:flex-col">
+          <div className="w-fit fbc gap-2 overflow-hidden max-lg:w-full max-xl:flex-col max-xl:items-start">
+            <div className="fyc gap-8">
+              <IInfoField
+                label={t('properties.payment.number')}
+                value={`${item.tokens_held}/${item.total_selling}`}
+                labelClass="text-[#898989]"
+                valueClass="text-white"
+              />
+              <IInfoField
+                label={t('properties.detail.return')}
+                value={`${item.rental_yield}%`}
+                labelClass="text-[#898989]"
+                valueClass="text-white"
+              />
             </div>
-            <div>{item.nickname}</div>
+
+            <div className="fyc gap-2">
+              <div className="size-8 overflow-hidden rounded-full">
+                <IImage src={joinImagePath(item.avatar)} alt="avatar" className="size-full" />
+              </div>
+              <div>{item.nickname}</div>
+            </div>
           </div>
 
-          <div className="w-1/2 fe gap-6">
+          <div className="w-1/2 fe gap-6 max-lg:mt-4 max-lg:w-full">
             {
               type === InvestmentTab.Sale && (
                 <Button
                   type="primary"
                   size="large"
-                  className="w-1/2 text-black!"
+                  className="w-1/2 max-lg:w-full text-black!"
                   disabled={item.is_me}
                   onClick={buy}
                 >
@@ -150,7 +152,7 @@ export const InvestmentCard: FC<InvestmentCardProps> = ({
               type === InvestmentTab.WantToBuy && (
                 <Button
                   size="large"
-                  className="w-1/2 bg-transparent! text-white! disabled:text-gray-5!"
+                  className="w-1/2 max-lg:w-full bg-transparent! text-white! disabled:text-gray-5!"
                   disabled={!item.has_holdings || item.is_me}
                   onClick={sell}
                 >

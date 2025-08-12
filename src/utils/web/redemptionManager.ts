@@ -30,7 +30,8 @@ export async function redemptionWarningAsset(e: EIP1193Provider, contact: ethers
     // debugger
     const decimals = await propertyTokenContract.decimals()
     const balance = await propertyTokenContract.balanceOf(userAddress)
-    await propertyTokenContract.approve(envConfig.redemptionManagerAddress, balance)
+    const approveTx = await propertyTokenContract.approve(envConfig.redemptionManagerAddress, balance)
+    await approveTx.wait()
     const tx = await contact.redeemTokens(redeemToken)
     tx.wait()
     return {
@@ -52,6 +53,13 @@ export async function redemptionWarningAsset(e: EIP1193Provider, contact: ethers
   }
 }
 
+/**
+ * 获取赎回价格信息
+ * @param e
+ * @param contact
+ * @param data
+ * @returns
+ */
 export async function getTokenPriceAndRedemption(e: EIP1193Provider, contact: ethers.Contract, data: {
   /**
    * 房屋代币地址
@@ -78,7 +86,7 @@ export async function getTokenPriceAndRedemption(e: EIP1193Provider, contact: et
   try {
     const propertyTokenContract = await getPropertyTokenContract(e, data.propertyToken)
     // 获取代币价格
-    const tokenPrice = await getTokenPrice(propertyTokenContract)
+    const tokenPrice = await getTokenPrice(propertyTokenContract, e)
     // 获取代币精度
     const decimals = await propertyTokenContract.decimals()
     const tx = await contact.getTokenPriceAndRedemption(data.propertyToken, ethers.parseUnits(data.userTokenAmount.toString(), decimals))

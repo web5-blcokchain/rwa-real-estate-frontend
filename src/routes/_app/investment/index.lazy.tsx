@@ -1,6 +1,6 @@
 import { getInvestmentList } from '@/api/investment'
 import { InvestmentTab } from '@/enums/investment'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
 import { Button, Input, Select, Tabs } from 'antd'
 import { useState } from 'react'
@@ -25,22 +25,43 @@ function RouteComponent() {
     { label: t('investment.not-held'), value: '2' }
   ]
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['investment-list', page, keyword, orderType, type], // 添加 assetType 到查询键
+  const searchDataList = async () => {
+    const res = await getInvestmentList({
+      page,
+      keyword,
+      type,
+      pageSize: 12,
+      order_type: orderType
+    })
+    return res
+  }
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ['investment-list', page, orderType, type], // 添加 assetType 到查询键
     queryFn: async () => {
-      const res = await getInvestmentList({
-        page,
-        keyword,
-        type,
-        order_type: orderType
-      })
+      const res = await searchDataList()
       return _get(res.data, 'list', [])
     }
   })
-
+  const [timer, setTimer] = useState<NodeJS.Timeout | null>(null)
+  const [searchTime, setSearchTime] = useState(0)
+  const queryClient = useQueryClient()
   const handleSearch = (value: string) => {
     setKeyword(value)
     setPage(1)
+    // 防抖，2秒空闲后执行
+    const clockTimer = 500
+    if (Date.now() - searchTime > clockTimer) {
+      if (timer) {
+        clearTimeout(timer)
+      }
+      setTimer(setTimeout(() => {
+        // 取消之前的请求
+        queryClient.cancelQueries({ queryKey: ['investment-list', page] })
+        refetch()
+
+        setSearchTime(Date.now())
+      }, clockTimer))
+    }
   }
 
   const handleAssetTypeChange = (value: string) => {
