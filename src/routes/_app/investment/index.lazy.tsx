@@ -1,3 +1,4 @@
+import { getAssetType } from '@/api/apiMyInfoApi'
 import { getInvestmentList } from '@/api/investment'
 import { InvestmentTab } from '@/enums/investment'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
@@ -24,6 +25,24 @@ function RouteComponent() {
     { label: t('investment.hold'), value: '1' },
     { label: t('investment.not-held'), value: '2' }
   ]
+  const [propertyTypeList, setPropertyTypeList] = useState([
+    { label: <div>{t('dividendStatistics.all')}</div>, value: 0 }
+  ])
+  const [propertyType, setPropertyType] = useState()
+  const [sortType, setSortType] = useState(0)
+  const { data: assetType } = useQuery({
+    queryKey: ['assetType'],
+    queryFn: async () => {
+      const data = await getAssetType()
+      return data.data
+    }
+  })
+  useEffect(() => {
+    setPropertyTypeList([
+      { label: <div>{t('dividendStatistics.all')}</div>, value: 0 },
+      ...assetType?.map(item => ({ label: <div>{item.name}</div>, value: item.id })) || []
+    ])
+  }, [assetType])
 
   const searchDataList = async () => {
     const res = await getInvestmentList({
@@ -31,12 +50,14 @@ function RouteComponent() {
       keyword,
       type,
       pageSize: 12,
-      order_type: orderType
+      order_type: orderType,
+      property_type: propertyType === 0 ? undefined : propertyType,
+      price_sort: sortType === 0 ? undefined : sortType
     })
     return res
   }
   const { data, isFetching: isLoading, refetch } = useQuery({
-    queryKey: ['investment-list', page, orderType, type], // 添加 assetType 到查询键
+    queryKey: ['investment-list', page, orderType, type, propertyType, sortType], // 添加 assetType 到查询键
     queryFn: async () => {
       const res = await searchDataList()
       return _get(res.data, 'list', [])
@@ -128,6 +149,27 @@ function RouteComponent() {
               value={type === '0' ? null : type}
               onChange={handleAssetTypeChange}
             />
+            <Select
+              placeholder={t('dividendStatistics.property')}
+              size="large"
+              className={cn(
+                '[&_.ant-select-selector]:(bg-transparent! text-white!)',
+                '[&_.ant-select-selection-placeholder]:(text-[#898989]!)',
+                '[&_.ant-select-selection-item]:(bg-transparent! text-white!)',
+                '[&_.ant-select-arrow]:(text-white!)'
+              )}
+              options={propertyTypeList}
+              value={propertyType}
+              onChange={setPropertyType}
+            />
+            <div onClick={() => setSortType(sortType === 1 ? 0 : 1)} className={cn('fcc px-2 h-10 b-1 rounded-md cursor-pointer', sortType === 1 ? 'b-#e8d655 text-white' : 'b-#424242 text-#898989 ')}>
+              <div className="i-ph:sort-descending bg-#898989"></div>
+              <div>价格从低到高</div>
+            </div>
+            <div onClick={() => setSortType(sortType === 2 ? 0 : 2)} className={cn('fcc px-2 h-10 b-1 rounded-md cursor-pointer', sortType === 2 ? 'b-#e8d655 text-white' : 'b-#424242 text-#898989 ')}>
+              <div className="i-ph:sort-ascending bg-#898989"></div>
+              <div>价格从高到低</div>
+            </div>
           </div>
 
           <div className="flex-1 max-lg:w-full">
@@ -158,7 +200,7 @@ function RouteComponent() {
           ? (
               <div
                 className={cn(
-                  'bg-[#1e2024] p-6',
+                  'bg-[#1e2024] p-6 pt-0',
                   '[&>div+div]:(b-t b-solid b-[#898989])'
                 )}
               >

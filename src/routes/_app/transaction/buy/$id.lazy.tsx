@@ -6,6 +6,7 @@ import ISeparator from '@/components/common/i-separator'
 import { PaymentContent } from '@/components/common/payment-content'
 import QuantitySelector from '@/components/common/quantity-selector'
 import { useCommonDataStore } from '@/stores/common-data'
+import { formatNumberNoRound } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
 import { getTradeContract, tradeContractBuyOrder } from '@/utils/web/tradeContract'
 import { getUsdcContract } from '@/utils/web/usdcAddress'
@@ -155,13 +156,13 @@ function RouteComponent() {
             />
             <IInfoField
               label={t('properties.payment.token_price')}
-              value={item?.total_amount}
+              value={formatNumberNoRound(item?.token_price, 8)}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
               label={t('properties.payment.total')}
-              value={item.total_amount}
+              value={formatNumberNoRound(item.total_amount, 8)}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
@@ -196,7 +197,7 @@ function RouteComponent() {
 
             <div className="text-right">
               $
-              {tokens * Number(item.token_price)}
+              {formatNumberNoRound(tokens * Number(item.token_price), 8)}
             </div>
             {/* <div className="text-right">
               $
@@ -210,7 +211,7 @@ function RouteComponent() {
         <div className="fbc">
           <div>{t('properties.payment.total_amount')}</div>
           <div className="text-primary">
-            {`$${(tokens * Number(item.token_price))}`}
+            {`$${formatNumberNoRound((tokens * Number(item.token_price)), 8)}`}
           </div>
         </div>
       </div>

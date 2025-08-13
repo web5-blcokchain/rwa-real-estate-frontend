@@ -4,10 +4,10 @@ import { IInfoField } from '@/components/common/i-info-field'
 import { InvestmentTab } from '@/enums/investment'
 import { useCommonDataStore } from '@/stores/common-data'
 import { useUserStore } from '@/stores/user'
+import { formatNumberNoRound } from '@/utils/number'
 import { joinImagePath, joinImagesPath } from '@/utils/url'
 import { useNavigate } from '@tanstack/react-router'
 import { Button } from 'antd'
-import numeral from 'numeral'
 import { useTranslation } from 'react-i18next'
 
 interface InvestmentCardProps {
@@ -70,9 +70,9 @@ export const InvestmentCard: FC<InvestmentCardProps> = ({
 
   return (
     <div
-      className="fyc gap-8 bg-[#1e2024] p-6 max-lg:flex-col space-y-4 max-lg:p-0"
+      className="fyc gap-8 bg-[#1e2024] p-6 max-lg:flex-col space-y-4 max-lg:px-0 max-lg:py-4"
     >
-      <div className="h-64 w-84 shrink-0 overflow-hidden rounded-lg">
+      <div className="h-64 max-w-full w-84 shrink-0 overflow-hidden rounded-lg">
         <IImage
           src={firstImage}
           className="size-full"
@@ -99,13 +99,13 @@ export const InvestmentCard: FC<InvestmentCardProps> = ({
           />
           <IInfoField
             label={t('properties.payment.total')}
-            value={`$${numeral(item.total_amount).format('0,0')}`}
+            value={`$${formatNumberNoRound(item.total_amount, 8)}`}
             labelClass="text-[#898989]"
             valueClass="text-white"
           />
           <IInfoField
             label={t('properties.payment.token_price')}
-            value={`$${numeral(item.token_price).format('0,0')}`}
+            value={`$${formatNumberNoRound(item.token_price, 8)}`}
             labelClass="text-[#898989]"
             valueClass="text-white"
           />

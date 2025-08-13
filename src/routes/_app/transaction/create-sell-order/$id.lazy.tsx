@@ -6,13 +6,15 @@ import ISeparator from '@/components/common/i-separator'
 import { PaymentContent } from '@/components/common/payment-content'
 import QuantitySelector from '@/components/common/quantity-selector'
 import { useCommonDataStore } from '@/stores/common-data'
+import { formatNumberNoRound } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
 import { getPropertyTokenAmount, getPropertyTokenContract } from '@/utils/web/propertyToken'
 import { createSellOrder, getTradeContract, listenerCreateSellEvent } from '@/utils/web/tradeContract'
+import { getUsdcContract } from '@/utils/web/usdcAddress'
 import { toPlainString18 } from '@/utils/web/utils'
 import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
-import { Button } from 'antd'
+import { Button, InputNumber } from 'antd'
 import { ethers } from 'ethers'
 import numeral from 'numeral'
 import { PayDialog } from '../../properties/-components/payDialog'
@@ -38,6 +40,8 @@ function RouteComponent() {
   const item = investmentItems.get(id)!
 
   const [tokens, setTokens] = useState(1)
+  const [sellPrice, setsellPrice] = useState(1)
+  const [usdcDecimals, setUsdcDecimals] = useState(6)
 
   const { isPending, mutateAsync } = useMutation({
     mutationFn: async (data: {
@@ -54,12 +58,31 @@ function RouteComponent() {
     }
   })
 
+  // 获取当前用户持有代币
+  const [userToken, setUserToken] = useState(-1)
+  const getUserToken = async () => {
+    if (!wallet || !item?.contract_address)
+      return
+    const ethProvider = await wallet.getEthereumProvider()
+    const userToken = await getPropertyTokenAmount(ethProvider, item.contract_address, wallet.address)
+    const usdcContact = await getUsdcContract(ethProvider)
+    // 获取代币精度
+    const decimals = await usdcContact.decimals()
+    setUsdcDecimals(Number(decimals))
+    setUserToken(userToken)
+  }
+  useEffect(() => {
+    getUserToken()
+  }, [wallet, item])
+
   const [payDialogOpen, setPayDialogOpen] = useState(false)
   async function sell() {
     if (!wallet) {
       toast.error(t('payment.errors.no_wallet'))
       return
     }
+    if (sellPrice < (1 * 10 ** (-1 * usdcDecimals)))
+      return
 
     setIsProcessing(true)
 
@@ -98,7 +121,8 @@ function RouteComponent() {
             listenerCreateSellEvent(wallet.address, item.contract_address, true),
             createSellOrder(tradingContact, ethProvider, {
               token: item.contract_address,
-              amount: tokenAmount
+              amount: tokenAmount,
+              price: sellPrice
             })
           ])
           const { tx, price } = createData
@@ -234,7 +258,7 @@ function RouteComponent() {
           <div className="w-full text-[#898989] [&>div]:w-full [&>div]:fyc [&>div]:justify-between space-y-4">
             <div>
               <div>{t('properties.payment.tokens_held')}</div>
-              <div className="text-right text-[#898989]">{item.tokens_held}</div>
+              <div className="text-right text-[#898989]">{userToken >= 0 ? formatNumberNoRound(userToken, 8) : '-'}</div>
             </div>
             <div>
               <div>{t('properties.payment.number')}</div>
@@ -243,8 +267,20 @@ function RouteComponent() {
                   value={tokens}
                   onChange={setTokens}
                   min={1}
-                  max={item.tokens_held}
+                  max={userToken || item.tokens_held}
                   disabled={isPending || isProcessing}
+                />
+              </div>
+            </div>
+            <div>
+              <div>{t('properties.payment.token_price')}</div>
+              <div>
+                <InputNumber
+                  className="[&>div>*]:!text-center"
+                  controls={false}
+                  value={sellPrice}
+                  onChange={value => setsellPrice(value || 1)}
+                  min={1 * 10 ** (-1 * usdcDecimals)}
                 />
               </div>
             </div>
@@ -252,20 +288,10 @@ function RouteComponent() {
               <div>{t('properties.payment.subtotal')}</div>
               <div className="text-right">
                 $
-                {tokens * Number(item.token_price)}
+                {formatNumberNoRound(tokens * sellPrice, 8)}
               </div>
             </div>
-            {/* <div>
-              <div>
-                {t('properties.payment.platform_fee')}
-                {' '}
-                (2%)
-              </div>
-              <div className="text-right">
-                $
-                {tokens * Number(item.token_price) * 0.02}
-              </div>
-            </div> */}
+
           </div>
 
           <div className="space-y-4">
@@ -278,7 +304,7 @@ function RouteComponent() {
         <div className="fbc">
           <div>{t('properties.payment.total_amount')}</div>
           <div className="text-primary">
-            {`$${(tokens * Number(item.token_price))}`}
+            {`$${formatNumberNoRound((tokens * sellPrice), 8)}`}
           </div>
         </div>
       </div>
@@ -303,7 +329,7 @@ function RouteComponent() {
               className="w-48 disabled:bg-gray-2 text-black!"
               onClick={sell}
               loading={isProcessing}
-              disabled={isPending || isProcessing}
+              disabled={isPending || isProcessing || userToken <= 0}
             >
               {t('action.confirm_sell')}
             </Button>

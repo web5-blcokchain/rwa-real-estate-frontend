@@ -3,6 +3,7 @@ import apiMyInfoApi from '@/api/apiMyInfoApi'
 import logo from '@/assets/images/logo.png'
 import { LoginDialog } from '@/components/dialog/login'
 import { UserCode } from '@/enums/user'
+import { eventBus } from '@/hooks/EventBus'
 import { useUserStore } from '@/stores/user'
 import { ensureEthersNetwork } from '@/utils/ethers'
 import { clearToken, getToken, setToken } from '@/utils/user'
@@ -243,6 +244,8 @@ function RightMenu() {
         checkToken()
       }
     }
+    // 全局事件总线监听token失效
+    eventBus.on('tokenExpired', checkToken)
     // 从网页从后台切换至前台，监测token是否过期
     window.addEventListener('visibilitychange', visibilitychange)
     return () => {

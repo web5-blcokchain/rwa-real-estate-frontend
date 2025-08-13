@@ -252,7 +252,7 @@ export async function waitForTransaction(txHash: string, operationName: string, 
   throw new Error(`${operationName}交易确认超时`)
 }
 
-export function toPlainString18(num: number | string) {
+export function toPlainString18(num: number | string, minDecimals: number = 18) {
   if (!Number(num))
     return '0'
   const bn = new BigNumber(num)
@@ -261,7 +261,7 @@ export function toPlainString18(num: number | string) {
   const decimals = bn.decimalPlaces() || 0
 
   // 要保留的小数位数，不超过18位，且不少于原始小数位数
-  const keepDecimals = Math.min(decimals, 18)
+  const keepDecimals = Math.min(decimals, minDecimals)
 
   // toFixed(keepDecimals) 会自动四舍五入并返回字符串，不会用科学计数法
   return bn.toFixed(keepDecimals, BigNumber.ROUND_DOWN)

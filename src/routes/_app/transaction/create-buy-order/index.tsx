@@ -6,13 +6,14 @@ import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
 import { PaymentContent } from '@/components/common/payment-content'
 import QuantitySelector from '@/components/common/quantity-selector'
+import { formatNumberNoRound } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
-import { getPropertyTokenContract } from '@/utils/web/propertyToken'
 import { getTradeContract, listenerCreateSellEvent, createBuyOrder as toCreateBuyOrder } from '@/utils/web/tradeContract'
 import { getUsdcContract } from '@/utils/web/usdcAddress'
+import { toPlainString18 } from '@/utils/web/utils'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { createFileRoute, useNavigate, useRouter } from '@tanstack/react-router'
-import { Button, Select, Spin } from 'antd'
+import { Button, InputNumber, Select, Spin } from 'antd'
 import { ethers } from 'ethers'
 import { PayDialog } from '../../properties/-components/payDialog'
 
@@ -35,6 +36,21 @@ function RouteComponent() {
   const [isProcessing, setIsProcessing] = useState(false) // 添加处理状态
 
   const [keyword, setKeyword] = useState('')
+  const [buyPrice, setBuyPrice] = useState(1)
+  const [usdcDecimals, setUsdcDecimals] = useState(6)
+
+  // 获取代币精度
+  useEffect(() => {
+    if (!wallet)
+      return
+    const getDecimals = async () => {
+      const ethProvider = await wallet.getEthereumProvider()
+      const usdcContact = await getUsdcContract(ethProvider)
+      const decimals = await usdcContact.decimals()
+      setUsdcDecimals(Number(decimals))
+    }
+    getDecimals()
+  }, [wallet])
 
   const { data, isLoading } = useQuery<any[]>({
     queryKey: ['properties', keyword],
@@ -89,7 +105,8 @@ function RouteComponent() {
         toast.error(t('payment.errors.no_wallet'))
         return
       }
-
+      if (buyPrice < (1 * 10 ** (-1 * usdcDecimals)))
+        return
       // 检查资产是否存在
       if (!item) {
         toast.error(t('properties.payment.asset_not_found'))
@@ -127,17 +144,15 @@ function RouteComponent() {
 
       // 设置购买参数
       const tokenAmount = tokens
-      // 获取代币价格
-      const propertyContract = await getPropertyTokenContract(ethProvider, item.contract_address)
-      const tokenPrice = await propertyContract.issuePrice()
+      // 获取设置的代币价格
 
-      const requiredUsdt = BigInt(tokenAmount) * tokenPrice
+      const requiredUsdt = tokenAmount * buyPrice
       // 获取签名者地址
       const signerAddress = await signer.getAddress()
 
       // 检查USDT余额
       const usdtBalance = await usdtContract.balanceOf(signerAddress)
-      if (usdtBalance < requiredUsdt) {
+      if (usdtBalance < ethers.parseUnits(toPlainString18(requiredUsdt, Number(usdcDecimals)), usdcDecimals)) {
         toast.error(t('payment.errors.insufficient_usdt', {
           required: ethers.formatUnits(requiredUsdt, usdtDecimals),
           balance: ethers.formatUnits(usdtBalance, usdtDecimals)
@@ -151,7 +166,8 @@ function RouteComponent() {
         listenerCreateSellEvent(wallet.address, item.contract_address, false),
         toCreateBuyOrder(tradingManagerContract, ethProvider, {
           token: item.contract_address,
-          amount: tokenAmount
+          amount: tokenAmount,
+          price: buyPrice
         })
       ])
 
@@ -271,10 +287,22 @@ function RouteComponent() {
                       </div>
                     </div>
                     <div>
+                      <div>{t('properties.payment.token_price')}</div>
+                      <div>
+                        <InputNumber
+                          className="[&>div>*]:!text-center"
+                          controls={false}
+                          value={buyPrice}
+                          onChange={value => setBuyPrice(value || 1)}
+                          min={1 * 10 ** (-1 * usdcDecimals)}
+                        />
+                      </div>
+                    </div>
+                    <div>
                       <div>{t('properties.payment.subtotal')}</div>
                       <div className="text-right">
                         $
-                        {tokens * Number(item.price)}
+                        {formatNumberNoRound(tokens * Number(item.price * buyPrice), 8)}
                       </div>
                     </div>
                     {/* <div>

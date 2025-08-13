@@ -1,4 +1,5 @@
 import { TOKEN_KEY, TOKEN_LANG_KEY, TOKEN_TYPE_KEY } from '@/constants/user'
+import { eventBus } from '@/hooks/EventBus'
 import { Env } from '@/lib/global'
 import axios from 'axios'
 
@@ -45,7 +46,8 @@ axios.interceptors.response.use(async (res: ResponseData<any>) => {
   const defaultMessage = lang === 'en' ? 'Response error' : lang === 'ja' ? 'エラーが発生しました' : 'Response error'
   if (code !== 1 && code !== 401) {
     const message = _get(res.data, 'msg', defaultMessage)
-    if (message.includes('Token is expired') || message.includes('Expired token')) { // TODO
+    if (message.includes('Token is expired') || message.includes('Expired token')) { // 触发全局事件总线，重新获取token
+      eventBus.emit('tokenExpired', { msg: 'Token is expired' })
       return
     }
     // 同一个提示信息一段时间只出现一次

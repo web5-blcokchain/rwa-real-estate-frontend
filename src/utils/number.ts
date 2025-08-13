@@ -4,6 +4,9 @@ import { toPlainString18 } from './web/utils'
 /**
  * 格式化数字，整数用 numbro，小数部分最长保留 {mantissa} 位,最小保留 {min} 位,自动截断末尾的0
  * @param {number|string} value - 要处理的值
+ * @param mantissa 最长小数位
+ * @param min 最小小数位
+ * @param format 自定义规则
  * @returns {string}
  */
 export function formatNumberNoRound(value: number | string | undefined, mantissa: number = 0, min: number = 0, format?: numbro.Format): string {

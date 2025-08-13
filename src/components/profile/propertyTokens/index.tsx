@@ -24,17 +24,14 @@ function PropertyTokens() {
     return res
   }
 
-  const { isLoading, isFetching, refetch } = useQuery({
-    queryKey: ['overviewSummary'],
+  const { isLoading, isFetching } = useQuery({
+    queryKey: ['overviewSummary', page, refetchCount],
     queryFn: async () => {
       const res = await getTokenData()
       setTotal(res.data?.count || 0)
       return res.data?.list || []
     }
   })
-  useEffect(() => {
-    refetch()
-  }, [page, refetchCount])
   if (isLoading) {
     return (
       <div className="w-full fcc p-8 h-dvh">

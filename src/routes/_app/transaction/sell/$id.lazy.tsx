@@ -5,13 +5,13 @@ import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
 import { PaymentContent } from '@/components/common/payment-content'
 import { useCommonDataStore } from '@/stores/common-data'
+import { formatNumberNoRound } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
 import { getPropertyTokenAmount } from '@/utils/web/propertyToken'
 import { getTradeContract, tradeContractSellOrder } from '@/utils/web/tradeContract'
 import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
-import numeral from 'numeral'
 import { PayDialog } from '../../properties/-components/payDialog'
 
 export const Route = createLazyFileRoute('/_app/transaction/sell/$id')({
@@ -205,13 +205,13 @@ function RouteComponent() {
             />
             <IInfoField
               label={t('properties.payment.token_price')}
-              value={`${numeral(item?.total_amount).format('0,0')} / token`}
+              value={`${formatNumberNoRound(item?.token_price, 8)} / token`}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
               label={t('properties.payment.total')}
-              value={numeral(Number(item?.total_amount) * item.tokens_held).format('0,0')}
+              value={formatNumberNoRound(item?.total_amount, 8)}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
@@ -226,19 +226,19 @@ function RouteComponent() {
           <div className="w-full text-[#898989] [&>div]:w-full [&>div]:fyc [&>div]:justify-between space-y-4">
             <div>
               <div>{t('properties.payment.tokens_held')}</div>
-              <div className="text-right text-[#898989]">{userToken >= 0 ? userToken : '-'}</div>
+              <div className="text-right text-[#898989]">{userToken >= 0 ? formatNumberNoRound(userToken, 8) : '-'}</div>
             </div>
             <div>
               <div>{t('properties.payment.number')}</div>
               <div className="flex justify-end">
-                {item.token_number}
+                {formatNumberNoRound(item.token_number, 8)}
               </div>
             </div>
             <div>
               <div>{t('properties.payment.subtotal')}</div>
               <div className="text-right">
                 $
-                {tokens * Number(item.token_price)}
+                {formatNumberNoRound(tokens * Number(item.token_price), 8)}
               </div>
             </div>
             <div>
@@ -263,7 +263,7 @@ function RouteComponent() {
         <div className="fbc">
           <div>{t('properties.payment.total_amount')}</div>
           <div className="text-primary">
-            {`$${(tokens * Number(item.token_price))}`}
+            {`$${formatNumberNoRound((tokens * Number(item.token_price)), 8)}`}
           </div>
         </div>
       </div>

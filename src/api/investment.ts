@@ -6,6 +6,8 @@ export function getInvestmentList(data: {
   type?: string
   order_type: string
   pageSize: number
+  property_type?: number
+  price_sort?: number
 }) {
   return apiClient.post('/api/market/marketList', data)
 }

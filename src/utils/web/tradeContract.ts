@@ -2,9 +2,9 @@ import type { EIP1193Provider } from '@privy-io/react-auth'
 import { getContracts } from '@/contract'
 import { Contract, ethers } from 'ethers'
 import { envConfig } from '../envConfig'
-import { getPropertyTokenContract, getTokenPrice } from './propertyToken'
+import { getPropertyTokenContract } from './propertyToken'
 import { getUsdcContract } from './usdcAddress'
-import { getNameToContract, toPlainString18 } from './utils'
+import { getNameToContract, SmartErrorParses, toPlainString18 } from './utils'
 
 // 获取交易合约
 export async function getTradeContract(e: EIP1193Provider) {
@@ -19,15 +19,18 @@ export async function getTradeContract(e: EIP1193Provider) {
  * @param data 地址
  * @param data.token 房屋资产地址
  * @param data.amount 房屋代币数量
+ * @param data.price 房屋代币价格
+ *
  * @returns tx，price
  */
 export async function createSellOrder(contact: ethers.Contract, e: EIP1193Provider, data: {
   token: string
   amount: number
+  price: number
 }) {
   try {
     const propertyTokenContract = await getPropertyTokenContract(e, data.token)
-    const tokenPrice = await getTokenPrice(propertyTokenContract, e)
+    const tokenPrice = await data.price
     const tokenDecimals = await propertyTokenContract.decimals()
     // 获取房屋id
     const [serverId] = await propertyTokenContract.getPropertyInfo()
@@ -59,23 +62,19 @@ export async function createSellOrder(contact: ethers.Contract, e: EIP1193Provid
  * @param data
  * @param data.token 房屋资产地址
  * @param data.amount 房屋代币数量
+ * @param data.price 房屋代币价格
  * @returns tx，price
  */
 export async function createBuyOrder(contact: ethers.Contract, e: EIP1193Provider, data: {
-  /**
-   * 房屋资产地址
-   */
   token: string
-  /**
-   * 房屋代币数量
-   */
   amount: number
+  price: number
 }) {
   try {
     const propertyTokenContract = await getPropertyTokenContract(e, data.token)
     const usdcContact = await getUsdcContract(e)
     // 房屋代币价格和精度
-    const tokenPrice = await getTokenPrice(propertyTokenContract, e)
+    const tokenPrice = data.price
     const tokenDecimals = await propertyTokenContract.decimals()
     // 售卖总价格
     const allAmount = toPlainString18((data.amount * tokenPrice))
@@ -92,7 +91,7 @@ export async function createBuyOrder(contact: ethers.Contract, e: EIP1193Provide
     await tx.wait()
     return {
       tx,
-      price: tokenPrice
+      price: data.price
     }
   }
   catch (e: any) {
@@ -124,6 +123,7 @@ export async function tradeContractBuyOrder(contact: ethers.Contract, e: EIP1193
     await approveTx.wait()
     // 发送买单交易
     const tx = await contact.buyOrder(data.sellOrderId)
+    await tx.wait()
     return tx
   }
   catch (e: any) {
@@ -157,10 +157,30 @@ export async function tradeContractSellOrder(contact: ethers.Contract, e: EIP119
     await approveTx.wait()
     // 发送卖单交易
     const tx = await contact.sellOrder(data.sellOrderId)
+    await tx.wait()
     return tx
   }
   catch (e: any) {
     console.log(e)
+    throw (new Error(e))
+  }
+}
+
+/**
+ * 取消订单
+ * @param contact 交易合约
+ * @param orderId 订单号
+ * @returns tx
+ */
+export async function cancelSellOrder(contact: ethers.Contract, orderId: number): Promise<ethers.TransactionResponse> {
+  try {
+    const tx = await contact.cancelOrder(orderId)
+    await tx.wait()
+    return tx
+  }
+  catch (e: any) {
+    console.log('原版内容:', e)
+    console.log('解析内容:', SmartErrorParses.parseError(e.message))
     throw (new Error(e))
   }
 }
