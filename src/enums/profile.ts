@@ -15,5 +15,6 @@ export enum ProfileTab {
   DefaultWarning = 'DefaultWarning',
   RedemptionList = 'RedemptionList',
   WarningInfo = 'WarningInfo',
-  WarningRedemptionInfo = 'WarningRedemptionInfo'
+  WarningRedemptionInfo = 'WarningRedemptionInfo',
+  SaleRecord = 'SaleRecord'
 }

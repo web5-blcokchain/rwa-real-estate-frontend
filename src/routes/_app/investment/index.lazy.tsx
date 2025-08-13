@@ -60,7 +60,7 @@ function RouteComponent() {
     queryKey: ['investment-list', page, orderType, type, propertyType, sortType], // 添加 assetType 到查询键
     queryFn: async () => {
       const res = await searchDataList()
-      return _get(res.data, 'list', [])
+      return res.data
     }
   })
   const [timer, setTimer] = useState<NodeJS.Timeout | null>(null)
@@ -70,14 +70,14 @@ function RouteComponent() {
     setKeyword(value)
     setPage(1)
     // 防抖，2秒空闲后执行
-    const clockTimer = 500
+    const clockTimer = 1500
     if (Date.now() - searchTime > clockTimer) {
       if (timer) {
         clearTimeout(timer)
       }
       setTimer(setTimeout(() => {
         // 取消之前的请求
-        queryClient.cancelQueries({ queryKey: ['investment-list', page] })
+        queryClient.cancelQueries({ queryKey: ['investment-list', page, orderType, type, propertyType, sortType] })
         refetch()
 
         setSearchTime(Date.now())
@@ -117,7 +117,7 @@ function RouteComponent() {
         'rounded-md bg-[#1e2024] p-6'
       )}
       >
-        <div className="fbc max-lg:flex-col max-lg:gap-6">
+        <div className="fbc gap-6 max-lg:flex-col">
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-4 md:grid-cols-3 xl:grid-cols-5 max-lg:w-full">
             <Input
               size="large"
@@ -164,11 +164,11 @@ function RouteComponent() {
             />
             <div onClick={() => setSortType(sortType === 1 ? 0 : 1)} className={cn('fcc px-2 h-10 b-1 rounded-md cursor-pointer', sortType === 1 ? 'b-#e8d655 text-white' : 'b-#424242 text-#898989 ')}>
               <div className="i-ph:sort-descending bg-#898989"></div>
-              <div>价格从低到高</div>
+              <div className="truncate" title={t('investment.descending')}>{t('investment.descending')}</div>
             </div>
             <div onClick={() => setSortType(sortType === 2 ? 0 : 2)} className={cn('fcc px-2 h-10 b-1 rounded-md cursor-pointer', sortType === 2 ? 'b-#e8d655 text-white' : 'b-#424242 text-#898989 ')}>
               <div className="i-ph:sort-ascending bg-#898989"></div>
-              <div>价格从高到低</div>
+              <div className="truncate" title={t('investment.ascending')}>{t('investment.ascending')}</div>
             </div>
           </div>
 
@@ -196,7 +196,7 @@ function RouteComponent() {
         spinning={isLoading}
         className="h-32 fcc"
       >
-        {data && Array.isArray(data) && data.length > 0
+        {data && Array.isArray(data.list) && data.list.length > 0
           ? (
               <div
                 className={cn(
@@ -204,7 +204,7 @@ function RouteComponent() {
                   '[&>div+div]:(b-t b-solid b-[#898989])'
                 )}
               >
-                {data.map((item: any) => (
+                {data?.list?.map((item: any) => (
                   <InvestmentCard
                     key={item.id}
                     item={item}

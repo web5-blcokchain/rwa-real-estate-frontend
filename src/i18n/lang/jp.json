@@ -423,7 +423,8 @@
     "menu_dividend_statistics": "配当統計",
     "menu_appeal": "申訴情報",
     "menu_default_warning": "違約警告",
-    "menu_redemption_list": "買い戻し記録"
+    "menu_redemption_list": "買い戻し記録",
+    "sale_record": "Sale record"
   },
   "footer": {
     "about": "について",
@@ -879,6 +880,17 @@
     "checkInStatus": "入金状況",
     "hash": "トランザクションハッシュ",
     "time": "入金時間",
-    "distribution": "配当中"
+    "distribution": "配当中",
+    "descending": "価格は安いものから高いものまであります",
+    "ascending": "高いものから安いものまであります"
+  },
+  "cancelOrder": {
+    "success": "注文が正常にキャンセルされました",
+    "orderStatus": "注文状況",
+    "status": {
+      "0": "未成立",
+      "1": "成立済み",
+      "2": "キャンセル済み"
+    }
   }
 }

@@ -16,6 +16,7 @@ import Overview from '@/components/profile/overview'
 import PropertyTokens from '@/components/profile/propertyTokens'
 import Recording from '@/components/profile/recording'
 import RedemptionList from '@/components/profile/redemptionList'
+import SaleRecord from '@/components/profile/saleRecord'
 import { TransactionStatus } from '@/components/profile/transaction-status'
 import { ProfileTab } from '@/enums/profile'
 import { useProfileStore } from '@/stores/profile'
@@ -69,7 +70,8 @@ function RouteComponent() {
     getItem(`${t('aboutMe.menu_dividend_statistics')}`, ProfileTab.DividendStatistics),
     getItem(`${t('aboutMe.menu_appeal')}`, ProfileTab.Appeal),
     getItem(`${t('aboutMe.menu_default_warning')}`, ProfileTab.DefaultWarning),
-    getItem(`${t('aboutMe.menu_redemption_list')}`, ProfileTab.RedemptionList)
+    getItem(`${t('aboutMe.menu_redemption_list')}`, ProfileTab.RedemptionList),
+    getItem(`${t('aboutMe.sale_record')}`, ProfileTab.SaleRecord)
   ]
 
   const handleMenuClick: MenuProps['onClick'] = (e) => {
@@ -117,6 +119,8 @@ function RouteComponent() {
           return <DefaultWarning setSecondaryMenu={setSecondaryMenu} setSecondaryMenuProps={setSecondaryMenuProps} /> // 违约警告
         case ProfileTab.RedemptionList:
           return <RedemptionList /> // 赎回列表
+        case ProfileTab.SaleRecord:
+          return <SaleRecord /> // 出售记录
       }
     }
     else {

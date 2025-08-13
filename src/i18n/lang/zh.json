@@ -425,7 +425,8 @@
     "menu_dividend_statistics": "分红统计",
     "menu_appeal": "申诉信息",
     "menu_default_warning": "违约警告",
-    "menu_redemption_list": "赎回记录"
+    "menu_redemption_list": "赎回记录",
+    "sale_record": "出售记录"
   },
   "footer": {
     "about": "关于",
@@ -825,7 +826,9 @@
     "sale": "出售",
     "buy": "求购",
     "hold": "持有",
-    "not-held": "未持有"
+    "not-held": "未持有",
+    "descending": "价格从低到高",
+    "ascending": "价格从高到低"
   },
   "payment_method": {
     "user_bound_wallet": "绑定钱包",
@@ -886,5 +889,14 @@
     "hash": "交易Hash",
     "time": "到账时间",
     "distribution": "发放中"
+  },
+  "cancelOrder": {
+    "success": "取消订单成功",
+    "orderStatus": "订单状态",
+    "status": {
+      "0": "待成交",
+      "1": "已成交",
+      "2": "已取消"
+    }
   }
 }

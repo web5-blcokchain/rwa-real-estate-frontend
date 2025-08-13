@@ -44,7 +44,7 @@ function RouteComponent() {
     setKeyword(value)
     setPage(1)
     // 防抖，2秒空闲后执行
-    const clockTimer = 500
+    const clockTimer = 1500
     if (Date.now() - searchTime > clockTimer) {
       if (timer) {
         clearTimeout(timer)

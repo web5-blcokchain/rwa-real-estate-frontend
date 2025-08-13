@@ -423,7 +423,8 @@
     "menu_dividend_statistics": "Dividend Statistics",
     "menu_appeal": "Appeal Information",
     "menu_default_warning": "Default Warning",
-    "menu_redemption_list": "Redemption Record"
+    "menu_redemption_list": "Redemption Record",
+    "sale_record": "売却記録です"
   },
   "footer": {
     "about": "About",
@@ -823,7 +824,9 @@
     "sale": "For Sale",
     "buy": "Wanted",
     "hold": "Hold",
-    "not-held": "Not held"
+    "not-held": "Not held",
+    "descending": "The prices range from low to high",
+    "ascending": "The prices range from high to low"
   },
   "payment_method": {
     "user_bound_wallet": "Bound wallet",
@@ -884,5 +887,14 @@
     "hash": "Transaction Hash",
     "time": "Receipt Time",
     "distribution": "Distributing"
+  },
+  "cancelOrder": {
+    "success": "Order cancelled successfully",
+    "orderStatus": "Order Status",
+    "status": {
+      "0": "Pending",
+      "1": "Completed",
+      "2": "Cancelled"
+    }
   }
 }

@@ -67,7 +67,7 @@ export function DistributionRecord() {
               <div className="main-hover cursor-pointer" onClick={() => toBlockchain(record.contract_address)}>
                 {t('profile.data_count.token_name')}
                 :
-                {record.name}
+                {record.code}
               </div>
             </div>
           </div>
