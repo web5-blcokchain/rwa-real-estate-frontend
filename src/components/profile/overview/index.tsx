@@ -16,7 +16,7 @@ import TableComponent from '../../common/table-component'
 function Overview() {
   const [wallet, setWallet] = useState<ConnectedWallet | null>(null)
   const { t } = useTranslation()
-  const coinStatus = ['unclaimed', 'claimed', 'withdraw', 'failed', 'distribution']
+  const coinStatus = ['unclaimed', 'claimed', 'withdraw', 'failed', 'sold', 'distribution']
 
   // 表格1配置
   const columns: TableProps<PropertieItem>['columns'] = [
@@ -62,7 +62,7 @@ function Overview() {
       title: <div>{t('profile.data_count.status')}</div>,
       key: 'status',
       render: (_, record) => {
-        return <div>{t(`profile.coin.${record.status === -1 ? 'locked' : coinStatus[record.status]}`)}</div>
+        return <div>{t(`profile.coin.${!(record.status >= 0 && record.status < coinStatus.length && record.status !== null) ? 'locked' : coinStatus[record.status]}`)}</div>
       }
     },
     {
@@ -230,8 +230,8 @@ function Overview() {
         loading={overviewIsFetching}
         pagination={
           {
-            defaultCurrent: overPageInfo.page,
-            defaultPageSize: overPageInfo.pageSize,
+            current: overPageInfo.page,
+            pageSize: overPageInfo.pageSize,
             total: overPageInfo.total,
             onChange: (page, pageSize) => {
               setOverPageInfo({
@@ -253,8 +253,8 @@ function Overview() {
         loading={historyIsFetching}
         pagination={
           {
-            defaultCurrent: historyPageInfo.page,
-            defaultPageSize: historyPageInfo.pageSize,
+            current: historyPageInfo.page,
+            pageSize: historyPageInfo.pageSize,
             total: historyPageInfo.total,
             onChange: (page, pageSize) => {
               setHistoryPageInfo({

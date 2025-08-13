@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next'
 
 export function MyAssets() {
   const { t } = useTranslation()
-  const coinStatus = ['unclaimed', 'claimed', 'withdraw', 'failed', 'distribution']
+  const coinStatus = ['unclaimed', 'claimed', 'withdraw', 'failed', 'sold', 'distribution']
   const copyText = (text: string) => {
     navigator.clipboard.writeText(text)
     toast.success(t('common.copy_success'))
@@ -121,7 +121,7 @@ export function MyAssets() {
       title: <div>{t('profile.data_count.status')}</div>,
       key: 'status',
       render: (_, record) => {
-        return <div>{t(`profile.coin.${record.status === -1 ? 'locked' : coinStatus[record.status]}`)}</div>
+        return <div>{t(`profile.coin.${!(record.status >= 0 && record.status < coinStatus.length && record.status !== null) ? 'locked' : coinStatus[record.status]}`)}</div>
       }
     },
     {
@@ -200,8 +200,8 @@ export function MyAssets() {
           key="menu_assets_summary"
           pagination={
             {
-              defaultCurrent: overPageInfo.page,
-              defaultPageSize: overPageInfo.pageSize,
+              current: overPageInfo.page,
+              pageSize: overPageInfo.pageSize,
               total: overPageInfo.total,
               onChange: (page, pageSize) => {
                 setOverPageInfo({

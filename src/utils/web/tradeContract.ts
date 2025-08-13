@@ -39,7 +39,7 @@ export async function createSellOrder(contact: ethers.Contract, e: EIP1193Provid
     const approveTx = await propertyTokenContract.approve(envConfig.tradeContract, parseAmount)
     await approveTx.wait()
     // 发送创建卖单交易（房屋代币地址、房产表示字符串、卖出数量、挂单单价【默认支付代币精度】）
-    const tx = await contact.createSellOrder(data.token, serverId, allAmount, ethers.parseUnits(tokenPrice.toString(), usdcDecimals))
+    const tx = await contact.createSellOrder(data.token, serverId, parseAmount, ethers.parseUnits(tokenPrice.toString(), usdcDecimals))
     await tx.wait()
     return {
       tx,
@@ -111,15 +111,16 @@ export async function createBuyOrder(contact: ethers.Contract, e: EIP1193Provide
  * @param data.price 房屋代币单价
  * @returns tx
  */
-export async function buyOrder(contact: ethers.Contract, e: EIP1193Provider, data: {
+export async function tradeContractBuyOrder(contact: ethers.Contract, e: EIP1193Provider, data: {
   sellOrderId: number
   amount: number
   price: number
-}) {
+}): Promise<ethers.TransactionResponse> {
   try {
     const usdcContact = await getUsdcContract(e)
+    const usdcDecimals = await usdcContact.decimals()
     // 将usdc授权给交易合约
-    const approveTx = await usdcContact.approve(envConfig.tradeContract, BigInt(data.amount * data.price))
+    const approveTx = await usdcContact.approve(envConfig.tradeContract, ethers.parseUnits(toPlainString18(data.amount * data.price), usdcDecimals))
     await approveTx.wait()
     // 发送买单交易
     const tx = await contact.buyOrder(data.sellOrderId)
@@ -142,16 +143,17 @@ export async function buyOrder(contact: ethers.Contract, e: EIP1193Provider, dat
  * @param data.price 房屋代币单价
  * @returns tx
  */
-export async function sellOrder(contact: ethers.Contract, e: EIP1193Provider, data: {
+export async function tradeContractSellOrder(contact: ethers.Contract, e: EIP1193Provider, data: {
   token: string
   sellOrderId: number
   amount: number
   price: number
-}) {
+}): Promise<ethers.TransactionResponse> {
   try {
     const propertyTokenContract = await getPropertyTokenContract(e, data.token)
+    const tokenDecimals = await propertyTokenContract.decimals()
     // 将翻屋代币授权给交易合约
-    const approveTx = await propertyTokenContract.approve(envConfig.tradeContract, BigInt(data.amount * data.price))
+    const approveTx = await propertyTokenContract.approve(envConfig.tradeContract, ethers.parseUnits(toPlainString18(data.amount * data.price), tokenDecimals))
     await approveTx.wait()
     // 发送卖单交易
     const tx = await contact.sellOrder(data.sellOrderId)
@@ -163,26 +165,24 @@ export async function sellOrder(contact: ethers.Contract, e: EIP1193Provider, da
   }
 }
 
-export type SellOrder = [
-  id: BigNumber, // 订单ID
+export type CreateOrder = [
+  id: bigint, // 订单ID
   creator: string, // 创建者
   token: string, // PropertyToken 地址
   propertyId: string, // 房屋ID
-  amount: BigNumber, // 剩余数量（第一阶段仅全额撮合）
-  price: BigNumber, // 单价（支付币精度）
+  amount: bigint, // 剩余数量（第一阶段仅全额撮合）
+  price: bigint, // 单价（支付币精度）
   isSellOrder: boolean, // true: 卖单; false: 买单
   active: boolean, // 订单是否有效
   createdAt: number, // 创建时间
-  feeBps: BigNumber, // 下单时费率快照（用于买单预存手续费）
+  feeBps: bigint, // 下单时费率快照（用于买单预存手续费）
   paymentToken: string // 下单时的支付代币（用于买单托管资金）
 ]
 /**
  * 监听创建卖出事件，返回用户创建的结果
  * @param userAddress 用户地址
  * @param sellToken
- * @param data.userAddress 用户地址
- * @param data.sellToken 房产代币地址
- * @param data.isSellOrBuy 是否为售卖 true 卖， false 买
+ * @param isSellOrBuy 是否为售卖 true 卖， false 买
  * @returns orderId
  */
 export async function listenerCreateSellEvent(
@@ -194,7 +194,7 @@ export async function listenerCreateSellEvent(
   const tradeContract = getContracts('TradeContract')
   const contract = new Contract(envConfig.tradeContract, tradeContract.abi, ethersProvider)
   return new Promise((res, rej) => {
-    const getOrderId = (...args: SellOrder) => {
+    const getOrderId = (...args: CreateOrder) => {
       const [orderId, creator, token, _propertyId, _amount, _price, isSellOrder] = args
       if (creator === userAddress && sellToken === token && isSellOrder === isSellOrBuy) {
         contract.off('OrderCreated', getOrderId)
@@ -205,6 +205,51 @@ export async function listenerCreateSellEvent(
     setTimeout(() => {
       contract.off('OrderCreated', getOrderId)
       rej(new Error('time out'))
-    }, 1000 * 60)
+    }, 1000 * 60 * 2)
+  })
+}
+
+export type BuyOrSellInfo = [
+  orderId: bigint, // 订单ID
+  maker: string, // 创建者
+  taker: string, // PropertyToken 地址
+  token: string, // 房屋ID
+  propertyId: string, // 剩余数量（第一阶段仅全额撮合）
+  matchedAmount: bigint, // 单价（支付币精度）
+  price: bigint, // true: 卖单; false: 买单
+  isSellOrder: boolean, // 订单是否有效
+  fee: bigint, // 创建时间
+  paymentToken: string, // 下单时费率快照（用于买单预存手续费）
+  timestamp: number // 下单时的支付代币（用于买单托管资金）
+]
+
+/**
+ * 监听创建卖出事件，返回用户创建的结果
+ * @param userAddress 用户地址
+ * @param sellToken
+ * @param isSellOrBuy 是否为售卖 true 买， false 卖
+ * @returns orderId
+ */
+export async function listenerOrderExecutedEvent(
+  userAddress: string,
+  sellToken: string,
+  isSellOrBuy: boolean
+): Promise<number> {
+  const ethersProvider = new ethers.WebSocketProvider(envConfig.web3.rpc)
+  const tradeContract = getContracts('TradeContract')
+  const contract = new Contract(envConfig.tradeContract, tradeContract.abi, ethersProvider)
+  return new Promise((res, rej) => {
+    const getOrderId = (...args: BuyOrSellInfo) => {
+      const [orderId, _maker, taker, token, _propertyId, _matchedAmount, _price, isSellOrder] = args
+      if (taker === userAddress && sellToken === token && isSellOrder === isSellOrBuy) {
+        contract.off('OrderExecuted', getOrderId)
+        res(Number(orderId))
+      }
+    }
+    contract.on('OrderExecuted', getOrderId)
+    setTimeout(() => {
+      contract.off('OrderExecuted', getOrderId)
+      rej(new Error('time out'))
+    }, 1000 * 60 * 2)
   })
 }

@@ -16,7 +16,7 @@ import dayjs from 'dayjs'
 // 代币发放记录
 export function DistributionRecord() {
   const { t } = useTranslation()
-  const coinStatus = ['unclaimed', 'claimed', 'withdraw', 'failed', 'distribution']
+  const coinStatus = ['unclaimed', 'claimed', 'withdraw', 'failed', 'sold', 'distribution']
   const { wallets } = useWallets()
 
   const [addCoinLoading, setAddCoinLoading] = useState(0)
@@ -96,7 +96,7 @@ export function DistributionRecord() {
       title: <div>{t('profile.data_count.status')}</div>,
       key: 'status',
       render: (_, record) => {
-        return <div>{t(`profile.coin.${record.status === -1 ? 'locked' : coinStatus[record.status]}`)}</div>
+        return <div>{t(`profile.coin.${!(record.status >= 0 && record.status < coinStatus.length && record.status !== null) ? 'locked' : coinStatus[record.status]}`)}</div>
       }
     },
     {
@@ -179,8 +179,8 @@ export function DistributionRecord() {
         key="distributionRecord"
         pagination={
           {
-            defaultCurrent: overPageInfo.page,
-            defaultPageSize: overPageInfo.pageSize,
+            current: overPageInfo.page,
+            pageSize: overPageInfo.pageSize,
             total: overPageInfo.total,
             onChange: (page, pageSize) => {
               setOverPageInfo({

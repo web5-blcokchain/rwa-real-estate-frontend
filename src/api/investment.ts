@@ -13,6 +13,7 @@ export function getInvestmentList(data: {
 export function buyAsset(data: {
   order_market_id: string
   token_number: string
+  hash: string
 }) {
   return apiClient.post('/api/market/confirmBuy', data)
 }

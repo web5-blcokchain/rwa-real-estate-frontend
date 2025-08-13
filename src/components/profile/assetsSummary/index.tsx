@@ -117,8 +117,8 @@ export function AssetsSummary() {
           key="summaryRecord"
           pagination={
             {
-              defaultCurrent: overPageInfo.page,
-              defaultPageSize: overPageInfo.pageSize,
+              current: overPageInfo.page,
+              pageSize: overPageInfo.pageSize,
               total: overPageInfo.total,
               onChange: (page, pageSize) => {
                 setOverPageInfo({

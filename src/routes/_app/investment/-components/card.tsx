@@ -3,6 +3,7 @@ import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import { InvestmentTab } from '@/enums/investment'
 import { useCommonDataStore } from '@/stores/common-data'
+import { useUserStore } from '@/stores/user'
 import { joinImagePath, joinImagesPath } from '@/utils/url'
 import { useNavigate } from '@tanstack/react-router'
 import { Button } from 'antd'
@@ -30,6 +31,7 @@ interface InvestmentCardProps {
     sell_order_id: string
     avatar: string
     nickname: string
+    user_id: number
   }
   type: InvestmentTab
 }
@@ -42,6 +44,7 @@ export const InvestmentCard: FC<InvestmentCardProps> = ({
   const { t } = useTranslation()
   const navigate = useNavigate()
   const investmentItems = useCommonDataStore(state => state.investmentItems)
+  const userData = useUserStore(state => state.userData)
 
   function buy() {
     investmentItems.set(item.id, item)
@@ -140,7 +143,7 @@ export const InvestmentCard: FC<InvestmentCardProps> = ({
                   type="primary"
                   size="large"
                   className="w-1/2 max-lg:w-full text-black!"
-                  disabled={item.is_me}
+                  disabled={userData.id === item.user_id}
                   onClick={buy}
                 >
                   {t('action.payment')}
@@ -153,7 +156,7 @@ export const InvestmentCard: FC<InvestmentCardProps> = ({
                 <Button
                   size="large"
                   className="w-1/2 max-lg:w-full bg-transparent! text-white! disabled:text-gray-5!"
-                  disabled={!item.has_holdings || item.is_me}
+                  disabled={userData.id === item.user_id}
                   onClick={sell}
                 >
                   {t('action.sell')}

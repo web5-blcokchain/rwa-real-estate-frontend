@@ -631,6 +631,7 @@
       "withdraw": "Redeem",
       "failed": "Distribution Failed",
       "locked": "Locked",
+      "sold": "Sold",
       "distribution": "Distributing"
     },
     "myAssets": {

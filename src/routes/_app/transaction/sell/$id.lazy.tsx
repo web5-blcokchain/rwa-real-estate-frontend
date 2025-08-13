@@ -195,7 +195,7 @@ function RouteComponent() {
 
   useEffect(() => {
     if (!item) {
-      toast.error(t('properties.payment.asset_not_found'))
+      // toast.error(t('properties.payment.asset_not_found'))
       navigate({
         to: '/investment'
       })
@@ -216,7 +216,7 @@ function RouteComponent() {
         <div className="h-60 w-100 max-lg:h-auto max-lg:w-full">
           <IImage src={imageUrl} className="size-full rounded" />
         </div>
-        <div>
+        <div className="flex-1">
           <div className="text-6 font-medium">{item?.name}</div>
 
           <div className="grid grid-cols-2 mt-4 gap-x-4">

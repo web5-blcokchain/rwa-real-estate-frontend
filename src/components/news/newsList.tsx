@@ -113,7 +113,7 @@ export function NewsList({ hasPagination = true, newsClos = 3, className }: {
             <Pagination
               showQuickJumper={false}
               showSizeChanger={false}
-              defaultCurrent={pagination.current}
+              current={pagination.current}
               pageSize={pagination.pageSize}
               total={pagination.total}
             />

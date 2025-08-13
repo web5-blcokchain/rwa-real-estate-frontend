@@ -1,4 +1,5 @@
 import numbro from 'numbro'
+import { toPlainString18 } from './web/utils'
 
 /**
  * 格式化数字，整数用 numbro，小数部分最长保留 {mantissa} 位,最小保留 {min} 位,自动截断末尾的0
@@ -17,7 +18,10 @@ export function formatNumberNoRound(value: number | string | undefined, mantissa
 
   // decimals = decimals.padEnd(2,'0')
   decimals = decimals.slice(0, Math.max(Math.min(mantissa, decimals.length), min))
-
+  // 如果出现了科学技术法，则用bignumber
+  if (value.toString().includes('e')) {
+    return toPlainString18(value)
+  }
   return numbro(Number.parseInt(value.toString())).format({
     mantissa: 0,
     // mantissa:mantissa,

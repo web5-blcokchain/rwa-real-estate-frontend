@@ -91,10 +91,13 @@ function RouteComponent() {
         // 创建卖单
         toast.info(t('payment.messages.creating_buy_order'))
         try {
-          const [orderId, createData] = await Promise.all([listenerCreateSellEvent(wallet.address, item.contract_address, true), createSellOrder(tradingContact, ethProvider, {
-            token: item.contract_address,
-            amount: tokenAmount
-          })])
+          const [orderId, createData] = await Promise.all([
+            listenerCreateSellEvent(wallet.address, item.contract_address, true),
+            createSellOrder(tradingContact, ethProvider, {
+              token: item.contract_address,
+              amount: tokenAmount
+            })
+          ])
           const { tx, price } = createData
           console.log(`交易已发送: ${tx.hash}`)
           console.log('tx', tx)
@@ -165,7 +168,7 @@ function RouteComponent() {
 
   useEffect(() => {
     if (!item) {
-      toast.error(t('properties.payment.asset_not_found'))
+      // toast.error(t('properties.payment.asset_not_found'))
       navigate({
         to: '/profile'
       })
@@ -186,7 +189,7 @@ function RouteComponent() {
         <div className="h-60 w-100 max-lg:h-auto max-lg:w-full">
           <IImage src={imageUrl} className="size-full rounded" />
         </div>
-        <div>
+        <div className="flex-1">
           <div className="text-6 font-medium">{item?.name}</div>
 
           <div className="grid grid-cols-2 mt-4 gap-x-4">
@@ -310,7 +313,7 @@ function RouteComponent() {
               loading={isProcessing}
               disabled={isPending || isProcessing}
             >
-              { t('action.confirm_sell')}
+              {t('action.confirm_sell')}
             </Button>
           </div>
           <div></div>

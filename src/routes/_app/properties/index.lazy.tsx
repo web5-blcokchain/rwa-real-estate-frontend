@@ -128,7 +128,7 @@ function RouteComponent() {
         <ConfigProvider locale={locale}>
           {data?.list && data.list.length > 0 && (
             <Pagination
-              defaultCurrent={page}
+              current={page}
               pageSize={pageSize}
               total={data?.count}
               onChange={page => setPage(page)}

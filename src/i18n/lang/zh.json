@@ -633,6 +633,7 @@
       "withdraw": "赎回",
       "failed": "发放失败",
       "locked": "锁定中",
+      "sold": "已出售",
       "distribution": "发放中"
     },
     "myAssets": {

@@ -148,6 +148,7 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
             size="large"
             className="mr-2 w-full text-black!"
             onClick={createSellOrder}
+            disabled={number <= 0}
           >
             {t('properties.payment.create_sell_order')}
           </Button>
