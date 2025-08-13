@@ -11,7 +11,7 @@ import { joinImagesPath } from '@/utils/url'
 import { getTradeContract, listenerCreateSellEvent, createBuyOrder as toCreateBuyOrder } from '@/utils/web/tradeContract'
 import { getUsdcContract } from '@/utils/web/usdcAddress'
 import { toPlainString18 } from '@/utils/web/utils'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { createFileRoute, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button, InputNumber, Select, Spin } from 'antd'
 import { ethers } from 'ethers'
@@ -52,13 +52,38 @@ function RouteComponent() {
     getDecimals()
   }, [wallet])
 
-  const { data, isLoading } = useQuery<any[]>({
-    queryKey: ['properties', keyword],
+  const getProperties = async () => {
+    return await apiBasic.getDataList({ keyword })
+  }
+
+  const { data, isRefetching: isLoading, refetch } = useQuery<any[]>({
+    queryKey: ['properties'],
     queryFn: async () => {
-      const res = await apiBasic.getDataList({ keyword })
+      const res = await getProperties()
       return _get(res.data, 'list', [])
     }
   })
+
+  const [timer, setTimer] = useState<NodeJS.Timeout | null>(null)
+  const [searchTime, setSearchTime] = useState(0)
+  const queryClient = useQueryClient()
+  const handleSearchProperties = (value: string) => {
+    setKeyword(value)
+    // 防抖，2秒空闲后执行
+    const clockTimer = 500
+    if (Date.now() - searchTime > clockTimer) {
+      if (timer) {
+        clearTimeout(timer)
+      }
+      setTimer(setTimeout(() => {
+        // 取消之前的请求
+        queryClient.cancelQueries({ queryKey: ['properties'] })
+        refetch()
+
+        setSearchTime(Date.now())
+      }, clockTimer))
+    }
+  }
 
   // 资产选择处理
   const handleAssetSelect = (value: number) => {
@@ -71,7 +96,7 @@ function RouteComponent() {
 
   // 搜索关键词处理
   const handleSearch = (value: string) => {
-    setKeyword(value)
+    handleSearchProperties(value)
   }
 
   // 处理清空搜索

@@ -217,7 +217,7 @@ export default function SaleRecord() {
       render: (_, record) => {
         return (
           <div>
-            <Button disabled={record.status === 2} loading={record.sell_order_id === loading} onClick={() => toCancelOrder(record.id, record.sell_order_id)} type="primary">
+            <Button disabled={record.status === 2 || record.status === 1} loading={record.sell_order_id === loading} onClick={() => toCancelOrder(record.id, record.sell_order_id)} type="primary">
               {t('取消订单')}
             </Button>
           </div>

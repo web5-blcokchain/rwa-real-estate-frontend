@@ -312,7 +312,7 @@ function RouteComponent() {
       <PaymentContent walletState={[wallet, setWallet]} />
 
       <div>
-        <div className="grid grid-cols-3 mt-2">
+        <div className="mt-2 fcc gap-4">
           <div>
             <Button
               className="text-white bg-transparent!"

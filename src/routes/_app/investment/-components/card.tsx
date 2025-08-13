@@ -5,7 +5,7 @@ import { InvestmentTab } from '@/enums/investment'
 import { useCommonDataStore } from '@/stores/common-data'
 import { useUserStore } from '@/stores/user'
 import { formatNumberNoRound } from '@/utils/number'
-import { joinImagePath, joinImagesPath } from '@/utils/url'
+import { joinImagesPath } from '@/utils/url'
 import { useNavigate } from '@tanstack/react-router'
 import { Button } from 'antd'
 import { useTranslation } from 'react-i18next'
@@ -32,6 +32,8 @@ interface InvestmentCardProps {
     avatar: string
     nickname: string
     user_id: number
+    expected_annual_return: string
+    properties_id: number
   }
   type: InvestmentTab
 }
@@ -81,9 +83,16 @@ export const InvestmentCard: FC<InvestmentCardProps> = ({
       </div>
 
       <div className="h-full w-full">
-        <div className="text-5 font-medium">{item.name}</div>
+        <div
+          onClick={(() => navigate({
+            to: `/properties/detail/${item.properties_id}`
+          }))}
+          className="cursor-pointer text-5 font-medium hover:text-primary"
+        >
+          {item.name}
+        </div>
 
-        <div className="grid grid-cols-4 gap-4 max-lg:grid-cols-2">
+        <div className="grid grid-cols-4 gap-4 max-lg:grid-cols-2 [&>div]:w-full">
           <IInfoField
             label={t('properties.detail.location')}
             value={item.address}
@@ -116,22 +125,22 @@ export const InvestmentCard: FC<InvestmentCardProps> = ({
             <div className="fyc gap-8">
               <IInfoField
                 label={t('properties.payment.number')}
-                value={`${item.tokens_held}/${item.total_selling}`}
+                value={`${item.total_selling}`}
                 labelClass="text-[#898989]"
                 valueClass="text-white"
               />
               <IInfoField
                 label={t('properties.detail.return')}
-                value={`${item.rental_yield}%`}
+                value={`${item.expected_annual_return}%`}
                 labelClass="text-[#898989]"
                 valueClass="text-white"
               />
             </div>
 
             <div className="fyc gap-2">
-              <div className="size-8 overflow-hidden rounded-full">
+              {/* <div className="size-8 overflow-hidden rounded-full">
                 <IImage src={joinImagePath(item.avatar)} alt="avatar" className="size-full" />
-              </div>
+              </div> */}
               <div>{item.nickname}</div>
             </div>
           </div>
