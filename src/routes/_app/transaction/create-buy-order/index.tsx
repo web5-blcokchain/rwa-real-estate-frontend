@@ -4,7 +4,7 @@ import { createBuyOrder as createBuyOrderApi } from '@/api/investment'
 import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
-import { PaymentWallet } from '@/components/common/payment-wallect'
+import { PaymentContent } from '@/components/common/payment-content'
 import QuantitySelector from '@/components/common/quantity-selector'
 import { joinImagesPath } from '@/utils/url'
 import { getPropertyTokenContract } from '@/utils/web/propertyToken'
@@ -14,6 +14,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { createFileRoute, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button, Select, Spin } from 'antd'
 import { ethers } from 'ethers'
+import { PayDialog } from '../../properties/-components/payDialog'
 
 // 最小购买数量常量
 const MIN_TOKEN_PURCHASE = 1 // 设置最小购买量为2个代币，根据合约要求调整
@@ -79,6 +80,7 @@ function RouteComponent() {
     }
   })
 
+  const [payDialogOpen, setPayDialogOpen] = useState(false)
   async function createBuyOrder() {
     try {
       setIsProcessing(true) // 开始处理时设置为 true
@@ -112,6 +114,7 @@ function RouteComponent() {
         toast.error(t('payment.errors.amount_below_minimum', { min: minTokenAmount }))
         return
       }
+      setPayDialogOpen(true)
 
       const ethProvider = await wallet.getEthereumProvider()
       const provider = new ethers.BrowserProvider(ethProvider)
@@ -172,6 +175,7 @@ function RouteComponent() {
     }
     finally {
       setIsProcessing(false) // 无论成功或失败，最终都设置为 false
+      setPayDialogOpen(false)
     }
   }
 
@@ -305,24 +309,10 @@ function RouteComponent() {
                 </div>
               </div>
 
-              <div className="rounded-xl bg-[#202329] p-6 space-y-4">
-                <div className="text-4.5">{t('properties.payment.payment_method')}</div>
-                <PaymentWallet walletState={[wallet, setWallet]} />
-              </div>
-
-              <div className="rounded-xl bg-[#202329] p-6 text-4 text-[#898989] space-y-2">
-                <p>{t('properties.payment.dear_user')}</p>
-                <p>
-                  {t('properties.payment.please_verify')}
-                </p>
-                <p>
-                  {t('properties.payment.please_verify_1')}
-                  Your account must be fully verified with a valid government-issued ID or passport.
-                </p>
-              </div>
+              <PaymentContent walletState={[wallet, setWallet]} />
 
               <div>
-                <div className="grid grid-cols-3 mt-2">
+                <div className="mt-2 fcc gap-4">
                   <div>
                     <Button
                       className="text-white bg-transparent!"
@@ -347,6 +337,8 @@ function RouteComponent() {
                   <div></div>
                 </div>
               </div>
+
+              <PayDialog open={payDialogOpen} onClose={() => setPayDialogOpen(false)} />
             </>
           )}
     </div>

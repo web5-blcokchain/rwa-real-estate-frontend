@@ -2,7 +2,7 @@ import { getInvestmentList } from '@/api/investment'
 import { InvestmentTab } from '@/enums/investment'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
-import { Button, Input, Select, Tabs } from 'antd'
+import { Button, Input, Select, Spin, Tabs } from 'antd'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { InvestmentCard } from './-components/card'
@@ -35,7 +35,7 @@ function RouteComponent() {
     })
     return res
   }
-  const { data, isLoading, refetch } = useQuery({
+  const { data, isFetching: isLoading, refetch } = useQuery({
     queryKey: ['investment-list', page, orderType, type], // 添加 assetType 到查询键
     queryFn: async () => {
       const res = await searchDataList()
@@ -150,10 +150,9 @@ function RouteComponent() {
         </div>
       </div>
 
-      <Waiting
-        for={!isLoading}
+      <Spin
+        spinning={isLoading}
         className="h-32 fcc"
-        iconClass="size-8"
       >
         {data && Array.isArray(data) && data.length > 0
           ? (
@@ -177,7 +176,7 @@ function RouteComponent() {
                 {t('common.empty')}
               </div>
             )}
-      </Waiting>
+      </Spin>
 
       {!isLoading && data?.list && data.list.length > 20 && (
         <div className="mt-8 text-center">

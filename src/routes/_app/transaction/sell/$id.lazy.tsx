@@ -3,15 +3,16 @@ import { sellOrder } from '@/api/investment'
 import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
-import { PaymentMethod } from '@/components/common/payment-method'
-import { getContracts } from '@/contract'
+import { PaymentContent } from '@/components/common/payment-content'
 import { useCommonDataStore } from '@/stores/common-data'
 import { joinImagesPath } from '@/utils/url'
+import { getPropertyTokenAmount } from '@/utils/web/propertyToken'
+import { getTradeContract, tradeContractSellOrder } from '@/utils/web/tradeContract'
 import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
-import { ethers } from 'ethers'
 import numeral from 'numeral'
+import { PayDialog } from '../../properties/-components/payDialog'
 
 export const Route = createLazyFileRoute('/_app/transaction/sell/$id')({
   component: RouteComponent
@@ -34,14 +35,14 @@ function RouteComponent() {
 
   const [tokens, setTokens] = useState(1)
   const [sellLoading, setSellLoading] = useState(false) // 新增loading状态
+  const [payDialogOpen, setPayDialogOpen] = useState(false)
 
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (hash: string) => {
       const res = await sellOrder({
         order_market_id: `${item.id}`,
         token_number: `${tokens}`,
-        token_price: `${item.token_price}`,
-        sell_order_id: `${item.sell_order_id}`
+        hash
       })
       return res.data
     }
@@ -53,6 +54,20 @@ function RouteComponent() {
     }
   }, [item])
 
+  // 获取当前用户持有代币
+  const [userToken, setUserToken] = useState(-1)
+  const getUserToken = async () => {
+    if (!wallet || !item?.contract_address)
+      return
+    const ethProvider = await wallet.getEthereumProvider()
+    const userToken = await getPropertyTokenAmount(ethProvider, item.contract_address, wallet.address)
+    setUserToken(userToken)
+  }
+  useEffect(() => {
+    getUserToken()
+  }, [wallet, item])
+
+  // 卖出代币
   async function sell() {
     if (!wallet) {
       toast.error(t('payment.errors.no_wallet'))
@@ -61,70 +76,19 @@ function RouteComponent() {
 
     setSellLoading(true) // 开始loading
     try {
-      const PropertyToken = getContracts('PropertyToken')
-      const TradingManager = getContracts('TradingManager')
-
       const ethProvider = await wallet.getEthereumProvider()
-      const provider = new ethers.BrowserProvider(ethProvider)
-      const signer = await provider.getSigner()
-
-      const tradingManagerContract = new ethers.Contract(
-        TradingManager.address,
-        TradingManager.abi,
-        signer
-      )
-
-      // 获取买单ID
-      const orderId = BigInt(item.sell_order_id)
-      if (!orderId) {
-        toast.error(t('payment.errors.invalid_order_id'))
-        return
-      }
-
-      // 获取买单信息
-      let order
-      try {
-        order = await tradingManagerContract.getOrder(orderId)
-        if (!order.active) {
-          toast.error(t('payment.errors.order_not_active'))
-          return
-        }
-      }
-      catch (error) {
-        console.error('获取买单信息失败:', error)
-        toast.error(t('payment.errors.get_order_failed'))
-        return
-      }
+      const tradingManagerContract = await getTradeContract(ethProvider)
 
       // 检查当前用户代币余额
-      const propertyTokenAddress = order.token
-      const propertyTokenContract = new ethers.Contract(
-        propertyTokenAddress,
-        PropertyToken.abi,
-        signer
-      )
-      const userAddress = await signer.getAddress()
-      const tokenBalance = await propertyTokenContract.balanceOf(userAddress)
+      const tokenBalance = await getPropertyTokenAmount(ethProvider, item.contract_address, wallet.address)
+      const sellPrice = tokens * Number(item.token_price)
 
       console.log('用户代币余额:', tokenBalance)
-      console.log('订单金额:', order.amount)
+      console.log('订单金额:', sellPrice)
 
-      if (tokenBalance < order.amount) {
+      if (tokenBalance < sellPrice) {
         toast.error(t('payment.errors.insufficient_token'))
         return
-      }
-
-      // 检查代币授权额度
-      const currentAllowance = await propertyTokenContract.allowance(userAddress, TradingManager.address)
-      if (currentAllowance < order.amount) {
-        toast.info(t('payment.info.authorizing')) // 授权提示
-        // 先清零授权
-        await propertyTokenContract.approve(TradingManager.address, 0)
-        // 授权更大额度
-        const approveAmount = order.amount * BigInt(2)
-        await propertyTokenContract.approve(TradingManager.address, approveAmount)
-        // 再次检查
-        await propertyTokenContract.allowance(userAddress, TradingManager.address)
       }
 
       // 显示交易处理中
@@ -132,14 +96,20 @@ function RouteComponent() {
 
       try {
         console.log('开始执行卖单交易...')
+        setPayDialogOpen(true)
         // 执行卖单交易
-        const sellOrderTx = await tradingManagerContract.sellOrder(orderId)
+        const sellOrderTx = await tradeContractSellOrder(tradingManagerContract, ethProvider, {
+          token: item.contract_address,
+          sellOrderId: Number(item.sell_order_id),
+          amount: tokens,
+          price: Number(item.token_price)
+        })
         const receipt = await sellOrderTx.wait()
         console.log('receipt', receipt)
         toast.success(t('payment.success.tx_sent')) // 成功提示
 
         // 调用后端API记录交易
-        mutateAsync()
+        mutateAsync(sellOrderTx.hash)
           .then(() => {
             navigate({
               to: '/investment'
@@ -190,6 +160,7 @@ function RouteComponent() {
     }
     finally {
       setSellLoading(false) // 结束loading
+      setPayDialogOpen(false)
     }
   }
 
@@ -255,7 +226,7 @@ function RouteComponent() {
           <div className="w-full text-[#898989] [&>div]:w-full [&>div]:fyc [&>div]:justify-between space-y-4">
             <div>
               <div>{t('properties.payment.tokens_held')}</div>
-              <div className="text-right text-[#898989]">{item.tokens_held}</div>
+              <div className="text-right text-[#898989]">{userToken >= 0 ? userToken : '-'}</div>
             </div>
             <div>
               <div>{t('properties.payment.number')}</div>
@@ -271,7 +242,7 @@ function RouteComponent() {
               </div>
             </div>
             <div>
-              <div>
+              {/* <div>
                 {t('properties.payment.platform_fee')}
                 {' '}
                 (2%)
@@ -279,7 +250,7 @@ function RouteComponent() {
               <div className="text-right">
                 $
                 {tokens * Number(item.token_price) * 0.02}
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -292,31 +263,15 @@ function RouteComponent() {
         <div className="fbc">
           <div>{t('properties.payment.total_amount')}</div>
           <div className="text-primary">
-            {`$${(tokens * Number(item.token_price)) - (tokens * Number(item.token_price) * 0.02)}`}
+            {`$${(tokens * Number(item.token_price))}`}
           </div>
         </div>
       </div>
 
-      <div className="rounded-xl bg-[#202329] p-6 space-y-4">
-        <div className="text-4.5">{t('properties.payment.payment_method')}</div>
-        <PaymentMethod walletState={[wallet, setWallet]} />
-      </div>
-
-      <div className="rounded-xl bg-[#202329] p-6 text-4 text-[#898989] space-y-2">
-        <p>{t('properties.payment.dear_user')}</p>
-        <p>
-          {t('properties.payment.please_verify')}
-
-        </p>
-        <p>
-          {t('properties.payment.please_verify_1')}
-
-          Your account must be fully verified with a valid government-issued ID or passport.
-        </p>
-      </div>
+      <PaymentContent walletState={[wallet, setWallet]} />
 
       <div>
-        <div className="grid grid-cols-3 mt-2">
+        <div className="mt-2 fcc gap-4">
           <div>
             <Button
               className="text-white bg-transparent!"
@@ -341,6 +296,7 @@ function RouteComponent() {
           <div></div>
         </div>
       </div>
+      <PayDialog open={payDialogOpen} onClose={() => setPayDialogOpen(false)} />
     </div>
   )
 }

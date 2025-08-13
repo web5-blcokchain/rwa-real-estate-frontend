@@ -3,7 +3,7 @@ import { sellAsset } from '@/api/investment'
 import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
-import { PaymentWallet } from '@/components/common/payment-wallect'
+import { PaymentContent } from '@/components/common/payment-content'
 import QuantitySelector from '@/components/common/quantity-selector'
 import { useCommonDataStore } from '@/stores/common-data'
 import { joinImagesPath } from '@/utils/url'
@@ -15,6 +15,7 @@ import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack
 import { Button } from 'antd'
 import { ethers } from 'ethers'
 import numeral from 'numeral'
+import { PayDialog } from '../../properties/-components/payDialog'
 
 export const Route = createLazyFileRoute('/_app/transaction/create-sell-order/$id')({
   component: RouteComponent
@@ -53,6 +54,7 @@ function RouteComponent() {
     }
   })
 
+  const [payDialogOpen, setPayDialogOpen] = useState(false)
   async function sell() {
     if (!wallet) {
       toast.error(t('payment.errors.no_wallet'))
@@ -88,6 +90,7 @@ function RouteComponent() {
           setIsProcessing(false)
           return
         }
+        setPayDialogOpen(true)
         // 创建卖单
         toast.info(t('payment.messages.creating_buy_order'))
         try {
@@ -152,6 +155,7 @@ function RouteComponent() {
           t('payment.errors.general', { error: error.message || t('payment.errors.unknown') })
         )
         setIsProcessing(false)
+        setPayDialogOpen(false)
       }
     }
     catch (error: any) {
@@ -160,9 +164,11 @@ function RouteComponent() {
         t('payment.errors.general', { error: error.message || t('payment.errors.unknown') })
       )
       setIsProcessing(false)
+      setPayDialogOpen(false)
     }
     finally {
       setIsProcessing(false)
+      setPayDialogOpen(false)
     }
   }
 
@@ -277,21 +283,7 @@ function RouteComponent() {
         </div>
       </div>
 
-      <div className="rounded-xl bg-[#202329] p-6 space-y-4">
-        <div className="text-4.5">{t('properties.payment.payment_method')}</div>
-        <PaymentWallet walletState={[wallet, setWallet]} />
-      </div>
-
-      <div className="rounded-xl bg-[#202329] p-6 text-4 text-[#898989] space-y-2">
-        <p>{t('properties.payment.dear_user')}</p>
-        <p>
-          {t('properties.payment.please_verify')}
-
-        </p>
-        <p>
-          {t('properties.payment.please_verify_1')}
-        </p>
-      </div>
+      <PaymentContent walletState={[wallet, setWallet]} />
 
       <div>
         <div className="grid grid-cols-3 mt-2">
@@ -319,6 +311,7 @@ function RouteComponent() {
           <div></div>
         </div>
       </div>
+      <PayDialog open={payDialogOpen} onClose={() => setPayDialogOpen(false)} />
     </div>
   )
 }

@@ -3,7 +3,7 @@ import { buyAsset } from '@/api/investment'
 import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
-import { PaymentWallet } from '@/components/common/payment-wallect'
+import { PaymentContent } from '@/components/common/payment-content'
 import QuantitySelector from '@/components/common/quantity-selector'
 import { useCommonDataStore } from '@/stores/common-data'
 import { joinImagesPath } from '@/utils/url'
@@ -14,6 +14,7 @@ import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
 import { ethers } from 'ethers'
+import { PayDialog } from '../../properties/-components/payDialog'
 
 export const Route = createLazyFileRoute('/_app/transaction/buy/$id')({
   component: RouteComponent
@@ -47,6 +48,7 @@ function RouteComponent() {
     }
   })
 
+  const [payDialogOpen, setPayDialogOpen] = useState(false)
   async function buy() {
     if (!wallet) {
       toast.error(t('payment.errors.no_wallet'))
@@ -72,7 +74,7 @@ function RouteComponent() {
         if (usdtBalance < requiredUsdt) {
           throw new Error(`USDT余额不足，需要 ${ethers.formatUnits(requiredUsdt, usdcDecimals)}，实际有 ${ethers.formatUnits(usdtBalance, usdcDecimals)}`)
         }
-
+        setPayDialogOpen(true)
         // 执行买单
         console.log(`准备执行买单，订单ID: ${orderId}`)
         const [tx] = await Promise.all([
@@ -105,6 +107,7 @@ function RouteComponent() {
     }
     finally {
       setBuyLoading(false) // 结束loading
+      setPayDialogOpen(false)
     }
   }
 
@@ -212,26 +215,10 @@ function RouteComponent() {
         </div>
       </div>
 
-      <div className="rounded-xl bg-[#202329] p-6 space-y-4">
-        <div className="text-4.5">{t('properties.payment.payment_method')}</div>
-        <PaymentWallet walletState={[wallet, setWallet]} />
-      </div>
-
-      <div className="rounded-xl bg-[#202329] p-6 text-4 text-[#898989] space-y-2">
-        <p>{t('properties.payment.dear_user')}</p>
-        <p>
-          {t('properties.payment.please_verify')}
-
-        </p>
-        <p>
-          {t('properties.payment.please_verify_1')}
-
-          Your account must be fully verified with a valid government-issued ID or passport.
-        </p>
-      </div>
+      <PaymentContent walletState={[wallet, setWallet]} />
 
       <div>
-        <div className="grid grid-cols-3 mt-2">
+        <div className="mt-2 fcc gap-4">
           <div>
             <Button
               className="text-white bg-transparent!"
@@ -256,6 +243,7 @@ function RouteComponent() {
           <div></div>
         </div>
       </div>
+      <PayDialog open={payDialogOpen} onClose={() => setPayDialogOpen(false)} />
     </div>
   )
 }

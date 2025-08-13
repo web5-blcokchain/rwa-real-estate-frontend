@@ -3,7 +3,7 @@ import apiBasic from '@/api/basicApi'
 import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
-import { PaymentWallet } from '@/components/common/payment-wallect'
+import { PaymentContent } from '@/components/common/payment-content'
 import QuantitySelector from '@/components/common/quantity-selector'
 import { getContracts } from '@/contract'
 import { useCommonDataStore } from '@/stores/common-data'
@@ -336,18 +336,7 @@ function RouteComponent() {
         </div>
       </div>
 
-      <div className="rounded-xl bg-[#202329] p-6 space-y-4">
-        <div className="text-4.5">{t('properties.payment.bind_wallet')}</div>
-        <PaymentWallet walletState={[wallet, setWallet]} />
-        <div className="text-3.5 text-[#898989]">
-          <div>{t('properties.payment.dear_user')}</div>
-          <div>{t('properties.payment.bind_wallet_content_1')}</div>
-          <div>{t('properties.payment.bind_wallet_content_2')}</div>
-          <div>{t('properties.payment.bind_wallet_content_3')}</div>
-          <div>{t('properties.payment.bind_wallet_content_4')}</div>
-        </div>
-
-      </div>
+      <PaymentContent walletState={[wallet, setWallet]} />
 
       {/* <div className="rounded-xl bg-[#202329] p-6 text-4 text-[#898989] space-y-2">
         <p>
