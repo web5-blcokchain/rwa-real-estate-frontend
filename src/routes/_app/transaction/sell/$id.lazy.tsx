@@ -5,7 +5,7 @@ import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
 import { PaymentContent } from '@/components/common/payment-content'
 import { useCommonDataStore } from '@/stores/common-data'
-import { formatNumberNoRound } from '@/utils/number'
+import { formatNumberNoRound, toBigNumer } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
 import { getPropertyTokenAmount } from '@/utils/web/propertyToken'
 import { getTradeContract, tradeContractSellOrder } from '@/utils/web/tradeContract'
@@ -238,7 +238,7 @@ function RouteComponent() {
               <div>{t('properties.payment.subtotal')}</div>
               <div className="text-right">
                 $
-                {formatNumberNoRound(tokens * Number(item.token_price), 8)}
+                {formatNumberNoRound((toBigNumer(tokens).multipliedBy(item.token_price)).toString(), 8)}
               </div>
             </div>
             <div>

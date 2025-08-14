@@ -6,7 +6,7 @@ import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
 import { PaymentContent } from '@/components/common/payment-content'
 import QuantitySelector from '@/components/common/quantity-selector'
-import { formatNumberNoRound } from '@/utils/number'
+import { formatNumberNoRound, toBigNumer } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
 import { getTradeContract, listenerCreateSellEvent, createBuyOrder as toCreateBuyOrder } from '@/utils/web/tradeContract'
 import { getContactInfo, getUsdcContract } from '@/utils/web/usdcAddress'
@@ -41,6 +41,7 @@ function RouteComponent() {
     decimals: 6,
     symbol: 'USDT'
   })
+  const maxPrice = 999999999999999
 
   // 获取代币精度
   useEffect(() => {
@@ -228,25 +229,27 @@ function RouteComponent() {
   const renderAssetSelection = () => (
     <div className="rounded-xl bg-[#202329] p-6 space-y-4">
       <div className="text-4.5">{t('properties.payment.select_asset')}</div>
-      <Select
-        showSearch
-        allowClear
-        placeholder={t('properties.payment.search_asset')}
-        optionFilterProp="children"
-        onChange={handleAssetSelect}
-        onSearch={handleSearch}
-        onClear={handleClear}
-        filterOption={(input, option) =>
-          (option?.label?.toString().toLowerCase() ?? '').includes(input.toLowerCase())}
-        loading={isLoading}
-        className="w-full"
-        dropdownStyle={{ background: '#2c2f36', color: 'white' }}
-        notFoundContent={isLoading ? <Spin size="small" /> : null}
-        options={data?.map((asset: any) => ({
-          value: asset.id,
-          label: asset.name
-        }))}
-      />
+      {data && (
+        <Select
+          showSearch
+          allowClear
+          placeholder={t('properties.payment.search_asset')}
+          optionFilterProp="children"
+          onChange={handleAssetSelect}
+          onSearch={handleSearch}
+          onClear={handleClear}
+          filterOption={(input, option) =>
+            (option?.label?.toString().toLowerCase() ?? '').includes(input.toLowerCase())}
+          loading={isLoading}
+          className="w-full"
+          dropdownStyle={{ background: '#2c2f36', color: 'white' }}
+          notFoundContent={isLoading ? <Spin size="small" /> : null}
+          options={data?.map((asset: any) => ({
+            value: asset.id,
+            label: asset.name
+          }))}
+        />
+      )}
     </div>
   )
 
@@ -325,6 +328,7 @@ function RouteComponent() {
                           value={buyPrice}
                           onChange={value => setBuyPrice(value || 1)}
                           min={1 * 10 ** (-1 * usdcInfo.decimals)}
+                          max={maxPrice}
                         />
                         <div>{usdcInfo.symbol}</div>
                       </div>
@@ -333,7 +337,7 @@ function RouteComponent() {
                       <div>{t('properties.payment.subtotal')}</div>
                       <div className="text-right">
                         $
-                        {formatNumberNoRound(tokens * Number(item.price * buyPrice), 8)}
+                        {formatNumberNoRound((toBigNumer(tokens).multipliedBy(buyPrice)).toString(), 8)}
                       </div>
                     </div>
                     {/* <div>

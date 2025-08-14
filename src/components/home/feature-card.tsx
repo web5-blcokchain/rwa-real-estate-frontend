@@ -21,6 +21,7 @@ const FeatureCard: FC<
   className,
   ...props
 }) => {
+  const { t } = useTranslation()
   return (
     <div
       className={cn(
@@ -48,10 +49,10 @@ const FeatureCard: FC<
           </div>
           <div className="fbc">
             <div className="truncate rounded-6px bg-#F0B90B px-10px text-5 text-#131518 leading-30px max-lg:text-2 max-xl:text-4 max-lg:leading-5 max-xl:leading-7">
-              {`房屋寿命: ${house_life} 年`}
+              {t('properties.detail.house_life', { house_life })}
             </div>
             <div className="truncate rounded-6px bg-#F0B90B px-10px text-5 text-#131518 leading-30px max-lg:text-2 max-xl:text-4 max-lg:leading-5 max-xl:leading-7">
-              {`卧室: ${bedrooms}`}
+              {t('properties.detail.bedrooms_num', { bedrooms })}
             </div>
           </div>
         </div>
@@ -59,7 +60,7 @@ const FeatureCard: FC<
           <div>
             $
             {price}
-            米
+
           </div>
           <div className="rounded-full bg-#F0B90B">
             <div className="i-radix-icons:arrow-top-right size-34px bg-#131518 max-lg:size-16px max-md:size-10px max-xl:size-24px"></div>

@@ -313,6 +313,8 @@
     "subTitle": "利用区块链技术投资纽约优质房地产机会",
     "search": "按房屋地点和物业类型搜索",
     "detail": {
+      "house_life": "房屋寿命: {{house_life}}年",
+      "bedrooms_num": "卧室: {{bedrooms}}",
       "property_type": "物业类型",
       "bedrooms": "卧室",
       "market_value": "市场价值",

@@ -311,6 +311,8 @@
     "subTitle": "ブロックチェーン技術を通じて良質なニューヨーク不動産投資の機会を提供",
     "search": "物件の場所と物件タイプで検索",
     "detail": {
+      "house_life": "家の寿命:{{house_life}}年",
+      "bedrooms_num": "ベッドルーム:: {{bedrooms}}",
       "property_type": "不動産タイプ",
       "bedrooms": "ベッドルーム",
       "market_value": "市場価値",

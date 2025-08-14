@@ -6,7 +6,7 @@ import ISeparator from '@/components/common/i-separator'
 import { PaymentContent } from '@/components/common/payment-content'
 import QuantitySelector from '@/components/common/quantity-selector'
 import { useCommonDataStore } from '@/stores/common-data'
-import { formatNumberNoRound } from '@/utils/number'
+import { formatNumberNoRound, toBigNumer } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
 import { getPropertyTokenAmount, getPropertyTokenContract } from '@/utils/web/propertyToken'
 import { createSellOrder, getTradeContract, listenerCreateSellEvent } from '@/utils/web/tradeContract'
@@ -45,6 +45,7 @@ function RouteComponent() {
     decimals: 6,
     symbol: 'USDT'
   })
+  const maxPrice = 999999999999999
 
   const { isPending, mutateAsync } = useMutation({
     mutationFn: async (data: {
@@ -286,6 +287,7 @@ function RouteComponent() {
                   value={sellPrice}
                   onChange={value => setsellPrice(value || 1)}
                   min={1 * 10 ** (-1 * usdcInfo.decimals)}
+                  max={maxPrice}
                 />
                 <div>{usdcInfo.symbol}</div>
               </div>
@@ -294,7 +296,7 @@ function RouteComponent() {
               <div>{t('properties.payment.subtotal')}</div>
               <div className="text-right">
                 $
-                {formatNumberNoRound(tokens * sellPrice, 8)}
+                {formatNumberNoRound((toBigNumer(tokens).multipliedBy(sellPrice)).toString(), 8)}
               </div>
             </div>
 
@@ -310,7 +312,8 @@ function RouteComponent() {
         <div className="fbc">
           <div>{t('properties.payment.total_amount')}</div>
           <div className="text-primary">
-            {`$${formatNumberNoRound((tokens * sellPrice), 8)}`}
+            $
+            {formatNumberNoRound((toBigNumer(tokens).multipliedBy(sellPrice)).toString(), 8)}
           </div>
         </div>
       </div>

@@ -1,7 +1,9 @@
 import type { EIP1193Provider } from '@privy-io/react-auth'
 import { getContracts } from '@/contract'
+import BigNumber from 'bignumber.js'
 import { Contract, ethers } from 'ethers'
 import { envConfig } from '../envConfig'
+import { toBigNumer } from '../number'
 import { getPropertyTokenContract } from './propertyToken'
 import { getUsdcContract } from './usdcAddress'
 import { getNameToContract, SmartErrorParses, toPlainString18 } from './utils'
@@ -30,10 +32,10 @@ export async function createSellOrder(contact: ethers.Contract, e: EIP1193Provid
 }) {
   try {
     const propertyTokenContract = await getPropertyTokenContract(e, data.token)
-    const tokenPrice = await data.price
     const tokenDecimals = await propertyTokenContract.decimals()
     // 获取房屋id
     const [serverId] = await propertyTokenContract.getPropertyInfo()
+    const tokenPrice = await data.price
     const allAmount = toPlainString18((data.amount))
     const parseAmount = ethers.parseUnits(allAmount, tokenDecimals)
     const usdcContact = await getUsdcContract(e)
@@ -41,8 +43,9 @@ export async function createSellOrder(contact: ethers.Contract, e: EIP1193Provid
     // 将房屋代币授权给交易合约
     const approveTx = await propertyTokenContract.approve(envConfig.tradeContract, parseAmount)
     await approveTx.wait()
+    const sellPrice = new BigNumber(data.price)
     // 发送创建卖单交易（房屋代币地址、房产表示字符串、卖出数量、挂单单价【默认支付代币精度】）
-    const tx = await contact.createSellOrder(data.token, serverId, parseAmount, ethers.parseUnits(tokenPrice.toString(), usdcDecimals))
+    const tx = await contact.createSellOrder(data.token, serverId, parseAmount, ethers.parseUnits(sellPrice.toString(), usdcDecimals))
     await tx.wait()
     return {
       tx,
@@ -74,20 +77,21 @@ export async function createBuyOrder(contact: ethers.Contract, e: EIP1193Provide
     const propertyTokenContract = await getPropertyTokenContract(e, data.token)
     const usdcContact = await getUsdcContract(e)
     // 房屋代币价格和精度
-    const tokenPrice = data.price
     const tokenDecimals = await propertyTokenContract.decimals()
-    // 售卖总价格
-    const allAmount = toPlainString18((data.amount * tokenPrice))
+
     // 获取usdc精度
     const usdcDecimals = await usdcContact.decimals()
-    const parseAmount = ethers.parseUnits(allAmount, usdcDecimals)
+    const tokenPrice = ethers.parseUnits(toBigNumer(data.price).toString(), usdcDecimals)
+    const tokenAmount = ethers.parseUnits(toBigNumer(data.amount).toString(), usdcDecimals)
+    // 售卖总价格
+    const allAmount = tokenAmount * tokenPrice / BigInt(10 ** Number(usdcDecimals))
     // 获取房屋id
     const [serverId] = await propertyTokenContract.getPropertyInfo()
     // 将需要支付的usdc（数量 * 单价）授权给交易合约
-    const approveTx = await usdcContact.approve(envConfig.tradeContract, parseAmount)
+    const approveTx = await usdcContact.approve(envConfig.tradeContract, allAmount)
     await approveTx.wait()
     // 发送创建卖单交易 （房屋代币地址、房产表示字符串、买入数量、挂单单价【默认支付代币精度】）
-    const tx = await contact.createBuyOrder(data.token, serverId, ethers.parseUnits(data.amount.toString(), tokenDecimals), ethers.parseUnits(tokenPrice.toString(), usdcDecimals))
+    const tx = await contact.createBuyOrder(data.token, serverId, ethers.parseUnits(data.amount.toString(), tokenDecimals), ethers.parseUnits(data.price.toString(), usdcDecimals))
     await tx.wait()
     return {
       tx,
@@ -118,8 +122,11 @@ export async function tradeContractBuyOrder(contact: ethers.Contract, e: EIP1193
   try {
     const usdcContact = await getUsdcContract(e)
     const usdcDecimals = await usdcContact.decimals()
+    const payPricr = ethers.parseUnits(toBigNumer(data.price).toString())
+    const payAmount = ethers.parseUnits(toBigNumer(data.amount).toString())
+    const allAmount = payPricr * payAmount / BigInt(10 ** Number(usdcDecimals))
     // 将usdc授权给交易合约
-    const approveTx = await usdcContact.approve(envConfig.tradeContract, ethers.parseUnits(toPlainString18(data.amount * data.price), usdcDecimals))
+    const approveTx = await usdcContact.approve(envConfig.tradeContract, allAmount)
     await approveTx.wait()
     // 发送买单交易
     const tx = await contact.buyOrder(data.sellOrderId)
@@ -152,8 +159,11 @@ export async function tradeContractSellOrder(contact: ethers.Contract, e: EIP119
   try {
     const propertyTokenContract = await getPropertyTokenContract(e, data.token)
     const tokenDecimals = await propertyTokenContract.decimals()
+    const payAmount = ethers.parseUnits(toBigNumer(data.amount).toString(), tokenDecimals)
+    const payPrice = ethers.parseUnits(toBigNumer(data.price).toString())
+    const allAmount = payPrice * payAmount / BigInt(10 ** Number(tokenDecimals))
     // 将翻屋代币授权给交易合约
-    const approveTx = await propertyTokenContract.approve(envConfig.tradeContract, ethers.parseUnits(toPlainString18(data.amount * data.price), tokenDecimals))
+    const approveTx = await propertyTokenContract.approve(envConfig.tradeContract, allAmount)
     await approveTx.wait()
     // 发送卖单交易
     const tx = await contact.sellOrder(data.sellOrderId)

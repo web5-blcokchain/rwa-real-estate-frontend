@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js'
 import numbro from 'numbro'
 import { toPlainString18 } from './web/utils'
 
@@ -31,4 +32,8 @@ export function formatNumberNoRound(value: number | string | undefined, mantissa
     thousandSeparated: true,
     ...format
   }) + (decimals.length > 0 ? `.${decimals}` : '')
+}
+
+export function toBigNumer(num: number) {
+  return new BigNumber(num)
 }

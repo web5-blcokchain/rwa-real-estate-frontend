@@ -9,9 +9,9 @@ import { getContracts } from '@/contract'
 import { useCommonDataStore } from '@/stores/common-data'
 import { useUserStore } from '@/stores/user'
 import { envConfig } from '@/utils/envConfig'
-import { formatNumberNoRound } from '@/utils/number'
+import { formatNumberNoRound, toBigNumer } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
-import { generatePermitSignature, toPlainString18 } from '@/utils/web/utils'
+import { generatePermitSignature } from '@/utils/web/utils'
 import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
@@ -120,7 +120,7 @@ function RouteComponent() {
       // 获取房屋代币对应的usdc价格
       let usdcPrice = await propertyManagerContract.issuePrice()
       usdcPrice = ethers.formatUnits(usdcPrice, usdtDecimals)
-      const requiredUsdtAmount = toPlainString18(tokens * Number(usdcPrice))
+      const requiredUsdtAmount = toBigNumer(tokens).multipliedBy(usdcPrice).toString()
       // 计算需要支付USDT余额 百分之2的手续费 （总数 * 价格 * 手续费）
       const payUSDCAmount = ethers.parseUnits(requiredUsdtAmount, usdtDecimals)
       const usdtBalance = await usdtContract.balanceOf(signerAddress)
@@ -167,7 +167,7 @@ function RouteComponent() {
         // 生成支付合约的精度数
         const tx = await (propertyManagerContract.connect(signer) as any)
           .purchaseTokens(
-            ethers.parseEther((tokens).toFixed(18).toString()), // 截断小数点，防止位数太多导致函数报错
+            ethers.parseEther(toBigNumer(tokens).toString()), // 截断小数点，防止位数太多导致函数报错
             usdtContract.getAddress(),
             deadline,
             v,
@@ -304,7 +304,7 @@ function RouteComponent() {
               <div>{t('properties.payment.subtotal')}</div>
               <div className="text-right">
                 $
-                {formatNumberNoRound(tokens * Number(item.price), 8)}
+                {formatNumberNoRound((toBigNumer(tokens).multipliedBy(item.price)).toString(), 8)}
               </div>
             </div>
             <div>
@@ -331,7 +331,7 @@ function RouteComponent() {
           <div>{t('properties.payment.total_amount')}</div>
           <div className="text-primary">
             $
-            {formatNumberNoRound(tokens * Number(item.price), 8)}
+            {formatNumberNoRound((toBigNumer(tokens).multipliedBy(item.price)).toString(), 8)}
           </div>
         </div>
       </div>

@@ -6,7 +6,7 @@ import ISeparator from '@/components/common/i-separator'
 import { PaymentContent } from '@/components/common/payment-content'
 import QuantitySelector from '@/components/common/quantity-selector'
 import { useCommonDataStore } from '@/stores/common-data'
-import { formatNumberNoRound } from '@/utils/number'
+import { formatNumberNoRound, toBigNumer } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
 import { getTradeContract, tradeContractBuyOrder } from '@/utils/web/tradeContract'
 import { getUsdcContract } from '@/utils/web/usdcAddress'
@@ -65,46 +65,44 @@ function RouteComponent() {
       console.log('orderId', orderId)
 
       // 买单交易流程
-      try {
-        const payAmount = Number(tokens)
-        const token_price = Number(item.token_price)
-        // 获取订单信息
-        const usdcDecimals = await usdtContract.decimals()
-        const requiredUsdt = ethers.parseUnits(toPlainString18(payAmount * token_price), usdcDecimals)
-        const usdtBalance = await usdtContract.balanceOf(wallet.address)
-        if (usdtBalance < requiredUsdt) {
-          throw new Error(`USDT余额不足，需要 ${ethers.formatUnits(requiredUsdt, usdcDecimals)}，实际有 ${ethers.formatUnits(usdtBalance, usdcDecimals)}`)
-        }
-        setPayDialogOpen(true)
-        // 执行买单
-        console.log(`准备执行买单，订单ID: ${orderId}`)
-        const [tx] = await Promise.all([
-          // listenerOrderExecutedEvent(wallet.address,item.contract_address,true),
-          tradeContractBuyOrder(tradingManagerContract, ethProvider, {
-            sellOrderId: orderId,
-            amount: payAmount,
-            price: token_price
-          })
-        ])
-        console.log(`买单交易已发送，等待确认...`)
-        const receipt = await tx.wait()
-        console.log(`买单执行成功，交易哈希: ${receipt?.hash}`)
-        // 调用后端API记录购买信息
-        await mutateAsync({
-          order_market_id: item.id.toString(),
-          token_number: payAmount.toString(),
-          hash: tx.hash
-        })
-        toast.success(t('payment.success.tx_sent')) // 成功提示
-        navigate({
-          to: '/investment'
-        })
+      const payAmount = Number(tokens)
+      const token_price = Number(item.token_price)
+      // 获取订单信息
+      const usdcDecimals = await usdtContract.decimals()
+      const requiredUsdt = ethers.parseUnits(toPlainString18(payAmount * token_price), usdcDecimals)
+      const usdtBalance = await usdtContract.balanceOf(wallet.address)
+      if (usdtBalance < requiredUsdt) {
+        throw new Error(`USDT余额不足，需要 ${ethers.formatUnits(requiredUsdt, usdcDecimals)}，实际有 ${ethers.formatUnits(usdtBalance, usdcDecimals)}`)
       }
-      catch (error) {
-        console.error(`执行买单失败:`, error)
-        toast.error(t('payment.errors.transaction_failed'))
-        throw error
-      }
+      setPayDialogOpen(true)
+      // 执行买单
+      console.log(`准备执行买单，订单ID: ${orderId}`)
+      const [tx] = await Promise.all([
+        // listenerOrderExecutedEvent(wallet.address,item.contract_address,true),
+        tradeContractBuyOrder(tradingManagerContract, ethProvider, {
+          sellOrderId: orderId,
+          amount: payAmount,
+          price: token_price
+        })
+      ])
+      console.log(`买单交易已发送，等待确认...`)
+      const receipt = await tx.wait()
+      console.log(`买单执行成功，交易哈希: ${receipt?.hash}`)
+      // 调用后端API记录购买信息
+      await mutateAsync({
+        order_market_id: item.id.toString(),
+        token_number: payAmount.toString(),
+        hash: tx.hash
+      })
+      toast.success(t('payment.success.tx_sent')) // 成功提示
+      navigate({
+        to: '/investment'
+      })
+    }
+    catch (error) {
+      console.error(`执行买单失败:`, error)
+      toast.error(t('payment.errors.transaction_failed'))
+      throw error
     }
     finally {
       setBuyLoading(false) // 结束loading
@@ -197,7 +195,7 @@ function RouteComponent() {
 
             <div className="text-right">
               $
-              {formatNumberNoRound(tokens * Number(item.token_price), 8)}
+              {formatNumberNoRound((toBigNumer(tokens).multipliedBy(item.token_price)).toString(), 8)}
             </div>
             {/* <div className="text-right">
               $
@@ -211,7 +209,8 @@ function RouteComponent() {
         <div className="fbc">
           <div>{t('properties.payment.total_amount')}</div>
           <div className="text-primary">
-            {`$${formatNumberNoRound((tokens * Number(item.token_price)), 8)}`}
+            $
+            {formatNumberNoRound((toBigNumer(tokens).multipliedBy(item.token_price)).toString(), 8)}
           </div>
         </div>
       </div>
