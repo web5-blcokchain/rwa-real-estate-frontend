@@ -10,7 +10,7 @@ import { formatNumberNoRound } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
 import { getPropertyTokenAmount, getPropertyTokenContract } from '@/utils/web/propertyToken'
 import { createSellOrder, getTradeContract, listenerCreateSellEvent } from '@/utils/web/tradeContract'
-import { getUsdcContract } from '@/utils/web/usdcAddress'
+import { getContactInfo } from '@/utils/web/usdcAddress'
 import { toPlainString18 } from '@/utils/web/utils'
 import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
@@ -41,7 +41,10 @@ function RouteComponent() {
 
   const [tokens, setTokens] = useState(1)
   const [sellPrice, setsellPrice] = useState(1)
-  const [usdcDecimals, setUsdcDecimals] = useState(6)
+  const [usdcInfo, setUsdcInfo] = useState({
+    decimals: 6,
+    symbol: 'USDT'
+  })
 
   const { isPending, mutateAsync } = useMutation({
     mutationFn: async (data: {
@@ -65,10 +68,12 @@ function RouteComponent() {
       return
     const ethProvider = await wallet.getEthereumProvider()
     const userToken = await getPropertyTokenAmount(ethProvider, item.contract_address, wallet.address)
-    const usdcContact = await getUsdcContract(ethProvider)
     // 获取代币精度
-    const decimals = await usdcContact.decimals()
-    setUsdcDecimals(Number(decimals))
+    const { decimals, symbol } = await getContactInfo(ethProvider)
+    setUsdcInfo({
+      decimals: Number(decimals),
+      symbol
+    })
     setUserToken(userToken)
   }
   useEffect(() => {
@@ -81,7 +86,7 @@ function RouteComponent() {
       toast.error(t('payment.errors.no_wallet'))
       return
     }
-    if (sellPrice < (1 * 10 ** (-1 * usdcDecimals)))
+    if (sellPrice < (1 * 10 ** (-1 * usdcInfo.decimals)))
       return
 
     setIsProcessing(true)
@@ -274,14 +279,15 @@ function RouteComponent() {
             </div>
             <div>
               <div>{t('properties.payment.token_price')}</div>
-              <div>
+              <div className="fcc gap-2">
                 <InputNumber
                   className="[&>div>*]:!text-center"
                   controls={false}
                   value={sellPrice}
                   onChange={value => setsellPrice(value || 1)}
-                  min={1 * 10 ** (-1 * usdcDecimals)}
+                  min={1 * 10 ** (-1 * usdcInfo.decimals)}
                 />
+                <div>{usdcInfo.symbol}</div>
               </div>
             </div>
             <div>

@@ -26,6 +26,8 @@ export interface PropertyInfo {
   avatar: string // 头像 URL（可为空）
   nickname: string // 用户昵称/邮箱
   is_me: boolean // 是否本人
+  create_date: number
+  tx_hash: string
 }
 
 export function getInvestmentList(data: {

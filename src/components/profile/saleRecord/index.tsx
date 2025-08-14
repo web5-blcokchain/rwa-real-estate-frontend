@@ -12,6 +12,8 @@ import { Button, ConfigProvider, Empty, Input, Select, Table } from 'antd'
 import enUS from 'antd/locale/en_US'
 import jaJP from 'antd/locale/ja_JP'
 import zhCN from 'antd/locale/zh_CN'
+import dayjs from 'dayjs'
+import { envConfig } from '../../../utils/envConfig'
 
 export default function SaleRecord() {
   const { t } = useTranslation()
@@ -196,6 +198,22 @@ export default function SaleRecord() {
             {formatNumberNoRound(record.token_price, 8)}
           </div>
         )
+      }
+    },
+    {
+      title: <div>{t('cancelOrder.sell_date')}</div>,
+      dataIndex: 'create_date',
+      key: 'create_date',
+      render: (_, record) => {
+        return <div>{dayjs(record.create_date * 1000).format('YYYY-MM-DD')}</div>
+      }
+    },
+    {
+      title: <div>{t('cancelOrder.sell_hash')}</div>,
+      dataIndex: 'tx_hash',
+      key: 'tx_hash',
+      render: (_, record) => {
+        return <a href={`${`${envConfig.blockExplorerUrl}/tx/${record.tx_hash}`}`} target="_blank">{record.tx_hash && `${record.tx_hash.slice(0, 6)}...${record.tx_hash.slice(-4)}`}</a>
       }
     },
     {

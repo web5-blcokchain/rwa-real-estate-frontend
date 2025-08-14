@@ -157,7 +157,7 @@ export default function DefaultWarning({ setSecondaryMenu, setSecondaryMenuProps
         return (
           <div className="flex gap-1">
             <Button
-              disabled={record?.status < 6 || !!record?.tx_hash}
+              disabled={record?.status < 7 || !!record?.tx_hash}
               type="primary"
               onClick={() => {
                 setSecondaryMenu(ProfileTab.WarningRedemptionInfo)
@@ -170,7 +170,7 @@ export default function DefaultWarning({ setSecondaryMenu, setSecondaryMenuProps
                 })
               }}
             >
-              {t('profile.recording.asset_redemption')}
+              {t(record?.tx_hash ? 'profile.warning.redemption.modal.success.title' : 'profile.recording.asset_redemption')}
             </Button>
             <Button
               type="primary"

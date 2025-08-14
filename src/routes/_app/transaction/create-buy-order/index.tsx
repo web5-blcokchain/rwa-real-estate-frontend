@@ -9,7 +9,7 @@ import QuantitySelector from '@/components/common/quantity-selector'
 import { formatNumberNoRound } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
 import { getTradeContract, listenerCreateSellEvent, createBuyOrder as toCreateBuyOrder } from '@/utils/web/tradeContract'
-import { getUsdcContract } from '@/utils/web/usdcAddress'
+import { getContactInfo, getUsdcContract } from '@/utils/web/usdcAddress'
 import { toPlainString18 } from '@/utils/web/utils'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { createFileRoute, useNavigate, useRouter } from '@tanstack/react-router'
@@ -37,7 +37,10 @@ function RouteComponent() {
 
   const [keyword, setKeyword] = useState('')
   const [buyPrice, setBuyPrice] = useState(1)
-  const [usdcDecimals, setUsdcDecimals] = useState(6)
+  const [usdcInfo, setUsdcInfo] = useState({
+    decimals: 6,
+    symbol: 'USDT'
+  })
 
   // 获取代币精度
   useEffect(() => {
@@ -45,9 +48,11 @@ function RouteComponent() {
       return
     const getDecimals = async () => {
       const ethProvider = await wallet.getEthereumProvider()
-      const usdcContact = await getUsdcContract(ethProvider)
-      const decimals = await usdcContact.decimals()
-      setUsdcDecimals(Number(decimals))
+      const { decimals, symbol } = await getContactInfo(ethProvider)
+      setUsdcInfo({
+        decimals: Number(decimals),
+        symbol
+      })
     }
     getDecimals()
   }, [wallet])
@@ -130,7 +135,7 @@ function RouteComponent() {
         toast.error(t('payment.errors.no_wallet'))
         return
       }
-      if (buyPrice < (1 * 10 ** (-1 * usdcDecimals)))
+      if (buyPrice < (1 * 10 ** (-1 * usdcInfo.decimals)))
         return
       // 检查资产是否存在
       if (!item) {
@@ -177,7 +182,7 @@ function RouteComponent() {
 
       // 检查USDT余额
       const usdtBalance = await usdtContract.balanceOf(signerAddress)
-      if (usdtBalance < ethers.parseUnits(toPlainString18(requiredUsdt, Number(usdcDecimals)), usdcDecimals)) {
+      if (usdtBalance < ethers.parseUnits(toPlainString18(requiredUsdt, Number(usdtDecimals)), usdtDecimals)) {
         toast.error(t('payment.errors.insufficient_usdt', {
           required: ethers.formatUnits(requiredUsdt, usdtDecimals),
           balance: ethers.formatUnits(usdtBalance, usdtDecimals)
@@ -313,14 +318,15 @@ function RouteComponent() {
                     </div>
                     <div>
                       <div>{t('properties.payment.token_price')}</div>
-                      <div>
+                      <div className="fcc gap-2">
                         <InputNumber
                           className="[&>div>*]:!text-center"
                           controls={false}
                           value={buyPrice}
                           onChange={value => setBuyPrice(value || 1)}
-                          min={1 * 10 ** (-1 * usdcDecimals)}
+                          min={1 * 10 ** (-1 * usdcInfo.decimals)}
                         />
+                        <div>{usdcInfo.symbol}</div>
                       </div>
                     </div>
                     <div>

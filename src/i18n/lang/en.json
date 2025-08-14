@@ -895,6 +895,8 @@
       "0": "Pending",
       "1": "Completed",
       "2": "Cancelled"
-    }
+    },
+    "sell_date": "Create Date",
+    "sell_hash": "Create Hash"
   }
 }
