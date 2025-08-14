@@ -59,8 +59,7 @@ const FeatureCard: FC<
         <div className="mt-21px fyc justify-between text-30px leading-40px max-lg:mt-5px max-md:mt-8px max-xl:mt-10px max-lg:text-12px max-md:text-10px max-xl:text-18px max-lg:leading-16px max-md:leading-10px max-xl:leading-24px">
           <div>
             $
-            {price}
-
+            {t('properties.detail.price', { price })}
           </div>
           <div className="rounded-full bg-#F0B90B">
             <div className="i-radix-icons:arrow-top-right size-34px bg-#131518 max-lg:size-16px max-md:size-10px max-xl:size-24px"></div>
