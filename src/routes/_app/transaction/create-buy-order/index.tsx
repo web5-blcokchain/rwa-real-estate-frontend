@@ -10,7 +10,6 @@ import { formatNumberNoRound, toBigNumer } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
 import { getTradeContract, listenerCreateSellEvent, createBuyOrder as toCreateBuyOrder } from '@/utils/web/tradeContract'
 import { getContactInfo, getUsdcContract } from '@/utils/web/usdcAddress'
-import { toPlainString18 } from '@/utils/web/utils'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { createFileRoute, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button, InputNumber, Select, Spin } from 'antd'
@@ -177,17 +176,14 @@ function RouteComponent() {
       const tokenAmount = tokens
       // 获取设置的代币价格
 
-      const requiredUsdt = tokenAmount * buyPrice
+      const requiredUsdt = toBigNumer(tokenAmount).multipliedBy(buyPrice).toString()
       // 获取签名者地址
       const signerAddress = await signer.getAddress()
 
       // 检查USDT余额
       const usdtBalance = await usdtContract.balanceOf(signerAddress)
-      if (usdtBalance < ethers.parseUnits(toPlainString18(requiredUsdt, Number(usdtDecimals)), usdtDecimals)) {
-        toast.error(t('payment.errors.insufficient_usdt', {
-          required: ethers.formatUnits(requiredUsdt, usdtDecimals),
-          balance: ethers.formatUnits(usdtBalance, usdtDecimals)
-        }))
+      if (usdtBalance < ethers.parseUnits(requiredUsdt, usdtDecimals)) {
+        toast.error(t('payment.errors.insufficient_usdt'))
         return
       }
 
@@ -215,9 +211,19 @@ function RouteComponent() {
       toast.success(t('payment.messages.buy_order_created'))
       navigate({ to: '/investment' })
     }
-    catch (error) {
-      console.error(`执行买单失败:`, error)
-      toast.error(t('payment.errors.transaction_failed'))
+    catch (error: any) {
+      if (error.code === 'ACTION_REJECTED' || error.code === 4001) {
+        toast.error(t('payment.errors.rejected'))
+      }
+      else if (error.message && error.message.includes('rejected')) {
+        toast.error(t('payment.errors.rejected'))
+      }
+      else if (error.message && error.message.includes('insufficient funds')) {
+        toast.error(t('payment.errors.insufficient_eth'))
+      }
+      else {
+        toast.error(t('payment.errors.transaction_failed'))
+      }
       throw error
     }
     finally {
@@ -229,7 +235,7 @@ function RouteComponent() {
   const renderAssetSelection = () => (
     <div className="rounded-xl bg-[#202329] p-6 space-y-4">
       <div className="text-4.5">{t('properties.payment.select_asset')}</div>
-      {data && (
+      {data && Array.isArray(data) && (
         <Select
           showSearch
           allowClear
@@ -244,10 +250,10 @@ function RouteComponent() {
           className="w-full"
           dropdownStyle={{ background: '#2c2f36', color: 'white' }}
           notFoundContent={isLoading ? <Spin size="small" /> : null}
-          options={data?.map((asset: any) => ({
+          options={(data)?.map((asset: any) => ({
             value: asset.id,
             label: asset.name
-          }))}
+          })) || []}
         />
       )}
     </div>

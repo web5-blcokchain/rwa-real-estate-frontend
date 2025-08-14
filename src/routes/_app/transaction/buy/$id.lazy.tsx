@@ -72,7 +72,9 @@ function RouteComponent() {
       const requiredUsdt = ethers.parseUnits(toPlainString18(payAmount * token_price), usdcDecimals)
       const usdtBalance = await usdtContract.balanceOf(wallet.address)
       if (usdtBalance < requiredUsdt) {
-        throw new Error(`USDT余额不足，需要 ${ethers.formatUnits(requiredUsdt, usdcDecimals)}，实际有 ${ethers.formatUnits(usdtBalance, usdcDecimals)}`)
+        toast.error(t('payment.errors.insufficient_usdt'))
+        console.log(`USDT余额不足，需要 ${ethers.formatUnits(requiredUsdt, usdcDecimals)}，实际有 ${ethers.formatUnits(usdtBalance, usdcDecimals)}`)
+        return
       }
       setPayDialogOpen(true)
       // 执行买单
@@ -99,9 +101,20 @@ function RouteComponent() {
         to: '/investment'
       })
     }
-    catch (error) {
+    catch (error: any) {
       console.error(`执行买单失败:`, error)
-      toast.error(t('payment.errors.transaction_failed'))
+      if (error.code === 'ACTION_REJECTED' || error.code === 4001) {
+        toast.error(t('payment.errors.rejected'))
+      }
+      else if (error.message && error.message.includes('rejected')) {
+        toast.error(t('payment.errors.rejected'))
+      }
+      else if (error.message && error.message.includes('insufficient funds')) {
+        toast.error(t('payment.errors.insufficient_eth'))
+      }
+      else {
+        toast.error(t('payment.errors.transaction_failed'))
+      }
       throw error
     }
     finally {

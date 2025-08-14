@@ -8,14 +8,13 @@ import QuantitySelector from '@/components/common/quantity-selector'
 import { useCommonDataStore } from '@/stores/common-data'
 import { formatNumberNoRound, toBigNumer } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
-import { getPropertyTokenAmount, getPropertyTokenContract } from '@/utils/web/propertyToken'
+import { getPropertyTokenAmount } from '@/utils/web/propertyToken'
 import { createSellOrder, getTradeContract, listenerCreateSellEvent } from '@/utils/web/tradeContract'
 import { getContactInfo } from '@/utils/web/usdcAddress'
 import { toPlainString18 } from '@/utils/web/utils'
 import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button, InputNumber } from 'antd'
-import { ethers } from 'ethers'
 import numeral from 'numeral'
 import { PayDialog } from '../../properties/-components/payDialog'
 
@@ -100,21 +99,18 @@ function RouteComponent() {
 
     try {
       const ethProvider = await wallet.getEthereumProvider()
-      const propertyTokenContract = await getPropertyTokenContract(ethProvider, item.contract_address)
+      // const propertyTokenContract = await getPropertyTokenContract(ethProvider, item.contract_address)
       const tradingContact = await getTradeContract(ethProvider)
 
       try {
         // 检查余额（链上余额）
-        const tokenDecimals = await propertyTokenContract.decimals()
+        // const tokenDecimals = await propertyTokenContract.decimals()
         const operatorTokenBalance = await getPropertyTokenAmount(ethProvider, item.contract_address, wallet.address)
         const tokenAmount = tokens
         console.log(`操作者代币余额: ${operatorTokenBalance} 个代币`)
         if (operatorTokenBalance < tokenAmount) {
           toast.error(
-            t('payment.errors.insufficient_token', {
-              balance: ethers.formatUnits(operatorTokenBalance, tokenDecimals),
-              required: ethers.formatUnits(tokenAmount, tokenDecimals)
-            })
+            t('payment.errors.insufficient_token')
           )
           setIsProcessing(false)
           return
@@ -166,7 +162,7 @@ function RouteComponent() {
           if (error.code === 'ACTION_REJECTED' || error.code === 4001) {
             toast.error(t('payment.errors.rejected'))
           }
-          else if (error.message && error.message.includes('user rejected transaction')) {
+          else if (error.message && error.message.includes('rejected')) {
             toast.error(t('payment.errors.rejected'))
           }
           else if (error.message && error.message.includes('insufficient funds')) {
