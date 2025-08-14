@@ -278,6 +278,9 @@ function RouteComponent() {
               <div>{t('properties.payment.token_price')}</div>
               <div className="fcc gap-2">
                 <InputNumber
+                  formatter={value => `${toBigNumer(value || 0).toString()}`}
+                  parser={value => Number(value || 0)}
+                  precision={usdcInfo.decimals}
                   className="[&>div>*]:!text-center"
                   controls={false}
                   value={sellPrice}
