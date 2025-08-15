@@ -226,7 +226,7 @@ function RouteComponent() {
             </div>
             <div
               ref={fiexedContent}
-              className="fixed z-10 max-w-50% rounded-lg bg-#F0B90B px-6 py-18px text-black max-lg:relative max-lg:max-w-full space-y-2 max-lg:left-0! max-lg:transform-translate-[0]! max-lg:-top-20px!"
+              className="fixed left-90% top-78% z-10 max-w-50% rounded-lg bg-#F0B90B px-6 py-18px text-black max-lg:relative max-lg:max-w-full space-y-2 max-lg:left-0! max-lg:transform-translate-[0]! max-lg:-top-20px!"
             >
               <div>
                 <div className="text-4.5 font-bold max-md:text-16px">{t('properties.detail.return')}</div>
