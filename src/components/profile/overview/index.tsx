@@ -147,6 +147,7 @@ function Overview() {
       )
     }
   ]
+  const [fristLoading, setFristLoading] = useState(false)
 
   // 获取代币持仓
   const [overPageInfo, setOverPageInfo] = useState({
@@ -159,22 +160,20 @@ function Overview() {
       page: overPageInfo.page,
       pageSize: overPageInfo.pageSize
     })
+    setFristLoading(true)
     setOverPageInfo({
       ...overPageInfo,
       total: res.data?.count || 0
     })
     return res
   }
-  const { data: overviewData, isLoading, refetch: refetchOverview, isFetching: overviewIsFetching } = useQuery({
-    queryKey: ['overview'],
+  const { data: overviewData, isLoading, isFetching: overviewIsFetching } = useQuery({
+    queryKey: ['overview', overPageInfo.page, overPageInfo.pageSize],
     queryFn: async () => {
       const res = await getOverviewData()
       return res.data?.list
     }
   })
-  useEffect(() => {
-    refetchOverview()
-  }, [overPageInfo.page, overPageInfo.pageSize])
 
   // 获取历史收益记录
   const [historyPageInfo, setHistoryPageInfo] = useState({
@@ -193,18 +192,15 @@ function Overview() {
     })
     return res
   }
-  const { data: historyData, isLoading: historyLoading, isFetching: historyIsFetching, refetch: refetchHistory } = useQuery({
-    queryKey: ['history'],
+  const { data: historyData, isLoading: historyLoading, isFetching: historyIsFetching } = useQuery({
+    queryKey: ['history', historyPageInfo.page, historyPageInfo.pageSize],
     queryFn: async () => {
       const res = await getHistoryData()
       return res.data?.list || []
     }
   })
-  useEffect(() => {
-    refetchHistory()
-  }, [historyPageInfo.page, historyPageInfo.pageSize])
 
-  if (isLoading || historyLoading) {
+  if ((isLoading || historyLoading) && !fristLoading) {
     return (
       <Waiting
         className="h-32 fcc"

@@ -300,7 +300,7 @@ function RouteComponent() {
 
                     <IInfoField
                       label={t('properties.payment.token_price')}
-                      value={item?.price}
+                      value={`$${item?.price}`}
                       horizontal
                       labelClass="text-[#898989]"
                       valueClass="text-left"

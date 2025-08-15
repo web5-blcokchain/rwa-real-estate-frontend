@@ -1,5 +1,6 @@
 import type { PropertyInvestment } from '@/api/apiMyInfoApi'
 import apiMyInfo from '@/api/apiMyInfoApi'
+import EmptyContent from '@/components/common/empty-content'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { Spin } from 'antd'
@@ -69,24 +70,30 @@ function PropertyTokens() {
             </div>
           </div>
         </div>
-        <Spin spinning={isFetching && page <= 1} className={isFetching && page <= 1 ? 'py-20' : ''}>
-          <div className="grid grid-cols-1 mt-8 gap-8 max-lg:grid-cols-1 xl:grid-cols-2">
-            {
-              tokenData?.map((item: any) => (
-                <PropertyTokenCard
-                  key={item.id}
-                  {...item}
-                  onClick={() => {
-                    navigate({
-                      to: '/properties/detail/$id',
-                      params: { id: `${item.properties_id}` }
-                    })
-                  }}
-                />
-              ))
-            }
-          </div>
-        </Spin>
+        <div className={isFetching && page <= 1 ? 'py-20' : ''}>
+          <Spin spinning={isFetching && page <= 1}>
+            { tokenData && tokenData.length > 0
+              ? (
+                  <div className="grid grid-cols-1 mt-8 gap-8 max-lg:grid-cols-1 xl:grid-cols-2">
+                    {
+                      tokenData?.map((item: any) => (
+                        <PropertyTokenCard
+                          key={item.id}
+                          {...item}
+                          onClick={() => {
+                            navigate({
+                              to: '/properties/detail/$id',
+                              params: { id: `${item.properties_id}` }
+                            })
+                          }}
+                        />
+                      ))
+                    }
+                  </div>
+                )
+              : <EmptyContent />}
+          </Spin>
+        </div>
         {/* {!isFetching && tokenData && tokenData.length > 20 && (
           <div className="mt-8 text-center">
             <Button

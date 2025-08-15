@@ -2,6 +2,7 @@ import type { TokenHeldItem } from '@/types/profile'
 import { IImage } from '@/components/common/i-image'
 import { InvestmentOrderType } from '@/enums/investment'
 import { useCommonDataStore } from '@/stores/common-data'
+import { formatNumberNoRound, toBigNumer } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
 import { useNavigate } from '@tanstack/react-router'
 import { Button } from 'antd'
@@ -137,7 +138,7 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
           <div className="w-1/2 flex flex-col justify-start py-3">
             <div className="text-sm text-[#b5b5b5]">{t('properties.payment.valuation')}</div>
             <div className="text-4">
-              {`$${numeral(current_price).format('0,0')}`}
+              {`$${formatNumberNoRound(toBigNumer(Number(current_price)).multipliedBy(Number(total_current)).toString(), 8)}`}
             </div>
           </div>
         </div>

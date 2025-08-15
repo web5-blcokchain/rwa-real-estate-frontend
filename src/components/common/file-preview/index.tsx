@@ -121,7 +121,7 @@ export const FilePreview: FC<
                     onClick={() => onImageClick?.(file, index)}
                   >
                     <div className="i-material-symbols-description text-5 text-white"></div>
-                    <div className="truncate text-white">{getFileName(file, index)}</div>
+                    <div title={getFileName(file, index)} className="w-fit flex-1 truncate text-white">{getFileName(file, index)}</div>
                   </div>
                 )
           }

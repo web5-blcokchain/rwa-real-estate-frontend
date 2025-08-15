@@ -82,7 +82,7 @@ const UploadCard: FC<{
                 accept={accept}
                 style={{ width }}
                 key={index}
-                className={cn('UploadCard space-y-4', number > 1 && 'fyc')}
+                className={cn('UploadCard space-y-4 w-full [&>div]:w-full', number > 1 && 'fyc')}
                 showUploadList={false}
                 beforeUpload={(e: File) => {
                   beforeUpload?.(e, index)

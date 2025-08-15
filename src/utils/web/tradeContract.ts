@@ -6,7 +6,7 @@ import { envConfig } from '../envConfig'
 import { toBigNumer } from '../number'
 import { getPropertyTokenContract } from './propertyToken'
 import { getUsdcContract } from './usdcAddress'
-import { getNameToContract, SmartErrorParses, toPlainString18 } from './utils'
+import { getNameToContract, SmartErrorParses } from './utils'
 
 // 获取交易合约
 export async function getTradeContract(e: EIP1193Provider) {
@@ -36,7 +36,7 @@ export async function createSellOrder(contact: ethers.Contract, e: EIP1193Provid
     // 获取房屋id
     const [serverId] = await propertyTokenContract.getPropertyInfo()
     const tokenPrice = await data.price
-    const allAmount = toPlainString18((data.amount))
+    const allAmount = toBigNumer((data.amount)).toString()
     const parseAmount = ethers.parseUnits(allAmount, tokenDecimals)
     const usdcContact = await getUsdcContract(e)
     const usdcDecimals = await usdcContact.decimals()
@@ -122,8 +122,8 @@ export async function tradeContractBuyOrder(contact: ethers.Contract, e: EIP1193
   try {
     const usdcContact = await getUsdcContract(e)
     const usdcDecimals = await usdcContact.decimals()
-    const payPricr = ethers.parseUnits(toBigNumer(data.price).toString())
-    const payAmount = ethers.parseUnits(toBigNumer(data.amount).toString())
+    const payPricr = ethers.parseUnits(toBigNumer(data.price).toString(), usdcDecimals)
+    const payAmount = ethers.parseUnits(toBigNumer(data.amount).toString(), usdcDecimals)
     const allAmount = payPricr * payAmount / BigInt(10 ** Number(usdcDecimals))
     // 将usdc授权给交易合约
     const approveTx = await usdcContact.approve(envConfig.tradeContract, allAmount)

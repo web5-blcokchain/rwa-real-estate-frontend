@@ -56,22 +56,22 @@ export function MyAssets() {
       )
     },
     {
-      title: <div>{t('profile.data_count.amount')}</div>,
-      dataIndex: 'number',
-      key: 'Amount',
-      render: text => <div>{formatNumberNoRound(Number(text), 8)}</div>
-    },
-    {
       title: <div>{t('profile.data_count.purchase_price')}</div>,
       dataIndex: 'purchase_price',
       key: 'purchase_price',
       render: (_, record) => (
         <>
           <div className="flex items-center justify-start">
-            <div>{formatNumberNoRound(Number(record.purchase_price) * Number(record.number), 8)}</div>
+            <div>{formatNumberNoRound(Number(record.purchase_price), 8)}</div>
           </div>
         </>
       )
+    },
+    {
+      title: <div>{t('profile.data_count.amount')}</div>,
+      dataIndex: 'number',
+      key: 'Amount',
+      render: text => <div>{formatNumberNoRound(Number(text), 8)}</div>
     },
     {
       title: <div>{t('profile.data_count.valueJpy')}</div>,

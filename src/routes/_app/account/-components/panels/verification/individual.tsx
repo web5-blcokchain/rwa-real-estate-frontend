@@ -156,7 +156,7 @@ export default function IndividualVerification({ setCurrentVisible }: { setCurre
           beforeUpload={(file, index) => {
             beforeUpload(file, index === 0 ? 'id_card_front_url' : 'id_card_back_url')
           }}
-          accept="image/png,image/jpg,application/pdf"
+          accept="image/png,image/jpg"
           other={(
             <Select className="w-200px" defaultValue={isType[0].value} onChange={setIsTypeValue}>
               {isType.map(item => (
@@ -170,7 +170,8 @@ export default function IndividualVerification({ setCurrentVisible }: { setCurre
           <div className="grid grid-cols-2 gap-4">
 
             <Upload
-              className="[&>.ant-upload]:(w-full)"
+              accept="image/png,image/jpg"
+              className="w-full [&>.ant-upload]:(w-full)"
               {...commonProps}
               beforeUpload={(file) => {
                 beforeUpload(file, 'id_card_front_url')
@@ -184,7 +185,8 @@ export default function IndividualVerification({ setCurrentVisible }: { setCurre
               </Button>
             </Upload>
             <Upload
-              className="[&>.ant-upload]:(w-full)"
+              accept="image/png,image/jpg"
+              className="w-full [&>.ant-upload]:(w-full)"
               {...commonProps}
               beforeUpload={(file) => {
                 beforeUpload(file, 'id_card_back_url')

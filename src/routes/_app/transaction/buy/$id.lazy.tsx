@@ -167,13 +167,13 @@ function RouteComponent() {
             />
             <IInfoField
               label={t('properties.payment.token_price')}
-              value={formatNumberNoRound(item?.token_price, 8)}
+              value={`$${formatNumberNoRound(item?.token_price, 8)}`}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
               label={t('properties.payment.total')}
-              value={formatNumberNoRound(item.total_amount, 8)}
+              value={`$${formatNumberNoRound(item.total_amount, 8)}`}
               labelClass="text-[#898989]"
               className="space-y-2"
             />

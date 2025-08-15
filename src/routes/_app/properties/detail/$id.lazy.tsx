@@ -101,6 +101,47 @@ function RouteComponent() {
   const maxBuyNum = useMemo(() => {
     return Number(assetDetail?.Inception_number || 0) * Number(assetDetail?.price || 0)
   }, [assetDetail])
+  const divRef = useRef<HTMLDivElement>(null)
+  const fiexedContent = useRef<HTMLDivElement>(null)
+  const [fiexedContentFunc, setFiexedContentFunc] = useState({
+    observer: null as MutationObserver | null
+  })
+  useEffect(() => {
+    const handleScroll = async () => {
+      if (!divRef.current || !fiexedContent.current)
+        return
+      await new Promise(resolve => setTimeout(resolve, 50))
+      const parentY = (divRef.current?.getBoundingClientRect().y || 0) + (document.querySelector('.app-content')?.scrollTop || 0)
+      const parentX = divRef.current?.getBoundingClientRect().x || 0
+      const parentHeight = divRef.current?.offsetHeight || 0
+      const parentWidth = divRef.current?.offsetWidth || 0
+      const contentY = parentY + parentHeight - 20
+      const contentX = parentX + parentWidth
+      console.log(divRef.current?.getBoundingClientRect().y)
+
+      if (fiexedContent.current) {
+        fiexedContent.current.style.top = `${contentY}px`
+        fiexedContent.current.style.left = `${contentX}px`
+        fiexedContent.current.style.transform = 'translate(-100%,-100%)'
+      }
+    }
+    // 每次进入函数的时候，删除之前的窗口事件和监听
+    window.removeEventListener('resize', handleScroll)
+    fiexedContentFunc.observer?.disconnect()
+    const observer = new MutationObserver(handleScroll)
+    if (divRef.current) {
+      observer.observe(divRef.current, { attributes: true, childList: true, subtree: true })
+    }
+    handleScroll()
+    setFiexedContentFunc({
+      observer
+    })
+    window.addEventListener('resize', handleScroll)
+    return () => {
+      window.removeEventListener('resize', handleScroll)
+      observer.disconnect()
+    }
+  }, [divRef, assetDetail])
 
   return (
     <div className="header-padding space-y-8">
@@ -145,7 +186,7 @@ function RouteComponent() {
               </div>
             )}
 
-            <div>
+            <div ref={divRef}>
               <div className="max-w-50% fb gap-4 pr-3 max-lg:max-w-full max-lg:pr-0">
                 <div className="space-y-4">
                   <div className="text-6">{assetDetail?.name}</div>
@@ -183,7 +224,10 @@ function RouteComponent() {
               </div>
 
             </div>
-            <div className="absolute bottom-6 right-0 z-10 max-w-50% rounded-lg bg-#F0B90B px-6 py-18px text-black max-lg:relative max-lg:max-w-full space-y-2">
+            <div
+              ref={fiexedContent}
+              className="fixed z-10 max-w-50% rounded-lg bg-#F0B90B px-6 py-18px text-black max-lg:relative max-lg:max-w-full space-y-2 max-lg:left-0! max-lg:transform-translate-[0]! max-lg:-top-20px!"
+            >
               <div>
                 <div className="text-4.5 font-bold max-md:text-16px">{t('properties.detail.return')}</div>
                 <div className="text-10 font-bold max-lg:text-7.5">

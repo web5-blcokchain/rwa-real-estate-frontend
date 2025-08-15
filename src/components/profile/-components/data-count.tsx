@@ -42,7 +42,7 @@ function DataCount() {
         trimMantissa: true
       })}`,
       fieldTwo: { content: '', value: `${_get(data, 'monthly_rental_income_growth', '0.00')}%` },
-      picture: isUpIcon(_get(data, 'monthly_rental_income_vs_last_month', false)),
+      picture: isUpIcon(_get(data, 'current_month_income', false)),
       color: _get(data, 'monthly_rental_income_vs_last_month', false) ? '#2bb480' : '8d909a'
     },
 

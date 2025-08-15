@@ -15,7 +15,6 @@ import { toPlainString18 } from '@/utils/web/utils'
 import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button, InputNumber } from 'antd'
-import numeral from 'numeral'
 import { PayDialog } from '../../properties/-components/payDialog'
 
 export const Route = createLazyFileRoute('/_app/transaction/create-sell-order/$id')({
@@ -239,13 +238,13 @@ function RouteComponent() {
             />
             <IInfoField
               label={t('properties.payment.token_price')}
-              value={`${numeral(item?.total_amount).format('0,0')} / token`}
+              value={`${formatNumberNoRound(Number(item?.token_price), 8)} / token`}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
               label={t('properties.payment.total')}
-              value={numeral(Number(item?.total_amount) * item.tokens_held).format('0,0')}
+              value={`$${formatNumberNoRound(toBigNumer(Number(item?.total_amount)).multipliedBy(item.token_price).toString(), 8)}`}
               labelClass="text-[#898989]"
               className="space-y-2"
             />

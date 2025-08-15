@@ -165,6 +165,12 @@ function RightMenu() {
       return data
     }
   })
+  useEffect(() => {
+    if (!authenticated || !user?.email) {
+      clearUserData()
+    }
+    // mutateAsync()
+  }, [authenticated, user])
 
   useEffect(() => {
     if (refreshUserInfo > 0) {
