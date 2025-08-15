@@ -10,7 +10,7 @@ export function PayDialog({ onClose, open }: { onClose: () => void, open: boolea
   const { t } = useTranslation()
   return (
     <Modal
-      className="[&>div>.ant-modal-content]:!bg-background"
+      className="max-md:w-80%! [&>div>.ant-modal-content]:!bg-background [&>div>.ant-modal-content]:max-md:backdrop-blur-10px [&>div>.ant-modal-content]:max-md:!bg-#191a1f9c"
       // closeIcon={false}
       centered
       width={460}
