@@ -307,7 +307,7 @@
     }
   },
   "properties": {
-    "title": "米国の不動産資産",
+    "title": "全国の不動産資産です",
     "subTitle": "ブロックチェーン技術を通じて良質なニューヨーク不動産投資の機会を提供",
     "search": "物件の場所と物件タイプで検索",
     "detail": {
@@ -490,7 +490,8 @@
     "all_images": "すべての画像を表示",
     "operation": "操作",
     "view": "表示",
-    "copy": "複製します"
+    "copy": "複製します",
+    "day": "天"
   },
   "profile": {
     "transactions": {
@@ -770,7 +771,15 @@
             "error_message_400001": "ユーザーは許可を取り消します",
             "error_message_400002": "財布の操作に失敗しました"
           }
-        }
+        },
+        "breachDetails": "違約詳細",
+        "breachType": "違約の種類",
+        "rentPaymentBreach": "家賃支払い違約",
+        "breachTime": "違約発生日",
+        "overdueAmount": "延滞金額",
+        "breachDuration": "違約期間",
+        "breachReason": "違約理由：",
+        "breachDescription": "開発業者が期限通りに家賃を支払わず、重大な違約となりました。トークン発行契約に基づき、償還条項が発動されます。"
       }
     },
     "redemptionList": {

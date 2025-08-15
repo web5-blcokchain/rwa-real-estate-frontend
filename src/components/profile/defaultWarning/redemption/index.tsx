@@ -1,13 +1,16 @@
+import type { AssetsWarningList } from '@/api/assets'
 import type { ethers } from 'ethers'
 import type { Dispatch, SetStateAction } from 'react'
 import { getRedemptionInfo, redemptionWarningAssets } from '@/api/assets'
 import { useUserStore } from '@/stores/user'
 import { formatNumberNoRound } from '@/utils/number'
+import { joinImagesPath } from '@/utils/url'
 import { getPropertyTokenAmount } from '@/utils/web/propertyToken'
 import { getRedemptionManagerContract, getTokenPriceAndRedemption, redemptionWarningAsset } from '@/utils/web/redemptionManager'
 import { useWallets } from '@privy-io/react-auth'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { Button, Modal } from 'antd'
+import { Button, Divider, Modal } from 'antd'
+import dayjs from 'dayjs'
 import { toast } from 'react-toastify'
 
 function RedemptionMoadl({ visibleInfo, redemptionType, message = '', hash = '', reloadRedemption }: {
@@ -70,7 +73,7 @@ function RedemptionMoadl({ visibleInfo, redemptionType, message = '', hash = '',
 }
 
 export default function WarningRedemptionInfo({ secondaryMenuProps }:
-{ secondaryMenuProps: { id: number, name: string, address: string, contract_address: string, assets_id: number } }) {
+{ secondaryMenuProps: AssetsWarningList }) {
   const { t } = useTranslation()
 
   // 获取赎回信息
@@ -135,7 +138,7 @@ export default function WarningRedemptionInfo({ secondaryMenuProps }:
       const { tx, balance } = await redemptionWarningAsset(ethProvider, contact as ethers.Contract, wallet.address, secondaryMenuProps.contract_address)
       if (tx) {
         const res = await mutateAsync({
-          id: secondaryMenuProps.assets_id.toString(),
+          id: secondaryMenuProps.properties_id.toString(),
           price: `${balance}`,
           tx_hash: tx.hash
         })
@@ -249,21 +252,64 @@ export default function WarningRedemptionInfo({ secondaryMenuProps }:
         </div>
       </Waiting>
 
-      <div className="mt-10 text-white space-y-2">
-        <div className="text-2xl max-md:text-xl">
-          <div>{t('profile.warning.redemption.redemption_application')}</div>
-          <div>{secondaryMenuProps.name}</div>
-          <div>{secondaryMenuProps.address}</div>
+      <div className="mt-10 text-white">
+        <div className="fyc gap-4">
+          <img
+            className="size-100px rounded-md"
+            src={joinImagesPath(secondaryMenuProps.image_urls)[0]}
+            alt=""
+          />
+          <div className="text-xl max-md:text-xl">
+            <div className="truncate text-3xl max-md:text-2xl">{secondaryMenuProps.name}</div>
+            <div className="line-clamp-2 max-md:text-base">{secondaryMenuProps.address}</div>
+          </div>
         </div>
-        <div className="text-xl max-md:text-base">
+        <div className="mt-6 truncate text-base max-md:text-base">
           {t('profile.warning.redemption.receive_wallet')}
           ：
           {userData.wallet_address}
+        </div>
+        <div className="mt-2 truncate text-base max-md:text-base">
+          {t('profile.data_count.transaction_hash')}
+          :
+          {modelValue.hash}
         </div>
         {/* <div className="text-xl max-md:text-base">
           {t('profile.warning.redemption.transaction_hash')}
           ：0x7c5e8f3
         </div> */}
+      </div>
+      <Divider className="my-4" />
+      <div>
+        <div className="text-2xl">{t('profile.warning.redemption.breachDetails')}</div>
+        <div className="mt-4 text-base text-base space-y-3">
+          <div>
+            {t('profile.warning.redemption.breachType')}
+            ：
+            {t('profile.warning.redemption.rentPaymentBreach')}
+          </div>
+          <div>
+            {t('profile.warning.redemption.breachTime')}
+            ：
+            {dayjs(secondaryMenuProps.rent_due_date).format('YYYY-MM-DD')}
+          </div>
+          <div>
+            {t('profile.warning.redemption.overdueAmount')}
+            ：
+            {Math.max(dayjs(secondaryMenuProps.rent_due_date).diff(dayjs(), 'month'), 1) * Number(secondaryMenuProps.monthly_rent)}
+          </div>
+          <div>
+            {t('profile.warning.redemption.breachDuration')}
+            ：
+            {dayjs().diff(dayjs(secondaryMenuProps.rent_due_date), 'day') + t('common.day')}
+          </div>
+        </div>
+      </div>
+      <div className="mt-4 rounded-md bg-#2c2e30 p-4 text-base text-#767678">
+        <div>
+          {t('profile.warning.redemption.breachReason')}
+          {t('profile.warning.redemption.breachDescription')}
+        </div>
       </div>
       <div className="mt-35 fcc">
         <Button disabled={isRedemption} loading={redemptionLoading} onClick={() => redemptionWarningAmount()} type="primary" size="large" className="text-black">{t('profile.warning.redemption.redemption_now')}</Button>

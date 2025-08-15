@@ -307,7 +307,7 @@
     }
   },
   "properties": {
-    "title": "US Real Estate Assets",
+    "title": "National real estate assets",
     "subTitle": "Premium New York real estate investment opportunities through blockchain technology",
     "search": "Search by house location and property type",
     "detail": {
@@ -490,7 +490,8 @@
     "all_images": "View all images",
     "operation": "Operation",
     "view": "View",
-    "copy": "Copy"
+    "copy": "Copy",
+    "day": "Day"
   },
   "profile": {
     "transactions": {
@@ -774,7 +775,15 @@
             "error_message_400001": "User cancels authorization",
             "error_message_400002": "Wallet operation failed"
           }
-        }
+        },
+        "breachDetails": "Breach Details",
+        "breachType": "Type of Breach",
+        "rentPaymentBreach": "Rent Payment Breach",
+        "breachTime": "Time of Breach",
+        "overdueAmount": "Overdue Amount",
+        "breachDuration": "Duration of Breach",
+        "breachReason": "Reason for Breach:",
+        "breachDescription": "The developer failed to pay the rent on time, constituting a material breach. According to the token issuance agreement, the redemption clause is triggered."
       }
     },
     "redemptionList": {

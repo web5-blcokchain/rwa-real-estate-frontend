@@ -309,7 +309,7 @@
     }
   },
   "properties": {
-    "title": "美国房地产资产",
+    "title": "全国房地产资产",
     "subTitle": "利用区块链技术投资纽约优质房地产机会",
     "search": "按房屋地点和物业类型搜索",
     "detail": {
@@ -487,7 +487,8 @@
     "all_images": "查看全部图片",
     "operation": "操作",
     "view": "查看",
-    "copy": "复制"
+    "copy": "复制",
+    "day": "天"
   },
   "action": {
     "sell": "卖出",
@@ -776,7 +777,15 @@
             "error_message_400001": "用户取消授权",
             "error_message_400002": "钱包操作失败"
           }
-        }
+        },
+        "breachDetails": "违约详情",
+        "breachType": "违约类型",
+        "rentPaymentBreach": "租金支付违约",
+        "breachTime": "违约发生时间",
+        "overdueAmount": "逾期金额",
+        "breachDuration": "违约持续时间",
+        "breachReason": "违约原因：",
+        "breachDescription": "开发商未能按期偿缴纳租金，已构成实质性违约。根据代币发行协议，触发赎回条款"
       }
     },
     "redemptionList": {

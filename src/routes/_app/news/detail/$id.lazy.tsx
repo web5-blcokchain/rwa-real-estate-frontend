@@ -42,7 +42,7 @@ function RouteComponent() {
         <div className="mb-3 text-5xl font-600 max-lg:mb-1 max-xl:mb-2 max-lg:text-3xl max-xl:text-4xl">{getContentOfLang('title')}</div>
         <div className="text-2xl max-lg:text-base max-xl:text-xl">{getContentOfLang('desc')}</div>
         <img className="mt-65px aspect-[1920/1080] w-full max-lg:mt-24px max-xl:mt-40px" src={joinImagePath(getContentOfLang('image'))} alt="" />
-        <div className="markdonw-content mt-41px text-6 text-xl max-lg:mt-16px max-xl:mt-28px space-y-4 max-lg:text-sm max-xl:text-base max-lg:space-y-2">
+        <div className="markdonw-content mt-41px text-xl max-lg:mt-16px max-xl:mt-28px space-y-4 max-lg:text-sm max-xl:text-base max-lg:space-y-2">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>
             {getContentOfLang('detail')}
           </ReactMarkdown>

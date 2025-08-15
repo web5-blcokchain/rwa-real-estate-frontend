@@ -4,6 +4,7 @@ import { getInvestmentDetails, getWarningList } from '@/api/assets'
 import copyIcon from '@/assets/icons/copy.svg'
 import { ProfileTab } from '@/enums/profile'
 import { formatNumberNoRound } from '@/utils/number'
+import { joinImagesPath } from '@/utils/url'
 import { useQuery } from '@tanstack/react-query'
 import { Button, ConfigProvider, Empty, Table } from 'antd'
 import enUS from 'antd/locale/en_US'
@@ -75,7 +76,7 @@ export default function DefaultWarning({ setSecondaryMenu, setSecondaryMenuProps
         return (
           <div className="flex gap-3">
             <div className="relative size-100px overflow-hidden rounded-md">
-              <img className="absolute inset-0 left-1/2 top-1/2 h-full !max-w-max -translate-x-1/2 -translate-y-1/2" src="https://dev1.usdable.com/storage/default/20250725/3040-1fd5d90f3b9336d3f22f69ca4b56f1a44df56a31e.jpg" alt="" />
+              <img className="absolute inset-0 left-1/2 top-1/2 h-full !max-w-max -translate-x-1/2 -translate-y-1/2" src={joinImagesPath(record.image_urls)[0]} alt="" />
             </div>
             <div className="flex flex-1 flex-col justify-between gap-1 py-2">
               <div className="space-y-2">
@@ -161,13 +162,7 @@ export default function DefaultWarning({ setSecondaryMenu, setSecondaryMenuProps
               type="primary"
               onClick={() => {
                 setSecondaryMenu(ProfileTab.WarningRedemptionInfo)
-                setSecondaryMenuProps({
-                  id: record.id,
-                  name: record.name,
-                  address: record.address,
-                  contract_address: record.contract_address,
-                  assets_id: record.properties_id
-                })
+                setSecondaryMenuProps(record)
               }}
             >
               {t(record?.tx_hash ? 'profile.warning.redemption.modal.success.title' : 'profile.recording.asset_redemption')}
