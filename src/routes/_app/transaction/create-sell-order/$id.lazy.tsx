@@ -6,6 +6,7 @@ import ISeparator from '@/components/common/i-separator'
 import { PaymentContent } from '@/components/common/payment-content'
 import QuantitySelector from '@/components/common/quantity-selector'
 import { useCommonDataStore } from '@/stores/common-data'
+import { useUserStore } from '@/stores/user'
 import { formatNumberNoRound, toBigNumer } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
 import { getPropertyTokenAmount } from '@/utils/web/propertyToken'
@@ -80,9 +81,15 @@ function RouteComponent() {
   }, [wallet, item])
 
   const [payDialogOpen, setPayDialogOpen] = useState(false)
+  const userData = useUserStore(state => state.userData)
   async function sell() {
     if (!wallet) {
       toast.error(t('payment.errors.no_wallet'))
+      return
+    }
+    // 验证是自己绑定的钱包自己的钱包
+    if (wallet.address !== userData.wallet_address) {
+      toast.warn(t('payment.errors.please_use_bound_wallet'))
       return
     }
     if (sellPrice < (1 * 10 ** (-1 * usdcInfo.decimals)))

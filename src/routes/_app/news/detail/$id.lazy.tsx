@@ -3,6 +3,7 @@ import { getNewsDetail } from '@/api/news'
 import { joinImagePath } from '@/utils/url'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate } from '@tanstack/react-router'
+import dayjs from 'dayjs'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import './index.scss'
@@ -40,10 +41,20 @@ function RouteComponent() {
     <Waiting for={!isFetching} className={cn(isFetching && 'fccc h-300px')}>
       <div className="mt-16 px-121px max-lg:px-20px max-xl:px-60px">
         <div className="mb-3 text-5xl font-600 max-lg:mb-1 max-xl:mb-2 max-lg:text-3xl max-xl:text-4xl">{getContentOfLang('title')}</div>
-        <div className="text-2xl max-lg:text-base max-xl:text-xl">{getContentOfLang('desc')}</div>
+        <div className="flex items-end gap-2">
+          <div className="text-2xl max-lg:text-base max-xl:text-xl">{getContentOfLang('desc')}</div>
+          <div>{newsDetail?.create_time && dayjs(newsDetail?.create_time * 1000).format('MM-DD,YYYY')}</div>
+        </div>
+
         <img className="mt-65px aspect-[1920/1080] w-full max-lg:mt-24px max-xl:mt-40px" src={joinImagePath(getContentOfLang('image'))} alt="" />
         <div className="markdonw-content mt-41px text-xl max-lg:mt-16px max-xl:mt-28px space-y-4 max-lg:text-sm max-xl:text-base max-lg:space-y-2">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          <ReactMarkdown
+            // components={{
+            //   h1: CustomHeading,        // 自定义标题组件
+            //   code: SyntaxHighlighter   // 代码高亮组件
+            // }}
+            remarkPlugins={[remarkGfm]}
+          >
             {getContentOfLang('detail')}
           </ReactMarkdown>
         </div>
