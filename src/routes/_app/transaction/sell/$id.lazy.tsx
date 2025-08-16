@@ -233,12 +233,14 @@ function RouteComponent() {
           <div className="w-full text-[#898989] [&>div]:w-full [&>div]:fyc [&>div]:justify-between space-y-4">
             <div>
               <div>{t('properties.payment.tokens_held')}</div>
-              <div className="text-right text-[#898989]">{userToken >= 0 ? formatNumberNoRound(userToken, 8) : '-'}</div>
+              <div className="text-right text-[#898989]">
+                {t('profile.warning.redemption.redemption_num', { num: userToken >= 0 ? formatNumberNoRound(userToken, 8) : '-' })}
+              </div>
             </div>
             <div>
               <div>{t('properties.payment.number')}</div>
               <div className="flex justify-end">
-                {formatNumberNoRound(item.token_number, 8)}
+                {t('profile.warning.redemption.redemption_num', { num: formatNumberNoRound(item.token_number, 8) })}
               </div>
             </div>
             <div>

@@ -45,7 +45,7 @@ function PropertyTokens() {
     <div>
       <DataCount />
 
-      <div className="p-8 text-white max-lg:p-4">
+      <div className="py-8 text-white max-lg:py-4">
         <div className="flex items-center justify-between max-lg:flex-col max-lg:gap-3">
           <div className="text-8 text-[#fff] font-medium max-lg:mt-4 max-lg:text-6">
             {t('profile.propertyTokens.title')}
