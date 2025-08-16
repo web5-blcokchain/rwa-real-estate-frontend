@@ -7,6 +7,7 @@ import { formatNumberNoRound } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
 import { getPropertyTokenAmount } from '@/utils/web/propertyToken'
 import { getRedemptionManagerContract, getTokenPriceAndRedemption, redemptionWarningAsset } from '@/utils/web/redemptionManager'
+import { toBlockchainByHash } from '@/utils/web/utils'
 import { useWallets } from '@privy-io/react-auth'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Divider, Modal } from 'antd'
@@ -47,7 +48,12 @@ function RedemptionMoadl({ visibleInfo, redemptionType, message = '', hash = '',
                   <div className="text-2xl">{t('profile.warning.redemption.modal.success.title')}</div>
                   <div>{t('profile.warning.redemption.modal.success.content')}</div>
                   <div className="fcc gap-2 rounded-md bg-#212328 px-2 py-1">
-                    <div className="flex-1 truncate">0x7c5e8f3d9a1b4c2d6e44329f</div>
+                    <div
+                      onClick={() => toBlockchainByHash(hash)}
+                      className="flex-1 cursor-pointer truncate hover:text-primary"
+                    >
+                      {hash}
+                    </div>
                     <div onClick={() => copyText(hash)} className="w-fit cursor-pointer rounded-md bg-#898989 px-4 py-1">{t('common.copy')}</div>
                   </div>
                 </div>
@@ -269,10 +275,20 @@ export default function WarningRedemptionInfo({ secondaryMenuProps }:
           ：
           {userData.wallet_address}
         </div>
-        <div className="mt-2 truncate text-base max-md:text-base">
-          {t('profile.data_count.transaction_hash')}
-          :
-          {modelValue.hash}
+        <div
+
+          className="mt-2 truncate text-base max-md:text-base"
+        >
+          <span>
+            {t('profile.data_count.transaction_hash')}
+            :
+          </span>
+          <span
+            className="cursor-pointer hover:text-primary"
+            onClick={() => toBlockchainByHash(modelValue.hash)}
+          >
+            {modelValue.hash}
+          </span>
         </div>
         {/* <div className="text-xl max-md:text-base">
           {t('profile.warning.redemption.transaction_hash')}

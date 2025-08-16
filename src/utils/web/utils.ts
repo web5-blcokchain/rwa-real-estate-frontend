@@ -266,3 +266,12 @@ export function toPlainString18(num: number | string, minDecimals: number = 18) 
   // toFixed(keepDecimals) 会自动四舍五入并返回字符串，不会用科学计数法
   return bn.toFixed(keepDecimals, BigNumber.ROUND_DOWN)
 }
+
+// 跳转到区块链浏览器查看交易hash
+export function toBlockchainByHash(hash: string) {
+  window.open(`${envConfig.blockExplorerUrl}/tx/${hash}`, '_blank')
+}
+
+export function toBlockchainByContact(address: string) {
+  window.open(`${envConfig.blockExplorerUrl}/address/${address}`, '_blank')
+}

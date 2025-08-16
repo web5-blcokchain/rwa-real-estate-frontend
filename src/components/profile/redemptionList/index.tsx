@@ -1,5 +1,6 @@
 import { getWarningRedemptionList } from '@/api/assets'
 import { formatNumberNoRound } from '@/utils/number'
+import { toBlockchainByHash } from '@/utils/web/utils'
 import { useQuery } from '@tanstack/react-query'
 import { ConfigProvider, Empty, Pagination, Spin } from 'antd'
 import enUS from 'antd/locale/en_US'
@@ -74,7 +75,13 @@ export default function RedemptionList() {
                             </div>
                             <div>
                               <div>{t('profile.redemptionList.transaction_hash')}</div>
-                              <div title={item.tx_hash}>{item.tx_hash ? (`${item.tx_hash.slice(0, 4)}...${item.tx_hash.slice(-4)}`) : ''}</div>
+                              <div
+                                className="cursor-pointer hover:text-primary"
+                                onClick={() => toBlockchainByHash(item.tx_hash)}
+                                title={item.tx_hash}
+                              >
+                                {item.tx_hash ? (`${item.tx_hash.slice(0, 4)}...${item.tx_hash.slice(-4)}`) : ''}
+                              </div>
                             </div>
                             <div>
                               <div>{t('profile.redemptionList.income_date')}</div>

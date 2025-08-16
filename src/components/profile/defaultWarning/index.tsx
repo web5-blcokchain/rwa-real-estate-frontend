@@ -5,6 +5,7 @@ import copyIcon from '@/assets/icons/copy.svg'
 import { ProfileTab } from '@/enums/profile'
 import { formatNumberNoRound } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
+import { toBlockchainByHash } from '@/utils/web/utils'
 import { useQuery } from '@tanstack/react-query'
 import { Button, ConfigProvider, Empty, Table } from 'antd'
 import enUS from 'antd/locale/en_US'
@@ -142,10 +143,22 @@ export default function DefaultWarning({ setSecondaryMenu, setSecondaryMenuProps
       key: 'tx_hash',
       render: (_, record) => {
         return (
-          <div>
-            {
-              record.tx_hash && (`${record.tx_hash.slice(0, 6)}...${record.tx_hash.slice(-4)}`)
-            }
+          <div
+            className="fyc gap-2"
+          >
+            <span
+              className="cursor-pointer hover:text-primary"
+              onClick={() => toBlockchainByHash(record.tx_hash)}
+            >
+              {
+                record.tx_hash && (`${record.tx_hash.slice(0, 6)}...${record.tx_hash.slice(-4)}`)
+              }
+            </span>
+            {record.tx_hash && (
+              <span onClick={() => copyText(record.contract_address)} className="cursor-pointer">
+                <img className="size-4" src={copyIcon} alt="" />
+              </span>
+            )}
           </div>
         )
       }
