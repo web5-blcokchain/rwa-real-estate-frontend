@@ -6,6 +6,7 @@ import button3 from '@/assets/icons/BUTTON3.png'
 import copyIcon from '@/assets/icons/copy.svg'
 import group272Icon from '@/assets/icons/group272.png'
 import TableComponent from '@/components/common/table-component'
+import { useCommonDataStore } from '@/stores/common-data'
 import { envConfig } from '@/utils/envConfig'
 import { formatNumberNoRound } from '@/utils/number'
 import { toBlockchainByHash } from '@/utils/web/utils'
@@ -22,6 +23,7 @@ export function MyAssets() {
     navigator.clipboard.writeText(text)
     toast.success(t('common.copy_success'))
   }
+  const commonData = useCommonDataStore()
 
   const toBlockchain = (address: string) => {
     window.open(`${envConfig.blockExplorerUrl}/address/${address}`, '_blank')
@@ -91,7 +93,7 @@ export function MyAssets() {
       render: (_, _record) => (
         <>
           <div className="flex items-center justify-start">
-            <div>USDT</div>
+            <div>{commonData.payTokenName}</div>
           </div>
         </>
       )

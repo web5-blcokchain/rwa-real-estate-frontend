@@ -6,6 +6,7 @@ import button2 from '@/assets/icons/BUTTON2-2.png'
 import button3 from '@/assets/icons/BUTTON3.png'
 import group272Icon from '@/assets/icons/group272.png'
 import { PaymentMethod } from '@/components/common/payment-method'
+import { useCommonDataStore } from '@/stores/common-data'
 import { formatNumberNoRound } from '@/utils/number'
 import { useQuery } from '@tanstack/react-query'
 import { Space } from 'antd'
@@ -16,6 +17,7 @@ import TableComponent from '../../common/table-component'
 function Overview() {
   const [wallet, setWallet] = useState<ConnectedWallet | null>(null)
   const { t } = useTranslation()
+  const commonData = useCommonDataStore()
   const coinStatus = ['unclaimed', 'claimed', 'withdraw', 'failed', 'sold', 'distribution']
 
   // 表格1配置
@@ -121,8 +123,9 @@ function Overview() {
           <div className="flex items-center justify-start">
             <div className="flex flex-col justify-start">
               <div>
-                $
                 {formatNumberNoRound(record.income_amount, 8)}
+                {' '}
+                {commonData.payTokenName}
               </div>
               <div className="text-[#8d909a]">
                 ≈

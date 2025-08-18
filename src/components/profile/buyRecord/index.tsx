@@ -246,7 +246,7 @@ export function BuyRecord() { // 市场交易购买记录
 
   return (
     <div>
-      <div className="text-whit mb-10 text-2xl max-lg:mb-5 max-lg:text-xl">{t('aboutMe.sale_record')}</div>
+      <div className="text-whit mb-10 text-2xl max-lg:mb-5 max-lg:text-xl">{t('aboutMe.buy_record')}</div>
       <div className="max-md:rid-cols-1 grid grid-cols-4 mb-5 gap-4 max-lg:grid-cols-2">
         <Input
           size="large"

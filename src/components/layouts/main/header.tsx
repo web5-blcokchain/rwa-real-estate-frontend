@@ -2,15 +2,19 @@ import type { MenuProps } from 'antd'
 import apiMyInfoApi from '@/api/apiMyInfoApi'
 import logo from '@/assets/images/logo.png'
 import { LoginDialog } from '@/components/dialog/login'
+import { getContracts } from '@/contract'
 import { UserCode } from '@/enums/user'
 import { eventBus } from '@/hooks/EventBus'
+import { useCommonDataStore } from '@/stores/common-data'
 import { useUserStore } from '@/stores/user'
+import { envConfig } from '@/utils/envConfig'
 import { ensureEthersNetwork } from '@/utils/ethers'
 import { clearToken, getToken, setToken } from '@/utils/user'
 import { usePrivy, useUser, useWallets } from '@privy-io/react-auth'
 import { useMutation } from '@tanstack/react-query'
 import { Link, useLocation, useNavigate } from '@tanstack/react-router'
 import { Drawer, Dropdown } from 'antd'
+import { Contract, ethers } from 'ethers'
 
 export default function MainHeader() {
   const { t } = useTranslation()
@@ -19,6 +23,21 @@ export default function MainHeader() {
   const { connectWallet } = usePrivy()
   const { wallets } = useWallets()
   const { userData } = useUserStore()
+  const commonData = useCommonDataStore()
+
+  // 获取支付代币名称
+  const getPayName = async () => {
+    const provider = await new ethers.WebSocketProvider(envConfig.web3.rpc)
+    const usdcContact = getContracts('SimpleERC20')
+    const contract = new Contract(envConfig.usdcAddress, usdcContact.abi, provider)
+    const name = await contract.symbol()
+    if (name)
+      commonData.payTokenName = name
+  }
+
+  useEffect(() => {
+    getPayName()
+  }, [])
 
   const showDrawer = () => {
     setOpen(true)
@@ -433,7 +452,7 @@ const UserMenu: FC = () => {
       <div className="fyc gap-1 clickable">
         <div className="i-material-symbols-account-circle-outline size-5 bg-white"></div>
         <div className="text-4 text-white" title={userData.email}>
-          { userEmail }
+          {userEmail}
         </div>
         <div className="i-ic-round-keyboard-arrow-down size-5 bg-white"></div>
       </div>

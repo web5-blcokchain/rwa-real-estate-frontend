@@ -1,17 +1,19 @@
 import type { AssetsWarningList } from '@/api/assets'
-import type { ethers } from 'ethers'
 import type { Dispatch, SetStateAction } from 'react'
 import { getRedemptionInfo, redemptionWarningAssets } from '@/api/assets'
+import { getContracts } from '@/contract'
+import { useCommonDataStore } from '@/stores/common-data'
 import { useUserStore } from '@/stores/user'
+import { envConfig } from '@/utils/envConfig'
 import { formatNumberNoRound } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
-import { getPropertyTokenAmount } from '@/utils/web/propertyToken'
-import { getRedemptionManagerContract, getTokenPriceAndRedemption, redemptionWarningAsset } from '@/utils/web/redemptionManager'
+import { getRedemptionManagerContract, redemptionWarningAsset } from '@/utils/web/redemptionManager'
 import { toBlockchainByHash } from '@/utils/web/utils'
 import { useWallets } from '@privy-io/react-auth'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Divider, Modal } from 'antd'
 import dayjs from 'dayjs'
+import { Contract, ethers } from 'ethers'
 import { toast } from 'react-toastify'
 
 function RedemptionMoadl({ visibleInfo, redemptionType, message = '', hash = '', reloadRedemption }: {
@@ -201,6 +203,7 @@ export default function WarningRedemptionInfo({ secondaryMenuProps }:
     value: string | React.ReactNode
   }[]>([])
   const [amountLoading, setAmountLoading] = useState(0)
+  const commonData = useCommonDataStore()
 
   useEffect(() => {
     const func = async () => {
@@ -215,17 +218,25 @@ export default function WarningRedemptionInfo({ secondaryMenuProps }:
         return
       }
       else if (wallet) {
+        const webEthProvider = await new ethers.WebSocketProvider(envConfig.web3.rpc)
         const ethProvider = await wallet.getEthereumProvider()
-        amount = await getPropertyTokenAmount(ethProvider, secondaryMenuProps.contract_address, wallet.address)
-        if (redemptionContract) {
-          const tx = await getTokenPriceAndRedemption(ethProvider, redemptionContract, {
-            propertyToken: secondaryMenuProps.contract_address,
-            userTokenAmount: amount
-          })
-          price = tx.netRedemptionAmount
-          tokenPrice = tx.nowCurrentPrice
-          oldTokenPrice = tx.currentPrice
-        }
+        const propertyContractAbi = getContracts('PropertyToken')
+        // 如果没有连接钱包，则通过远程连接op网络获取合约
+        const propertyContract = new Contract(secondaryMenuProps.contract_address, propertyContractAbi.abi, webEthProvider ?? ethProvider)
+        const tokenDecimals = await propertyContract.decimals()
+        const tokenBalance = await propertyContract.balanceOf(wallet.address)
+        // 获取代币余额
+        amount = Number(ethers.formatUnits(tokenBalance, tokenDecimals))
+        const redemptionContractAbi = getContracts('RedemptionManager')
+        const redemptionContract = new Contract(envConfig.redemptionManagerAddress, redemptionContractAbi.abi, webEthProvider ?? ethProvider)
+        // 通过合约获取赎回价格信息
+        const tx = await redemptionContract.getTokenPriceAndRedemption(
+          secondaryMenuProps.contract_address,
+          ethers.parseUnits(amount.toString(), tokenDecimals)
+        )
+        price = tx.netRedemptionAmount
+        tokenPrice = tx.nowCurrentPrice
+        oldTokenPrice = tx.currentPrice
       }
       setRedemptionAmountInfo({
         tokenPrice,
@@ -234,15 +245,15 @@ export default function WarningRedemptionInfo({ secondaryMenuProps }:
       setRedemptionInfo([
         {
           title: 'profile.warning.redemption.recovery_amount',
-          value: `$${formatNumberNoRound((amount || 0) * oldTokenPrice, 8)}`
+          value: `${formatNumberNoRound((amount || 0) * oldTokenPrice, 8)} ${commonData.payTokenName}`
         },
         {
           title: 'profile.warning.redemption.rental_income',
-          value: `$${formatNumberNoRound(price, 8)}`
+          value: `${formatNumberNoRound(price, 8)} ${commonData.payTokenName}`
         },
         {
           title: 'profile.warning.redemption.token_price',
-          value: `$${formatNumberNoRound(tokenPrice, 8)}`
+          value: `${formatNumberNoRound(tokenPrice, 8)} ${commonData.payTokenName}`
         },
         {
           title: 'profile.warning.redemption.token_holdings',

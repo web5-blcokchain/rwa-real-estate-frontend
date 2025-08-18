@@ -2,6 +2,7 @@ import type { historyResponse } from '@/api/apiMyInfoApi'
 import type { TableProps } from 'antd'
 import apiMyInfoApi, { getAssetType, getEarningsInfo } from '@/api/apiMyInfoApi'
 import copyIcon from '@/assets/icons/copy.svg'
+import { useCommonDataStore } from '@/stores/common-data'
 import { formatNumberNoRound } from '@/utils/number'
 import { toBlockchainByHash } from '@/utils/web/utils'
 import { useQuery } from '@tanstack/react-query'
@@ -82,6 +83,7 @@ export default function DividendStatistics() {
     })
   }, [earningsList])
 
+  const commonData = useCommonDataStore()
   const copyText = (text: string) => {
     navigator.clipboard.writeText(text)
     toast.success(t('common.copy_success'))
@@ -105,8 +107,9 @@ export default function DividendStatistics() {
       render: (_, record) => {
         return (
           <div>
-            $
             {formatNumberNoRound(record.total_amount, 8)}
+            {' '}
+            {commonData.payTokenName}
           </div>
         )
       }
@@ -120,8 +123,9 @@ export default function DividendStatistics() {
         const incomeAmount = Number(record.income_amount) || 0
         return (
           <div>
-            $
             {formatNumberNoRound(totalAmount - incomeAmount, 8)}
+            {' '}
+            {commonData.payTokenName}
           </div>
         )
       }
@@ -133,8 +137,9 @@ export default function DividendStatistics() {
       render: (_, record) => {
         return (
           <div>
-            $
             {formatNumberNoRound(record.income_amount, 8)}
+            {' '}
+            {commonData.payTokenName}
           </div>
         )
       }
@@ -196,22 +201,25 @@ export default function DividendStatistics() {
         <div className="fyc justify-between rounded-md bg-#212328 px-23 py-14 [&>div>div]:fccc [&>div>div]:gap-3 max-lg:px-4 max-lg:py-8 [&>div]:text-center [&>div>div:first-child]:text-2xl [&>div>div:last-child]:text-base [&>div>div:last-child]:text-[#8d909a] [&>div>div]:max-lg:gap-6px [&>div>div:first-child]:max-lg:text-xl [&>div>div:last-child]:max-lg:text-sm">
           <div>
             <div>
-              $
               {earningsInfo?.current_month_income}
+              {' '}
+              {commonData.payTokenName}
             </div>
             <div>{t('dividendStatistics.currentMonthIncome')}</div>
           </div>
           <div>
             <div>
-              $
               {earningsInfo?.total_income}
+              {' '}
+              {commonData.payTokenName}
             </div>
             <div>{t('dividendStatistics.totalIncome')}</div>
           </div>
           <div>
             <div>
-              $
               {earningsInfo?.avg_month_income}
+              {' '}
+              {commonData.payTokenName}
             </div>
             <div>{t('dividendStatistics.avgMonthIncome')}</div>
           </div>

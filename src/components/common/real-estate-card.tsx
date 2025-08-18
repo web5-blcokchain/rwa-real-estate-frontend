@@ -1,3 +1,4 @@
+import { useCommonDataStore } from '@/stores/common-data'
 import { formatNumberNoRound } from '@/utils/number'
 import numbro from 'numbro'
 import { CollectButton } from './collect-button'
@@ -38,6 +39,8 @@ export const RealEstateCard: FC<{
   className,
   ...props
 }) => {
+  const { t } = useTranslation()
+  const commonData = useCommonDataStore()
   return (
     <div
       className={cn(
@@ -66,27 +69,29 @@ export const RealEstateCard: FC<{
           </div>
           <div className="line-clamp-1 text-sm text-[#b5b5b5]">{location}</div>
           <div className="fyc gap-1 [&>div]:flex-1 [&>div]:truncate">
-            <div title={numbro(price).format({
+            <div title={`${numbro(price).format({
               mantissa: 2,
               thousandSeparated: true
-            })}
+            })} ${commonData.payTokenName}`}
             >
-              市场价值:$
-              {numbro(price).format({
+              { t('properties.detail.market_value') }
+              :
+              {`${numbro(price).format({
                 mantissa: 2,
                 thousandSeparated: true
-              })}
+              })} ${commonData.payTokenName}`}
             </div>
-            <div title={numbro(monthly_rent).format({
+            <div title={`${numbro(monthly_rent).format({
               mantissa: 2,
               thousandSeparated: true
-            })}
+            })} ${commonData.payTokenName}`}
             >
-              月租金:$
-              {numbro(monthly_rent).format({
+              { t('properties.detail.monthly_rent') }
+              :
+              {`${numbro(monthly_rent).format({
                 mantissa: 2,
                 thousandSeparated: true
-              })}
+              })} ${commonData.payTokenName}`}
             </div>
           </div>
         </div>
@@ -97,7 +102,7 @@ export const RealEstateCard: FC<{
               {formatNumberNoRound(`${expected_annual_return}`, 2)}
               %
             </div>
-            <div className="mt-1 text-sm">租金收益</div>
+            <div className="mt-1 text-sm">{ t('properties.detail.rental_yield') }</div>
           </div>
           <div>
             <div className="truncate text-xl font-bold" title={`${formatNumberNoRound(`${annual_return_min}`, 2)}% ~ ${formatNumberNoRound(`${annual_return_max}`, 2)}%`}>
@@ -107,7 +112,7 @@ export const RealEstateCard: FC<{
               {formatNumberNoRound(`${annual_return_max}`, 2)}
               %
             </div>
-            <div className="mt-1 text-sm">预计年回报率</div>
+            <div className="mt-1 text-sm">{ t('properties.detail.expected_annual_return') }</div>
           </div>
         </div>
       </div>

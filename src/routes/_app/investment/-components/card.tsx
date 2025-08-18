@@ -47,6 +47,7 @@ export const InvestmentCard: FC<InvestmentCardProps> = ({
   const navigate = useNavigate()
   const investmentItems = useCommonDataStore(state => state.investmentItems)
   const userData = useUserStore(state => state.userData)
+  const commonData = useCommonDataStore()
 
   function buy() {
     investmentItems.set(item.id, item)
@@ -108,13 +109,13 @@ export const InvestmentCard: FC<InvestmentCardProps> = ({
           />
           <IInfoField
             label={t('properties.payment.total')}
-            value={`$${formatNumberNoRound(item.total_amount, 8)}`}
+            value={`${formatNumberNoRound(item.total_amount, 8)} ${commonData.payTokenName}`}
             labelClass="text-[#898989]"
             valueClass="text-white"
           />
           <IInfoField
             label={t('properties.payment.token_price')}
-            value={`$${formatNumberNoRound(item.token_price, 8)}`}
+            value={`${formatNumberNoRound(item.token_price, 8)} ${commonData.payTokenName}`}
             labelClass="text-[#898989]"
             valueClass="text-white"
           />

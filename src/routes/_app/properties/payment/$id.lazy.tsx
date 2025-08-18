@@ -32,7 +32,7 @@ function RouteComponent() {
   const { t } = useTranslation()
   const router = useRouter()
   const navigate = useNavigate()
-
+  const commonData = useCommonDataStore()
   const [wallet, setWallet] = useState<ConnectedWallet | null>(null)
   const { userData } = useUserStore()
 
@@ -270,13 +270,13 @@ function RouteComponent() {
             />
             <IInfoField
               label={t('properties.payment.token_price')}
-              value={`${item?.price} ${envConfig.defaultPayTokenName}`}
+              value={`${item?.price} ${commonData.payTokenName}`}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
               label={t('properties.payment.total')}
-              value={`${Number(item?.number) * Number(item?.price)} ${envConfig.defaultPayTokenName}`}
+              value={`${Number(item?.number) * Number(item?.price)} ${commonData.payTokenName}`}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
@@ -303,8 +303,8 @@ function RouteComponent() {
             <div>
               <div>{t('properties.payment.subtotal')}</div>
               <div className="text-right">
-                $
                 {formatNumberNoRound((toBigNumer(tokens).multipliedBy(item.price)).toString(), 8)}
+                {` ${commonData.payTokenName}`}
               </div>
             </div>
             <div>
@@ -330,8 +330,8 @@ function RouteComponent() {
         <div className="fbc">
           <div>{t('properties.payment.total_amount')}</div>
           <div className="text-primary">
-            $
             {formatNumberNoRound((toBigNumer(tokens).multipliedBy(item.price)).toString(), 8)}
+            {` ${commonData.payTokenName}`}
           </div>
         </div>
       </div>

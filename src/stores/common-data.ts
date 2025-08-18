@@ -5,9 +5,11 @@ import { create } from 'zustand'
 interface CommonDataState {
   assets: Map<number, DetailResponse>
   investmentItems: Map<number, InvestmentItem>
+  payTokenName: string
 }
 
 export const useCommonDataStore = create<CommonDataState>(() => ({
   assets: new Map(),
-  investmentItems: new Map()
+  investmentItems: new Map(),
+  payTokenName: 'USDC'
 }))

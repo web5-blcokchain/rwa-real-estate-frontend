@@ -6,6 +6,7 @@ import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
 import { PaymentContent } from '@/components/common/payment-content'
 import QuantitySelector from '@/components/common/quantity-selector'
+import { useCommonDataStore } from '@/stores/common-data'
 import { useUserStore } from '@/stores/user'
 import { formatNumberNoRound, toBigNumer } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
@@ -41,6 +42,7 @@ function RouteComponent() {
     decimals: 6,
     symbol: 'USDT'
   })
+  const commonData = useCommonDataStore()
   const maxPrice = 999999999999999
 
   // 获取代币精度
@@ -346,14 +348,15 @@ function RouteComponent() {
                           min={1 * 10 ** (-1 * usdcInfo.decimals)}
                           max={maxPrice}
                         />
-                        <div>{usdcInfo.symbol}</div>
+                        <div>{commonData.payTokenName}</div>
                       </div>
                     </div>
                     <div>
                       <div>{t('properties.payment.subtotal')}</div>
                       <div className="text-right">
-                        $
                         {formatNumberNoRound((toBigNumer(tokens).multipliedBy(buyPrice)).toString(), 8)}
+                        {' '}
+                        {commonData.payTokenName}
                       </div>
                     </div>
                     {/* <div>

@@ -4,7 +4,6 @@ import { CollectButton } from '@/components/common/collect-button'
 import { IInfoField } from '@/components/common/i-info-field'
 import { ImageSwiper } from '@/components/common/image-swiper'
 import { useCommonDataStore } from '@/stores/common-data'
-import { envConfig } from '@/utils/envConfig'
 import { formatNumberNoRound } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
 import { getTokenInfo } from '@/utils/wallet'
@@ -42,6 +41,7 @@ function RouteComponent() {
   const [, setContractBalance] = useState<string>('0')
   const [previewVisible, setPreviewVisible] = useState(false)
   const [previewCurrent, setPreviewCurrent] = useState(0)
+  const commonData = useCommonDataStore()
 
   const { data: assetDetail, isLoading } = useQuery<DetailResponse>({
     queryKey: ['property-detail', assetId],
@@ -218,10 +218,15 @@ function RouteComponent() {
                 <IInfoField
                   horizontal
                   label={t('properties.detail.market_value')}
-                  value={`$${assetDetail?.price || ''}`}
+                  value={`${assetDetail?.price || ''} ${commonData.payTokenName}`}
                   className="gap-4"
                 />
-                <IInfoField className="gap-4" horizontal label={t('properties.detail.monthly_rent')} value={`$${assetDetail?.monthly_rent || ''}`} />
+                <IInfoField
+                  className="gap-4"
+                  horizontal
+                  label={t('properties.detail.monthly_rent')}
+                  value={`${assetDetail?.monthly_rent || ''}`}
+                />
               </div>
 
             </div>
@@ -263,7 +268,7 @@ function RouteComponent() {
                   label={t('properties.detail.return')}
                   value={`${formatNumberNoRound((Number(assetDetail?.expected_annual_return) * (investmentAmount || 0) / 100), 6, 0, {
                     thousandSeparated: true
-                  })} ${envConfig.defaultPayTokenName}`}
+                  })} ${commonData.payTokenName}`}
                 />
                 <IInfoField
                   className="flex-1 space-y-2"

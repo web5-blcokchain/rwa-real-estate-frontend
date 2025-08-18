@@ -1,4 +1,5 @@
 import { getOverView } from '@/api/profile'
+import { useCommonDataStore } from '@/stores/common-data'
 import { useQuery } from '@tanstack/react-query'
 import numbro from 'numbro'
 import { useState } from 'react'
@@ -13,6 +14,7 @@ function DataCount() {
       return res.data
     }
   })
+  const commonData = useCommonDataStore()
 
   const isUpIcon = (data: any) => {
     if (data) {
@@ -24,11 +26,11 @@ function DataCount() {
   const updateData = () => [
     {
       title: 'profile.data_count.totalAssetValue',
-      field: `$${numbro(_get(data, 'total_current', '0.00')).format({
+      field: `${numbro(_get(data, 'total_current', '0.00')).format({
         thousandSeparated: true,
         mantissa: 2,
         trimMantissa: true
-      })}`,
+      })} ${commonData.payTokenName}`,
       fieldTwo: { content: '', value: `${_get(data, 'total_current_growth', '0.00')}%` },
       picture: isUpIcon(_get(data, 'total_number_vs_last_month', false)),
       color: _get(data, 'total_number_vs_last_month', false) ? '#2bb480' : '8d909a'
@@ -36,11 +38,11 @@ function DataCount() {
 
     {
       title: 'profile.data_count.expectedIncomeThisMonth',
-      field: `$${numbro(_get(data, 'monthly_rental_income', '0.00')).format({
+      field: `${numbro(_get(data, 'monthly_rental_income', '0.00')).format({
         thousandSeparated: true,
         mantissa: 2,
         trimMantissa: true
-      })}`,
+      })} ${commonData.payTokenName}`,
       fieldTwo: { content: '', value: `${_get(data, 'monthly_rental_income_growth', '0.00')}%` },
       picture: isUpIcon(_get(data, 'current_month_income', false)),
       color: _get(data, 'monthly_rental_income_vs_last_month', false) ? '#2bb480' : '8d909a'
@@ -48,11 +50,11 @@ function DataCount() {
 
     {
       title: 'profile.data_count.averageMonthlyIncome',
-      field: `$${numbro(_get(data, 'monthly_rental_income', '0.00')).format({
+      field: `${numbro(_get(data, 'monthly_rental_income', '0.00')).format({
         thousandSeparated: true,
         mantissa: 2,
         trimMantissa: true
-      })}`,
+      })} ${commonData.payTokenName}`,
       fieldTwo: { content: 'profile.data_count.vsLastMonth', value: `$${_get(data, 'monthly_rental_income_growth', '0.00')}%` },
       picture: isUpIcon(_get(data, 'monthly_rental_income_vs_last_month', false)),
       color: _get(data, 'monthly_rental_income_vs_last_month', false) ? '#2bb480' : '8d909a'

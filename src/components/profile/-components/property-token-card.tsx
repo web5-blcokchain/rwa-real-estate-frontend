@@ -6,7 +6,6 @@ import { formatNumberNoRound, toBigNumer } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
 import { useNavigate } from '@tanstack/react-router'
 import { Button } from 'antd'
-import numeral from 'numeral'
 
 const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTMLAttributes<HTMLDivElement>> = ({
   Inception_number,
@@ -30,6 +29,7 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
   const navigate = useNavigate()
   const investmentItems = useCommonDataStore(state => state.investmentItems)
   const { t } = useTranslation()
+  const commonData = useCommonDataStore()
 
   const createSellOrder = (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -114,7 +114,7 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
           <div className="w-1/2 flex flex-col justify-start py-3">
             <div className="text-sm text-[#b5b5b5]">{t('properties.payment.token_price')}</div>
             <div className="text-4">
-              {`$${numeral(current_price).format('0,0.00')}`}
+              {`${formatNumberNoRound(current_price, 8)} ${commonData.payTokenName}`}
             </div>
           </div>
 
@@ -138,7 +138,7 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
           <div className="w-1/2 flex flex-col justify-start py-3">
             <div className="text-sm text-[#b5b5b5]">{t('properties.payment.valuation')}</div>
             <div className="text-4">
-              {`$${formatNumberNoRound(toBigNumer(Number(current_price)).multipliedBy(Number(number)).toString(), 8)}`}
+              {`${formatNumberNoRound(toBigNumer(Number(current_price)).multipliedBy(Number(number)).toString(), 8)} ${commonData.payTokenName}`}
             </div>
           </div>
         </div>

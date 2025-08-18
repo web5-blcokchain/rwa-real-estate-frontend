@@ -3,6 +3,7 @@ import type { TableProps } from 'antd'
 import { getInvestmentDetails, getWarningList } from '@/api/assets'
 import copyIcon from '@/assets/icons/copy.svg'
 import { ProfileTab } from '@/enums/profile'
+import { useCommonDataStore } from '@/stores/common-data'
 import { formatNumberNoRound } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
 import { toBlockchainByHash } from '@/utils/web/utils'
@@ -16,6 +17,7 @@ import dayjs from 'dayjs'
 // 违约警告
 export default function DefaultWarning({ setSecondaryMenu, setSecondaryMenuProps }: { setSecondaryMenu: (menu: ProfileTab) => void, setSecondaryMenuProps: (props: any) => void }) {
   const { t, i18n } = useTranslation()
+  const commonData = useCommonDataStore()
   const locale = useMemo(() => i18n.language === 'en' ? enUS : i18n.language === 'zh' ? zhCN : jaJP, [i18n])
   const { data: investmentDetails, isFetching: investmentDetailsLoading } = useQuery({
     queryKey: ['getInvestmentDetails'],
@@ -28,10 +30,10 @@ export default function DefaultWarning({ setSecondaryMenu, setSecondaryMenuProps
   const totalInfo = useMemo(() => {
     return [{
       title: 'profile.warning.total_investment_assets',
-      num: `$${formatNumberNoRound(investmentDetails?.total_number, 8)}`
+      num: `${formatNumberNoRound(investmentDetails?.total_number, 8)} ${commonData.payTokenName}`
     }, {
       title: 'profile.warning.expected_income_this_month',
-      num: `$${formatNumberNoRound(investmentDetails?.monthly_income, 8)}`
+      num: `${formatNumberNoRound(investmentDetails?.monthly_income, 8)} ${commonData.payTokenName}`
     }, {
       title: 'profile.warning.overdue_assets',
       num: t('profile.warning.overdue_assets_num', { num: investmentDetails?.count })
@@ -126,7 +128,7 @@ export default function DefaultWarning({ setSecondaryMenu, setSecondaryMenuProps
       dataIndex: 'total_current',
       key: 'total_current',
       render: (_, record) => {
-        return <div>{`$${formatNumberNoRound(record.number, 8)}`}</div>
+        return <div>{`${formatNumberNoRound(record.number, 8)} ${commonData.payTokenName}`}</div>
       }
     },
     {
@@ -134,7 +136,7 @@ export default function DefaultWarning({ setSecondaryMenu, setSecondaryMenuProps
       dataIndex: 'price',
       key: 'price',
       render: (_, record) => {
-        return <div>{`$${formatNumberNoRound(Number(record.price) * Number(record.number), 8)}`}</div>
+        return <div>{`${formatNumberNoRound(Number(record.price) * Number(record.number), 8)} ${commonData.payTokenName}`}</div>
       }
     },
     {

@@ -321,6 +321,8 @@
       "bedrooms": "ベッドルーム",
       "market_value": "市場価値",
       "monthly_rent": "家賃",
+      "rental_yield": "賃料収益です",
+      "expected_annual_return": "予計年回報率 ",
       "return": "年間リターンを期待しています",
       "including": "を含む",
       "rental": "賃貸料収益率と",

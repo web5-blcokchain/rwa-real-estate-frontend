@@ -11,6 +11,7 @@ import introduction3 from '@/assets/images/home/introduction-3.png'
 import introduction4 from '@/assets/images/home/introduction-4.png'
 import FeatureCard from '@/components/home/feature-card'
 import { NewsList } from '@/components/news/newsList'
+import { useCommonDataStore } from '@/stores/common-data'
 import { joinImagesPath } from '@/utils/url'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
@@ -23,6 +24,7 @@ export const Route = createLazyFileRoute('/_app/home/')({
 function RouteComponent() {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const commonData = useCommonDataStore()
 
   const {
     data: propertieList,
@@ -47,7 +49,7 @@ function RouteComponent() {
     { img: coinType3, url: '' }
   ]
   const coinStatus = [
-    { title: 'home.statistics.totalVolume', content: '$4.25B' },
+    { title: 'home.statistics.totalVolume', content: '4.25B' },
     { title: 'home.statistics.activeInvestors', content: '12.450+' },
     { title: 'home.statistics.tokenizedProperties', content: '85' },
     { title: 'home.statistics.annualYield', content: '8.2%' }
@@ -129,8 +131,14 @@ function RouteComponent() {
           {
             coinStatus.map((item, index) => (
               <div key={index} className="fccc justify-between gap-6 text-center max-lg:gap-2 max-md:gap-0 max-xl:gap-3">
-                <div className="text-6 leading-10 max-lg:text-2 max-md:text-2 max-xl:text-4 max-lg:leading-4">{t(item.title)}</div>
-                <div className="text-66px font-500 leading-10 max-lg:text-24px max-md:text-18px max-xl:text-40px">{item.content}</div>
+                <div className="text-6 leading-10 max-lg:text-2 max-md:text-2 max-xl:text-4 max-lg:leading-4">
+                  {t(item.title)}
+                </div>
+                <div className="text-66px font-500 leading-10 max-lg:text-24px max-md:text-18px max-xl:text-40px">
+                  {item.content}
+                  {' '}
+                  {index === 0 && commonData.payTokenName}
+                </div>
               </div>
             ))
           }

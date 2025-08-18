@@ -1,3 +1,4 @@
+import { useCommonDataStore } from '@/stores/common-data'
 import { formatNumberNoRound } from '@/utils/number'
 import dayjs from 'dayjs'
 import './index.scss'
@@ -5,6 +6,7 @@ import './index.scss'
 export default function Info({ secondaryMenuProps }:
 { secondaryMenuProps: { id: number, status: number, name: string, address: string, monthly_rent: string, rent_due_date: string } }) {
   const { t } = useTranslation()
+  const commonData = useCommonDataStore()
   const step = [
     {
       title: 'profile.warning.info.application_submitted',
@@ -62,8 +64,9 @@ export default function Info({ secondaryMenuProps }:
           <div>
             <div>{t('profile.warning.info.rental_income')}</div>
             <div>
-              $
               {formatNumberNoRound(Math.max(dayjs(secondaryMenuProps.rent_due_date).diff(dayjs(), 'month'), 1) * Number(secondaryMenuProps.monthly_rent))}
+              {' '}
+              {commonData.payTokenName}
             </div>
           </div>
           <div>

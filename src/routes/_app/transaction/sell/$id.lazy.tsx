@@ -30,8 +30,8 @@ function RouteComponent() {
   })
 
   const id = Number.parseInt(params.id)
-  const investmentItems = useCommonDataStore(state => state.investmentItems)
-
+  const commonData = useCommonDataStore()
+  const { investmentItems } = commonData
   const item = investmentItems.get(id)!
 
   const [tokens, setTokens] = useState(1)
@@ -212,13 +212,13 @@ function RouteComponent() {
             />
             <IInfoField
               label={t('properties.payment.token_price')}
-              value={`${formatNumberNoRound(item?.token_price, 8)} / token`}
+              value={`${formatNumberNoRound(item?.token_price, 8)} ${commonData.payTokenName}`}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
               label={t('properties.payment.total')}
-              value={`$${formatNumberNoRound(item?.total_amount, 8)}`}
+              value={`${formatNumberNoRound(item?.total_amount, 8)} ${commonData.payTokenName}`}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
@@ -246,8 +246,9 @@ function RouteComponent() {
             <div>
               <div>{t('properties.payment.subtotal')}</div>
               <div className="text-right">
-                $
                 {formatNumberNoRound((toBigNumer(tokens).multipliedBy(item.token_price)).toString(), 8)}
+                {' '}
+                {commonData.payTokenName}
               </div>
             </div>
             <div>
@@ -272,7 +273,7 @@ function RouteComponent() {
         <div className="fbc">
           <div>{t('properties.payment.total_amount')}</div>
           <div className="text-primary">
-            {`$${formatNumberNoRound((tokens * Number(item.token_price)), 8)}`}
+            {`${formatNumberNoRound((tokens * Number(item.token_price)), 8)} ${commonData.payTokenName}`}
           </div>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { getWarningRedemptionList } from '@/api/assets'
+import { useCommonDataStore } from '@/stores/common-data'
 import { formatNumberNoRound } from '@/utils/number'
 import { toBlockchainByHash } from '@/utils/web/utils'
 import { useQuery } from '@tanstack/react-query'
@@ -11,6 +12,7 @@ import dayjs from 'dayjs'
 export default function RedemptionList() {
   const locale = i18n.language === 'en' ? enUS : i18n.language === 'zh' ? zhCN : jaJP
   const { t } = useTranslation()
+  const commonData = useCommonDataStore()
   const [pagination, setPagination] = useState({
     pageSize: 10,
     current: 1,
@@ -58,15 +60,17 @@ export default function RedemptionList() {
                             <div>
                               <div>{t('profile.redemptionList.investment_amount')}</div>
                               <div>
-                                $
                                 {formatNumberNoRound(item.total_current, 8)}
+                                {' '}
+                                {commonData.payTokenName}
                               </div>
                             </div>
                             <div>
                               <div>{t('profile.redemptionList.redemption_income')}</div>
                               <div>
-                                $
                                 {formatNumberNoRound(item.price, 8)}
+                                {' '}
+                                {commonData.payTokenName}
                               </div>
                             </div>
                             <div>

@@ -207,6 +207,7 @@ export const ProfileEdit: FC = () => {
                 className="h-14 text-4 bg-[#242933]! text-white!"
                 size="large"
                 placeholder={t('profile.edit.email_placeholder')}
+                disabled
               />
             </Form.Item>
 

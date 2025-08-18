@@ -321,6 +321,8 @@
       "bedrooms": "Bedrooms",
       "market_value": "Market Value",
       "monthly_rent": "Monthly Rent",
+      "rental_yield": "Rental income",
+      "expected_annual_return": "Expected annual return",
       "return": "Expected annual return",
       "including": "Including",
       "rental": "rental yield and",

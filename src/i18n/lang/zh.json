@@ -323,6 +323,8 @@
       "bedrooms": "卧室",
       "market_value": "市场价值",
       "monthly_rent": "月租金",
+      "rental_yield": "租金收益",
+      "expected_annual_return": "预计年回报率",
       "return": "预期年度回报",
       "including": "包括",
       "rental": "租金收益率和",
