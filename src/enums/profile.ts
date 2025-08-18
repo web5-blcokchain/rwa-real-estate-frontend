@@ -18,5 +18,6 @@ export enum ProfileTab {
   WarningRedemptionInfo = 'WarningRedemptionInfo',
   SaleRecord = 'SaleRecord',
   Investment = 'Investment',
-  BuyRecord = 'BuyRecord'
+  BuyRecord = 'BuyRecord',
+  TransactionRecord = 'TransactionRecord'
 }

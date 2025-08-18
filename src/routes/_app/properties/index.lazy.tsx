@@ -109,6 +109,7 @@ function RouteComponent() {
                       expected_annual_return={item.expected_annual_return}
                       annual_return_max={item.annual_return_max}
                       annual_return_min={item.annual_return_min}
+                      market_status={item.market_status}
                       className="clickable-99"
                       onClick={() => {
                         navigate({ to: '/properties/detail/$id', params: { id: item.id } })

@@ -38,7 +38,7 @@ function DataCount() {
 
     {
       title: 'profile.data_count.expectedIncomeThisMonth',
-      field: `${numbro(_get(data, 'monthly_rental_income', '0.00')).format({
+      field: `${numbro(_get(data, 'totalIncome', '0.00')).format({
         thousandSeparated: true,
         mantissa: 2,
         trimMantissa: true
@@ -49,7 +49,7 @@ function DataCount() {
     },
 
     {
-      title: 'profile.data_count.averageMonthlyIncome',
+      title: <div>{t('profile.data_count.averageMonthlyIncome', { payName: commonData.payTokenName })}</div>,
       field: `${numbro(_get(data, 'monthly_rental_income', '0.00')).format({
         thousandSeparated: true,
         mantissa: 2,
@@ -86,9 +86,9 @@ function DataCount() {
       >
         <div className="grid grid-cols-4 w-full gap-4 max-lg:grid-cols-2">
 
-          { list.map(item => (
-            <div key={item.title} className="flex flex-col rounded-xl bg-[#202329] p-5">
-              <div className="text-[#8d909a]">{t(item.title)}</div>
+          { list.map((item, index) => (
+            <div key={`${item.field}D${index}`} className="flex flex-col rounded-xl bg-[#202329] p-5">
+              <div className="text-[#8d909a]">{typeof item.title === 'string' ? t(item.title) : item.title}</div>
               <div className="text-5 text-white" style={{ fontWeight: 400 }}>{item.field}</div>
               {/* <div className="flex items-center justify-start">
                 {item.picture && (

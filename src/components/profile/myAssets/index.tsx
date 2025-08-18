@@ -77,7 +77,7 @@ export function MyAssets() {
       render: text => <div>{formatNumberNoRound(Number(text), 8)}</div>
     },
     {
-      title: <div>{t('profile.data_count.valueJpy')}</div>,
+      title: <div>{t('profile.data_count.valueJpy', { payName: commonData.payTokenName })}</div>,
       key: 'USD',
       render: (_, record) => (
         <>

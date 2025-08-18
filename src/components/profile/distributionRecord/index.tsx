@@ -4,6 +4,7 @@ import apiMyInfo from '@/api/apiMyInfoApi'
 import copyIcon from '@/assets/icons/copy.svg'
 import group272Icon from '@/assets/icons/group272.png'
 import TableComponent from '@/components/common/table-component'
+import { useCommonDataStore } from '@/stores/common-data'
 import { envConfig } from '@/utils/envConfig'
 import { formatNumberNoRound } from '@/utils/number'
 import { addTokenToWallet } from '@/utils/wallet'
@@ -19,7 +20,7 @@ export function DistributionRecord() {
   const { t } = useTranslation()
   const coinStatus = ['unclaimed', 'claimed', 'withdraw', 'failed', 'sold', 'distribution']
   const { wallets } = useWallets()
-
+  const commonData = useCommonDataStore()
   const [addCoinLoading, setAddCoinLoading] = useState(0)
   const addCoinToWallet = async (address: string, index: number) => {
     setAddCoinLoading(index)
@@ -83,7 +84,7 @@ export function DistributionRecord() {
     },
     // TODO 价值、占比、24小时变化
     {
-      title: <div>{t('profile.data_count.valueJpy')}</div>,
+      title: <div>{t('profile.data_count.valueJpy', { payName: commonData.payTokenName })}</div>,
       key: 'USD',
       render: (_, record) => (
         <>

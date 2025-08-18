@@ -5,11 +5,13 @@ import button2 from '@/assets/icons/BUTTON2-2.png'
 import button3 from '@/assets/icons/BUTTON3.png'
 import group272Icon from '@/assets/icons/group272.png'
 import TableComponent from '@/components/common/table-component'
+import { useCommonDataStore } from '@/stores/common-data'
 import { useQuery } from '@tanstack/react-query'
 import { Space } from 'antd'
 
 export function AssetsSummary() {
   const { t } = useTranslation()
+  const commonData = useCommonDataStore()
   // 表格1配置
   const columns: TableProps<PropertyInvestment>['columns'] = [
     {
@@ -35,7 +37,7 @@ export function AssetsSummary() {
       render: text => <a>{text}</a>
     },
     {
-      title: <div>{t('profile.data_count.valueJpy')}</div>,
+      title: <div>{t('profile.data_count.valueJpy', { payName: commonData.payTokenName })}</div>,
       key: 'USD',
       render: (_, record) => (
         <>

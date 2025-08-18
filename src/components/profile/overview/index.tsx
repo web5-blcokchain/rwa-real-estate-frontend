@@ -45,7 +45,7 @@ function Overview() {
       render: text => <div>{text}</div>
     },
     {
-      title: <div>{t('profile.data_count.valueJpy')}</div>,
+      title: <div>{t('profile.data_count.valueJpy', { payName: commonData.payTokenName })}</div>,
       key: 'USD',
       render: (_, record) => (
         <>
@@ -115,7 +115,7 @@ function Overview() {
       )
     },
     {
-      title: <div>{t('profile.data_count.amountJpy')}</div>,
+      title: <div>{t('profile.data_count.amountJpy', { payName: commonData.payTokenName })}</div>,
       key: 'AmountJPY',
       dataIndex: 'number',
       render: (_, record) => (

@@ -65,9 +65,11 @@ function RouteComponent() {
     // getItem(`${t('aboutMe.menu_history')}`, ProfileTab.History),
     // getItem(`${t('aboutMe.menu_recording')}`, ProfileTab.Recording),
     // getItem(`${t('aboutMe.menu_transaction_status')}`, ProfileTab.TransactionStatus),
-    getItem(`${t('aboutMe.menu_assets_summary')}`, ProfileTab.Assets),
     // getItem(`${t('aboutMe.menu_assets_summary')}`, ProfileTab.AssetsSummary),
-    getItem(`${t('aboutMe.menu_distribution_record')}`, ProfileTab.DistributionRecord),
+    getItem(`${t('aboutMe.transaction_record')}`, ProfileTab.TransactionRecord, '', [
+      getItem(`${t('aboutMe.menu_assets_summary')}`, ProfileTab.Assets),
+      getItem(`${t('aboutMe.menu_distribution_record')}`, ProfileTab.DistributionRecord)
+    ]),
     getItem(`${t('aboutMe.menu_dividend_statistics')}`, ProfileTab.DividendStatistics),
     getItem(`${t('aboutMe.menu_appeal')}`, ProfileTab.Appeal),
     getItem(`${t('aboutMe.menu_default_warning')}`, ProfileTab.DefaultWarning),

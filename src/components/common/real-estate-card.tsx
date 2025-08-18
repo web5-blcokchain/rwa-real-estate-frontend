@@ -20,6 +20,7 @@ export const RealEstateCard: FC<{
   annual_return_max: number
   annual_return_min: number
   monthly_rent: number
+  market_status: number
 } & React.HTMLAttributes<HTMLDivElement>> = ({
   pictures,
   title,
@@ -37,6 +38,7 @@ export const RealEstateCard: FC<{
   annual_return_min,
   monthly_rent,
   className,
+  market_status,
   ...props
 }) => {
   const { t } = useTranslation()
@@ -58,6 +60,9 @@ export const RealEstateCard: FC<{
           queryKey={['properties']}
           className="absolute right-4 top-4 z-2"
         />
+        <div className="absolute left-2 top-2 z-99 rounded-2xl bg-primary px-3 py-0.5 text-12px text-black">
+          {t(`properties.detail.status.${market_status}`)}
+        </div>
       </div>
       <div className="flex flex-1 flex-1 flex-col space-y-2">
         <div className="px-3 space-y-2">
@@ -95,7 +100,7 @@ export const RealEstateCard: FC<{
             </div>
           </div>
         </div>
-        <div className="fyc flex-1 bg-#e7bb41 py-2 text-black [&>div]:fccc [&>div]:flex-1">
+        <div className="fyc flex-1 bg-primary py-2 text-black [&>div]:fccc [&>div]:flex-1">
           <div>
             <div className="text-xl font-bold" title={`${formatNumberNoRound(`${expected_annual_return}`, 2)}%`}>
               {' '}

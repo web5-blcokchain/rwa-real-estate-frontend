@@ -55,6 +55,10 @@ export interface DetailResponse {
   is_collect: 0 | 1
   token_name: string
   token_symbol: string
+  /**
+   * 销售状态： 0为销售 1为销售中 2为售罄 3为已退
+   */
+  market_status: number
 }
 
 // 详情接口参数

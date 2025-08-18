@@ -81,6 +81,8 @@ function RouteComponent() {
   const imageList = joinImagesPath(assetDetail?.image_urls)
   const { authenticated } = usePrivy()
   function toInvest(assetId: number, assetDetail: DetailResponse | undefined) {
+    if (assetDetail?.market_status !== 1)
+      return
     if (!authenticated) {
       toast.error(t('header.error.login_required'))
       return
@@ -286,13 +288,14 @@ function RouteComponent() {
 
               <div>
                 <Button
+                  disabled={assetDetail?.market_status !== 1}
                   size="large"
                   className="w-full bg-#181A20 text-#F0B90B!"
                   onClick={() => {
                     toInvest(assetId, assetDetail!)
                   }}
                 >
-                  {t('properties.detail.invest')}
+                  {t(assetDetail?.market_status === 1 ? 'properties.detail.invest' : `properties.detail.status.${assetDetail?.market_status}`)}
                 </Button>
               </div>
               <div className="fyc cursor-pointer gap-1 text-sm" onClick={() => setOpen(true)}>
