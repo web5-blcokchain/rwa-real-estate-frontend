@@ -4,6 +4,7 @@ import { CollectButton } from '@/components/common/collect-button'
 import { IInfoField } from '@/components/common/i-info-field'
 import { ImageSwiper } from '@/components/common/image-swiper'
 import { useCommonDataStore } from '@/stores/common-data'
+import { envConfig } from '@/utils/envConfig'
 import { formatNumberNoRound } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
 import { getTokenInfo } from '@/utils/wallet'
@@ -111,13 +112,13 @@ function RouteComponent() {
       if (!divRef.current || !fiexedContent.current)
         return
       await new Promise(resolve => setTimeout(resolve, 50))
-      const parentY = (divRef.current?.getBoundingClientRect().y || 0) + (document.querySelector('.app-content')?.scrollTop || 0)
+      const parentY = (divRef.current?.getBoundingClientRect().height || 0) + (divRef.current?.offsetTop || 0)
       const parentX = divRef.current?.getBoundingClientRect().x || 0
       const parentHeight = divRef.current?.offsetHeight || 0
       const parentWidth = divRef.current?.offsetWidth || 0
-      const contentY = parentY + parentHeight - 20
+      let contentY = parentY + parentHeight - 20
       const contentX = parentX + parentWidth
-      console.log(divRef.current?.getBoundingClientRect().y)
+      contentY = Math.min(contentY, window.innerHeight - 20)
 
       if (fiexedContent.current) {
         fiexedContent.current.style.top = `${contentY}px`
@@ -262,7 +263,7 @@ function RouteComponent() {
                   label={t('properties.detail.return')}
                   value={`${formatNumberNoRound((Number(assetDetail?.expected_annual_return) * (investmentAmount || 0) / 100), 6, 0, {
                     thousandSeparated: true
-                  })}`}
+                  })} ${envConfig.defaultPayTokenName}`}
                 />
                 <IInfoField
                   className="flex-1 space-y-2"

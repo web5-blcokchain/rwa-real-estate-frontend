@@ -27,6 +27,9 @@
     "kyc_status": "KYC audit status",
     "user_audit_status": "User audit application"
   },
+  "privy": {
+    "login_header": "Log in or sign up"
+  },
   "payment": {
     "pay_loading": "Payment in progress, please wait",
     "pay_loading_desc": "Token payment in progress, do not exit during the process to avoid affecting communication with third-party wallet browsers or wallet software. Payment will automatically redirect after completion.",
@@ -427,7 +430,8 @@
     "menu_appeal": "Appeal Information",
     "menu_default_warning": "Default Warning",
     "menu_redemption_list": "Redemption Record",
-    "sale_record": "売却記録です"
+    "sale_record": "Sale record",
+    "buy_record": "Purchase record"
   },
   "footer": {
     "about": "About",

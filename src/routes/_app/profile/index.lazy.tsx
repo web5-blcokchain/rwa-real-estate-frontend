@@ -2,6 +2,7 @@ import type { MenuProps } from 'antd'
 import { IImage } from '@/components/common/i-image'
 import Appeal from '@/components/profile/appeal'
 import { AssetsSummary } from '@/components/profile/assetsSummary'
+import { BuyRecord } from '@/components/profile/buyRecord'
 import DefaultWarning from '@/components/profile/defaultWarning'
 import WarningInfo from '@/components/profile/defaultWarning/info'
 import WarningRedemptionInfo from '@/components/profile/defaultWarning/redemption'
@@ -71,7 +72,10 @@ function RouteComponent() {
     getItem(`${t('aboutMe.menu_appeal')}`, ProfileTab.Appeal),
     getItem(`${t('aboutMe.menu_default_warning')}`, ProfileTab.DefaultWarning),
     getItem(`${t('aboutMe.menu_redemption_list')}`, ProfileTab.RedemptionList),
-    getItem(`${t('aboutMe.sale_record')}`, ProfileTab.SaleRecord)
+    getItem(`${t('header.investment')}`, ProfileTab.Investment, '', [
+      getItem(`${t('aboutMe.sale_record')}`, ProfileTab.SaleRecord),
+      getItem(`${t('aboutMe.buy_record')}`, ProfileTab.BuyRecord)
+    ])
   ]
 
   const handleMenuClick: MenuProps['onClick'] = (e) => {
@@ -121,6 +125,8 @@ function RouteComponent() {
           return <RedemptionList /> // 赎回列表
         case ProfileTab.SaleRecord:
           return <SaleRecord /> // 出售记录
+        case ProfileTab.BuyRecord:
+          return <BuyRecord /> // 购买记录
       }
     }
     else {

@@ -270,13 +270,13 @@ function RouteComponent() {
             />
             <IInfoField
               label={t('properties.payment.token_price')}
-              value={item?.price}
+              value={`${item?.price} ${envConfig.defaultPayTokenName}`}
               labelClass="text-[#898989]"
               className="space-y-2"
             />
             <IInfoField
               label={t('properties.payment.total')}
-              value={Number(item?.number) * Number(item?.price)}
+              value={`${Number(item?.number) * Number(item?.price)} ${envConfig.defaultPayTokenName}`}
               labelClass="text-[#898989]"
               className="space-y-2"
             />

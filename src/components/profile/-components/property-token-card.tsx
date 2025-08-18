@@ -138,7 +138,7 @@ const PropertyTokenCard: FC<Omit<TokenHeldItem, 'id'> & { id: any } & React.HTML
           <div className="w-1/2 flex flex-col justify-start py-3">
             <div className="text-sm text-[#b5b5b5]">{t('properties.payment.valuation')}</div>
             <div className="text-4">
-              {`$${formatNumberNoRound(toBigNumer(Number(current_price)).multipliedBy(Number(total_current)).toString(), 8)}`}
+              {`$${formatNumberNoRound(toBigNumer(Number(current_price)).multipliedBy(Number(number)).toString(), 8)}`}
             </div>
           </div>
         </div>

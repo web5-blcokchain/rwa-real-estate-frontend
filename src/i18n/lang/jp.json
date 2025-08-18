@@ -27,6 +27,9 @@
     "kyc_status": "KYC審査状態",
     "user_audit_status": "ユーザー認証申請"
   },
+  "privy": {
+    "login_header": "ログインまたはサインアップします"
+  },
   "payment": {
     "pay_loading": "支払い中、しばらくお待ちください",
     "pay_loading_desc": "代币支付中、途中で退出しないでください。ウォレットブラウザまたはウォレットソフトウェアとの通信に影響を与えません。支払いが完了すると自動的に移動します。",
@@ -427,7 +430,8 @@
     "menu_appeal": "申訴情報",
     "menu_default_warning": "違約警告",
     "menu_redemption_list": "買い戻し記録",
-    "sale_record": "Sale record"
+    "sale_record": "売却記録です",
+    "buy_record": "購入履歴です"
   },
   "footer": {
     "about": "について",

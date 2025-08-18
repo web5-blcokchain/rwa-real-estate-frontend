@@ -124,6 +124,11 @@ export default function WarningRedemptionInfo({ secondaryMenuProps }:
     }
     func()
   }, [wallets])
+  // 赎回价格信息
+  const [redemptionAmountInfo, setRedemptionAmountInfo] = useState({
+    tokenPrice: 0, // 代币价格
+    allPrice: 0 // 可赎回总价格
+  })
   // 赎回资产
   async function redemptionWarningAmount() {
     setRedemptionLoading(true)
@@ -131,6 +136,10 @@ export default function WarningRedemptionInfo({ secondaryMenuProps }:
       const wallet = wallets.find(wallet => wallet.walletClientType !== 'privy')
       if (!wallet) {
         toast.error(t('payment_method.please_connect_wallet'))
+        return
+      }
+      if (redemptionAmountInfo.allPrice <= 0 || redemptionAmountInfo.allPrice <= 0) {
+        toast.error(t('profile.warning.redemption.get_redemption_amount_failed'))
         return
       }
       // 判断是否连接钱包不对
@@ -192,6 +201,7 @@ export default function WarningRedemptionInfo({ secondaryMenuProps }:
     value: string | React.ReactNode
   }[]>([])
   const [amountLoading, setAmountLoading] = useState(0)
+
   useEffect(() => {
     const func = async () => {
       // 通过合约获取资产数量
@@ -217,6 +227,10 @@ export default function WarningRedemptionInfo({ secondaryMenuProps }:
           oldTokenPrice = tx.currentPrice
         }
       }
+      setRedemptionAmountInfo({
+        tokenPrice,
+        allPrice: price
+      })
       setRedemptionInfo([
         {
           title: 'profile.warning.redemption.recovery_amount',

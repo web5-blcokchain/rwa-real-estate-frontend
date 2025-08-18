@@ -27,6 +27,9 @@
     "kyc_status": "KYC审核状态",
     "user_audit_status": "用户认证申请"
   },
+  "privy": {
+    "login_header": "登录或注册"
+  },
   "payment": {
     "pay_loading": "支付中请稍后",
     "pay_loading_desc": "代币支付中，中途不要退出，避免影响和第三方钱包浏览器或者钱包软件通信。支付完成自动跳转～",
@@ -429,7 +432,8 @@
     "menu_appeal": "申诉信息",
     "menu_default_warning": "违约警告",
     "menu_redemption_list": "赎回记录",
-    "sale_record": "出售记录"
+    "sale_record": "出售记录",
+    "buy_record": "购买记录"
   },
   "footer": {
     "about": "关于",
@@ -763,6 +767,7 @@
         "receive_wallet": "接收钱包",
         "transaction_hash": "交易哈希",
         "redemption_now": "立即赎回",
+        "get_redemption_amount_failed": "获取赎回金额失败",
         "modal": {
           "success": {
             "title": "赎回成功",

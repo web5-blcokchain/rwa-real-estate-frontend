@@ -18,6 +18,7 @@ export const goChain: Chain = {
 }
 
 export const AppPrivyProvider: FC = ({ children }) => {
+  const { t } = useTranslation()
   return (
     <PrivyProvider
       appId={Env.privyAppId}
@@ -29,8 +30,13 @@ export const AppPrivyProvider: FC = ({ children }) => {
         },
         loginMethods: ['email', 'google'],
         supportedChains: [mainnet, goChain],
-        defaultChain: goChain
+        defaultChain: goChain,
+        appearance: {
+          // loginMessage:'hello word'
+          landingHeader: t('privy.login_header')
+        }
       }}
+
     >
       {children}
     </PrivyProvider>

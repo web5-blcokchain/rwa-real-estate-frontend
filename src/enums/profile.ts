@@ -16,5 +16,7 @@ export enum ProfileTab {
   RedemptionList = 'RedemptionList',
   WarningInfo = 'WarningInfo',
   WarningRedemptionInfo = 'WarningRedemptionInfo',
-  SaleRecord = 'SaleRecord'
+  SaleRecord = 'SaleRecord',
+  Investment = 'Investment',
+  BuyRecord = 'BuyRecord'
 }

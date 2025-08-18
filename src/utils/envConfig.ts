@@ -35,5 +35,6 @@ export const envConfig = {
   rentCustodyAddress: import.meta.env.VITE_PUBLIC_RENT_CUSTODY_CONTRACT_ADDRESS,
   redemptionManagerAddress: import.meta.env.VITE_PUBLIC_REDEMPTION_MANAGER_ADDRESS, // 赎回合约
   treasuryAddress: import.meta.env.VITE_PUBLIC_TREASURY_ADDRESS, // 国库合约
-  tradeContract: import.meta.env.VITE_PUBLIC_TRADE_CONTRACT_ADDRESS // 交易合约
+  tradeContract: import.meta.env.VITE_PUBLIC_TRADE_CONTRACT_ADDRESS, // 交易合约
+  defaultPayTokenName: import.meta.env.VITE_APP_PAY_TOKEN_NAME // 默认支付代币名称
 }

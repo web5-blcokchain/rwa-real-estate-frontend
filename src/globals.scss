@@ -2,6 +2,9 @@
   --primary: #f0b90b;
   --background: #ffffff;
   --foreground: #191a1f;
+  .ant-menu-dark.ant-menu-inline .ant-menu-sub.ant-menu-inline{
+    background: none;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
