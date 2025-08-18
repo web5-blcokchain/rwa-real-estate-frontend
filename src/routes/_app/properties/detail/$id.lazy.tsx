@@ -6,9 +6,7 @@ import { ImageSwiper } from '@/components/common/image-swiper'
 import { useCommonDataStore } from '@/stores/common-data'
 import { formatNumberNoRound } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
-import { getTokenInfo } from '@/utils/wallet'
-import { getContractBalance } from '@/utils/web3'
-import { usePrivy, useWallets } from '@privy-io/react-auth'
+import { usePrivy } from '@privy-io/react-auth'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate } from '@tanstack/react-router'
 import { Button, Image, InputNumber, Modal } from 'antd'
@@ -38,7 +36,6 @@ function RouteComponent() {
   // const [annualReturn, setAnnualReturn] = useState<number>(0)
   // const [ratioNum, setRatioNum] = useState<number>(0)
   const [isCollect, setIsCollect] = useState<0 | 1>(0)
-  const [, setContractBalance] = useState<string>('0')
   const [previewVisible, setPreviewVisible] = useState(false)
   const [previewCurrent, setPreviewCurrent] = useState(0)
   const commonData = useCommonDataStore()
@@ -50,32 +47,11 @@ function RouteComponent() {
       return response.data!
     }
   })
-  const [_coinSymbol, setCoinSymbol] = useState<string>('')
-  const { wallets } = useWallets()
-  useEffect(() => {
-    if (!assetDetail)
-      return
-    let wallet = wallets.find(wallet => wallet.walletClientType !== 'privy')
-    wallet = wallet || wallets[0]
-    if (!wallet)
-      return
-    getTokenInfo(wallet, assetDetail.contract_address).then((res) => {
-      setCoinSymbol(res.symbol)
-    })
-  }, [assetDetail])
 
   useEffect(() => {
     if (!assetDetail)
       return
     setIsCollect(assetDetail.is_collect)
-    // 使用工具函数替换原代码
-    if (assetDetail.contract_address) {
-      getContractBalance(assetDetail.contract_address)
-        .then((etherBalance) => {
-          setContractBalance(etherBalance)
-          console.log('合约余额:', etherBalance, 'ETH')
-        })
-    }
   }, [assetDetail])
 
   const imageList = joinImagesPath(assetDetail?.image_urls)
@@ -179,7 +155,7 @@ function RouteComponent() {
                 >
                   {/* <img className="max-h-128 w-full" src={imageList[0]} alt="" /> */}
                 </Image.PreviewGroup>
-                <div className="absolute right-4 top-4">
+                <div className="absolute right-4 top-4 z2">
                   <CollectButton
                     className=""
                     houseId={assetId}

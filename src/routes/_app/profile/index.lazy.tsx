@@ -114,11 +114,11 @@ function RouteComponent() {
         case ProfileTab.AssetsSummary:
           return <AssetsSummary />
         case ProfileTab.DistributionRecord:
-          return <DistributionRecord /> // 代币发放记录
+          return <DistributionRecord /> // 收到代币
         case ProfileTab.Message:
           return <Message /> // 消息中心
         case ProfileTab.DividendStatistics:
-          return <DividendStatistics /> // 分红统计
+          return <DividendStatistics /> // 收益统计
         case ProfileTab.Appeal:
           return <Appeal /> // 申诉信息
         case ProfileTab.DefaultWarning:

@@ -58,9 +58,9 @@ export const RealEstateCard: FC<{
           houseId={houseId}
           collect={collect}
           queryKey={['properties']}
-          className="absolute right-4 top-4 z-2"
+          className="absolute right-3 top-2 z-2"
         />
-        <div className="absolute left-2 top-2 z-99 rounded-2xl bg-primary px-3 py-0.5 text-12px text-black">
+        <div className="absolute left-3 top-2 z-2 rounded-2xl bg-primary px-3 py-0.5 text-12px text-black">
           {t(`properties.detail.status.${market_status}`)}
         </div>
       </div>

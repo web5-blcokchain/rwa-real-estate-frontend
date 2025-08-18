@@ -1,9 +1,10 @@
+import { getAssetType } from '@/api/apiMyInfoApi'
 import apiBasic from '@/api/basicApi'
 import { RealEstateCard } from '@/components/common/real-estate-card'
 import { joinImagesPath } from '@/utils/url'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
-import { ConfigProvider, Pagination, Spin } from 'antd'
+import { ConfigProvider, Pagination, Select, Spin } from 'antd'
 import enUS from 'antd/locale/en_US'
 import jaJP from 'antd/locale/ja_JP'
 import zhCN from 'antd/locale/zh_CN'
@@ -20,9 +21,19 @@ function RouteComponent() {
   const [keyword, setKeyword] = useState('')
   const [page, setPage] = useState(1)
   const pageSize = 12
+  const [propertyType, setPropertyType] = useState()
+  const [salesStatus, setSalesStatus] = useState()
+  const [priceType, setPriceType] = useState()
 
   async function searchDataList() {
-    const res = await apiBasic.getDataList({ page, keyword, pageSize })
+    const res = await apiBasic.getDataList({
+      page,
+      keyword,
+      pageSize,
+      market_status: typeof salesStatus === 'number' && salesStatus >= 0 ? salesStatus : undefined,
+      property_type: propertyType || undefined,
+      order: typeof priceType === 'number' && priceType >= 0 ? priceType : undefined
+    })
     return res.data
   }
 
@@ -33,13 +44,11 @@ function RouteComponent() {
     }
     // enabled: false,
   })
-  useEffect(() => {
-    refetch()
-  }, [page])
   const [searchTime, setSearchTime] = useState(0)
   const [timer, setTimer] = useState<NodeJS.Timeout | null>(null)
 
   const queryClient = useQueryClient()
+  // 通过资产名搜索资产
   const handleSearch = (value: string) => {
     setKeyword(value)
     setPage(1)
@@ -58,6 +67,59 @@ function RouteComponent() {
       }, clockTimer))
     }
   }
+  // 获取房产类型
+  const { data: assetType } = useQuery({
+    queryKey: ['assetType'],
+    queryFn: async () => {
+      const data = await getAssetType()
+      return data.data
+    }
+  })
+  const propsMenus = useMemo(() => {
+    if (!assetType)
+      return [{ value: 0, label: <div>{t('common.all')}</div> }]
+    return [
+      { value: 0, label: <div>{t('common.all')}</div> },
+      ...assetType.map(item => ({
+        value: item.id,
+        label: (
+          <div>
+            {item.name}
+          </div>
+        )
+      }))
+    ]
+  }, [assetType])
+  const salesStatusMenus = [
+    { value: -1, label: <div>{t('common.all')}</div> },
+    ...Array.from({ length: 4 }).map((_, i) => ({
+      value: i,
+      label: (
+        <div>
+          {t(`properties.detail.status.${i}`)}
+        </div>
+      )
+    }))
+  ]
+  const priceMenus = [
+    { value: -1, label: <div>{t('common.all')}</div> },
+    ...Array.from({ length: 2 }).map((_, i) => ({
+      value: i,
+      label: (
+        <div>
+          {t(`properties.priceType.${i + 1}`)}
+        </div>
+      )
+    }))
+  ]
+
+  useEffect(() => {
+    refetch()
+  }, [page])
+  useEffect(() => {
+    setPage(1)
+    refetch()
+  }, [propertyType, salesStatus, priceType])
 
   return (
     <div className="header-padding max-md:p-8">
@@ -69,17 +131,42 @@ function RouteComponent() {
         {t('properties.subTitle')}
       </div>
 
-      <div className="mt-8">
-        <div className="fyc flex-inline b b-white rounded-xl b-solid p-4 max-lg:w-full space-x-4">
+      <div className="mt-8 fyc gap-8 max-lg:flex-col max-lg:gap-4">
+        <Select
+          size="large"
+          placeholder={t('properties.assetType')}
+          className="input-placeholder w-160px max-lg:w-full [&>div]:!b-white [&>div]:!bg-transparent"
+          options={propsMenus}
+          value={propertyType}
+          onChange={setPropertyType}
+        />
+        <Select
+          size="large"
+          placeholder={t('properties.salesType')}
+          className="input-placeholder w-160px max-lg:w-full [&>div]:!b-white [&>div]:!bg-transparent"
+          options={salesStatusMenus}
+          value={salesStatus}
+          onChange={setSalesStatus}
+        />
+        <Select
+          size="large"
+          placeholder={t('properties.salesType')}
+          className="input-placeholder w-160px max-lg:w-full [&>div]:!b-white [&>div]:!bg-transparent"
+          options={priceMenus}
+          value={priceType}
+          onChange={setPriceType}
+        />
+        <div className="w-full fyc flex-inline flex-1 b b-white rounded-lg b-solid px-2 leading-10 space-x-4">
           <div className="i-iconamoon-search size-5 bg-[#b5b5b5]"></div>
           <input
             type="text"
             placeholder={t('properties.search')}
-            className="w-128 b-none bg-transparent outline-none"
+            className="max-w-128 w-full flex-1 b-none bg-transparent outline-none"
             value={keyword}
             onChange={e => handleSearch(e.target.value)}
           />
         </div>
+
       </div>
 
       <Waiting

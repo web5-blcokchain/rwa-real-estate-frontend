@@ -315,6 +315,13 @@
     "title": "全国房地产资产",
     "subTitle": "利用区块链技术投资纽约优质房地产机会",
     "search": "按房屋地点和物业类型搜索",
+    "assetType": "房产类型",
+    "salesType": "销售状态",
+    "priceType": {
+      "title": "收益率排序",
+      "1": "从高到低",
+      "2": "从低到高"
+    },
     "detail": {
       "price": "{{price}} 米",
       "house_life": "房屋寿命: {{house_life}}年",

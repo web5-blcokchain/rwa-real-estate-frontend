@@ -4,6 +4,18 @@ export interface DataListParams {
   page?: number
   pageSize?: number
   keyword?: string
+  /**
+   * 销售状态 0为未销售 1为销售中 2为售罄 3为已退出
+   */
+  market_status?: number
+  /**
+   * 资产类型id
+   */
+  property_type?: number
+  /**
+   * 收益率排序 1为正序 2为倒序
+   */
+  order?: number
 }
 
 export interface DataListResponse {
@@ -11,6 +23,7 @@ export interface DataListResponse {
   list: any[]
   page: number
   pageSize: number
+
 }
 // 列表接口参数
 function getDataList(data: DataListParams) {
