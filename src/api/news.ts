@@ -44,14 +44,17 @@ export interface NewsItem {
  */
 export function getNews(params: {
   type_id: number
+  page: number
+  pageSize: number
 }) {
-  return apiClient.get<DataListResponse<NewsItem>>('/api/news/getNews', {
+  return apiClient.get<{ total: number, list: NewsItem[] }>('/api/news/getNews', {
     params
   })
 }
 
 export function getNewsDetail(params: {
   id: number
+
 }) {
   return apiClient.get<NewsItem>('/api/news/getNewsDetail', {
     params

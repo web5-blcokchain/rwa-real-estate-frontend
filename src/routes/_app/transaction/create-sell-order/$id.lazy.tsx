@@ -164,7 +164,10 @@ function RouteComponent() {
             reason: error.reason,
             stack: error.stack
           }, null, 2))
-
+          if (error.message === '3002') {
+            toast.error(t('payment.errors.network_connection'))
+            return
+          }
           if (error.code === 'ACTION_REJECTED' || error.code === 4001) {
             toast.error(t('payment.errors.rejected'))
           }

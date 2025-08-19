@@ -1,5 +1,6 @@
 import type { EIP1193Provider } from '@privy-io/react-auth'
 import { getContracts } from '@/contract'
+import { eventBus } from '@/hooks/EventBus'
 import BigNumber from 'bignumber.js'
 import { Contract, ethers } from 'ethers'
 import { envConfig } from '../envConfig'
@@ -31,6 +32,10 @@ export async function createSellOrder(contact: ethers.Contract, e: EIP1193Provid
   price: number
 }) {
   try {
+    let isTermination = false
+    eventBus.on('termination', () => {
+      isTermination = true
+    })
     const propertyTokenContract = await getPropertyTokenContract(e, data.token)
     const tokenDecimals = await propertyTokenContract.decimals()
     // 获取房屋id
@@ -41,9 +46,15 @@ export async function createSellOrder(contact: ethers.Contract, e: EIP1193Provid
     const usdcContact = await getUsdcContract(e)
     const usdcDecimals = await usdcContact.decimals()
     // 将房屋代币授权给交易合约
+    if (isTermination) {
+      throw (new Error('3002'))
+    }
     const approveTx = await propertyTokenContract.approve(envConfig.tradeContract, parseAmount)
     await approveTx.wait()
     const sellPrice = new BigNumber(data.price)
+    if (isTermination) {
+      throw (new Error('3002'))
+    }
     // 发送创建卖单交易（房屋代币地址、房产表示字符串、卖出数量、挂单单价【默认支付代币精度】）
     const tx = await contact.createSellOrder(data.token, serverId, parseAmount, ethers.parseUnits(sellPrice.toString(), usdcDecimals))
     await tx.wait()
@@ -74,6 +85,10 @@ export async function createBuyOrder(contact: ethers.Contract, e: EIP1193Provide
   price: number
 }) {
   try {
+    let isTermination = false
+    eventBus.on('termination', () => {
+      isTermination = true
+    })
     const propertyTokenContract = await getPropertyTokenContract(e, data.token)
     const usdcContact = await getUsdcContract(e)
     // 房屋代币价格和精度
@@ -88,8 +103,14 @@ export async function createBuyOrder(contact: ethers.Contract, e: EIP1193Provide
     // 获取房屋id
     const [serverId] = await propertyTokenContract.getPropertyInfo()
     // 将需要支付的usdc（数量 * 单价）授权给交易合约
+    if (isTermination) {
+      throw (new Error('3002'))
+    }
     const approveTx = await usdcContact.approve(envConfig.tradeContract, allAmount)
     await approveTx.wait()
+    if (isTermination) {
+      throw (new Error('3002'))
+    }
     // 发送创建卖单交易 （房屋代币地址、房产表示字符串、买入数量、挂单单价【默认支付代币精度】）
     const tx = await contact.createBuyOrder(data.token, serverId, ethers.parseUnits(data.amount.toString(), tokenDecimals), ethers.parseUnits(data.price.toString(), usdcDecimals))
     await tx.wait()
@@ -221,6 +242,30 @@ export async function listenerCreateSellEvent(
   isSellOrBuy: boolean
 ): Promise<number> {
   const ethersProvider = new ethers.WebSocketProvider(envConfig.web3.rpc)
+  // let ethersProvider: ethers.WebSocketProvider | null = null
+  // let count = 0
+  // // 查看是否链接成功
+  // await new Promise((res) => {
+  //   const timer = setInterval(async () => {
+  //     count++
+  //     // debugger
+  //     // await ethersProvider?.destroy?.()
+  //     ethersProvider = new ethers.WebSocketProvider(envConfig.web3.rpc)
+  //     try {
+  //       await ethersProvider.getBlockNumber()
+  //     }finally{
+  //       if (count > 3) {
+  //         clearInterval(timer)
+  //         res('')
+  //         return
+  //       }
+  //     }
+  //   }, 500)
+  // })
+  // if (!ethersProvider || count > 3) {
+  //   eventBus.emit('termination',{})
+  //   throw new Error('3002')
+  // }
   const tradeContract = getContracts('TradeContract')
   const contract = new Contract(envConfig.tradeContract, tradeContract.abi, ethersProvider)
   return new Promise((res, rej) => {
@@ -266,6 +311,29 @@ export async function listenerOrderExecutedEvent(
   isSellOrBuy: boolean
 ): Promise<number> {
   const ethersProvider = new ethers.WebSocketProvider(envConfig.web3.rpc)
+  // let ethersProvider: ethers.WebSocketProvider | null = null
+  // let count = 0
+  // // 查看是否链接成功
+  // await new Promise((res) => {
+  //   const timer = setInterval(async () => {
+  //     count++
+  //     // await ethersProvider?.destroy?.()
+  //     ethersProvider = new ethers.WebSocketProvider(envConfig.web3.rpc)
+  //     try {
+  //       await ethersProvider.getBlockNumber()
+  //     }finally{
+  //       if (count > 3) {
+  //         clearInterval(timer)
+  //         res('')
+  //         return
+  //       }
+  //     }
+  //   }, 500)
+  // })
+  // if (!ethersProvider || count > 3) {
+  //   eventBus.emit('termination',{})
+  //   throw new Error('3002')
+  // }
   const tradeContract = getContracts('TradeContract')
   const contract = new Contract(envConfig.tradeContract, tradeContract.abi, ethersProvider)
   return new Promise((res, rej) => {
@@ -279,6 +347,7 @@ export async function listenerOrderExecutedEvent(
     contract.on('OrderExecuted', getOrderId)
     setTimeout(() => {
       contract.off('OrderExecuted', getOrderId)
+      ethersProvider?.destroy?.()
       rej(new Error('time out'))
     }, 1000 * 60 * 2)
   })

@@ -24,14 +24,19 @@ export function NewsList({ hasPagination = true, newsClos = 3, className }: {
   })
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 10,
+    pageSize: 12,
     total: 0
   })
   async function getNewsList() {
     const newsTypeId = newsType?.list[Number(activeKey)].id
-    return await getNews({ type_id: newsTypeId! })
+    const data = await getNews({ type_id: newsTypeId!, page: pagination.current, pageSize: pagination.pageSize })
+    setPagination({
+      ...pagination,
+      total: data.data?.total || 0
+    })
+    return data
   }
-  const { data: news, isFetching: newsLoading } = useQuery({
+  const { data: news, isFetching: newsLoading, refetch } = useQuery({
     queryKey: ['getNews', activeKey],
     retry: 3,
     queryFn: async () => {
@@ -41,11 +46,9 @@ export function NewsList({ hasPagination = true, newsClos = 3, className }: {
     enabled: !!activeKey
   })
   useEffect(() => {
-    setPagination({
-      ...pagination,
-      total: news?.count || 0
-    })
-  }, [news])
+    if (activeKey)
+      refetch()
+  }, [pagination.current, pagination.pageSize, newsType])
 
   function getLabelOfI18n(index: number) {
     const lang = i18n.language
@@ -116,6 +119,13 @@ export function NewsList({ hasPagination = true, newsClos = 3, className }: {
               current={pagination.current}
               pageSize={pagination.pageSize}
               total={pagination.total}
+              onChange={(page, pageSize) => {
+                setPagination({
+                  ...pagination,
+                  current: page,
+                  pageSize
+                })
+              }}
             />
           </div>
         )}

@@ -57,8 +57,10 @@ function RouteComponent() {
   const imageList = joinImagesPath(assetDetail?.image_urls)
   const { authenticated } = usePrivy()
   function toInvest(assetId: number, assetDetail: DetailResponse | undefined) {
-    if (assetDetail?.market_status !== 1)
+    if (assetDetail?.market_status !== 1) {
+      toast.warn(t('properties.detail.invest_warn') + t(`properties.detail.status.${assetDetail?.market_status}`))
       return
+    }
     if (!authenticated) {
       toast.error(t('header.error.login_required'))
       return
@@ -264,7 +266,7 @@ function RouteComponent() {
 
               <div>
                 <Button
-                  disabled={assetDetail?.market_status !== 1}
+                  // disabled={assetDetail?.market_status !== 1}
                   size="large"
                   className="w-full bg-#181A20 text-#F0B90B!"
                   onClick={() => {

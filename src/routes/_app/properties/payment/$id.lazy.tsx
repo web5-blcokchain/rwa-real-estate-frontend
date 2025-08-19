@@ -187,24 +187,19 @@ function RouteComponent() {
             })
           })
       }
-      catch (err: any) {
-        console.error('initialBuyPropertyToken error:', err)
-        const errorMessage = err.message || ''
-        if (errorMessage.includes('insufficient funds')) {
-          toast.error(t('payment.errors.insufficient_eth'))
-        }
-        else if (errorMessage.includes('User denied')) {
+      catch (error: any) {
+        // console.error('initialBuyPropertyToken error:', err)
+        if (error.code === 'ACTION_REJECTED' || error.code === 4001) {
           toast.error(t('payment.errors.rejected'))
         }
+        else if (error.message && error.message.includes('rejected')) {
+          toast.error(t('payment.errors.rejected'))
+        }
+        else if (error.message && error.message.includes('insufficient funds')) {
+          toast.error(t('payment.errors.insufficient_eth'))
+        }
         else {
-          const innerErrorMatch = errorMessage.match(/reverted with reason string '(.+?)'/i)
-          const innerError = innerErrorMatch ? innerErrorMatch[1] : ''
-          if (innerError) {
-            toast.error(t('payment.errors.contract_revert_with_reason', { reason: innerError }))
-          }
-          else {
-            toast.error(t('payment.errors.transaction_failed'))
-          }
+          toast.error(t('payment.errors.transaction_failed'))
         }
       }
     }

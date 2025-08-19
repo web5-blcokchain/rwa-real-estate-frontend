@@ -221,6 +221,10 @@ function RouteComponent() {
       navigate({ to: '/investment' })
     }
     catch (error: any) {
+      if (error.message === '3002') {
+        toast.error(t('payment.errors.network_connection'))
+        return
+      }
       if (error.code === 'ACTION_REJECTED' || error.code === 4001) {
         toast.error(t('payment.errors.rejected'))
       }
@@ -244,27 +248,27 @@ function RouteComponent() {
   const renderAssetSelection = () => (
     <div className="rounded-xl bg-[#202329] p-6 space-y-4">
       <div className="text-4.5">{t('properties.payment.select_asset')}</div>
-      {data && Array.isArray(data) && (
-        <Select
-          showSearch
-          allowClear
-          placeholder={t('properties.payment.search_asset')}
-          optionFilterProp="children"
-          onChange={handleAssetSelect}
-          onSearch={handleSearch}
-          onClear={handleClear}
-          filterOption={(input, option) =>
-            (option?.label?.toString().toLowerCase() ?? '').includes(input.toLowerCase())}
-          loading={isLoading}
-          className="w-full"
-          dropdownStyle={{ background: '#2c2f36', color: 'white' }}
-          notFoundContent={isLoading ? <Spin size="small" /> : null}
-          options={(data)?.map((asset: any) => ({
-            value: asset.id,
-            label: asset.name
-          })) || []}
-        />
-      )}
+      <Select
+        showSearch
+        allowClear
+        placeholder={t('properties.payment.search_asset')}
+        optionFilterProp="children"
+        onChange={handleAssetSelect}
+        onSearch={handleSearch}
+        onClear={handleClear}
+        filterOption={(input, option) =>
+          (option?.label?.toString().toLowerCase() ?? '').includes(input.toLowerCase())}
+        loading={isLoading}
+        className="w-full"
+        dropdownStyle={{ background: '#2c2f36', color: 'white' }}
+        notFoundContent={isLoading ? <Spin size="small" /> : null}
+        options={data && Array.isArray(data)
+          ? (data)?.map((asset: any) => ({
+              value: asset.id,
+              label: asset.name
+            }))
+          : []}
+      />
     </div>
   )
 

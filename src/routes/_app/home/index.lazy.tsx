@@ -67,6 +67,20 @@ function RouteComponent() {
     { title: 'home.investorGuide.control', content: 'home.investorGuide.flexibleInvest', img: introduction4 }
   ]
 
+  // async function getNewsList() {
+  //   const newsTypeId = newsType?.list[Number(activeKey)].id
+  //   return await getNews({ type_id: newsTypeId! })
+  // }
+  // const { data: news, isFetching: newsLoading } = useQuery({
+  //   queryKey: ['getNews', activeKey],
+  //   retry: 3,
+  //   queryFn: async () => {
+  //     const data = await getNews({ type_id: newsTypeId! })
+  //     return data.data
+  //   },
+  //   enabled: !!activeKey
+  // })
+
   return (
     <div className="" style={{ '--conent-h': `${headerH || 80}px` } as any}>
       <div

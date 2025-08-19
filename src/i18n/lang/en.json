@@ -348,7 +348,14 @@
       "lock_period_content_1": "Lock Period Duration: 2 days after purchase (or as specified in the property details)",
       "lock_period_content_2": "Lock Period Restrictions: No transfer, no secondary market trading, no withdrawal",
       "lock_period_content_3": "Lock Period End: Automatically unlocked, users can freely circulate or sell their tokens",
-      "lock_period_content_4": "Purpose: To prevent short-term arbitrage and malicious operations, ensuring the stability of the real estate token system"
+      "lock_period_content_4": "Purpose: To prevent short-term arbitrage and malicious operations, ensuring the stability of the real estate token system",
+      "invest_warn": "Asset is",
+      "status": {
+        "0": "Unsold",
+        "1": "On sale",
+        "2": "Sold out",
+        "3": "Returned"
+      }
     },
     "payment": {
       "token_price": "Token Price",
