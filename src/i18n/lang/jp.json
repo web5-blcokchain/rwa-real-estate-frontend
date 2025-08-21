@@ -844,9 +844,13 @@
       "create-buy-order": "購入注文の作成"
     },
     "sale": "販売",
-    "buy": "購入希望",
-    "hold": "持っている",
-    "not-held": "持っていない"
+    "buy": "購入",
+    "hold": "保有",
+    "not-held": "未保有",
+    "descending": "価格：安い順",
+    "ascending": "価格：高い順",
+    "num_descending": "数量：少ない順",
+    "num_ascending": "数量：多い順"
   },
   "payment_method": {
     "user_bound_wallet": "バインドされた財布",

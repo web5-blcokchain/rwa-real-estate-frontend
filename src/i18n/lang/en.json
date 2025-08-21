@@ -847,12 +847,14 @@
     "button": {
       "create-buy-order": "Create buy order"
     },
-    "sale": "For Sale",
-    "buy": "Wanted",
+    "sale": "Sell",
+    "buy": "Buy",
     "hold": "Hold",
-    "not-held": "Not held",
-    "descending": "The prices range from low to high",
-    "ascending": "The prices range from high to low"
+    "not-held": "Not Held",
+    "descending": "Price: Low to High",
+    "ascending": "Price: High to Low",
+    "num_descending": "Quantity: Low to High",
+    "num_ascending": "Quantity: High to Low"
   },
   "payment_method": {
     "user_bound_wallet": "Bound wallet",

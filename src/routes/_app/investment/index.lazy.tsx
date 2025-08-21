@@ -22,8 +22,8 @@ function RouteComponent() {
 
   const typeOptions = [
     { label: t('common.all'), value: '0' },
-    { label: t('investment.hold'), value: '1' },
-    { label: t('investment.not-held'), value: '2' }
+    { label: t('investment.num_descending'), value: '1' },
+    { label: t('investment.num_ascending'), value: '2' }
   ]
   const [propertyTypeList, setPropertyTypeList] = useState([
     { label: <div>{t('dividendStatistics.all')}</div>, value: 0 }
@@ -44,22 +44,22 @@ function RouteComponent() {
     ])
   }, [assetType])
 
-  const searchDataList = async () => {
-    const res = await getInvestmentList({
+  const toGetInvestmentList = async () => {
+    return await getInvestmentList({
       page,
       keyword,
-      type,
       pageSize: 12,
       order_type: orderType,
       property_type: propertyType === 0 ? undefined : propertyType,
-      price_sort: sortType === 0 ? undefined : sortType
+      price_sort: sortType === 0 ? undefined : sortType,
+      number_sort: type === '0' ? undefined : type
     })
-    return res
   }
+
   const { data, isFetching: isLoading, refetch } = useQuery({
     queryKey: ['investment-list', page, orderType, type, propertyType, sortType], // 添加 assetType 到查询键
     queryFn: async () => {
-      const res = await searchDataList()
+      const res = await toGetInvestmentList()
       return res.data
     }
   })

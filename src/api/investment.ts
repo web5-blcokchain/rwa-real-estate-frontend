@@ -39,6 +39,7 @@ export function getInvestmentList(data: {
   property_type?: number
   price_sort?: number
   is_me?: number
+  number_sort?: number | string
 }) {
   return apiClient.post<DataListResponse<PropertyInfo>>('/api/market/marketList', data)
 }
