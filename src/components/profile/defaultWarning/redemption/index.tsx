@@ -1,19 +1,18 @@
 import type { AssetsWarningList } from '@/api/assets'
 import type { Dispatch, SetStateAction } from 'react'
 import { getRedemptionInfo, redemptionWarningAssets } from '@/api/assets'
-import { getContracts } from '@/contract'
 import { useCommonDataStore } from '@/stores/common-data'
 import { useUserStore } from '@/stores/user'
 import { envConfig } from '@/utils/envConfig'
 import { formatNumberNoRound } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
-import { getRedemptionManagerContract, redemptionWarningAsset } from '@/utils/web/redemptionManager'
+import { getRedemptionManagerContract, getTokenPriceAndRedemption, redemptionWarningAsset } from '@/utils/web/redemptionManager'
 import { toBlockchainByHash } from '@/utils/web/utils'
 import { useWallets } from '@privy-io/react-auth'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Divider, Modal } from 'antd'
 import dayjs from 'dayjs'
-import { Contract, ethers } from 'ethers'
+import { ethers } from 'ethers'
 import { toast } from 'react-toastify'
 
 function RedemptionMoadl({ visibleInfo, redemptionType, message = '', hash = '', reloadRedemption }: {
@@ -220,23 +219,15 @@ export default function WarningRedemptionInfo({ secondaryMenuProps }:
       else if (wallet) {
         const webEthProvider = await new ethers.WebSocketProvider(envConfig.web3.rpc)
         const ethProvider = await wallet.getEthereumProvider()
-        const propertyContractAbi = getContracts('PropertyToken')
-        // 如果没有连接钱包，则通过远程连接op网络获取合约
-        const propertyContract = new Contract(secondaryMenuProps.contract_address, propertyContractAbi.abi, webEthProvider ?? ethProvider)
-        const tokenDecimals = await propertyContract.decimals()
-        const tokenBalance = await propertyContract.balanceOf(wallet.address)
-        // 获取代币余额
-        amount = Number(ethers.formatUnits(tokenBalance, tokenDecimals))
-        const redemptionContractAbi = getContracts('RedemptionManager')
-        const redemptionContract = new Contract(envConfig.redemptionManagerAddress, redemptionContractAbi.abi, webEthProvider ?? ethProvider)
-        // 通过合约获取赎回价格信息
-        const tx = await redemptionContract.getTokenPriceAndRedemption(
-          secondaryMenuProps.contract_address,
-          ethers.parseUnits(amount.toString(), tokenDecimals)
-        )
+        const tx = await getTokenPriceAndRedemption(webEthProvider ?? ethProvider, {
+          propertyToken: secondaryMenuProps.contract_address,
+          userAddress: wallet.address
+        })
+        // debugger
         price = tx.netRedemptionAmount
         tokenPrice = tx.nowCurrentPrice
         oldTokenPrice = tx.currentPrice
+        amount = tx.userTokenAmount
       }
       setRedemptionAmountInfo({
         tokenPrice,

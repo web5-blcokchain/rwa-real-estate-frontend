@@ -1,14 +1,12 @@
 import type { PropertyInfo } from '@/api/investment'
 import type { TableProps } from 'antd'
 import { getAssetType } from '@/api/apiMyInfoApi'
-import { cancelOrder, getInvestmentList } from '@/api/investment'
+import { getInvestmentList } from '@/api/investment'
 import group272Icon from '@/assets/icons/group272.png'
 import { formatNumberNoRound } from '@/utils/number'
-import { cancelSellOrder, getTradeContract } from '@/utils/web/tradeContract'
-import { useWallets } from '@privy-io/react-auth'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
-import { Button, ConfigProvider, Empty, Input, Select, Table } from 'antd'
+import { ConfigProvider, Empty, Input, Select, Table } from 'antd'
 import enUS from 'antd/locale/en_US'
 import jaJP from 'antd/locale/ja_JP'
 import zhCN from 'antd/locale/zh_CN'
@@ -47,7 +45,7 @@ export function BuyRecord() { // 市场交易购买记录
       return res.data
     }
   })
-  const { wallets } = useWallets()
+  // const { wallets } = useWallets()
   const [timer, setTimer] = useState<NodeJS.Timeout | null>(null)
   const [searchTime, setSearchTime] = useState(0)
   const queryClient = useQueryClient()
@@ -92,48 +90,48 @@ export function BuyRecord() { // 市场交易购买记录
     ])
   }, [assetType])
 
-  const { mutateAsync } = useMutation({
-    mutationKey: ['cancelOrder'],
-    mutationFn: async (orderId: number) => {
-      const data = cancelOrder(orderId)
-      return data
-    }
-  })
-  const [loading, setLoading] = useState<string>()
-  /**
-   *
-   * @param orderId 订单id
-   * @param orderSellId 合约订单id
-   * @returns
-   */
-  async function toCancelOrder(orderId: number, orderSellId: string) {
-    const wallet = wallets.find(wallet => wallet.walletClientType !== 'privy')
-    if (!orderId || !orderSellId)
-      return
-    if (!wallet) {
-      toast.warning(t('payment_method.please_connect_wallet'))
-      return
-    }
-    setLoading(orderSellId)
-    try {
-      const ethProvider = await wallet.getEthereumProvider()
-      const tradeContact = await getTradeContract(ethProvider)
-      const tx = await cancelSellOrder(tradeContact, Number(orderSellId))
-      console.log('hash:', tx.hash)
-      const data = await mutateAsync(Number(orderId))
-      if (data.code === 1) {
-        refetch()
-        toast.success(t('cancelOrder.success'))
-      }
-    }
-    catch (e: any) {
-      console.error(e)
-      toast.error(t('payment.errors.transaction_failed'))
-    }
-    finally {
-      setLoading('')
-    }
-  }
+  // const { mutateAsync } = useMutation({
+  //   mutationKey: ['cancelOrder'],
+  //   mutationFn: async (orderId: number) => {
+  //     const data = cancelOrder(orderId)
+  //     return data
+  //   }
+  // })
+  // const [loading, setLoading] = useState<string>()
+  // /**
+  //  *
+  //  * @param orderId 订单id
+  //  * @param orderSellId 合约订单id
+  //  * @returns
+  //  */
+  // async function toCancelOrder(orderId: number, orderSellId: string) {
+  //   const wallet = wallets.find(wallet => wallet.walletClientType !== 'privy')
+  //   if (!orderId || !orderSellId)
+  //     return
+  //   if (!wallet) {
+  //     toast.warning(t('payment_method.please_connect_wallet'))
+  //     return
+  //   }
+  //   setLoading(orderSellId)
+  //   try {
+  //     const ethProvider = await wallet.getEthereumProvider()
+  //     const tradeContact = await getTradeContract(ethProvider)
+  //     const tx = await cancelSellOrder(tradeContact, Number(orderSellId))
+  //     console.log('hash:', tx.hash)
+  //     const data = await mutateAsync(Number(orderId))
+  //     if (data.code === 1) {
+  //       refetch()
+  //       toast.success(t('cancelOrder.success'))
+  //     }
+  //   }
+  //   catch (e: any) {
+  //     console.error(e)
+  //     toast.error(t('payment.errors.transaction_failed'))
+  //   }
+  //   finally {
+  //     setLoading('')
+  //   }
+  // }
 
   const tableColumns: TableProps<PropertyInfo>['columns'] = [
     {
@@ -171,7 +169,19 @@ export function BuyRecord() { // 市场交易购买记录
       render: (_, record) => {
         return (
           <div>
-            {record.order_type === 1 ? '出售' : '求购'}
+            {record.order_type === 2 ? '购买' : '出售'}
+          </div>
+        )
+      }
+    },
+    {
+      title: <div>{t('profile.common.type')}</div>,
+      dataIndex: 'order_type',
+      key: 'order_type',
+      render: (_, record) => {
+        return (
+          <div>
+            {record.is_me ? '创建订单' : '购买他人'}
           </div>
         )
       }
@@ -224,20 +234,6 @@ export function BuyRecord() { // 市场交易购买记录
         return (
           <div>
             {t(`cancelOrder.status.${Math.min(record.status, 2)}`)}
-          </div>
-        )
-      }
-    },
-    {
-      title: <div>{t('common.operation')}</div>,
-      dataIndex: 'properties_id',
-      key: 'properties_id',
-      render: (_, record) => {
-        return (
-          <div>
-            <Button disabled={record.status === 2 || record.status === 1} loading={record.sell_order_id === loading} onClick={() => toCancelOrder(record.id, record.sell_order_id)} type="primary">
-              {t('取消订单')}
-            </Button>
           </div>
         )
       }

@@ -150,7 +150,7 @@ function RouteComponent() {
               onChange={handleAssetTypeChange}
             />
             <Select
-              placeholder={t('dividendStatistics.property')}
+              placeholder={t('properties.assetType')}
               size="large"
               className={cn(
                 '[&_.ant-select-selector]:(bg-transparent! text-white!)',

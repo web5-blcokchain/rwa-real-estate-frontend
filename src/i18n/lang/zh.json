@@ -448,8 +448,8 @@
     "menu_appeal": "申诉信息",
     "menu_default_warning": "违约警告",
     "menu_redemption_list": "赎回记录",
-    "sale_record": "CTC 出售记录",
-    "buy_record": "CTC 购买记录",
+    "sale_record": "C2C 创建订单记录",
+    "buy_record": "C2C 市场交易记录",
     "transaction_record": "资产交易记录"
   },
   "footer": {

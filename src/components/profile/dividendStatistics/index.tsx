@@ -173,9 +173,11 @@ export default function DividendStatistics() {
             >
               {record.tx_hash ? `${record.tx_hash.slice(0, 4)}...${record.tx_hash.slice(-4)}` : ''}
             </span>
-            <span onClick={() => copyText(record.tx_hash)} className="cursor-pointer">
-              <img className="size-4" src={copyIcon} alt="" />
-            </span>
+            {record.tx_hash && (
+              <span onClick={() => copyText(record.tx_hash)} className="cursor-pointer">
+                <img className="size-4" src={copyIcon} alt="" />
+              </span>
+            )}
           </div>
         )
       }

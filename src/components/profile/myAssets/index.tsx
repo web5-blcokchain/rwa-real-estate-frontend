@@ -127,9 +127,11 @@ export function MyAssets() {
             >
               {record.drwa_hash ? `${record.drwa_hash.slice(0, 4)}...${record.drwa_hash.slice(-4)}` : ''}
             </span>
-            <span onClick={() => copyText(record.drwa_hash)} className="cursor-pointer">
-              <img className="size-4" src={copyIcon} alt="" />
-            </span>
+            {record.drwa_hash && (
+              <span onClick={() => copyText(record.drwa_hash)} className="cursor-pointer">
+                <img className="size-4" src={copyIcon} alt="" />
+              </span>
+            )}
           </div>
         )
       }

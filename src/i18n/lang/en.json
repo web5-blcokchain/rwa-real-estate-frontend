@@ -439,8 +439,8 @@
     "menu_appeal": "Appeal Information",
     "menu_default_warning": "Default Warning",
     "menu_redemption_list": "Redemption Record",
-    "sale_record": "CTC Sale record",
-    "buy_record": "CTC Purchase record",
+    "sale_record": "CTC Create order records",
+    "buy_record": "CTC Market transaction records",
     "transaction_record": "Transaction record"
   },
   "footer": {

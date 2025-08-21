@@ -171,7 +171,7 @@ export default function SaleRecord() {
       render: (_, record) => {
         return (
           <div>
-            {record.order_type === 1 ? '出售' : '求购'}
+            {record.order_type === 2 ? '出售' : '求购'}
           </div>
         )
       }

@@ -1,7 +1,8 @@
 import type { EIP1193Provider } from '@privy-io/react-auth'
-import { ethers } from 'ethers'
+import { getContracts } from '@/contract'
+import { Contract, ethers } from 'ethers'
 import { envConfig } from '../envConfig'
-import { getPropertyTokenContract, getTokenPrice } from './propertyToken'
+import { getPropertyTokenContract } from './propertyToken'
 import { getNameToContract, SmartErrorParses } from './utils'
 /**
  * 获取赎回合约实例
@@ -60,15 +61,15 @@ export async function redemptionWarningAsset(e: EIP1193Provider, contact: ethers
  * @param data
  * @returns
  */
-export async function getTokenPriceAndRedemption(e: EIP1193Provider, contact: ethers.Contract, data: {
+export async function getTokenPriceAndRedemption(e: EIP1193Provider | ethers.WebSocketProvider, data: {
   /**
    * 房屋代币地址
    */
   propertyToken: string
   /**
-   * 用户房屋代币数量
+   * 用户地址
    */
-  userTokenAmount: number
+  userAddress: string
 }): Promise<{
   /**
    * 投资时代币价格
@@ -82,18 +83,32 @@ export async function getTokenPriceAndRedemption(e: EIP1193Provider, contact: et
      * 当前代币价格
      */
     nowCurrentPrice: number
+    /**
+     * 房屋代币余额
+     */
+    userTokenAmount: number
   }> {
   try {
-    const propertyTokenContract = await getPropertyTokenContract(e, data.propertyToken)
-    // 获取代币价格
-    const tokenPrice = await getTokenPrice(propertyTokenContract, e)
+    const propertyContractAbi = getContracts('PropertyToken')
+    // 如果没有连接钱包，则通过远程连接op网络获取合约
+    const propertyContract = new Contract(data.propertyToken, propertyContractAbi.abi, e as any)
+    // 获取用户代币余额
+    const tokenDecimals = await propertyContract.decimals()
+    const tokenBalance = await propertyContract.balanceOf(data.userAddress)
+    // 获取之前代币价格
+    const oldUsdcPrice = await propertyContract.issuePrice()
     // 获取代币精度
-    const decimals = await propertyTokenContract.decimals()
-    const tx = await contact.getTokenPriceAndRedemption(data.propertyToken, ethers.parseUnits(data.userTokenAmount.toString(), decimals))
+    const usdcContractAbi = await getContracts('SimpleERC20')
+    const usdcContract = await new Contract(envConfig.usdcAddress, usdcContractAbi.abi, e as any)
+    const usdcDecimals = await usdcContract.decimals()
+    const redemptionContractAbi = getContracts('RedemptionManager')
+    const redemptionContract = new Contract(envConfig.redemptionManagerAddress, redemptionContractAbi.abi, e as any)
+    const tx = await redemptionContract.getTokenPriceAndRedemption(data.propertyToken, tokenBalance)
     return {
-      nowCurrentPrice: Number(ethers.formatUnits(tx[0], decimals)),
-      netRedemptionAmount: Number(ethers.formatUnits(tx[1], decimals)),
-      currentPrice: tokenPrice
+      nowCurrentPrice: Number(ethers.formatUnits(tx[0], usdcDecimals)),
+      netRedemptionAmount: Number(ethers.formatUnits(tx[1], usdcDecimals)),
+      currentPrice: Number(ethers.formatUnits(oldUsdcPrice, usdcDecimals)),
+      userTokenAmount: Number(ethers.formatUnits(tokenBalance, tokenDecimals))
     }
   }
   catch (e: any) {

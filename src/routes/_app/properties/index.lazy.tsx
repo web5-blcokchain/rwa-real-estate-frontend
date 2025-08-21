@@ -120,6 +120,7 @@ function RouteComponent() {
     setPage(1)
     refetch()
   }, [propertyType, salesStatus, priceType])
+  const [isSelectInput, setIsSelectInput] = useState(false)
 
   return (
     <div className="header-padding max-md:p-8">
@@ -135,7 +136,12 @@ function RouteComponent() {
         <Select
           size="large"
           placeholder={t('properties.assetType')}
-          className="input-placeholder w-160px max-lg:w-full [&>div]:!b-white [&>div]:!bg-transparent"
+          className={cn(
+            '[&_.ant-select-selector]:(bg-transparent! text-white!)',
+            '[&_.ant-select-selection-placeholder]:(text-[#898989]!)',
+            '[&_.ant-select-selection-item]:(bg-transparent! text-white!)',
+            '[&_.ant-select-arrow]:(text-white!)'
+          )}
           options={propsMenus}
           value={propertyType}
           onChange={setPropertyType}
@@ -143,25 +149,37 @@ function RouteComponent() {
         <Select
           size="large"
           placeholder={t('properties.salesType')}
-          className="input-placeholder w-160px max-lg:w-full [&>div]:!b-white [&>div]:!bg-transparent"
+          className={cn(
+            '[&_.ant-select-selector]:(bg-transparent! text-white!)',
+            '[&_.ant-select-selection-placeholder]:(text-[#898989]!)',
+            '[&_.ant-select-selection-item]:(bg-transparent! text-white!)',
+            '[&_.ant-select-arrow]:(text-white!)'
+          )}
           options={salesStatusMenus}
           value={salesStatus}
           onChange={setSalesStatus}
         />
         <Select
           size="large"
-          placeholder={t('properties.salesType')}
-          className="input-placeholder w-160px max-lg:w-full [&>div]:!b-white [&>div]:!bg-transparent"
+          placeholder={t('properties.priceType.title')}
+          className={cn(
+            '[&_.ant-select-selector]:(bg-transparent! text-white!)',
+            '[&_.ant-select-selection-placeholder]:(text-[#898989]!)',
+            '[&_.ant-select-selection-item]:(bg-transparent! text-white!)',
+            '[&_.ant-select-arrow]:(text-white!)'
+          )}
           options={priceMenus}
           value={priceType}
           onChange={setPriceType}
         />
-        <div className="w-full fyc flex-inline flex-1 b b-white rounded-lg b-solid px-2 leading-10 space-x-4">
+        <div className={cn('w-full fyc flex-inline  transition-all-300 flex-1 b b-#424242 hover:b-#d3bb2c  rounded-lg b-solid px-2 leading-10 space-x-4', isSelectInput ? 'b-#d3bb2c' : 'b-#424242')}>
           <div className="i-iconamoon-search size-5 bg-[#b5b5b5]"></div>
           <input
+            onFocus={() => setIsSelectInput(true)}
+            onBlur={() => setIsSelectInput(false)}
             type="text"
             placeholder={t('properties.search')}
-            className="max-w-128 w-full flex-1 b-none bg-transparent outline-none"
+            className="max-w-128 w-full flex-1 b-none bg-transparent text-[#898989] outline-none"
             value={keyword}
             onChange={e => handleSearch(e.target.value)}
           />

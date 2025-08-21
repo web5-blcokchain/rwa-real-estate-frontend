@@ -74,7 +74,7 @@ export function useRouteGuard() {
     // TODO 判断当前用户是否审核通过
     // 1的时候表示已审核 2:中心化数据库审核拒绝 3.钱包绑定成功 4.kyc审核通过 5 kyc审核拒绝
 
-    const hasLoginUrl = ['/profile', '/properties/payment', '/account/create']
+    const hasLoginUrl = ['/profile', '/properties/payment', '/account/create', '/buy', '/sell', '/transaction/create-buy-order', '/transaction/create-sell-order']
     // console.log(currentPath, hasLoginUrl)
 
     if (hasLoginUrl.some(item => currentPath.includes(item))) {

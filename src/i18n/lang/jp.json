@@ -439,8 +439,8 @@
     "menu_appeal": "申訴情報",
     "menu_default_warning": "違約警告",
     "menu_redemption_list": "買い戻し記録",
-    "sale_record": "CTC 売却記録です",
-    "buy_record": "CTC 購入履歴です",
+    "sale_record": "C2C 受注履歴を作成します。",
+    "buy_record": "C2C 市場取引記録です",
     "transaction_record": "資産取引記録"
   },
   "footer": {
