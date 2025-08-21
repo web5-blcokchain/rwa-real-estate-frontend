@@ -168,11 +168,11 @@ export function MyAssets() {
       )
     }
   ]
+  const [refetch, setRefetch] = useState(0)
   const [overPageInfo, setOverPageInfo] = useState({
     page: 1,
     pageSize: 10,
-    total: 0,
-    refetch: 0
+    total: 0
   })
   const [keyword, setKeyword] = useState('')
   const getOverviewData = async () => {
@@ -188,7 +188,7 @@ export function MyAssets() {
     return res
   }
   const { data: overviewData, isFetching } = useQuery({
-    queryKey: ['overview', overPageInfo.page, overPageInfo.pageSize, overPageInfo.refetch],
+    queryKey: ['overview', overPageInfo.page, overPageInfo.pageSize, refetch],
     queryFn: async () => {
       const res = await getOverviewData()
       return res.data?.list
@@ -202,7 +202,7 @@ export function MyAssets() {
           <div className="i-iconamoon-search size-5 shrink-0 bg-[#b5b5b5]"></div>
           <input
             type="text"
-            placeholder={t('profile.transactions.search')}
+            placeholder={t('properties.payment.search_asset')}
             className="w-128 b-none bg-transparent outline-none max-lg:w-full"
             value={keyword}
             onChange={e => setKeyword(e.target.value)}
@@ -210,9 +210,9 @@ export function MyAssets() {
               if (e.key === 'Enter') {
                 setOverPageInfo({
                   ...overPageInfo,
-                  page: 1,
-                  refetch: overPageInfo.refetch + 1
+                  page: 1
                 })
+                setRefetch(res => res + 1)
               }
             }}
           />

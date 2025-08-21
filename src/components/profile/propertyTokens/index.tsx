@@ -25,14 +25,18 @@ function PropertyTokens() {
     return res
   }
 
-  const { isLoading, isFetching } = useQuery({
-    queryKey: ['overviewSummary', page, refetchCount],
+  const { isLoading, isFetching, refetch } = useQuery({
+    queryKey: ['overviewSummary'],
     queryFn: async () => {
       const res = await getTokenData()
       setTotal(res.data?.count || 0)
       return res.data?.list || []
     }
   })
+
+  useEffect(() => {
+    refetch()
+  }, [page, refetchCount])
   if (isLoading) {
     return (
       <div className="w-full fcc p-8 h-dvh">
@@ -52,7 +56,7 @@ function PropertyTokens() {
           </div>
 
           <div className="max-lg:w-full">
-            <div className="fyc flex-inline b b-white rounded-xl b-solid p-4 max-lg:w-full space-x-4">
+            <div className="fyc flex-inline b b-white rounded-xl b-solid p-3 max-lg:w-full space-x-4">
               <div className="i-iconamoon-search size-5 bg-[#b5b5b5]"></div>
               <input
                 type="text"
@@ -70,7 +74,7 @@ function PropertyTokens() {
             </div>
           </div>
         </div>
-        <div className={isFetching && page <= 1 ? 'py-20' : ''}>
+        <div className={isFetching && page <= 1 ? 'fcc h-300px' : ''}>
           <Spin spinning={isFetching && page <= 1}>
             { tokenData && tokenData.length > 0
               ? (

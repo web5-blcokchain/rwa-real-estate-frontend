@@ -179,7 +179,7 @@ function RouteComponent() {
             onBlur={() => setIsSelectInput(false)}
             type="text"
             placeholder={t('properties.search')}
-            className="max-w-128 w-full flex-1 b-none bg-transparent text-[#898989] outline-none"
+            className="max-w-128 w-full flex-1 b-none bg-transparent text-[#898989] outline-none placeholder-[#898989]"
             value={keyword}
             onChange={e => handleSearch(e.target.value)}
           />

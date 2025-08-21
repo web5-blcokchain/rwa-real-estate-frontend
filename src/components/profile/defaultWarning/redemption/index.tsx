@@ -48,7 +48,7 @@ function RedemptionMoadl({ visibleInfo, redemptionType, message = '', hash = '',
                   <div className="i-qlementine-icons:success-16 size-10 bg-white text-base"></div>
                   <div className="text-2xl">{t('profile.warning.redemption.modal.success.title')}</div>
                   <div>{t('profile.warning.redemption.modal.success.content')}</div>
-                  <div className="fcc gap-2 overflow-hidden rounded-md bg-#212328 px-2 py-1">
+                  <div className="max-w-full fcc gap-2 overflow-hidden rounded-md bg-#212328 px-2 py-1">
                     <div
                       onClick={() => toBlockchainByHash(hash)}
                       className="flex-1 cursor-pointer truncate hover:text-primary"

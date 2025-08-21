@@ -54,6 +54,11 @@ export function DistributionRecord() {
   // 表格1配置
   const columns: TableProps<PropertieItem>['columns'] = [
     {
+      title: <div>{t('profile.data_count.order_id')}</div>,
+      dataIndex: 'code',
+      key: 'code'
+    },
+    {
       title: <div>{t('profile.data_count.asset')}</div>,
       dataIndex: 'total_purchase',
       key: 'Asset',
@@ -136,7 +141,7 @@ export function DistributionRecord() {
             >
               {record.drwa_hash ? `${record.drwa_hash.slice(0, 4)}...${record.drwa_hash.slice(-4)}` : ''}
             </span>
-            { record.drwa_hash && (
+            {record.drwa_hash && (
               <span onClick={() => copyText(record.drwa_hash)} className="cursor-pointer">
                 <img className="size-4" src={copyIcon} alt="" />
               </span>
@@ -167,11 +172,14 @@ export function DistributionRecord() {
     pageSize: 10,
     total: 0
   })
+  const [refetch, setRefetch] = useState(0)
+  const [keyword, setKeyword] = useState('')
   const getOverviewData = async () => {
     const res = await apiMyInfo.getMeInfo({
       page: overPageInfo.page,
       pageSize: overPageInfo.pageSize,
-      status: 1
+      status: 1,
+      keyword
     })
     setOverPageInfo({
       ...overPageInfo,
@@ -180,7 +188,7 @@ export function DistributionRecord() {
     return res
   }
   const { data: overviewData, isFetching } = useQuery({
-    queryKey: ['distributionRecord——overview', overPageInfo.page, overPageInfo.pageSize],
+    queryKey: ['distributionRecord——overview', overPageInfo.page, overPageInfo.pageSize, refetch],
     queryFn: async () => {
       const res = await getOverviewData()
       return res.data?.list
@@ -188,6 +196,25 @@ export function DistributionRecord() {
   })
   return (
     <div>
+      <div className="fyc flex-inline b b-white rounded-xl b-solid px-4 py-2 max-lg:w-full space-x-4">
+        <div className="i-iconamoon-search size-5 shrink-0 bg-[#b5b5b5]"></div>
+        <input
+          type="text"
+          placeholder={t('properties.payment.search_asset')}
+          className="w-128 b-none bg-transparent outline-none max-lg:w-full"
+          value={keyword}
+          onChange={e => setKeyword(e.target.value)}
+          onKeyUp={(e) => {
+            if (e.key === 'Enter') {
+              setOverPageInfo({
+                ...overPageInfo,
+                page: 1
+              })
+              setRefetch(res => res + 1)
+            }
+          }}
+        />
+      </div>
       <TableComponent
         columns={columns}
         data={overviewData || []}
