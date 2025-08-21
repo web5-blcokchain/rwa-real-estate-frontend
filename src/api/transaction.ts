@@ -64,3 +64,45 @@ export function cancelTransaction(data: {
 }) {
   return apiClient.post('/api/market/cancelOrder', data)
 }
+
+export interface OrderTransaction {
+  name: string // 名称
+  property_type: string // 房产类型 (这里是 "6"，所以用 string)
+  price: string // 单价，字符串形式
+  number: number // 数量
+  total_money: string // 总金额，字符串形式
+  status: number // 状态
+  create_date: number // 创建时间（时间戳）
+  type: number // 类型
+  hash: string // 交易哈希
+  order_market_id: number// 市场订单 ID
+  properties_id: number
+}
+
+/**
+ * 获取C2C 购买记录
+ */
+export function marketTransactionHistory(data: {
+  /**
+   * 当前也
+   */
+  page: number
+  /**
+   * 每页数量
+   */
+  pageSize: number
+  /**
+   * 资产名称
+   */
+  address: string
+  /**
+   * 交易类型 3为出售 4未购买
+   */
+  type?: number
+  /**
+   * 资产类型id
+   */
+  property_type?: number
+}) {
+  return apiClient.post<DataListResponse<OrderTransaction>>('/api/market/transactionHistory', data)
+}

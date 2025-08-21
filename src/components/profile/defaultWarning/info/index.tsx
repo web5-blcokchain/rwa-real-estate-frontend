@@ -51,7 +51,7 @@ export default function Info({ secondaryMenuProps }:
     <div className="text-white [&>div:last-child]:b-0 [&>div]:b-b-1 [&>div]:b-b-[#202329] [&>div]:pb-30px">
       <div className="fyc gap-5">
         <div className="relative size-100px overflow-hidden rounded-md">
-          <img className="absolute inset-0 left-1/2 top-1/2 h-full !max-w-max -translate-x-1/2 -translate-y-1/2" src="https://dev1.usdable.com/storage/default/20250725/3040-1fd5d90f3b9336d3f22f69ca4b56f1a44df56a31e.jpg" alt="" />
+          <img className="absolute inset-0 left-1/2 top-1/2 w-full !max-w-max -translate-x-1/2 -translate-y-1/2" src="https://dev1.usdable.com/storage/default/20250725/3040-1fd5d90f3b9336d3f22f69ca4b56f1a44df56a31e.jpg" alt="" />
         </div>
         <div className="flex-1">
           <div className="text-xl max-md:text-base">{secondaryMenuProps.name}</div>

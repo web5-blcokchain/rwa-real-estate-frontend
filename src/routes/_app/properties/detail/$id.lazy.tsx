@@ -92,13 +92,15 @@ function RouteComponent() {
       if (!divRef.current || !fiexedContent.current)
         return
       await new Promise(resolve => setTimeout(resolve, 50))
-      const parentY = (divRef.current?.getBoundingClientRect().height || 0) + (divRef.current?.offsetTop || 0)
+      const mainDiv = document.querySelector('.app-content') as HTMLDivElement
+      const parentY = (divRef.current?.getBoundingClientRect().y || 0) + (mainDiv.scrollTop)
       const parentX = divRef.current?.getBoundingClientRect().x || 0
-      const parentHeight = divRef.current?.offsetHeight || 0
+      const parentHeight = (divRef.current?.getBoundingClientRect().height) || 0
       const parentWidth = divRef.current?.offsetWidth || 0
       let contentY = parentY + parentHeight - 20
       const contentX = parentX + parentWidth
       contentY = Math.min(contentY, window.innerHeight - 20)
+      // console.log(contentY,window.innerHeight - 20,parentY);
 
       if (fiexedContent.current) {
         fiexedContent.current.style.top = `${contentY}px`

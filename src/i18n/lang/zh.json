@@ -922,7 +922,10 @@
     "checkInStatus": "到账状态",
     "hash": "交易Hash",
     "time": "到账时间",
-    "distribution": "发放中"
+    "distribution": "发放中",
+    "orderType": "交易类型",
+    "buy": "购买",
+    "sell": "出售"
   },
   "cancelOrder": {
     "success": "取消订单成功",

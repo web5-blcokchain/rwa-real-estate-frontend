@@ -1,7 +1,7 @@
-import type { PropertyInfo } from '@/api/investment'
+import type { OrderTransaction } from '@/api/transaction'
 import type { TableProps } from 'antd'
 import { getAssetType } from '@/api/apiMyInfoApi'
-import { getInvestmentList } from '@/api/investment'
+import { marketTransactionHistory } from '@/api/transaction'
 import group272Icon from '@/assets/icons/group272.png'
 import { formatNumberNoRound } from '@/utils/number'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
@@ -14,10 +14,11 @@ import dayjs from 'dayjs'
 import { envConfig } from '../../../utils/envConfig'
 
 export function BuyRecord() { // 市场交易购买记录
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [keyword, setKeyword] = useState('')
   const [propertyType, setPropertyType] = useState()
   const locale = useMemo(() => i18n.language === 'en' ? enUS : i18n.language === 'zh' ? zhCN : jaJP, [i18n])
+  const [selectOrderType, setSelectOrderType] = useState<number>()
   const [pagination, setPagination] = useState({
     pageSize: 10,
     current: 1,
@@ -26,20 +27,18 @@ export function BuyRecord() { // 市场交易购买记录
     showSizeChanger: false
   })
   const searchDataList = async () => {
-    const res = await getInvestmentList({
+    const res = await marketTransactionHistory({
       page: pagination.current,
-      keyword,
-      order_type: '1',
+      address: keyword,
+      type: !selectOrderType ? undefined : selectOrderType,
       pageSize: pagination.pageSize,
-      is_me: 1,
       property_type: propertyType === 0 ? undefined : propertyType
-      // price_sort: sortType === 0 ? undefined : sortType
     })
     pagination.total = res.data?.count || 0
     return res
   }
   const { data, isFetching: isLoading, refetch } = useQuery({
-    queryKey: ['investment-list-buy', pagination.current, propertyType], // 添加 assetType 到查询键
+    queryKey: ['investment-list-buy', pagination.current, propertyType, selectOrderType], // 添加 assetType 到查询键
     queryFn: async () => {
       const res = await searchDataList()
       return res.data
@@ -75,6 +74,11 @@ export function BuyRecord() { // 市场交易购买记录
   const [propertyTypeList, setPropertyTypeList] = useState([
     { label: <div>{t('dividendStatistics.all')}</div>, value: 0 }
   ])
+  const orderTypeList = [
+    { label: <div>{t('dividendStatistics.all')}</div>, value: 0 },
+    { label: <div>{t('dividendStatistics.buy')}</div>, value: 4 },
+    { label: <div>{t('dividendStatistics.sell')}</div>, value: 3 }
+  ]
   // 获取房屋类型
   const { data: assetType } = useQuery({
     queryKey: ['assetType'],
@@ -90,54 +94,11 @@ export function BuyRecord() { // 市场交易购买记录
     ])
   }, [assetType])
 
-  // const { mutateAsync } = useMutation({
-  //   mutationKey: ['cancelOrder'],
-  //   mutationFn: async (orderId: number) => {
-  //     const data = cancelOrder(orderId)
-  //     return data
-  //   }
-  // })
-  // const [loading, setLoading] = useState<string>()
-  // /**
-  //  *
-  //  * @param orderId 订单id
-  //  * @param orderSellId 合约订单id
-  //  * @returns
-  //  */
-  // async function toCancelOrder(orderId: number, orderSellId: string) {
-  //   const wallet = wallets.find(wallet => wallet.walletClientType !== 'privy')
-  //   if (!orderId || !orderSellId)
-  //     return
-  //   if (!wallet) {
-  //     toast.warning(t('payment_method.please_connect_wallet'))
-  //     return
-  //   }
-  //   setLoading(orderSellId)
-  //   try {
-  //     const ethProvider = await wallet.getEthereumProvider()
-  //     const tradeContact = await getTradeContract(ethProvider)
-  //     const tx = await cancelSellOrder(tradeContact, Number(orderSellId))
-  //     console.log('hash:', tx.hash)
-  //     const data = await mutateAsync(Number(orderId))
-  //     if (data.code === 1) {
-  //       refetch()
-  //       toast.success(t('cancelOrder.success'))
-  //     }
-  //   }
-  //   catch (e: any) {
-  //     console.error(e)
-  //     toast.error(t('payment.errors.transaction_failed'))
-  //   }
-  //   finally {
-  //     setLoading('')
-  //   }
-  // }
-
-  const tableColumns: TableProps<PropertyInfo>['columns'] = [
+  const tableColumns: TableProps<OrderTransaction>['columns'] = [
     {
       title: <div>{t('id')}</div>,
-      dataIndex: 'id',
-      key: 'id'
+      dataIndex: 'order_market_id',
+      key: 'order_market_id'
     },
     {
       title: <div>{t('header.properties')}</div>,
@@ -149,14 +110,9 @@ export function BuyRecord() { // 市场交易购买记录
             <img src={group272Icon} alt="" className="mr-2 h-6 w-6" />
             <div className="flex flex-col justify-start">
               <Link to="/properties/detail/$id" params={{ id: record.properties_id.toString() }}>
-                <div>{record.address}</div>
+                <div>{record.name}</div>
               </Link>
-              <div className="text-[#8d909a]">{record.property_type}</div>
-              {/* <div className="main-hover cursor-pointer" onClick={() => toBlockchain(record.contract_address)}>
-              {t('profile.data_count.token_name')}
-              :
-              {record.name}
-            </div> */}
+
             </div>
           </div>
         )
@@ -169,19 +125,7 @@ export function BuyRecord() { // 市场交易购买记录
       render: (_, record) => {
         return (
           <div>
-            {record.order_type === 2 ? '购买' : '出售'}
-          </div>
-        )
-      }
-    },
-    {
-      title: <div>{t('profile.common.type')}</div>,
-      dataIndex: 'order_type',
-      key: 'order_type',
-      render: (_, record) => {
-        return (
-          <div>
-            {record.is_me ? '创建订单' : '购买他人'}
+            {t(`dividendStatistics.${record.type === 4 ? 'buy' : 'sell'}`)}
           </div>
         )
       }
@@ -193,7 +137,7 @@ export function BuyRecord() { // 市场交易购买记录
       render: (_, record) => {
         return (
           <div>
-            {formatNumberNoRound(record.token_number, 8)}
+            {formatNumberNoRound(record.number, 8)}
           </div>
         )
       }
@@ -205,7 +149,7 @@ export function BuyRecord() { // 市场交易购买记录
       render: (_, record) => {
         return (
           <div>
-            {formatNumberNoRound(record.token_price, 8)}
+            {formatNumberNoRound(record.price, 8)}
           </div>
         )
       }
@@ -223,7 +167,7 @@ export function BuyRecord() { // 市场交易购买记录
       dataIndex: 'tx_hash',
       key: 'tx_hash',
       render: (_, record) => {
-        return <a href={`${`${envConfig.blockExplorerUrl}/tx/${record.tx_hash}`}`} target="_blank">{record.tx_hash && `${record.tx_hash.slice(0, 6)}...${record.tx_hash.slice(-4)}`}</a>
+        return <a href={`${`${envConfig.blockExplorerUrl}/tx/${record.hash}`}`} target="_blank">{record.hash && `${record.hash.slice(0, 6)}...${record.hash.slice(-4)}`}</a>
       }
     },
     {
@@ -271,6 +215,19 @@ export function BuyRecord() { // 市场交易购买记录
           options={propertyTypeList}
           value={propertyType}
           onChange={setPropertyType}
+        />
+        <Select
+          placeholder={t('dividendStatistics.orderType')}
+          size="large"
+          className={cn(
+            '[&_.ant-select-selector]:(bg-transparent! text-white!)',
+            '[&_.ant-select-selection-placeholder]:(text-[#898989]!)',
+            '[&_.ant-select-selection-item]:(bg-transparent! text-white!)',
+            '[&_.ant-select-arrow]:(text-white!)'
+          )}
+          options={orderTypeList}
+          value={selectOrderType}
+          onChange={setSelectOrderType}
         />
       </div>
       <ConfigProvider locale={locale}>

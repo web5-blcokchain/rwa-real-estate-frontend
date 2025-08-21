@@ -277,7 +277,7 @@ export default function WarningRedemptionInfo({ secondaryMenuProps }:
       <div className="mt-10 text-white">
         <div className="fyc gap-4">
           <img
-            className="size-100px rounded-md"
+            className="size-100px rounded-md object-contain"
             src={joinImagesPath(secondaryMenuProps.image_urls)[0]}
             alt=""
           />

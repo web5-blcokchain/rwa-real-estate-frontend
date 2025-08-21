@@ -79,7 +79,7 @@ export default function DefaultWarning({ setSecondaryMenu, setSecondaryMenuProps
         return (
           <div className="flex gap-3">
             <div className="relative size-100px overflow-hidden rounded-md">
-              <img className="absolute inset-0 left-1/2 top-1/2 h-full !max-w-max -translate-x-1/2 -translate-y-1/2" src={joinImagesPath(record.image_urls)[0]} alt="" />
+              <img className="absolute inset-0 left-1/2 top-1/2 w-full !max-w-max -translate-x-1/2 -translate-y-1/2" src={joinImagesPath(record.image_urls)[0]} alt="" />
             </div>
             <div className="flex flex-1 flex-col justify-between gap-1 py-2">
               <div className="space-y-2">
