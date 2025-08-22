@@ -471,7 +471,10 @@
     "menu_redemption_list": "買い戻し記録",
     "sale_record": "C2C 受注履歴を作成します。",
     "buy_record": "C2C 市場取引記録です",
-    "transaction_record": "資産取引記録"
+    "transaction_record": "資産取引記録",
+    "asset_tokenization": "資産のトークン化",
+    "owner_info": "所有者情報",
+    "review_progress": "審査進捗"
   },
   "footer": {
     "about": "について",
@@ -954,5 +957,20 @@
     },
     "sell_date": "作成日",
     "sell_hash": "作成ハッシュ"
+  },
+  "reviewProgress": {
+    "title": "審査進捗",
+    "flow": "進行状況",
+    "step_submit": "申請提出",
+    "step_initial_review": "資料一次審査",
+    "step_manual_review": "手動審査",
+    "step_token_generation": "トークン生成",
+    "step_complete": "完了",
+    "status": {
+      "pending": "未処理",
+      "in_progress": "進行中"
+    },
+    "reviewing": "審査中",
+    "reviewing_desc": "あなたの申請は現在手動審査段階にあります。審査担当者が提出された資料を注意深く確認しています。審査は {{time}} までに完了する予定です。追加資料が必要な場合は、SMSやメールで通知されます。"
   }
 }

@@ -19,5 +19,8 @@ export enum ProfileTab {
   SaleRecord = 'SaleRecord',
   Investment = 'Investment',
   BuyRecord = 'BuyRecord',
-  TransactionRecord = 'TransactionRecord'
+  TransactionRecord = 'TransactionRecord',
+  AssetTokenization = 'AssetTokenization',
+  OwnerInfo = 'OwnerInfo',
+  ReviewProgress = 'ReviewProgress'
 }

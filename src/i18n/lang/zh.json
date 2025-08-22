@@ -480,7 +480,10 @@
     "menu_redemption_list": "赎回记录",
     "sale_record": "C2C 创建订单记录",
     "buy_record": "C2C 市场交易记录",
-    "transaction_record": "资产交易记录"
+    "transaction_record": "资产交易记录",
+    "asset_tokenization": "资产代币化",
+    "owner_info": "业主信息",
+    "review_progress": "审核进度"
   },
   "footer": {
     "about": "关于",
@@ -969,5 +972,20 @@
     },
     "sell_date": "创建时间",
     "sell_hash": "创建Hash"
+  },
+  "reviewProgress": {
+    "title": "审核进度",
+    "flow": "流程进度",
+    "step_submit": "申请提交",
+    "step_initial_review": "资料初审",
+    "step_manual_review": "人工审核",
+    "step_token_generation": "代币生成",
+    "step_complete": "完成",
+    "status": {
+      "pending": "待处理",
+      "in_progress": "进行中"
+    },
+    "reviewing": "审核进行中",
+    "reviewing_desc": "您的申请正在人工审核阶段，我们的审核专员正在仔细审查您提交的资料。预计将在 {{time}} 前完成审核。如有需要补充的材料，我们会通过短信和邮件通知您。"
   }
 }

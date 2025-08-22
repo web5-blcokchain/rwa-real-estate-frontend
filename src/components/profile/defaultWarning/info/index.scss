@@ -7,9 +7,9 @@
   .now-step{
     position: absolute;
     top:0;
-    left: 0;
+    left: -1px;
     height: 100%;
-    width: calc(var(--step,4) * 20% + 6%);
+    width: calc(var(--step,4) * var(--step-item-x,20%) + 6%);
     max-width: 100%;
     background: #F6D659;
     border-radius: 12px;
@@ -21,7 +21,7 @@
     transform: translateY(-50%);
     @for $i from 1 through 6 {
       &:nth-child(#{$i}){
-        left: calc(20% * ($i - 2) + 5% );
+        left: calc(var(--step-item-x,20%) * ($i - 2) + var(--step-item-x-plus,5%) );
        
       }
     }

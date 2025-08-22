@@ -471,7 +471,10 @@
     "menu_redemption_list": "Redemption Record",
     "sale_record": "CTC Create order records",
     "buy_record": "CTC Market transaction records",
-    "transaction_record": "Transaction record"
+    "transaction_record": "Transaction record",
+    "asset_tokenization": "Asset Tokenization",
+    "owner_info": "Owner Information",
+    "review_progress": "Review Progress"
   },
   "footer": {
     "about": "About",
@@ -956,5 +959,20 @@
     },
     "sell_date": "Create Date",
     "sell_hash": "Create Hash"
+  },
+  "reviewProgress": {
+    "title": "Review Progress",
+    "flow": "Process Flow",
+    "step_submit": "Application Submitted",
+    "step_initial_review": "Initial Review",
+    "step_manual_review": "Manual Review",
+    "step_token_generation": "Token Generation",
+    "step_complete": "Completed",
+    "status": {
+      "pending": "Pending",
+      "in_progress": "In Progress"
+    },
+    "reviewing": "Review in Progress",
+    "reviewing_desc": "Your application is currently in the manual review stage. Our review specialists are carefully examining the materials you submitted. The review is expected to be completed by {{time}}. If any additional materials are required, we will notify you via SMS and email."
   }
 }

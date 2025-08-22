@@ -14,9 +14,11 @@ import History from '@/components/profile/history'
 import Message from '@/components/profile/message'
 import { MyAssets } from '@/components/profile/myAssets'
 import Overview from '@/components/profile/overview'
+import { OwnerInfo } from '@/components/profile/ownerInfo'
 import PropertyTokens from '@/components/profile/propertyTokens'
 import Recording from '@/components/profile/recording'
 import RedemptionList from '@/components/profile/redemptionList'
+import { ReviewProgress } from '@/components/profile/reviewProgress'
 import SaleRecord from '@/components/profile/saleRecord'
 import { TransactionStatus } from '@/components/profile/transaction-status'
 import { ProfileTab } from '@/enums/profile'
@@ -41,13 +43,15 @@ function getItem(
   label: React.ReactNode,
   key: React.Key,
   icon?: React.ReactNode,
-  children?: MenuItem[]
+  children?: MenuItem[],
+  hidden?: boolean
 ): MenuItem {
   return {
     key,
     icon,
     children,
-    label
+    label,
+    hidden
   } as MenuItem
 }
 
@@ -77,8 +81,12 @@ function RouteComponent() {
     getItem(`${t('header.investment')}`, ProfileTab.Investment, '', [
       getItem(`${t('aboutMe.sale_record')}`, ProfileTab.SaleRecord),
       getItem(`${t('aboutMe.buy_record')}`, ProfileTab.BuyRecord)
+    ]),
+    getItem(`${t('aboutMe.asset_tokenization')}`, ProfileTab.AssetTokenization, '', [
+      getItem(`${t('aboutMe.owner_info')}`, ProfileTab.OwnerInfo),
+      getItem(`${t('aboutMe.review_progress')}`, ProfileTab.ReviewProgress)
     ])
-  ]
+  ].filter(res => !(res as any)?.hidden)
 
   const handleMenuClick: MenuProps['onClick'] = (e) => {
     setSelectedTab(e.key as ProfileTab)
@@ -129,6 +137,10 @@ function RouteComponent() {
           return <SaleRecord /> // 出售记录
         case ProfileTab.BuyRecord:
           return <BuyRecord /> // 购买记录
+        case ProfileTab.OwnerInfo:
+          return <OwnerInfo /> // 业主信息
+        case ProfileTab.ReviewProgress:
+          return <ReviewProgress /> // 审核进度
       }
     }
     else {
