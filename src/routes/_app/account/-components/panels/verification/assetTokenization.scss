@@ -1,0 +1,23 @@
+.asset-tokenization-form-item {
+  >div{
+    width: 100%;
+  }
+  >* input,.ant-input-number,.ant-select-selector {
+    background-color: transparent !important;
+    border: 0 !important;
+    padding: 0 !important;
+    color: #B5B5B5 !important;
+    box-shadow: none !important;
+    width: 100% !important;
+
+    &::placeholder {
+      color: #B5B5B5 !important;
+    }
+  }
+  .ant-select{
+    width: 100%;
+  }
+  .ant-select-selection-item div{
+    color: #B5B5B5
+  }
+}

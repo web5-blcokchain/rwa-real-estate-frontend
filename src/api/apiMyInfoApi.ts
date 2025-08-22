@@ -52,7 +52,7 @@ export interface RegisterParams {
   email?: string
   password?: string
   wallet_address?: string
-  type?: AccountType
+  type: AccountType
   id_card_front_url?: string
   id_card_back_url?: string
   address_url?: string
@@ -62,6 +62,8 @@ export interface RegisterParams {
   legal_representative_documents_url?: string
   financial_documents_url?: string
   token?: string
+  username?: string
+  id_number?: string
 }
 interface RegisterResponse {
   code: number

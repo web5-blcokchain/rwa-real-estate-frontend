@@ -143,6 +143,8 @@
       "individual": "個々の投資家",
       "individual_account": "個人投資口座のため",
       "institutional": "機関投資家",
+      "asset_tokenization": "資産トークン化です",
+      "asset_tokenization_desc": "オーナーは自己資産をトークン化します",
       "organizations": "企業や組織向け",
       "notice": "個人および機関の投資家には、さまざまな検証要件が適用されます.検証プロセスを進めるには、適切なタイプを選択してください.",
       "notice_desc": "あなたは、あなたが選択できるのは1つのアイデンティティタイプのみです。",
@@ -186,6 +188,34 @@
         "financial_documents_subTitle": "財務記録砦と過去6か月",
         "notice": "通常、ビジネス検証には3〜5営業日かかります。すべてのドキュメントは正式に発行され、有効でなければなりません。お客様のビジネスタイプと判断に基づいて、アドリオタルドキュメントが必要になる場合があります。ビジネス情報は、エンタープライズレベルのセキュリティで保護されています。",
         "continue": "続行します"
+      },
+      "asset_tokenization_content": {
+        "title": "業主身分検証",
+        "title_desc": "本人確認のために身分証明書をアップロードしてください",
+        "subTitle": "資産トークン化登録フォーム",
+        "bind_wallet": "ウォレットを連携",
+        "hint": "トークン販売の収益は、設定された受取アドレスに直接送金されます。アドレスが完全にご自身の管理下にあることを確認してください。誤入力や漏洩は取り返しのつかない資産損失につながる可能性があります。",
+        "form": {
+          "name": "氏名",
+          "name_placeholder": "氏名を入力してください",
+          "id_number": "身分証番号",
+          "id_number_placeholder": "身分証番号を入力してください",
+          "phone": "電話番号",
+          "phone_placeholder": "電話番号を入力してください",
+          "asset_address": "資産アドレス",
+          "asset_address_placeholder": "資産タイプを選択してください",
+          "house_area": "不動産面積（m²）",
+          "house_area_placeholder": "不動産面積を入力してください",
+          "estimated_value": "推定価値（$）",
+          "estimated_value_placeholder": "推定価値を入力してください",
+          "wallet_address": "ウォレットアドレス",
+          "wallet_address_placeholder": "ウォレットアドレスを入力してください",
+          "asset_documents": "資産証明書類",
+          "submit": "申請を提出"
+        },
+        "error": {
+          "wallet_address_error": "正しいウォレットアドレスを入力してください"
+        }
       }
     },
     "button": {

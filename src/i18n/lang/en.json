@@ -143,6 +143,8 @@
       "individual": "Individual Investor",
       "individual_account": "For personal investment accounts",
       "institutional": "Institutional Investor",
+      "asset_tokenization": "Asset tokenization",
+      "asset_tokenization_desc": "The owner tokenized his own assets",
       "organizations": "For companies and organizations",
       "notice": " Different verification requirements apply to individual and institutional investors.Please select the appropriate type to proceed with the verification process.",
       "notice_desc": "Please note that you can only select one identity type.",
@@ -186,6 +188,34 @@
         "financial_documents_subTitle": "Financial records for the last 6 months",
         "notice": " Business verification typically takes 3-5 business days. All documents must be officially issued and valid.Additional documents may be required based on your business type and jurisdiction.Your business information is protected with enterprise-level security.",
         "continue": "Continue"
+      },
+      "asset_tokenization_content": {
+        "title": "Owner Identity Verification",
+        "title_desc": "Please upload your personal identification document for verification",
+        "subTitle": "Asset Tokenization Registration Form",
+        "bind_wallet": "Bind Wallet",
+        "hint": "The proceeds from token sales will be sent directly to the receiving address you set. Please ensure that the address is fully controlled by you. Any errors or leaks may result in irreversible asset loss.",
+        "form": {
+          "name": "Name",
+          "name_placeholder": "Please enter your name",
+          "id_number": "ID Number",
+          "id_number_placeholder": "Please enter your ID number",
+          "phone": "Phone Number",
+          "phone_placeholder": "Please enter your phone number",
+          "asset_address": "Asset Address",
+          "asset_address_placeholder": "Please select asset type",
+          "house_area": "Property Area (m²)",
+          "house_area_placeholder": "Please enter property area",
+          "estimated_value": "Estimated Value ($)",
+          "estimated_value_placeholder": "Please enter estimated value",
+          "wallet_address": "Wallet Address",
+          "wallet_address_placeholder": "Please enter your wallet address",
+          "asset_documents": "Asset Proof Documents",
+          "submit": "Submit Application"
+        },
+        "error": {
+          "wallet_address_error": "Please enter a valid wallet address"
+        }
       }
     },
     "button": {

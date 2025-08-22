@@ -3,6 +3,7 @@ import apiMyInfoApi from '@/api/apiMyInfoApi'
 import logo from '@/assets/images/logo.png'
 import { LoginDialog } from '@/components/dialog/login'
 import { getContracts } from '@/contract'
+import { AccountType } from '@/enums/create-account'
 import { UserCode } from '@/enums/user'
 import { eventBus } from '@/hooks/EventBus'
 import { useCommonDataStore } from '@/stores/common-data'
@@ -398,7 +399,7 @@ const UserMenu: FC = () => {
     },
     {
       key: 'kyc_status',
-      show: (userData.audit_status === null || userData.audit_status === undefined) ? 'hidden' : '',
+      show: (userData.audit_status === null || userData.audit_status === undefined || userData.type === AccountType.AssetTokenization) ? 'hidden' : '',
       label: (
         <div onClick={() => {
           navigate({

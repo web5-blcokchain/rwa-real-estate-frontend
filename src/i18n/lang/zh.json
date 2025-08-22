@@ -145,6 +145,8 @@
       "individual": "个人投资者",
       "individual_account": "个人投资账户",
       "institutional": "机构投资者",
+      "asset_tokenization": "资产代币化",
+      "asset_tokenization_desc": "业主把自有资产代币化",
       "organizations": "对于公司和组织",
       "notice": "个人投资者和机构投资者的验证要求不同.请选择适当的类型以继续验证过程.",
       "notice_desc": "请注意，您只能选择一种身份类型。",
@@ -188,6 +190,34 @@
         "financial_documents_subTitle": "最近六个月的财务记录",
         "notice": "业务验证通常需要3-5个工作日。所有文件必须是正式签发并有效的。根据您的业务类型和管辖范围，可能需要额外的文件。您的业务信息受到企业级安全性的保护。",
         "continue": "继续"
+      },
+      "asset_tokenization_content": {
+        "title": "业主身份验证",
+        "title_desc": "请上传您的个人身份证明文件以进行验证",
+        "subTitle": "资产代币化注册表单",
+        "bind_wallet": "绑定钱包",
+        "hint": "代币销售款项将直接发送至您设置的收币地址。请确保该地址完全由您控制，任何地址错误或泄露都可能导致不可挽回的资产损失。",
+        "form": {
+          "name": "姓名",
+          "name_placeholder": "请输入姓名",
+          "id_number": "身份证号",
+          "id_number_placeholder": "请输入身份证号码",
+          "phone": "联系电话",
+          "phone_placeholder": "请输入联系电话",
+          "asset_address": "资产地址",
+          "asset_address_placeholder": "请输入选择资产类型",
+          "house_area": "房产面积（m²）",
+          "house_area_placeholder": "请输入房产面积",
+          "estimated_value": "预估价值（$）",
+          "estimated_value_placeholder": "请输入预估价值",
+          "wallet_address": "钱包地址",
+          "wallet_address_placeholder": "请输入钱包地址",
+          "asset_documents": "资产证明文件",
+          "submit": "提交申请"
+        },
+        "error": {
+          "wallet_address_error": "请输入正确的钱包地址"
+        }
       }
     },
     "button": {

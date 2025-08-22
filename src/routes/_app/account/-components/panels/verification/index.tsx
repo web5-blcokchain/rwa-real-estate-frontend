@@ -2,6 +2,7 @@ import INotice from '@/components/common/i-notice'
 import { AccountType } from '@/enums/create-account'
 import { useUserStore } from '@/stores/user'
 import { useState } from 'react'
+import AssetTokenization from './assetTokenization'
 import IndividualVerification from './individual'
 import InstitutionalVerification from './institutional'
 
@@ -15,7 +16,8 @@ interface Verification {
 export enum VisibleType {
   Select,
   Individual,
-  Institutional
+  Institutional,
+  AssetTokenization
 }
 
 interface VerificationPanelProps {
@@ -32,6 +34,8 @@ export default function VerificationPanel() {
       return <IndividualVerification setCurrentVisible={setCurrentVisible} />
     case VisibleType.Institutional:
       return <InstitutionalVerification setCurrentVisible={setCurrentVisible} />
+    case VisibleType.AssetTokenization:
+      return <AssetTokenization setCurrentVisible={setCurrentVisible} />
   }
 }
 
@@ -73,6 +77,17 @@ function SelectVerification({ setCurrentVisible }: VerificationPanelProps) {
         //     setCurrentVisible(VisibleType.Select)
         //   }
         // })
+      }
+    },
+    {
+      name: `${t('create.verification.asset_tokenization')}`,
+      icon: 'homeowner',
+      description: `${t('create.verification.asset_tokenization_desc')}`,
+      onClick() {
+        setCurrentVisible(VisibleType.AssetTokenization)
+        setRegisterData({
+          type: AccountType.Individual
+        })
       }
     }
   ]
