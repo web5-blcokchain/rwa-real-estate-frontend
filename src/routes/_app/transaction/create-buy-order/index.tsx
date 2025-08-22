@@ -139,6 +139,10 @@ function RouteComponent() {
         toast.error(t('payment.errors.no_wallet'))
         return
       }
+      if (userData.audit_status !== 4) { // 判断当前用户是否是绑定的钱包/已经审核通过链
+        toast.error(t('payment.errors.please_wait_for_kyc'))
+        return
+      }
       // 验证是自己绑定的钱包自己的钱包
       if (wallet.address !== userData.wallet_address) {
         toast.warn(t('payment.errors.please_use_bound_wallet'))

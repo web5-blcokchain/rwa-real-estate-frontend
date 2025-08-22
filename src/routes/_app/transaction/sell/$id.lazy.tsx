@@ -80,6 +80,10 @@ function RouteComponent() {
       toast.warn(t('payment.errors.please_use_bound_wallet'))
       return
     }
+    if (userData.audit_status !== 4) { // 判断当前用户是否是绑定的钱包/已经审核通过链
+      toast.error(t('payment.errors.please_wait_for_kyc'))
+      return
+    }
 
     setSellLoading(true) // 开始loading
     try {
