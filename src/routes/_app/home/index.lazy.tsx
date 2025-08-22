@@ -122,16 +122,21 @@ function RouteComponent() {
           <div className="grid grid-cols-3 gap-30px max-lg:grid-cols-2 max-lg:gap-16px max-md:gap-11px max-xl:gap-18px">
             {
               coinTypes.map((item, index) => (
-                <div key={index} className={cn('flex flex-col items-center rounded-5 bg-#1f2328 max-lg:rounded-2 max-xl:rounded-3', index === 2 && 'max-lg:hidden')}>
+                <div key={index} className={cn('flex flex-col items-center rounded-5 cursor-pointer bg-#1f2328 max-lg:rounded-2 max-xl:rounded-3', index === 2 && 'max-lg:hidden')}>
                   <img src={item.img} alt="" className="w-full" />
                   <div className="h-full w-full flex flex-col justify-between px-5 pb-33px pt-5 max-lg:px-2 max-md:px-6px max-xl:px-3 max-lg:pb-10px max-lg:pt-2 max-md:pb-9px max-md:pt-6px max-xl:pb-18px max-xl:pt-3">
                     <div>
-                      <div className="text-[30px] font-500 leading-10 max-lg:text-[16px] max-md:text-[10px] max-xl:text-[22px] max-lg:leading-6 max-md:leading-3">{t(`home.rwaType.coinTypes.title-${index + 1}`)}</div>
-                      <div className="mb-8 mt-3 text-[24px] text-#a7a9ad leading-7 max-lg:mb-2 max-lg:mt-1 max-md:mb-5px max-md:mt-2px max-xl:mb-4 max-xl:mt-2 max-lg:text-[12px] max-md:text-2 max-xl:text-[16px] max-lg:leading-5 max-md:leading-3">
+                      <div className="text-[22px] font-500 leading-6 max-lg:text-[16px] max-md:text-[10px] max-xl:text-[22px] max-lg:leading-6 max-md:leading-3">
+                        {t(`home.rwaType.coinTypes.title-${index + 1}`)}
+                      </div>
+                      <div className="mb-4 mt-2 text-[16px] text-#a7a9ad leading-7 max-lg:mb-2 max-lg:mt-1 max-md:mb-5px max-md:mt-2px max-xl:mb-4 max-xl:mt-2 max-lg:text-[12px] max-md:text-2 max-xl:text-[16px] max-lg:leading-5 max-md:leading-3">
                         {t(`home.rwaType.coinTypes.content-${index + 1}`)}
                       </div>
                     </div>
-                    <div onClick={() => window.open(item.url, '_blank')} className="fyc gap-5px text-26px font-500 leading-10 max-lg:gap-2px max-md:gap-2px max-xl:gap-3px max-lg:text-14px max-md:text-6px max-xl:text-18px max-lg:leading-6 max-md:leading-10px">
+                    <div
+                      onClick={() => window.open(item.url, '_blank')}
+                      className="fyc gap-5px text-18px font-500 leading-10 max-lg:gap-2px max-md:gap-2px max-xl:gap-3px max-lg:text-14px max-md:text-6px max-xl:text-18px max-lg:leading-6 max-md:leading-10px"
+                    >
                       <span>{t('home.explanation.button')}</span>
                       <div className="i-si-arrow-right-duotone h-30px w-30px bg-white max-lg:h-16px max-lg:w-16px max-md:h-a max-md:w-2 max-xl:h-22px max-xl:w-22px" />
                     </div>
@@ -148,7 +153,7 @@ function RouteComponent() {
                 <div className="text-6 leading-10 max-lg:text-2 max-md:text-2 max-xl:text-4 max-lg:leading-4">
                   {t(item.title)}
                 </div>
-                <div className="text-66px font-500 leading-10 max-lg:text-24px max-md:text-18px max-xl:text-40px">
+                <div className="text-40px font-500 leading-10 max-lg:text-24px max-md:text-18px max-xl:text-40px">
                   {item.content}
                   {' '}
                   {index === 0 && commonData.payTokenName}
@@ -170,7 +175,9 @@ function RouteComponent() {
               <div key={index} className="">
                 <div className="fyc gap-7px max-lg:gap-1px max-xl:gap-3px">
                   <img className={cn('3xl:size-14 size-10 max-xl:size-8 max-lg:size-6 max-md:size-10px')} src={item.icon} />
-                  <div className="text-26px font-500 leading-10 3xl:text-3xl max-lg:text-16px max-md:text-10px max-xl:text-20px max-lg:leading-5 max-md:leading-6 max-xl:leading-7">{t(item.title)}</div>
+                  <div className="text-24px font-500 leading-10 3xl:text-3xl max-lg:text-16px max-md:text-10px max-xl:text-20px max-lg:leading-5 max-md:leading-6 max-xl:leading-7">
+                    {t(item.title)}
+                  </div>
                 </div>
                 <div className="mt-3 w-490px text-left text-20px text-#a7a9ad leading-7 max-md:mt-1 3xl:w-600px max-lg:w-180px max-xl:w-320px 3xl:text-26px max-lg:text-12px max-md:text-8px max-xl:text-14px 3xl:leading-32px max-lg:leading-3 max-xl:leading-5">
                   {t(item.content)}
@@ -178,7 +185,7 @@ function RouteComponent() {
               </div>
             ))}
           </div>
-          <div className="fyc cursor-pointer gap-4 text-9 font-500 leading-10 max-lg:text-3 max-lg:text-4 max-xl:text-6 max-lg:leading-5 max-lg:leading-5 max-xl:leading-7">
+          <div className="fyc cursor-pointer gap-4 text-6 font-500 leading-10 max-lg:text-3 max-lg:text-4 max-xl:text-6 max-lg:leading-5 max-lg:leading-5 max-xl:leading-7">
             <div className="i-solar:play-circle-linear size-11 bg-white max-lg:size-6 max-md:size-14px max-xl:size-8"></div>
             <div>{t('home.investmentFeature.video')}</div>
           </div>
@@ -243,9 +250,9 @@ function RouteComponent() {
                   className="flex justify-between gap-3 rounded-5 bg-#1f2328 pb-4 pl-33px pr-45px pt-54px max-lg:gap-1 max-md:gap-1 max-xl:gap-2 max-lg:rounded-2 max-lg:pl-10px max-lg:pr-12px max-lg:pt-20px max-md:pb-14px max-md:pl-10px max-md:pr-15px max-md:pt-14px max-xl:pl-20px max-xl:pr-28px max-xl:pt-36px"
                   key={item.title}
                 >
-                  <div className="flex-1 leading-10 max-lg:leading-7 max-md:leading-11px max-xl:leading-8">
-                    <div className="text-30px max-lg:text-10px max-lg:text-16px max-xl:text-22px">{t(item.title)}</div>
-                    <div className="mt-1 text-22px max-lg:text-12px max-lg:text-8px max-xl:text-16px">{t(item.content)}</div>
+                  <div className="flex-1 leading-8 max-lg:leading-7 max-md:leading-11px max-xl:leading-8">
+                    <div className="text-24px max-lg:text-10px max-lg:text-16px max-xl:text-22px">{t(item.title)}</div>
+                    <div className="mt-1 text-18px max-lg:text-12px max-lg:text-8px max-xl:text-16px">{t(item.content)}</div>
                   </div>
                   <div className={cn(index === 0 && 'w-164px h-161px max-xl:w-120px max-xl:h-120px max-lg:w-80px max-lg:h-80px max-md:w-46px max-md:h-45px', index === 1 && 'w-162px h-152px max-xl:w-120px max-xl:h-110px max-lg:w-80px max-lg:h-60px max-md:w-46px max-md:h-43px', index === 2 && 'w-184px h-177px max-xl:w-130px max-xl:h-120px max-lg:w-90px max-lg:h-80px max-md:w-52px max-md:h-49px', index === 3 && 'w-192px h-184px max-xl:w-140px max-xl:h-120px max-lg:w-100px max-lg:h-80px max-md:w-53px max-md:h-51px', 'max-w-auto "mt-31px flex items-end max-lg:mt-10px max-xl:mt-20px"')}>
                     <img

@@ -42,23 +42,28 @@ const FeatureCard: FC<
       </div>
       <div className="h-full flex flex-1 flex-col justify-between px-5 pb-6 pt-5 max-lg:px-2 max-md:px-6px max-xl:px-3 max-lg:pb-2 max-lg:pt-2 max-md:pb-2 max-md:pt-2 max-xl:pb-4 max-xl:pt-3">
         <div>
-          <div title={title} className="truncate text-7 leading-10 max-lg:text-3 max-xl:text-5 max-lg:leading-5 max-xl:leading-7">{title}</div>
+          <div
+            title={title}
+            className="truncate text-5 leading-7 max-lg:text-3 max-xl:text-5 max-lg:leading-5 max-xl:leading-7"
+          >
+            {title}
+          </div>
           <div
             title={location}
-            className="line-clamp-2 mb-4 mt-2 text-6 text-[#b5b5b5] leading-7 max-lg:mb-1 max-lg:mt-1 max-xl:mb-2 max-xl:mt-1 max-lg:text-2 max-xl:text-4 max-lg:leading-3.5 max-xl:leading-5"
+            className="line-clamp-2 mb-4 mt-2 text-4 text-[#b5b5b5] leading-7 max-lg:mb-1 max-lg:mt-1 max-xl:mb-2 max-xl:mt-1 max-lg:text-2 max-xl:text-4 max-lg:leading-3.5 max-xl:leading-5"
           >
             {location}
           </div>
           <div className="fbc">
-            <div className="truncate rounded-6px bg-#F0B90B px-10px text-5 text-#131518 leading-30px max-lg:text-2 max-xl:text-4 max-lg:leading-5 max-xl:leading-7">
+            <div className="truncate rounded-6px bg-#F0B90B px-10px text-4 text-#131518 leading-30px max-lg:text-2 max-xl:text-4 max-lg:leading-5 max-xl:leading-7">
               {t('properties.detail.house_life', { house_life })}
             </div>
-            <div className="truncate rounded-6px bg-#F0B90B px-10px text-5 text-#131518 leading-30px max-lg:text-2 max-xl:text-4 max-lg:leading-5 max-xl:leading-7">
+            <div className="truncate rounded-6px bg-#F0B90B px-10px text-4 text-#131518 leading-30px max-lg:text-2 max-xl:text-4 max-lg:leading-5 max-xl:leading-7">
               {t('properties.detail.bedrooms_num', { bedrooms })}
             </div>
           </div>
         </div>
-        <div className="mt-21px fyc justify-between text-30px leading-40px max-lg:mt-5px max-md:mt-8px max-xl:mt-10px max-lg:text-12px max-md:text-10px max-xl:text-18px max-lg:leading-16px max-md:leading-10px max-xl:leading-24px">
+        <div className="mt-21px fyc justify-between text-18px leading-24px max-lg:mt-5px max-md:mt-8px max-xl:mt-10px max-lg:text-12px max-md:text-10px max-xl:text-18px max-lg:leading-16px max-md:leading-10px max-xl:leading-24px">
           <div>
             {t('properties.detail.price', { price: `${price} ${commonData.payTokenName} /` })}
           </div>
