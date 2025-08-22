@@ -335,6 +335,7 @@ function RouteComponent() {
                           onChange={setTokens}
                           min={minTokenAmount}
                           disabled={isPending}
+                          max={maxPrice}
                         />
                       </div>
                     </div>
