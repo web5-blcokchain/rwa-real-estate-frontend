@@ -53,7 +53,7 @@ function RouteComponent() {
   const userStatusText = useMemo(() => {
     switch (audit_status) {
       case 0:
-        return t(userStatus[0])
+        return t(userStatus[1], { status: t('auditStatus.audit') })
       case 1:
         return t(userStatus[1], { status: t('auditStatus.success') })
       case 2:
@@ -119,13 +119,16 @@ function RouteComponent() {
       <div className="mt-20 fccc gap-6 max-lg:mt-10 max-lg:gap-4">
         {[1, 3, 4].includes(audit_status)
           ? <div className="i-iconoir-pc-check size-24 bg-white"></div>
-          : <div className="i-iconoir-pc-warning size-24 bg-white"></div>}
+          : (audit_status === 0
+              ? <div className="i-hugeicons:audit-01 size-24 bg-white"></div>
+              : <div className="i-iconoir-pc-warning size-24 bg-white"></div>)}
         <div className="text-8 font-bold max-lg:text-4">
           {userStatusText}
         </div>
         <div>
           {
-            [0, 2, 5].includes(audit_status) && <Button onClick={() => { navigate({ to: '/account/create' }) }} size="large" type="primary">{t('auditStatus.reSubmit')}</Button>
+            ([2, 5].includes(audit_status) || audit_status < 0 || audit_status == null
+              || audit_status === undefined) && <Button onClick={() => { navigate({ to: '/account/create' }) }} size="large" type="primary">{t('auditStatus.reSubmit')}</Button>
           }
         </div>
       </div>

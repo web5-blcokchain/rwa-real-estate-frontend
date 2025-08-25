@@ -64,6 +64,10 @@ export interface RegisterParams {
   token?: string
   username?: string
   id_number?: string
+  property_type?: number
+  area?: number
+  appraisement?: number
+  prove_url?: string
 }
 interface RegisterResponse {
   code: number

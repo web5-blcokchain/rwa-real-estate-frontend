@@ -1,3 +1,4 @@
+import type { RegisterParams } from '@/api/apiMyInfoApi'
 import apiMyInfo, { getAssetType } from '@/api/apiMyInfoApi'
 import { AccountType } from '@/enums/create-account'
 import { UserCode } from '@/enums/user'
@@ -47,16 +48,6 @@ function AssetTokenizationForm({ title, formContent, className }: AssetTokenizat
 }
 export default function AssetTokenization({ setCurrentVisible }: { setCurrentVisible: (visible: VisibleType) => void }) {
   const { t, i18n } = useTranslation()
-  const [formData, setFormData] = useState<{
-    name: string
-    idNumber: string
-    phone: string
-    addressType: number
-    houseArea: number
-    estimatedValue: number
-    walletAddress: string
-    file: string
-  }>({} as any)
 
   const { data: assetType } = useQuery({
     queryKey: ['assetType'],
@@ -65,16 +56,16 @@ export default function AssetTokenization({ setCurrentVisible }: { setCurrentVis
       return data.data
     }
   })
-  const { setCode: setExist, clearRegisterData, getUserInfo } = useUserStore()
+  const { setCode: setExist, clearRegisterData, getUserInfo, userData, registerData, setRegisterData } = useUserStore()
   const navigate = useNavigate()
   const verifyUpload = () => {
-    if (!verifyStr(formData.name) || !verifyStr(formData.idNumber)
-      || !verifyStr(formData.phone) || !verifyStr(formData.walletAddress)
-      || !formData.addressType || !formData.houseArea || !formData.estimatedValue || !formData.file) {
+    if (!verifyStr(registerData?.username) || !verifyStr(registerData?.id_number)
+      || !verifyStr(registerData?.mobile) || !verifyStr(registerData?.wallet_address)
+      || !registerData?.property_type || !registerData?.area || !registerData?.appraisement || !registerData?.prove_url) {
       toast.error(t('create.verification.personal.upload_error'))
       return false
     }
-    if (verifyStr(formData.walletAddress, {
+    if (!verifyStr(registerData.wallet_address, {
       pattern: /^0x[a-fA-F0-9]{40}$/,
       min: 42,
       max: 42
@@ -84,17 +75,37 @@ export default function AssetTokenization({ setCurrentVisible }: { setCurrentVis
     }
     return true
   }
+  const sumbitData = (): RegisterParams => ({
+    // ...registerData
+    type: AccountType.AssetTokenization,
+    username: registerData.username,
+    id_number: registerData.id_number,
+    mobile: registerData.mobile,
+    wallet_address: registerData.wallet_address,
+    property_type: registerData.property_type,
+    area: registerData.area,
+    appraisement: registerData.appraisement,
+    prove_url: registerData.prove_url,
+    email: registerData.email,
+    token: registerData?.token
+  })
   const { mutate: createMutate, isPending: sumbitLoading } = useMutation({
-    mutationFn: () => apiMyInfo.register({
-      // ...formData
-      type: AccountType.AssetTokenization,
-      username: formData.name,
-      id_number: formData.idNumber,
-      mobile: formData.phone,
-      wallet_address: formData.walletAddress
-    }),
+    mutationFn: () => apiMyInfo.register({ ...sumbitData() }),
     onSuccess: () => {
       toast.success(t('create.message.create_success'))
+      getUserInfo()
+      setExist(UserCode.LoggedIn)
+      clearRegisterData()
+      navigate({
+        to: '/home'
+      })
+    }
+  })
+  //  clearRegisterData()
+  const { mutate: reloadCreateMutate, isPending: reloadCreatePending } = useMutation({
+    mutationFn: () => apiMyInfo.submitInfo({ ...sumbitData() }),
+    onSuccess: () => {
+      toast.success(t('create.message.reload_success'))
       getUserInfo()
       setExist(UserCode.LoggedIn)
       clearRegisterData()
@@ -113,8 +124,8 @@ export default function AssetTokenization({ setCurrentVisible }: { setCurrentVis
           <div>
             <Input
               placeholder={t('create.verification.asset_tokenization_content.form.name_placeholder')}
-              value={formData?.name}
-              onChange={e => setFormData(data => ({ ...data, name: e.target.value }))}
+              value={registerData?.username}
+              onChange={e => setRegisterData({ username: e.target.value })}
             />
           </div>
         )
@@ -125,8 +136,8 @@ export default function AssetTokenization({ setCurrentVisible }: { setCurrentVis
           <div>
             <Input
               placeholder={t('create.verification.asset_tokenization_content.form.id_number_placeholder')}
-              value={formData?.idNumber}
-              onChange={e => setFormData(data => ({ ...data, idNumber: e.target.value }))}
+              value={registerData?.id_number}
+              onChange={e => setRegisterData({ id_number: e.target.value })}
             />
           </div>
         )
@@ -138,8 +149,8 @@ export default function AssetTokenization({ setCurrentVisible }: { setCurrentVis
             <Input
               size="middle"
               placeholder={t('create.verification.asset_tokenization_content.form.phone_placeholder')}
-              value={formData?.phone}
-              onChange={e => setFormData(data => ({ ...data, phone: e.target.value }))}
+              value={registerData?.mobile}
+              onChange={e => setRegisterData({ mobile: e.target.value })}
             />
           </div>
         )
@@ -158,8 +169,8 @@ export default function AssetTokenization({ setCurrentVisible }: { setCurrentVis
                 '[&_.ant-select-arrow]:(text-white!)'
               )}
               options={selectList}
-              value={formData.addressType}
-              onChange={e => setFormData(data => ({ ...data, assetType: e }))}
+              value={registerData.property_type}
+              onChange={e => setRegisterData({ property_type: e })}
             />
           </div>
         )
@@ -171,8 +182,8 @@ export default function AssetTokenization({ setCurrentVisible }: { setCurrentVis
             <InputNumber
               controls={false}
               placeholder={t('create.verification.asset_tokenization_content.form.house_area_placeholder')}
-              value={formData?.houseArea}
-              onChange={e => setFormData(data => ({ ...data, houseArea: e || 0 }))}
+              value={registerData?.area}
+              onChange={e => setRegisterData({ area: e || 0 })}
             />
           </div>
         )
@@ -184,14 +195,14 @@ export default function AssetTokenization({ setCurrentVisible }: { setCurrentVis
             <InputNumber
               controls={false}
               placeholder={t('create.verification.asset_tokenization_content.form.estimated_value_placeholder')}
-              value={formData?.estimatedValue}
-              onChange={e => setFormData(data => ({ ...data, estimatedValue: e || 0 }))}
+              value={registerData?.appraisement}
+              onChange={e => setRegisterData({ appraisement: e || 0 })}
             />
           </div>
         )
       }
     ]
-  }, [assetType, i18n.language])
+  }, [assetType, i18n.language, registerData])
 
   const { mutateAsync: updateFile, isPending } = useMutation({
     mutationFn: async (data: { file: File, key: string }) => {
@@ -199,13 +210,15 @@ export default function AssetTokenization({ setCurrentVisible }: { setCurrentVis
       formData.append('file', data.file)
       // debugger
       const res = await apiMyInfo.uploadFile(formData)
+      setRegisterData({
+        // ...registerData,
+        [data.key]: _get(res.data, 'file.url', '')
+      })
       return res
     },
     onSuccess: (res) => {
-      setFormData(data => ({
-        ...data,
-        file: res.data?.file?.url || ''
-      }))
+      const url = _get(res.data, 'file.url', '')
+      console.log(url, res)
     },
     onError(_error, _variables) {
       toast.error(t('profile.edit.upload_failed'))
@@ -250,8 +263,8 @@ export default function AssetTokenization({ setCurrentVisible }: { setCurrentVis
                 <div>
                   <Input
                     placeholder={t('create.verification.asset_tokenization_content.form.wallet_address_placeholder')}
-                    value={formData?.estimatedValue}
-                    onChange={e => setFormData(data => ({ ...data, walletAddress: e.target.value }))}
+                    value={registerData?.wallet_address}
+                    onChange={e => setRegisterData({ wallet_address: e.target.value })}
                   />
                 </div>
               )}
@@ -262,15 +275,15 @@ export default function AssetTokenization({ setCurrentVisible }: { setCurrentVis
             <div className="mb-2 mt-10 text-lg max-md:text-base">{t('create.verification.asset_tokenization_content.form.asset_documents')}</div>
             <UploadCard
               loading={isPending}
-              label={t('create.verification.personal.poof')}
-              title={t('create.verification.personal.proof_title')}
-              subTitle={t('create.verification.personal.proof_subTitle')}
+              label=""
+              title={t('create.verification.asset_tokenization_content.upload.title')}
+              subTitle={t('create.verification.asset_tokenization_content.upload.label')}
               icon={new URL('@/assets/icons/document.svg', import.meta.url).href}
               accept="image/png,image/jpg,application/pdf"
               beforeUpload={(file) => {
-                beforeUpload(file, 'address_url')
+                beforeUpload(file, 'prove_url')
               }}
-              src={joinImagePath(formData.file)}
+              src={joinImagePath(registerData.prove_url || '')}
             >
             </UploadCard>
           </div>
@@ -279,11 +292,17 @@ export default function AssetTokenization({ setCurrentVisible }: { setCurrentVis
           <Button
             size="large"
             className={cn('max-md:text-sm !text-black !bg-#e7bb41')}
-            loading={sumbitLoading}
+            loading={sumbitLoading || reloadCreatePending}
             onClick={() => {
-              if (!verifyUpload())
-                return
-              createMutate()
+              if (verifyUpload()) {
+                // 判断是不是拒绝之后重新申请的
+                if (userData.audit_status && (userData.audit_status === 2 || userData.audit_status === 4)) {
+                  reloadCreateMutate()
+                }
+                else {
+                  createMutate()
+                }
+              }
             }}
           >
             {t('create.verification.asset_tokenization_content.form.submit')}

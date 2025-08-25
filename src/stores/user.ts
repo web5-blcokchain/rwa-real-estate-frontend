@@ -41,6 +41,7 @@ const store: StateCreator<StoreState, [], [['zustand/persist', Partial<StoreStat
       set({ userData: {} as UserResponse })
     },
     setRegisterData: (obj: Partial<RegisterParams>) => {
+      // debugger
       set(state => ({ registerData: { ...state.registerData, ...obj } }))
     },
     clearRegisterData: () => {

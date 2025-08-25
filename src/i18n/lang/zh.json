@@ -215,6 +215,10 @@
           "asset_documents": "资产证明文件",
           "submit": "提交申请"
         },
+        "upload": {
+          "title": "拖放文件到此处或 浏览文件",
+          "label": "支持格式:PDF,JPG,PNG (最大10MB)"
+        },
         "error": {
           "wallet_address_error": "请输入正确的钱包地址"
         }
@@ -929,7 +933,8 @@
     "submitUserInfoSuccess": "资料提交{{status}}",
     "success": "成功",
     "pass": "通过",
-    "fail": "失败"
+    "fail": "失败",
+    "audit": "审核中"
   },
   "dividendStatistics": {
     "title": "收益统计",

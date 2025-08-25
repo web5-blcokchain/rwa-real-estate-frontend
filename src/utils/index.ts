@@ -7,7 +7,7 @@
  * @param {number} rule.a 字符串大小下限
  * @returns 是否通过校验
  */
-export function verifyStr(text: string, rule?: {
+export function verifyStr(text: string | undefined, rule?: {
   pattern: RegExp
   min: number
   max: number

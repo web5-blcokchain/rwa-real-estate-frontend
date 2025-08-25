@@ -26,7 +26,7 @@ import { useProfileStore } from '@/stores/profile'
 import { useUserStore } from '@/stores/user'
 import { joinImagePath } from '@/utils/url'
 import { shortAddress } from '@/utils/wallet'
-import { createLazyFileRoute } from '@tanstack/react-router'
+import { createLazyFileRoute, useSearch } from '@tanstack/react-router'
 import { Layout, Menu } from 'antd'
 import React from 'react'
 import './styles.scss'
@@ -59,6 +59,7 @@ function RouteComponent() {
   const { t } = useTranslation()
   const userData = useUserStore(state => state.userData)
   const { selectedTab, setSelectedTab } = useProfileStore()
+  const search = useSearch({ from: '/_app/profile/' }) as { type?: string }
 
   const items: MenuItem[] = [
     getItem(`${t('aboutMe.menu_overview')}`, ProfileTab.Overview),
@@ -160,6 +161,12 @@ function RouteComponent() {
   useEffect(() => {
     document.querySelector('.app-content')?.scrollTo(0, 0)
   }, [secondaryMenu, selectedTab])
+
+  useEffect(() => {
+    if (Number(search.type) === 3) {
+      setSelectedTab(ProfileTab.Message)
+    }
+  }, [search, secondaryMenu])
 
   return (
     <Layout className="aboutMe max-lg:w-full max-lg:flex max-lg:!flex-col">

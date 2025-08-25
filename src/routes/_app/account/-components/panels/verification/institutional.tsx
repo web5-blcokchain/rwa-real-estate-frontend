@@ -187,7 +187,7 @@ export default function InstitutionalVerification({ setCurrentVisible }: { setCu
             loading={isPending || reloadCreatePending}
             onClick={() => {
               if (verifyUpload()) {
-                if (userData.audit_status && userData.audit_status === 2) {
+                if (userData.audit_status && (userData.audit_status === 2 || userData.audit_status === 4)) {
                   reloadCreateMutate()
                 }
                 else {

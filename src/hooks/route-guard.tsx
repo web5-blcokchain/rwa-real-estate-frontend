@@ -1,3 +1,4 @@
+import { TOKEN_KEY } from '@/constants/user'
 import { UserCode } from '@/enums/user'
 import { useUserStore } from '@/stores/user'
 import { getToken } from '@/utils/user'
@@ -82,11 +83,11 @@ export function useRouteGuard() {
       if (userData.audit_status === 0) {
         toast.error(t('header.error.wallet_already_bound'))
         navigate({
-          to: '/account/create'
+          to: '/home'
         })
       }
       else if (code === UserCode.NotExist) {
-        if (!((userData.id || email) && currentPath.includes('/account/create'))) {
+        if (!((userData.id || email || localStorage.getItem(TOKEN_KEY)) && currentPath.includes('/account/create'))) {
           toast.error(t(!userData.id && !email ? 'header.error.login_required' : 'header.error.user_not_found'))
           navigate({
             to: !userData.id && !email ? '/home' : '/account/create'

@@ -3,7 +3,6 @@ import apiMyInfoApi from '@/api/apiMyInfoApi'
 import logo from '@/assets/images/logo.png'
 import { LoginDialog } from '@/components/dialog/login'
 import { getContracts } from '@/contract'
-import { AccountType } from '@/enums/create-account'
 import { UserCode } from '@/enums/user'
 import { eventBus } from '@/hooks/EventBus'
 import { useCommonDataStore } from '@/stores/common-data'
@@ -293,7 +292,7 @@ function RightMenu() {
                 onClick={() => open('help')}
               >
               </div>
-              {/* <div className="i-material-symbols-notifications-outline size-5 bg-white"></div> */}
+              <div onClick={() => navigate({ to: '/profile', search: { type: 3 } })} className="i-material-symbols-notifications-outline size-5 bg-white clickable"></div>
               {/*
               <div
                 className="i-material-symbols-favorite-outline-rounded size-5 bg-white clickable"
@@ -399,7 +398,7 @@ const UserMenu: FC = () => {
     },
     {
       key: 'kyc_status',
-      show: (userData.audit_status === null || userData.audit_status === undefined || userData.type === AccountType.AssetTokenization) ? 'hidden' : '',
+      show: (userData.audit_status === null || userData.audit_status === undefined) ? 'hidden' : '',
       label: (
         <div onClick={() => {
           navigate({
@@ -424,7 +423,7 @@ const UserMenu: FC = () => {
         </div>
 
       ),
-      show: (userData.audit_status === 1 || userData.audit_status > 2) ? 'hidden' : ''
+      show: ([1, 3, 4, 0].includes(userData.audit_status)) ? 'hidden' : ''
     } as any,
     {
       key: 'logout',

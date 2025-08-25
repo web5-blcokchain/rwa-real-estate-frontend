@@ -213,6 +213,10 @@
           "asset_documents": "資産証明書類",
           "submit": "申請を提出"
         },
+        "upload": {
+          "title": "ファイルをドラッグ&ドロップします",
+          "label": "対応フォーマット:PDF、JPG、PNG(最大10MB)です。"
+        },
         "error": {
           "wallet_address_error": "正しいウォレットアドレスを入力してください"
         }

@@ -215,6 +215,10 @@
         },
         "error": {
           "wallet_address_error": "Please enter a valid wallet address"
+        },
+        "upload": {
+          "title": "Drag and drop files here or browse files",
+          "label": "Supported formats :PDF,JPG,PNG (up to 10MB)"
         }
       }
     },

@@ -242,7 +242,7 @@ export default function IndividualVerification({ setCurrentVisible }: { setCurre
             onClick={() => {
               if (verifyUpload()) {
                 // 判断是不是拒绝之后重新申请的
-                if (userData.audit_status && userData.audit_status === 2) {
+                if (userData.audit_status && (userData.audit_status === 2 || userData.audit_status === 4)) {
                   reloadCreateMutate()
                 }
                 else {
