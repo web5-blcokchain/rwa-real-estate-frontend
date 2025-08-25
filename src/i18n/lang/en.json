@@ -845,6 +845,20 @@
       "income_date": "Income Date",
       "processing": "Processing",
       "completed": "Completed"
+    },
+    "message": {
+      "center": "Message Center",
+      "last7Days": "Last 7 Days",
+      "last30Days": "Last 30 Days",
+      "clearAll": "Clear All",
+      "type": "Message Type",
+      "status": "Status",
+      "all": "All",
+      "kycApproved": "KYC Approved",
+      "assetDefault": "Asset Default",
+      "c2cTrade": "C2C Trade",
+      "unread": "Unread",
+      "read": "Read"
     }
   },
   "transaction": {

@@ -53,3 +53,60 @@ export function redemption(data: {
 export function bindWallet(data: { wallet_address: string }) {
   return apiClient.post('/api/info/bindWallet', data)
 }
+
+export interface MessageListResponse {
+  list: Notification[]
+  count: number
+  page: number
+  pageSzie: number
+  unread: number
+}
+
+export interface Notification {
+  id: number
+  user_id: number
+  type: string
+  title: string
+  content: string
+  status: number
+  extra: string
+  create_time: string // 建议用 string，如果要做时间处理可以转成 Date
+}
+
+export interface MessageListParams {
+  page: number
+  pageSize: number
+  status?: number
+  data_start?: string
+  date_end?: string
+  keyword?: string
+  type?: number
+}
+
+/**
+ * 获取消息列表
+ * @param data
+ * @param {number} data.page 页码
+ * @param {number} data.pageSize 每页数量
+ * @param {number} data.state 状态 0 未读 1为已读
+ * @param {string} data.date_start 开始时间 {2025-04-01}
+ * @param {string} data.date_end 结束时间 {2025-04-01}
+ * @param {string} data.keyword 模糊搜索
+ * @param {number} data.type 消息类型 1.kyc通过 2.资产违约 3.c2c交易
+ * @returns MessageListParams
+ */
+export function getMessageList(data: MessageListParams) {
+  return apiClient.post<MessageListResponse>('/api/info/messageList', data)
+}
+
+/**
+ * 已读消息
+ * @param data
+ * @param {number[]} data.ids 消息id
+ * @returns MessageListResponse
+ */
+export function readUserMessage(data: {
+  ids: number[]
+}) {
+  return apiClient.post<any>('/api/info/markMessageRead', data)
+}

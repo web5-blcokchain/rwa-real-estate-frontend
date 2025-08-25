@@ -855,6 +855,20 @@
       "income_date": "到账日期",
       "processing": "处理中",
       "completed": "已完成"
+    },
+    "message": {
+      "center": "消息中心",
+      "last7Days": "最近7天",
+      "last30Days": "最近30天",
+      "clearAll": "全部清除",
+      "type": "消息类型",
+      "status": "状态",
+      "all": "全部",
+      "kycApproved": "kyc 通过",
+      "assetDefault": "资产违约",
+      "c2cTrade": "C2C 交易",
+      "unread": "未读",
+      "read": "已读"
     }
   },
   "transaction": {

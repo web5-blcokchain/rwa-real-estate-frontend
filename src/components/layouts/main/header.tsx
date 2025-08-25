@@ -1,5 +1,6 @@
 import type { MenuProps } from 'antd'
 import apiMyInfoApi from '@/api/apiMyInfoApi'
+import { getMessageList } from '@/api/profile'
 import logo from '@/assets/images/logo.png'
 import { LoginDialog } from '@/components/dialog/login'
 import { getContracts } from '@/contract'
@@ -11,7 +12,7 @@ import { envConfig } from '@/utils/envConfig'
 import { ensureEthersNetwork } from '@/utils/ethers'
 import { clearToken, getToken, setToken } from '@/utils/user'
 import { usePrivy, useUser, useWallets } from '@privy-io/react-auth'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { Link, useLocation, useNavigate } from '@tanstack/react-router'
 import { Drawer, Dropdown } from 'antd'
 import { Contract, ethers } from 'ethers'
@@ -161,7 +162,7 @@ function RightMenu() {
   const [, setUserObj] = useState<Record<string, any>>()
   const setUserData = useUserStore(state => state.setUserData)
   // const { open } = useGlobalDialogStore()
-  const { userData } = useUserStore()
+  const { userData, refreshUserMessage, refreshUserMessageData, setUserMessage, refreshUserMessageSuccess, userMessage } = useUserStore()
   const { refreshUser } = useUser()
   const { setCode, refreshUserInfo } = useUserStore()
 
@@ -169,21 +170,41 @@ function RightMenu() {
 
   const { ready, authenticated, user, getAccessToken } = usePrivy()
 
+  const toGetMessageList = async () => {
+    return await getMessageList(refreshUserMessageData.params)
+  }
+  const { refetch: refetchMessageList } = useQuery({
+    queryKey: ['getMessageList'],
+    queryFn: async () => {
+      const res = await toGetMessageList()
+      const data = res.data
+      if (data)
+        setUserMessage(data)
+      refreshUserMessageSuccess()
+      return data
+    },
+    enabled: false
+  })
+  const isFirst = useRef(true)
   const { mutateAsync } = useMutation({
     mutationKey: ['getUserInfo'],
     mutationFn: async () => {
       const res = await apiMyInfoApi.getUserInfo()
-
       const code = _get(res, 'code')
-
       setCode(code)
-
       const data = _get(res, 'data', {})
       setUserData(data)
       setUserObj(data)
+      isFirst.current = false
+      const params = !refreshUserMessageData.params || Object.keys(refreshUserMessageData.params).length === 0
+        ? { page: 1, pageSize: 10 }
+        : refreshUserMessageData.params
+      // 获取消息列表
+      refreshUserMessage(params)
       return data
     }
   })
+
   useEffect(() => {
     if (!authenticated || !user?.email) {
       clearUserData()
@@ -196,6 +217,12 @@ function RightMenu() {
       mutateAsync()
     }
   }, [refreshUserInfo])
+
+  useEffect(() => {
+    if (refreshUserMessageData.count > 0 && !isFirst.current) {
+      refetchMessageList()
+    }
+  }, [refreshUserMessageData.count, userData])
 
   function isTokenExpired(token: string) {
     if (!token)
@@ -288,11 +315,15 @@ function RightMenu() {
           {authenticated && (
             <div className="fyc gap-4">
               <div
-                className="i-material-symbols-help-outline size-5 bg-white clickable"
+                className="i-material-symbols-help-outline relative size-5 bg-white clickable"
                 onClick={() => open('help')}
               >
               </div>
-              <div onClick={() => navigate({ to: '/profile', search: { type: 3 } })} className="i-material-symbols-notifications-outline size-5 bg-white clickable"></div>
+              <div className="relative">
+                <div onClick={() => navigate({ to: '/profile', search: { type: 3 } })} className="i-material-symbols-notifications-outline size-5 bg-white clickable"></div>
+                <div className={cn('absolute top-0 right-0 transform-translate-x-25% size-2 rounded-full bg-#ea3924 z-99)', !userMessage?.unread && 'hidden')}></div>
+              </div>
+
               {/*
               <div
                 className="i-material-symbols-favorite-outline-rounded size-5 bg-white clickable"

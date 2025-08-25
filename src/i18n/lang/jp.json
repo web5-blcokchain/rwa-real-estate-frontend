@@ -841,6 +841,20 @@
       "income_date": "入金日",
       "processing": "処理中",
       "completed": "完了"
+    },
+    "message": {
+      "center": "メッセージセンター",
+      "last7Days": "直近7日間",
+      "last30Days": "直近30日間",
+      "clearAll": "すべてクリア",
+      "type": "メッセージタイプ",
+      "status": "ステータス",
+      "all": "すべて",
+      "kycApproved": "KYC 承認済み",
+      "assetDefault": "資産デフォルト",
+      "c2cTrade": "C2C 取引",
+      "unread": "未読",
+      "read": "既読"
     }
   },
   "transaction": {
