@@ -117,3 +117,26 @@ export interface RedemptionInfo {
 export async function getRedemptionInfo(id: number) {
   return apiClient.post<RedemptionInfo>('/api/earlyWarning/redemptionDetail', { id })
 }
+
+interface StatItem {
+  value: string | number // 有的字段是 string (比如 "4250000000.00")，有的字段是 number (比如 12450)
+  unit: string
+  formatted: string | number // 有的 formatted 是 string，有的直接是 number
+}
+
+interface DashboardData {
+  total_transaction_volume: StatItem
+  active_investors: StatItem
+  tokenized_properties: StatItem
+  annual_return_rate: StatItem
+  update_time: string // "2025-08-23 10:42:09"
+  last_updated: string // "数据库更新"
+}
+
+/**
+ * 获取首页总交易量等数据
+ * @returns DashboardData
+ */
+export async function getHomeStatistics() {
+  return apiClient.post<DashboardData>('/api/assets/getStatistics')
+}

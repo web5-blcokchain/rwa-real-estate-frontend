@@ -1,7 +1,6 @@
 import type { Chain } from 'viem/chains'
 import { Env } from '@/lib/global'
 import { PrivyProvider } from '@privy-io/react-auth'
-import { mainnet } from 'viem/chains'
 
 // 定义本地Hardhat网络
 export const goChain: Chain = {
@@ -29,7 +28,7 @@ export const AppPrivyProvider: FC = ({ children }) => {
           }
         },
         loginMethods: ['email', 'google'],
-        supportedChains: [mainnet, goChain],
+        supportedChains: [goChain],
         defaultChain: goChain,
         appearance: {
           // loginMessage:'hello word'

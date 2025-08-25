@@ -1,3 +1,4 @@
+import { getHomeStatistics } from '@/api/assets'
 import apiBasic from '@/api/basicApi'
 import explanation3 from '@/assets/icons/exchange.svg'
 import explanation1 from '@/assets/icons/pie-chart-white.svg'
@@ -48,12 +49,6 @@ function RouteComponent() {
     { img: coinType2, url: '' },
     { img: coinType3, url: '' }
   ]
-  const coinStatus = [
-    { title: 'home.statistics.totalVolume', content: '4.25B' },
-    { title: 'home.statistics.activeInvestors', content: '12.450+' },
-    { title: 'home.statistics.tokenizedProperties', content: '85' },
-    { title: 'home.statistics.annualYield', content: '8.2%' }
-  ]
   const coinExplanation = [
     { icon: explanation1, title: 'home.investmentFeature.ownership', content: 'home.investmentFeature.lowEntry' },
     { icon: explanation2, title: 'home.investmentFeature.compliance', content: 'home.investmentFeature.kyc' },
@@ -67,19 +62,23 @@ function RouteComponent() {
     { title: 'home.investorGuide.control', content: 'home.investorGuide.flexibleInvest', img: introduction4 }
   ]
 
-  // async function getNewsList() {
-  //   const newsTypeId = newsType?.list[Number(activeKey)].id
-  //   return await getNews({ type_id: newsTypeId! })
-  // }
-  // const { data: news, isFetching: newsLoading } = useQuery({
-  //   queryKey: ['getNews', activeKey],
-  //   retry: 3,
-  //   queryFn: async () => {
-  //     const data = await getNews({ type_id: newsTypeId! })
-  //     return data.data
-  //   },
-  //   enabled: !!activeKey
-  // })
+  // 首页总交易量等数据
+  const { data: homeStatistics } = useQuery({
+    queryKey: ['home.statistics'],
+    queryFn: async () => {
+      const res = await getHomeStatistics()
+      return res.data
+    }
+  })
+
+  const coinStatus = useMemo(() => {
+    return [
+      { title: 'home.statistics.totalVolume', content: homeStatistics?.total_transaction_volume.formatted || (`0${commonData.payTokenName}`) },
+      { title: 'home.statistics.activeInvestors', content: homeStatistics?.active_investors.formatted || '0+' },
+      { title: 'home.statistics.tokenizedProperties', content: homeStatistics?.tokenized_properties.formatted || 0 },
+      { title: 'home.statistics.annualYield', content: homeStatistics?.annual_return_rate.formatted || '0%' }
+    ]
+  }, [homeStatistics])
 
   return (
     <div className="" style={{ '--conent-h': `${headerH || 80}px` } as any}>
@@ -155,8 +154,6 @@ function RouteComponent() {
                 </div>
                 <div className="text-40px font-500 leading-10 max-lg:text-24px max-md:text-18px max-xl:text-40px">
                   {item.content}
-                  {' '}
-                  {index === 0 && commonData.payTokenName}
                 </div>
               </div>
             ))
@@ -238,7 +235,7 @@ function RouteComponent() {
           </div>
         </div>
 
-        <div className="content-min-h fccc gap-50px pt-20 max-lg:gap-5 max-lg:gap-8 max-md:gap-14px max-xl:gap-8 max-xl:gap-8 max-md:pt-6 !max-lg:min-h-auto max-lg:!min-h-auto">
+        <div className="fccc gap-50px pt-20 max-lg:gap-5 max-lg:gap-8 max-md:gap-14px max-xl:gap-8 max-xl:gap-8 max-md:pt-6 !max-lg:min-h-auto max-lg:!min-h-auto">
           <div className="fccc text-center leading-10 max-lg:leading-5 max-lg:leading-7 max-xl:leading-8">
             <div className="pb-14px text-36px font-500 leading-10 max-md:pb-0 max-lg:text-20px max-md:text-4 max-xl:text-28px max-lg:leading-6 max-md:leading-6 max-xl:leading-8">{t('home.investorGuide.newbieInvest')}</div>
             <div className="text-center text-22px leading-26px max-lg:text-14px max-md:text-10px max-xl:text-18px max-lg:leading-18px max-md:leading-14px max-xl:leading-22px">{t('home.investorGuide.getInfo')}</div>
@@ -256,7 +253,7 @@ function RouteComponent() {
                   </div>
                   <div className={cn(index === 0 && 'w-164px h-161px max-xl:w-120px max-xl:h-120px max-lg:w-80px max-lg:h-80px max-md:w-46px max-md:h-45px', index === 1 && 'w-162px h-152px max-xl:w-120px max-xl:h-110px max-lg:w-80px max-lg:h-60px max-md:w-46px max-md:h-43px', index === 2 && 'w-184px h-177px max-xl:w-130px max-xl:h-120px max-lg:w-90px max-lg:h-80px max-md:w-52px max-md:h-49px', index === 3 && 'w-192px h-184px max-xl:w-140px max-xl:h-120px max-lg:w-100px max-lg:h-80px max-md:w-53px max-md:h-51px', 'max-w-auto "mt-31px flex items-end max-lg:mt-10px max-xl:mt-20px"')}>
                     <img
-                      className={cn('max-w-auto,w-full')}
+                      className={cn('max-w-auto w-full')}
                       src={item.img}
                     />
                   </div>
