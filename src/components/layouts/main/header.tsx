@@ -173,6 +173,7 @@ function RightMenu() {
   const toGetMessageList = async () => {
     return await getMessageList(refreshUserMessageData.params)
   }
+  // 获取消息列表
   const { refetch: refetchMessageList } = useQuery({
     queryKey: ['getMessageList'],
     queryFn: async () => {
@@ -212,13 +213,13 @@ function RightMenu() {
     // mutateAsync()
   }, [authenticated, user])
 
-  useEffect(() => {
+  useEffect(() => { // 监听是否需要重新获取用户信息
     if (refreshUserInfo > 0) {
       mutateAsync()
     }
   }, [refreshUserInfo])
 
-  useEffect(() => {
+  useEffect(() => { // 监听是否需要重新获取系统信息，首次加载时候不获取信息，等用户获取用户信息之后获取
     if (refreshUserMessageData.count > 0 && !isFirst.current) {
       refetchMessageList()
     }

@@ -1,11 +1,10 @@
+import type { NewsItem } from '@/api/news'
 import { getHomeStatistics } from '@/api/assets'
 import apiBasic from '@/api/basicApi'
+import { getNewsDetail } from '@/api/news'
 import explanation3 from '@/assets/icons/exchange.svg'
 import explanation1 from '@/assets/icons/pie-chart-white.svg'
 import explanation2 from '@/assets/icons/shield.svg'
-import coinType1 from '@/assets/images/home/coin-type-1.png'
-import coinType2 from '@/assets/images/home/coin-type-2.png'
-import coinType3 from '@/assets/images/home/coin-type-3.png'
 import introduction1 from '@/assets/images/home/introduction-1.png'
 import introduction2 from '@/assets/images/home/introduction-2.png'
 import introduction3 from '@/assets/images/home/introduction-3.png'
@@ -13,9 +12,10 @@ import introduction4 from '@/assets/images/home/introduction-4.png'
 import FeatureCard from '@/components/home/feature-card'
 import { NewsList } from '@/components/news/newsList'
 import { useCommonDataStore } from '@/stores/common-data'
-import { joinImagesPath } from '@/utils/url'
+import { joinImagePath, joinImagesPath } from '@/utils/url'
 import { useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
+import { Spin } from 'antd'
 import './index.scss'
 
 export const Route = createLazyFileRoute('/_app/home/')({
@@ -44,11 +44,6 @@ function RouteComponent() {
     setHeaderH(document.querySelector('header')?.getBoundingClientRect()?.height || 0)
   }, [])
 
-  const coinTypes = [
-    { img: coinType1, url: '' },
-    { img: coinType2, url: '' },
-    { img: coinType3, url: '' }
-  ]
   const coinExplanation = [
     { icon: explanation1, title: 'home.investmentFeature.ownership', content: 'home.investmentFeature.lowEntry' },
     { icon: explanation2, title: 'home.investmentFeature.compliance', content: 'home.investmentFeature.kyc' },
@@ -79,6 +74,29 @@ function RouteComponent() {
       { title: 'home.statistics.annualYield', content: homeStatistics?.annual_return_rate.formatted || '0%' }
     ]
   }, [homeStatistics])
+
+  const defalutNewsId = [7, 8, 9]
+  const { data: homeNews, isFetching } = useQuery({
+    queryKey: ['getNewsDetail-home'],
+    queryFn: async () => {
+      const data = await Promise.all(defalutNewsId.map(async (id) => {
+        const res = await getNewsDetail({ id })
+        return res
+      }))
+      const newData = data.filter(res => res.code === 1).map(res => res.data).filter(res => !!res)
+
+      return newData
+    }
+  })
+
+  useEffect(() => {
+
+  }, [])
+
+  function getContentOfLang(type: 'title' | 'image' | 'desc', data: NewsItem) {
+    const lang = i18n.language
+    return data[(`${type}_${lang}`) as keyof NewsItem] as string
+  }
 
   return (
     <div className="" style={{ '--conent-h': `${headerH || 80}px` } as any}>
@@ -118,32 +136,40 @@ function RouteComponent() {
             <div className="text-36px font-500 leading-10 max-lg:text-20px max-md:text-4 max-xl:text-28px max-lg:leading-6 max-md:leading-6 max-xl:leading-8">{t('home.rwaType.rwaTitle')}</div>
             <div className="text-center text-22px leading-26px max-lg:text-14px max-md:text-10px max-xl:text-18px max-lg:leading-18px max-md:leading-14px max-xl:leading-22px">{t('home.rwaType.rwaDesc')}</div>
           </div>
-          <div className="grid grid-cols-3 gap-30px max-lg:grid-cols-2 max-lg:gap-16px max-md:gap-11px max-xl:gap-18px">
-            {
-              coinTypes.map((item, index) => (
-                <div key={index} className={cn('flex flex-col items-center rounded-5 cursor-pointer bg-#1f2328 max-lg:rounded-2 max-xl:rounded-3', index === 2 && 'max-lg:hidden')}>
-                  <img src={item.img} alt="" className="w-full" />
-                  <div className="h-full w-full flex flex-col justify-between px-5 pb-33px pt-5 max-lg:px-2 max-md:px-6px max-xl:px-3 max-lg:pb-10px max-lg:pt-2 max-md:pb-9px max-md:pt-6px max-xl:pb-18px max-xl:pt-3">
-                    <div>
-                      <div className="text-[22px] font-500 leading-6 max-lg:text-[16px] max-md:text-[10px] max-xl:text-[22px] max-lg:leading-6 max-md:leading-3">
-                        {t(`home.rwaType.coinTypes.title-${index + 1}`)}
+          <Spin spinning={isFetching}>
+            <div className="grid grid-cols-3 gap-30px max-lg:grid-cols-2 max-lg:gap-16px max-md:gap-11px max-xl:gap-18px">
+
+              {
+                homeNews?.map((item, index) => (
+                  <div key={index} className={cn('flex flex-col items-center rounded-5 cursor-pointer bg-#1f2328 max-lg:rounded-2 max-xl:rounded-3', index === 2 && 'max-lg:hidden')}>
+                    <img src={joinImagePath(getContentOfLang('image', item))} alt="" className="w-full" />
+                    <div className="h-full w-full flex flex-col justify-between px-5 pb-33px pt-5 max-lg:px-2 max-md:px-6px max-xl:px-3 max-lg:pb-10px max-lg:pt-2 max-md:pb-9px max-md:pt-6px max-xl:pb-18px max-xl:pt-3">
+                      <div>
+                        <div className="text-[22px] font-500 leading-6 max-lg:text-[16px] max-md:text-[10px] max-xl:text-[22px] max-lg:leading-6 max-md:leading-3">
+                          {getContentOfLang('title', item)}
+                        </div>
+                        <div className="mb-4 mt-2 text-[16px] text-#a7a9ad leading-7 max-lg:mb-2 max-lg:mt-1 max-md:mb-5px max-md:mt-2px max-xl:mb-4 max-xl:mt-2 max-lg:text-[12px] max-md:text-2 max-xl:text-[16px] max-lg:leading-5 max-md:leading-3">
+                          {t(getContentOfLang('desc', item))}
+                        </div>
                       </div>
-                      <div className="mb-4 mt-2 text-[16px] text-#a7a9ad leading-7 max-lg:mb-2 max-lg:mt-1 max-md:mb-5px max-md:mt-2px max-xl:mb-4 max-xl:mt-2 max-lg:text-[12px] max-md:text-2 max-xl:text-[16px] max-lg:leading-5 max-md:leading-3">
-                        {t(`home.rwaType.coinTypes.content-${index + 1}`)}
+                      <div
+                        onClick={() => navigate({
+                          to: `/news/detail/${item.id}`
+                        })}
+                        className="fyc gap-5px text-18px font-500 leading-10 max-lg:gap-2px max-md:gap-2px max-xl:gap-3px max-lg:text-14px max-md:text-6px max-xl:text-18px max-lg:leading-6 max-md:leading-10px"
+                      >
+                        <span>{t('home.explanation.button')}</span>
+                        <div className="i-si-arrow-right-duotone h-30px w-30px bg-white max-lg:h-16px max-lg:w-16px max-md:h-a max-md:w-2 max-xl:h-22px max-xl:w-22px" />
                       </div>
-                    </div>
-                    <div
-                      onClick={() => window.open(item.url, '_blank')}
-                      className="fyc gap-5px text-18px font-500 leading-10 max-lg:gap-2px max-md:gap-2px max-xl:gap-3px max-lg:text-14px max-md:text-6px max-xl:text-18px max-lg:leading-6 max-md:leading-10px"
-                    >
-                      <span>{t('home.explanation.button')}</span>
-                      <div className="i-si-arrow-right-duotone h-30px w-30px bg-white max-lg:h-16px max-lg:w-16px max-md:h-a max-md:w-2 max-xl:h-22px max-xl:w-22px" />
                     </div>
                   </div>
-                </div>
-              ))
-            }
-          </div>
+                ))
+              }
+
+            </div>
+            {' '}
+
+          </Spin>
         </div>
         <div className="w-full flex justify-between gap-30px rounded-5 bg-#1f2328 px-50px pb-72px pt-53px max-lg:gap-10px max-xl:gap-18px max-lg:rounded-2 max-md:rounded-2 max-xl:rounded-3 max-lg:px-5 max-md:px-15px max-md:py-10px max-xl:px-20px max-lg:pb-18px max-lg:pt-16px max-xl:pb-36px max-xl:pt-30px">
           {
