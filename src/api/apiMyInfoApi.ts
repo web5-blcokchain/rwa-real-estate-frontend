@@ -239,6 +239,9 @@ export interface UserResponse {
   wallet_address: string
   last_login_time: number
   last_login_ip: number
+  property_type: number
+  area: number
+  appraisement: number
 }
 // 用户信息
 function getUserInfo() {

@@ -202,7 +202,7 @@
           "id_number_placeholder": "身分証番号を入力してください",
           "phone": "電話番号",
           "phone_placeholder": "電話番号を入力してください",
-          "asset_address": "資産アドレス",
+          "asset_address": "資産タイプです",
           "asset_address_placeholder": "資産タイプを選択してください",
           "house_area": "不動産面積（m²）",
           "house_area_placeholder": "不動産面積を入力してください",
@@ -546,6 +546,12 @@
     "email_format_error": "メールのフォーマットが正しくありません"
   },
   "profile": {
+    "overview_ja": {
+      "login_time": "ログイン時間",
+      "login_equipment": "ログインデバイス",
+      "login_ip": "ログインIP",
+      "login_record": "ログイン記録"
+    },
     "transactions": {
       "search": "アドレスの検索",
       "start_date": "何日から",

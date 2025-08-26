@@ -202,7 +202,7 @@
           "id_number_placeholder": "Please enter your ID number",
           "phone": "Phone Number",
           "phone_placeholder": "Please enter your phone number",
-          "asset_address": "Asset Address",
+          "asset_address": "Asset type",
           "asset_address_placeholder": "Please select asset type",
           "house_area": "Property Area (m²)",
           "house_area_placeholder": "Please enter property area",
@@ -546,6 +546,12 @@
     "email_format_error": "The email address format is incorrect"
   },
   "profile": {
+    "overview_en": {
+      "login_time": "Login Time",
+      "login_equipment": "Login Device",
+      "login_ip": "Login IP",
+      "login_record": "Login Record"
+    },
     "transactions": {
       "search": "Search address",
       "start_date": "Start date",

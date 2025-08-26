@@ -1,3 +1,4 @@
+import type { DataListResponse } from './assets'
 import apiClient from './client'
 
 export function getCollectList(data: { keyword: string }) {
@@ -139,5 +140,26 @@ export function submitAppeal(data: SubmitAppealData) {
  * @returns any
  */
 export function recordLoginLog() {
-  return apiClient.post('api/info/recordLoginLog')
+  return apiClient.post('/api/info/recordLoginLog')
+}
+
+export interface LoginLog {
+  id: number
+  ip: string
+  login_date: number
+  agent: string
+}
+
+/**
+ * 获取登录日志列表
+ * @param {number} data.page 页码
+ * @param {number} data.pageSize 页大小
+ * @param data
+ * @returns any
+ */
+export function getLoginLogList(data: {
+  page: number
+  pageSize: number
+}) {
+  return apiClient.post<DataListResponse<LoginLog>>('/api/info/getLoginLogList', data)
 }

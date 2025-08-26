@@ -204,7 +204,7 @@
           "id_number_placeholder": "请输入身份证号码",
           "phone": "联系电话",
           "phone_placeholder": "请输入联系电话",
-          "asset_address": "资产地址",
+          "asset_address": "资产类型",
           "asset_address_placeholder": "请输入选择资产类型",
           "house_area": "房产面积（m²）",
           "house_area_placeholder": "请输入房产面积",
@@ -555,6 +555,12 @@
     "confirm_sell": "确认卖出"
   },
   "profile": {
+    "overview": {
+      "login_time": "登陆时间",
+      "login_equipment": "登录设备",
+      "login_ip": "登录IP",
+      "login_record": "登陆记录"
+    },
     "transactions": {
       "search": "搜索地址",
       "start_date": "开始日期",

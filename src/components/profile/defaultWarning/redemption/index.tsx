@@ -287,9 +287,13 @@ export default function WarningRedemptionInfo({ secondaryMenuProps }:
           </div>
         </div>
         <div className="mt-6 truncate text-base max-md:text-base">
-          {t('profile.warning.redemption.receive_wallet')}
+          <span>
+            {t('profile.warning.redemption.receive_wallet')}
+          </span>
           ：
-          {userData.wallet_address}
+          <span>
+            {userData.wallet_address}
+          </span>
         </div>
         <div
 

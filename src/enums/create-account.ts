@@ -10,7 +10,7 @@ export enum AccountType {
   Institutional = 2,
 
   /**
-   * 资产代币化
+   * 业主账号
    */
   AssetTokenization = 3
 }

@@ -21,6 +21,7 @@ import RedemptionList from '@/components/profile/redemptionList'
 import { ReviewProgress } from '@/components/profile/reviewProgress'
 import SaleRecord from '@/components/profile/saleRecord'
 import { TransactionStatus } from '@/components/profile/transaction-status'
+import { AccountType } from '@/enums/create-account'
 import { ProfileTab } from '@/enums/profile'
 import { useProfileStore } from '@/stores/profile'
 import { useUserStore } from '@/stores/user'
@@ -86,7 +87,7 @@ function RouteComponent() {
     getItem(`${t('aboutMe.asset_tokenization')}`, ProfileTab.AssetTokenization, '', [
       getItem(`${t('aboutMe.owner_info')}`, ProfileTab.OwnerInfo),
       getItem(`${t('aboutMe.review_progress')}`, ProfileTab.ReviewProgress)
-    ])
+    ], userData.audit_status === AccountType.AssetTokenization)
   ].filter(res => !(res as any)?.hidden)
 
   const handleMenuClick: MenuProps['onClick'] = (e) => {

@@ -181,6 +181,7 @@ export const ProfileEdit: FC = () => {
               className="mb-6"
             >
               <Input
+                disabled={!!userData.nickname}
                 className="h-14 text-4 bg-[#242933]! text-white!"
                 size="large"
               />

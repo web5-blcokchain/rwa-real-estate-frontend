@@ -1,12 +1,15 @@
 import type { historyResponse, PropertieItem } from '@/api/apiMyInfoApi'
+import type { LoginLog } from '@/api/profile'
 import type { ConnectedWallet } from '@privy-io/react-auth'
 import type { TableProps } from 'antd'
 import apiMyInfo from '@/api/apiMyInfoApi'
+import { getLoginLogList } from '@/api/profile'
 import button2 from '@/assets/icons/BUTTON2-2.png'
 import button3 from '@/assets/icons/BUTTON3.png'
 import group272Icon from '@/assets/icons/group272.png'
 import { PaymentMethod } from '@/components/common/payment-method'
 import { useCommonDataStore } from '@/stores/common-data'
+import { parseUserAgent } from '@/utils'
 import { formatNumberNoRound } from '@/utils/number'
 import { useQuery } from '@tanstack/react-query'
 import { Space } from 'antd'
@@ -20,7 +23,7 @@ function Overview() {
   const commonData = useCommonDataStore()
   const coinStatus = ['unclaimed', 'claimed', 'withdraw', 'failed', 'sold', 'distribution']
 
-  // 表格1配置
+  // 代币持仓表格1配置
   const columns: TableProps<PropertieItem>['columns'] = [
     {
       title: <div>{t('profile.data_count.asset')}</div>,
@@ -86,7 +89,7 @@ function Overview() {
     }
   ]
 
-  // 表格2配置
+  // 收益记录表格2配置
   const columnsTwo: TableProps<historyResponse>['columns'] = [
     {
       title: <div>{t('profile.data_count.time')}</div>,
@@ -144,9 +147,46 @@ function Overview() {
       render: (_, record) => (
         <Space size="middle">
           <div className="rounded-md bg-#29483a px-2 py-0.5 text-base text-#4c9470 max-2xl:text-sm">
-            {t(record.status > 0 && record.status < 2 ? `profile.data_count.claims_status.${record.status}` : '')}
+            {record.status === 0 && <div>{t('dividendStatistics.unclaimed')}</div>}
+            {record.status === 1 && <div>{t('dividendStatistics.sale')}</div>}
+            {record.status === 2 && <div>{t('dividendStatistics.sold')}</div>}
+            {record.status === 5 && <div>{t('dividendStatistics.distribution')}</div>}
           </div>
         </Space>
+      )
+    }
+  ]
+
+  // 登陆日志记录表格3配置
+  const columnsThree: TableProps<LoginLog>['columns'] = [
+    // {
+    //   title: <div>{t('ID')}</div>,
+    //   dataIndex: 'id',
+    //   key: 'id'
+    // },
+    {
+      title: <div>{t('profile.overview.login_ip')}</div>,
+      dataIndex: 'ip',
+      key: 'ip'
+    },
+    {
+      title: <div>{t('profile.overview.login_time')}</div>,
+      dataIndex: 'login_date',
+      key: 'login_date',
+      render: (_, record) => (
+        <div>
+          {dayjs(record.login_date * 1000).format('YYYY-MM-DD HH:mm:ss')}
+        </div>
+      )
+    },
+    {
+      title: <div>{t('profile.overview.login_equipment')}</div>,
+      key: 'agent',
+      dataIndex: 'agent',
+      render: (_, record) => (
+        <div>
+          {parseUserAgent(record.agent)?.browser}
+        </div>
       )
     }
   ]
@@ -200,6 +240,22 @@ function Overview() {
     queryFn: async () => {
       const res = await getHistoryData()
       return res.data?.list || []
+    }
+  })
+
+  const [loginLogPageInfo, setLoginLogPageInfo] = useState({
+    page: 1,
+    pageSize: 10
+  })
+  // 获取登陆日志
+  const { data: loginLigList, isFetching: loginLogLoading } = useQuery({
+    queryKey: ['loginLog', loginLogPageInfo.page, loginLogPageInfo.pageSize],
+    queryFn: async () => {
+      const res = await getLoginLogList({
+        page: loginLogPageInfo.page,
+        pageSize: loginLogPageInfo.pageSize
+      })
+      return res.data
     }
   })
 
@@ -266,6 +322,29 @@ function Overview() {
         }
       >
         <div className="mb-2 text-5">{t('profile.data_count.earningsHistory')}</div>
+      </TableComponent>
+
+      <TableComponent
+        columns={columnsThree}
+        key="columnsThree"
+        data={loginLigList?.list || []}
+        loading={loginLogLoading}
+        pagination={
+          {
+            current: loginLogPageInfo.page,
+            pageSize: loginLogPageInfo.pageSize,
+            total: loginLigList?.count,
+            onChange: (page, pageSize) => {
+              setLoginLogPageInfo({
+                ...loginLogPageInfo,
+                page,
+                pageSize
+              })
+            }
+          }
+        }
+      >
+        <div className="mb-2 text-5">{t('profile.overview.login_record')}</div>
       </TableComponent>
     </div>
   )

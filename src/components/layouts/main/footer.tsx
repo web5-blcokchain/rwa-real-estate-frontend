@@ -11,7 +11,7 @@ export default function MainFooter() {
           <div className="mt-4 fyc gap-4 text-text max-lg:gap-2">
             <div className="i-bxl-telegram size-10 max-lg:size-6 max-xl:size-8"></div>
             <div className="i-ri-linkedin-fill size-10 max-lg:size-6 max-xl:size-8"></div>
-            <div className="i-mdi-twitter size-10 max-lg:size-6 max-xl:size-8"></div>
+            <div className="i-ri:twitter-x-line size-10 max-lg:size-6 max-xl:size-8"></div>
           </div>
         </div>
         <div className="grid grid-cols-3 flex-1 [&_li]:w-fit max-md:w-full [&_li]:cursor-pointer [&_li:hover]:text-[#e7bb41]">

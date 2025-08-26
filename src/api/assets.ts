@@ -52,6 +52,7 @@ export interface WarningRedemption {
   tx_hash: string
   address: string
   name: string
+  image_urls: string
 }
 export interface WarningRedemptionResponse<T> {
   page: number
