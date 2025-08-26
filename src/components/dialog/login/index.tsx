@@ -1,6 +1,7 @@
 // import ISeparator from '@/components/common/i-separator
 import type { PrivyClientConfig } from '@privy-io/react-auth'
 import type { Dispatch, SetStateAction } from 'react'
+import { USER_INFO_KEY } from '@/constants/user'
 import { usePrivy } from '@privy-io/react-auth'
 import { Button, Modal } from 'antd'
 import './styles.scss'
@@ -34,6 +35,18 @@ export const LoginDialog: FC<{
       console.error('Unexpected error during login', error)
     }
   }
+  const userLogin = (type: number) => {
+    localStorage.setItem(USER_INFO_KEY, 'true')
+    switch (type) {
+      case 1:
+        login({
+          loginMethods: ['email']
+        })
+        return
+      case 2:
+        handlePrivyLogin(['google'])
+    }
+  }
 
   return (
     <Modal
@@ -53,9 +66,7 @@ export const LoginDialog: FC<{
             type="primary"
             size="large"
             className="w-180px text-black!"
-            onClick={() => login({
-              loginMethods: ['email']
-            })}
+            onClick={() => userLogin(1)}
           >
             <div className="fyc gap-2">
               <div className="i-material-symbols-mail-rounded"></div>
@@ -66,7 +77,7 @@ export const LoginDialog: FC<{
             type="primary"
             size="large"
             className="w-180px text-black!"
-            onClick={() => handlePrivyLogin(['google'])}
+            onClick={() => userLogin(2)}
           >
             <div className="fyc gap-2">
               <div className="i-ion-logo-google"></div>

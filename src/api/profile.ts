@@ -111,6 +111,14 @@ export function readUserMessage(data: {
   return apiClient.post<any>('/api/info/markMessageRead', data)
 }
 
+export interface SubmitAppealData {
+  appeal_type: string
+  appeal_reason: string
+  proof_files: string
+  real_name: string
+  contact_phone: string
+  email: string
+}
 /**
  * 提交申诉信息
  * @param data
@@ -122,14 +130,14 @@ export function readUserMessage(data: {
  * @param {string} data.email 邮箱
  * @returns any
  */
-export interface SubmitAppealData {
-  appeal_type: string
-  appeal_reason: string
-  proof_files: string
-  real_name: string
-  contact_phone: string
-  email: string
-}
 export function submitAppeal(data: SubmitAppealData) {
   return apiClient.post<any>('/api/info/submitAppeal', data)
+}
+
+/**
+ * 记录登录日志
+ * @returns any
+ */
+export function recordLoginLog() {
+  return apiClient.post('api/info/recordLoginLog')
 }

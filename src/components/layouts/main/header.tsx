@@ -1,8 +1,9 @@
 import type { MenuProps } from 'antd'
 import apiMyInfoApi from '@/api/apiMyInfoApi'
-import { getMessageList } from '@/api/profile'
+import { getMessageList, recordLoginLog } from '@/api/profile'
 import logo from '@/assets/images/logo.png'
 import { LoginDialog } from '@/components/dialog/login'
+import { USER_INFO_KEY } from '@/constants/user'
 import { getContracts } from '@/contract'
 import { UserCode } from '@/enums/user'
 import { eventBus } from '@/hooks/EventBus'
@@ -187,6 +188,13 @@ function RightMenu() {
     enabled: false
   })
   const isFirst = useRef(true)
+  const { mutateAsync: userRecordLoginLog } = useMutation({
+    mutationKey: ['recordLoginLog'],
+    mutationFn: async () => {
+      await recordLoginLog()
+    }
+  })
+
   const { mutateAsync } = useMutation({
     mutationKey: ['getUserInfo'],
     mutationFn: async () => {
@@ -202,6 +210,11 @@ function RightMenu() {
         : refreshUserMessageData.params
       // 获取消息列表
       refreshUserMessage(params)
+      const hasLogin = !localStorage.getItem(USER_INFO_KEY) ? false : JSON.parse(localStorage.getItem(USER_INFO_KEY) || '')
+      if (hasLogin) { //  查看是否是用户在点击登陆之后获取的用户信息，是=》记录登陆日志
+        localStorage.setItem(USER_INFO_KEY, 'false')
+        userRecordLoginLog()
+      }
       return data
     }
   })
