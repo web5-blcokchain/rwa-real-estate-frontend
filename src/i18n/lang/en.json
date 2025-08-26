@@ -542,7 +542,8 @@
     "operation": "Operation",
     "view": "View",
     "copy": "Copy",
-    "day": "Day"
+    "day": "Day",
+    "email_format_error": "The email address format is incorrect"
   },
   "profile": {
     "transactions": {
@@ -732,7 +733,8 @@
           "3": "Faster responses during business hours (9:00–18:00).",
           "4": "For urgent issues, please call the customer service hotline: +031 234-5678"
         }
-      }
+      },
+      "sumbit_success": "The information was submitted successfully"
     },
     "warning": {
       "asset_name": "Asset Name",

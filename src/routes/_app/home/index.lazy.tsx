@@ -142,7 +142,7 @@ function RouteComponent() {
               {
                 homeNews?.map((item, index) => (
                   <div key={index} className={cn('flex flex-col items-center rounded-5 cursor-pointer bg-#1f2328 max-lg:rounded-2 max-xl:rounded-3', index === 2 && 'max-lg:hidden')}>
-                    <img src={joinImagePath(getContentOfLang('image', item))} alt="" className="w-full" />
+                    <img src={joinImagePath(getContentOfLang('image', item))} alt="" className="aspect-ratio-1920/1080 w-full" />
                     <div className="h-full w-full flex flex-col justify-between px-5 pb-33px pt-5 max-lg:px-2 max-md:px-6px max-xl:px-3 max-lg:pb-10px max-lg:pt-2 max-md:pb-9px max-md:pt-6px max-xl:pb-18px max-xl:pt-3">
                       <div>
                         <div className="text-[22px] font-500 leading-6 max-lg:text-[16px] max-md:text-[10px] max-xl:text-[22px] max-lg:leading-6 max-md:leading-3">

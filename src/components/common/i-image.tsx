@@ -29,7 +29,7 @@ export const IImage: FC<
   return (
     <div
       className={cn(
-        'pr of-hidden',
+        'pr of-hidden size-full',
         className
       )}
       {...props}

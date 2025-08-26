@@ -110,3 +110,26 @@ export function readUserMessage(data: {
 }) {
   return apiClient.post<any>('/api/info/markMessageRead', data)
 }
+
+/**
+ * 提交申诉信息
+ * @param data
+ * @param {string} data.appeal_type 申诉类型 1-交易类型实际未到账，2-金额不符，3-其他问题
+ * @param {string} data.appeal_reason 申诉内容
+ * @param {string} data.proof_files 申诉凭证文件
+ * @param {string} data.real_name 真实姓名
+ * @param {string} data.contact_phone 联系方式
+ * @param {string} data.email 邮箱
+ * @returns any
+ */
+export interface SubmitAppealData {
+  appeal_type: string
+  appeal_reason: string
+  proof_files: string
+  real_name: string
+  contact_phone: string
+  email: string
+}
+export function submitAppeal(data: SubmitAppealData) {
+  return apiClient.post<any>('/api/info/submitAppeal', data)
+}

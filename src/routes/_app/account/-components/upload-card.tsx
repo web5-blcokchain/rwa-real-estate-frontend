@@ -3,12 +3,13 @@ import { UploadFileType } from '@/enums/file'
 import { cn } from '@/utils/style'
 import { Spin, Upload } from 'antd'
 
-export function UploadIcon({ icon, iconClass, title, subTitle, beforeUpload, style }: { icon: string, iconClass: string, title: string, subTitle: string, beforeUpload?: (e: File) => void | undefined, style?: React.CSSProperties }) {
+export function UploadIcon({ icon, iconClass, title, subTitle, beforeUpload, style, className }: { icon: string, iconClass: string, title: string, subTitle: string, beforeUpload?: (e: File) => void | undefined, style?: React.CSSProperties, className?: string }) {
   return (
     <div
       className={cn(
         'fccc select-none gap-4 b b-white rounded b-dashed py-6',
-        beforeUpload ? 'clickable-99' : ''
+        beforeUpload ? 'clickable-99' : '',
+        className
       )}
       style={style}
     >
