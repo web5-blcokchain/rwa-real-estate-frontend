@@ -87,7 +87,7 @@ function RouteComponent() {
     getItem(`${t('aboutMe.asset_tokenization')}`, ProfileTab.AssetTokenization, '', [
       getItem(`${t('aboutMe.owner_info')}`, ProfileTab.OwnerInfo),
       getItem(`${t('aboutMe.review_progress')}`, ProfileTab.ReviewProgress)
-    ], userData.audit_status === AccountType.AssetTokenization)
+    ], userData.type !== AccountType.AssetTokenization)
   ].filter(res => !(res as any)?.hidden)
 
   const handleMenuClick: MenuProps['onClick'] = (e) => {
