@@ -15,9 +15,13 @@ export function OwnerInfo() {
   const { userData } = useUserStore()
   const userInfo = useMemo(() => {
     const assestAddress = assetType?.find(res => res.id === userData.property_type)
+    let idNumber = ''
+    if (userData.id_number) {
+      idNumber = `${userData?.id_number.slice(0, Math.min(4, userData.id_number.length / 2 - 1))}****${userData?.id_number.slice(Math.min(4, userData.id_number.length / 2 - 1) * -1)}`
+    }
     return [
       { title: 'create.verification.asset_tokenization_content.form.name', value: userData.nickname },
-      { title: 'create.verification.asset_tokenization_content.form.id_number', value: '张三' },
+      { title: 'create.verification.asset_tokenization_content.form.id_number', value: idNumber },
       { title: 'create.verification.asset_tokenization_content.form.phone', value: userData.mobile },
       { title: 'create.verification.asset_tokenization_content.form.asset_address', value: assestAddress?.name },
       { title: 'create.verification.asset_tokenization_content.form.estimated_value', value: userData.area },

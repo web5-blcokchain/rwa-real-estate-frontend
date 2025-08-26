@@ -242,6 +242,7 @@ export interface UserResponse {
   property_type: number
   area: number
   appraisement: number
+  id_number: string
 }
 // 用户信息
 function getUserInfo() {
