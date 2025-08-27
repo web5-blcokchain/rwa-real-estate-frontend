@@ -227,9 +227,9 @@ function RightMenu() {
   const [userMssageTimer, setUserMssageTimer] = useState<NodeJS.Timeout | null>(null)
   // 定时请求用户消息, 30s 一次
   useEffect(() => {
+    userMssageTimer && clearInterval(userMssageTimer)
     if (!authenticated)
       return
-    userMssageTimer && clearInterval(userMssageTimer)
     setUserMssageTimer(setInterval(() => {
       if (authenticated)
         refetchMessageList()
