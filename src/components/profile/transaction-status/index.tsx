@@ -13,9 +13,9 @@ export const TransactionStatus: FC = () => {
   const [page, setPage] = useState(1)
   const [total, setTotal] = useState(0)
   const [cancellingId, setCancellingId] = useState<number>(0)
-
   const pageSize = 20
 
+  const isFristLoad = useRef(true)
   const { data: transactionsData, isLoading, refetch } = useQuery({
     queryKey: ['get-transaction-status', page, keyword, pageSize],
     queryFn: async () => {
@@ -23,8 +23,10 @@ export const TransactionStatus: FC = () => {
         page,
         keyword,
         pageSize
+      }).then((res) => {
+        isFristLoad.current = false
+        return res
       })
-
       setTotal(_get(res.data, 'count', 0))
       return _get(res.data, 'list', [])
     }
@@ -162,7 +164,7 @@ export const TransactionStatus: FC = () => {
       </div>
 
       <Waiting
-        for={!isLoading}
+        for={!(isLoading && isFristLoad.current)}
         className="h-32 fcc"
         iconClass="size-8"
       >

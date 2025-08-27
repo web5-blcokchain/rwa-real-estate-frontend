@@ -21,10 +21,14 @@ export default function RedemptionList() {
     showQuickJumper: true,
     showSizeChanger: false
   })
+  const isFristLoad = useRef(true)
   const { data, isFetching: isLoading } = useQuery({
     queryKey: ['redemptionList', pagination.current, pagination.pageSize],
     queryFn: async () => {
-      const data = await getWarningRedemptionList({ page: pagination.current, pageSize: pagination.pageSize })
+      const data = await getWarningRedemptionList({ page: pagination.current, pageSize: pagination.pageSize }).then((res) => {
+        isFristLoad.current = false
+        return res
+      })
       return data.data
     }
   })
@@ -38,7 +42,7 @@ export default function RedemptionList() {
 
   return (
     <div className="text-white [&>div:last-child]:b-0 [&>div]:b-b-1 [&>div]:b-#242933 [&>div]:pb-30px">
-      <Spin spinning={isLoading}>
+      <Spin spinning={isLoading && isFristLoad.current}>
         {
           data?.list && data?.list.length > 0
             ? (

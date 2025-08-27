@@ -30,6 +30,7 @@ export default function Message() {
   const { setUserNoReadMessage } = useUserStore()
   const [current, setCurrent] = useState(1)
   const [pageSize, setPageSize] = useState(12)
+  const [total, setTotal] = useState(0)
   const [selectTime, setSelectTime] = useState({
     date_start: '',
     date_end: '',
@@ -49,8 +50,11 @@ export default function Message() {
       })
       const data = res.data
       // 获取消息总量
-      if (data?.unread)
+      if (data) {
         setUserNoReadMessage(data?.unread)
+        setTotal(data.count)
+      }
+
       return data
     }
   })
@@ -168,7 +172,7 @@ export default function Message() {
             showQuickJumper
             showSizeChanger={false}
             align="center"
-            total={userMessage?.count || 0}
+            total={total}
             pageSize={pageSize}
             current={current}
             onChange={(page, pageSize) => {

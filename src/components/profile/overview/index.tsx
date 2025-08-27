@@ -245,7 +245,8 @@ function Overview() {
 
   const [loginLogPageInfo, setLoginLogPageInfo] = useState({
     page: 1,
-    pageSize: 10
+    pageSize: 10,
+    total: 0
   })
   // 获取登陆日志
   const { data: loginLigList, isFetching: loginLogLoading } = useQuery({
@@ -255,6 +256,9 @@ function Overview() {
         page: loginLogPageInfo.page,
         pageSize: loginLogPageInfo.pageSize
       })
+      if (res.code === 1) {
+        setLoginLogPageInfo(data => ({ ...data, total: (res.data?.count || 0) }))
+      }
       return res.data
     }
   })

@@ -20,7 +20,8 @@ function RouteComponent() {
   const locale = i18n.language === 'en' ? enUS : i18n.language === 'zh' ? zhCN : jaJP
   const [keyword, setKeyword] = useState('')
   const [page, setPage] = useState(1)
-  const pageSize = 12
+  const [total, setTotal] = useState(0)
+  const pageSize = 3
   const [propertyType, setPropertyType] = useState()
   const [salesStatus, setSalesStatus] = useState()
   const [priceType, setPriceType] = useState()
@@ -34,13 +35,18 @@ function RouteComponent() {
       property_type: propertyType || undefined,
       order: typeof priceType === 'number' && priceType >= 0 ? priceType : undefined
     })
+    if (res.code === 1)
+      setTotal(res.data?.count || 0)
+    isFristLoading.current = false
     return res.data
   }
 
+  const isFristLoading = useRef(true)
   const { data, isLoading, refetch, isRefetching } = useQuery({
-    queryKey: ['properties'],
+    queryKey: ['properties', page, propertyType, salesStatus, priceType],
     queryFn: async () => {
-      return searchDataList()
+      const res = await searchDataList()
+      return res
     }
     // enabled: false,
   })
@@ -113,13 +119,6 @@ function RouteComponent() {
     }))
   ]
 
-  useEffect(() => {
-    refetch()
-  }, [page])
-  useEffect(() => {
-    setPage(1)
-    refetch()
-  }, [propertyType, salesStatus, priceType])
   const [isSelectInput, setIsSelectInput] = useState(false)
 
   return (
@@ -188,55 +187,57 @@ function RouteComponent() {
       </div>
 
       <Waiting
-        for={!isLoading}
-        className="h-32 fcc"
+        for={!(isLoading && isFristLoading.current)}
+        className="h-32 fcc [&>div]:!h-32"
         iconClass="size-8"
       >
-        <Spin spinning={!isLoading && isRefetching}>
-          {data && data.list && data.list.length > 0
-            ? (
-                <div className="grid grid-cols-3 mt-8 gap-8 max-lg:grid-cols-2 max-md:grid-cols-1">
-                  {data && Array.isArray(data.list) && data.list.map((item: Record<string, any>) => (
-                    <RealEstateCard
-                      monthly_rent={item.monthly_rent}
-                      key={item.id}
-                      houseId={item.id}
-                      collect={item.is_collect}
-                      pictures={joinImagesPath(item.image_urls)}
-                      title={item.name}
-                      location={item.location}
-                      area={item.area}
-                      bedrooms={item.bedrooms}
-                      house_life={item.house_life}
-                      price={item.price}
-                      tokenPrice={item.tokenPrice}
-                      property_type={item.property_type}
-                      expected_annual_return={item.expected_annual_return}
-                      annual_return_max={item.annual_return_max}
-                      annual_return_min={item.annual_return_min}
-                      market_status={item.market_status}
-                      className="clickable-99"
-                      onClick={() => {
-                        navigate({ to: '/properties/detail/$id', params: { id: item.id } })
-                      }}
-                    />
-                  ))}
-                </div>
-              )
-            : (
-                <div className="py-12 text-center text-4 text-[#898989]">
-                  {t('common.empty')}
-                </div>
-              )}
+        <Spin spinning={isRefetching || isLoading}>
+          <div className={(isRefetching || isLoading) ? 'min-h-50 fcc' : ''}>
+            {(data && data.list && data.list.length > 0) || isRefetching || isLoading
+              ? (
+                  <div className="grid grid-cols-3 mt-8 gap-8 max-lg:grid-cols-2 max-md:grid-cols-1">
+                    {data && Array.isArray(data.list) && data.list.map((item: Record<string, any>) => (
+                      <RealEstateCard
+                        monthly_rent={item.monthly_rent}
+                        key={item.id}
+                        houseId={item.id}
+                        collect={item.is_collect}
+                        pictures={joinImagesPath(item.image_urls)}
+                        title={item.name}
+                        location={item.location}
+                        area={item.area}
+                        bedrooms={item.bedrooms}
+                        house_life={item.house_life}
+                        price={item.price}
+                        tokenPrice={item.tokenPrice}
+                        property_type={item.property_type}
+                        expected_annual_return={item.expected_annual_return}
+                        annual_return_max={item.annual_return_max}
+                        annual_return_min={item.annual_return_min}
+                        market_status={item.market_status}
+                        className="clickable-99"
+                        onClick={() => {
+                          navigate({ to: '/properties/detail/$id', params: { id: item.id } })
+                        }}
+                      />
+                    ))}
+                  </div>
+                )
+              : (
+                  <div className="py-12 text-center text-4 text-[#898989]">
+                    {t('common.empty')}
+                  </div>
+                )}
+          </div>
         </Spin>
       </Waiting>
       <div className="mt-12 fcc">
         <ConfigProvider locale={locale}>
-          {data?.list && data.list.length > 0 && (
+          {((data?.list && data.list.length > 0) || isRefetching || isLoading) && (
             <Pagination
               current={page}
               pageSize={pageSize}
-              total={data?.count}
+              total={total}
               onChange={page => setPage(page)}
               showQuickJumper
               showSizeChanger={false}

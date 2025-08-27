@@ -110,7 +110,7 @@ function RouteComponent() {
         case ProfileTab.Edit:
           return <ProfileEdit /> // 编辑设置
         case ProfileTab.PropertyTokens:
-          return <PropertyTokens /> // 房产列表
+          return <PropertyTokens /> // 资产列表
         case ProfileTab.Earnings:
           return <Earnings />
         case ProfileTab.History:
@@ -136,9 +136,9 @@ function RouteComponent() {
         case ProfileTab.RedemptionList:
           return <RedemptionList /> // 赎回列表
         case ProfileTab.SaleRecord:
-          return <SaleRecord /> // 出售记录
+          return <SaleRecord /> // C2C 创建订单记录
         case ProfileTab.BuyRecord:
-          return <BuyRecord /> // 购买记录
+          return <BuyRecord /> // C2C 市场交易记录
         case ProfileTab.OwnerInfo:
           return <OwnerInfo /> // 业主信息
         case ProfileTab.ReviewProgress:
