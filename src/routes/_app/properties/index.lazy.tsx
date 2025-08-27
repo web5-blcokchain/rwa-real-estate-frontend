@@ -21,7 +21,7 @@ function RouteComponent() {
   const [keyword, setKeyword] = useState('')
   const [page, setPage] = useState(1)
   const [total, setTotal] = useState(0)
-  const pageSize = 3
+  const pageSize = 12
   const [propertyType, setPropertyType] = useState()
   const [salesStatus, setSalesStatus] = useState()
   const [priceType, setPriceType] = useState()
