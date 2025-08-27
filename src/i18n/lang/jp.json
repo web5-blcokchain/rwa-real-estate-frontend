@@ -344,9 +344,16 @@
     }
   },
   "properties": {
-    "title": "全国の不動産資産です",
-    "subTitle": "ブロックチェーン技術を通じて良質なニューヨーク不動産投資の機会を提供",
-    "search": "物件の場所と物件タイプで検索",
+    "title": "全国不動産資産",
+    "subTitle": "ブロックチェーン技術を活用したニューヨーク優良不動産への投資機会",
+    "search": "物件の場所と種類で検索",
+    "assetType": "物件タイプ",
+    "salesType": "販売状況",
+    "priceType": {
+      "title": "利回りで並べ替え",
+      "1": "高い順",
+      "2": "低い順"
+    },
     "detail": {
       "price": "{{price}} 米です",
       "house_life": "家の寿命:{{house_life}}年",
@@ -546,7 +553,7 @@
     "email_format_error": "メールのフォーマットが正しくありません"
   },
   "profile": {
-    "overview_ja": {
+    "overview": {
       "login_time": "ログイン時間",
       "login_equipment": "ログインデバイス",
       "login_ip": "ログインIP",

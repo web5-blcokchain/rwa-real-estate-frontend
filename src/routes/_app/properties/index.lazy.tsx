@@ -139,7 +139,8 @@ function RouteComponent() {
             '[&_.ant-select-selector]:(bg-transparent! text-white!)',
             '[&_.ant-select-selection-placeholder]:(text-[#898989]!)',
             '[&_.ant-select-selection-item]:(bg-transparent! text-white!)',
-            '[&_.ant-select-arrow]:(text-white!)'
+            '[&_.ant-select-arrow]:(text-white!)',
+            'max-lg:w-full'
           )}
           options={propsMenus}
           value={propertyType}
@@ -152,7 +153,8 @@ function RouteComponent() {
             '[&_.ant-select-selector]:(bg-transparent! text-white!)',
             '[&_.ant-select-selection-placeholder]:(text-[#898989]!)',
             '[&_.ant-select-selection-item]:(bg-transparent! text-white!)',
-            '[&_.ant-select-arrow]:(text-white!)'
+            '[&_.ant-select-arrow]:(text-white!)',
+            'max-lg:w-full'
           )}
           options={salesStatusMenus}
           value={salesStatus}
@@ -165,7 +167,8 @@ function RouteComponent() {
             '[&_.ant-select-selector]:(bg-transparent! text-white!)',
             '[&_.ant-select-selection-placeholder]:(text-[#898989]!)',
             '[&_.ant-select-selection-item]:(bg-transparent! text-white!)',
-            '[&_.ant-select-arrow]:(text-white!)'
+            '[&_.ant-select-arrow]:(text-white!)',
+            'max-lg:w-full'
           )}
           options={priceMenus}
           value={priceType}

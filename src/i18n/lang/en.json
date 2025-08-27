@@ -344,9 +344,16 @@
     }
   },
   "properties": {
-    "title": "National real estate assets",
-    "subTitle": "Premium New York real estate investment opportunities through blockchain technology",
-    "search": "Search by house location and property type",
+    "title": "National Real Estate Assets",
+    "subTitle": "Invest in premium real estate opportunities in New York using blockchain technology",
+    "search": "Search by property location and type",
+    "assetType": "Property Type",
+    "salesType": "Sales Status",
+    "priceType": {
+      "title": "Sort by Yield",
+      "1": "High to Low",
+      "2": "Low to High"
+    },
     "detail": {
       "price": "{{price}} meter",
       "house_life": " House lifespan: {{house_life}} years",
@@ -546,7 +553,7 @@
     "email_format_error": "The email address format is incorrect"
   },
   "profile": {
-    "overview_en": {
+    "overview": {
       "login_time": "Login Time",
       "login_equipment": "Login Device",
       "login_ip": "Login IP",
