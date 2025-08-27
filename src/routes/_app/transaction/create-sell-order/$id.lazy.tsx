@@ -1,5 +1,4 @@
 import type { ConnectedWallet } from '@privy-io/react-auth'
-import { sellAsset } from '@/api/investment'
 import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
@@ -10,10 +9,8 @@ import { useUserStore } from '@/stores/user'
 import { formatNumberNoRound, toBigNumer } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
 import { getPropertyTokenAmount } from '@/utils/web/propertyToken'
-import { createSellOrder, getTradeContract, listenerCreateSellEvent } from '@/utils/web/tradeContract'
+import { createSellOrder, getTradeContract } from '@/utils/web/tradeContract'
 import { getContactInfo } from '@/utils/web/usdcAddress'
-import { toPlainString18 } from '@/utils/web/utils'
-import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button, InputNumber } from 'antd'
 import { PayDialog } from '../../properties/-components/payDialog'
@@ -45,21 +42,6 @@ function RouteComponent() {
     symbol: 'USDT'
   })
   const maxPrice = 999999999999999
-
-  const { isPending, mutateAsync } = useMutation({
-    mutationFn: async (data: {
-      token_number: string
-      sell_order_id: string
-      hash: string
-      price: string
-    }) => {
-      const res = await sellAsset({
-        ...data,
-        id: item.id.toString()
-      })
-      return res.data
-    }
-  })
 
   // 获取当前用户持有代币
   const [userToken, setUserToken] = useState(-1)
@@ -129,27 +111,18 @@ function RouteComponent() {
         // 创建卖单
         toast.info(t('payment.messages.creating_buy_order'))
         try {
-          const [orderId, createData] = await Promise.all([
-            listenerCreateSellEvent(wallet.address, item.contract_address, true),
-            createSellOrder(tradingContact, ethProvider, {
-              token: item.contract_address,
-              amount: tokenAmount,
-              price: sellPrice
-            })
-          ])
-          const { tx, price } = createData
+          const createData = await createSellOrder(tradingContact, ethProvider, {
+            token: item.contract_address,
+            amount: tokenAmount,
+            price: sellPrice
+          })
+          const { tx } = createData
           console.log(`交易已发送: ${tx.hash}`)
           console.log('tx', tx)
-          toast.success(t('payment.success.tx_sent'))
+          // toast.success(t('payment.success.tx_sent'))
           const receipt = await tx.wait()
           console.log('交易已确认', receipt)
           // 10. 记录交易
-          await mutateAsync({
-            token_number: tokenAmount.toString(),
-            sell_order_id: orderId.toString(),
-            hash: tx.hash,
-            price: toPlainString18(price)
-          })
           toast.success(t('payment.messages.sell_order_created'))
 
           // 11. 返回上一页
@@ -285,7 +258,7 @@ function RouteComponent() {
                   onChange={setTokens}
                   min={1}
                   max={userToken || item.tokens_held}
-                  disabled={isPending || isProcessing}
+                  disabled={isProcessing}
                 />
               </div>
             </div>
@@ -352,7 +325,7 @@ function RouteComponent() {
               className="w-48 disabled:bg-gray-2 text-black!"
               onClick={sell}
               loading={isProcessing}
-              disabled={isPending || isProcessing || userToken <= 0}
+              disabled={isProcessing || userToken <= 0}
             >
               {t('action.confirm_sell')}
             </Button>

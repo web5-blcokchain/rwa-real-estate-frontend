@@ -1,6 +1,5 @@
 import type { ConnectedWallet } from '@privy-io/react-auth'
 import apiBasic from '@/api/basicApi'
-import { createBuyOrder as createBuyOrderApi } from '@/api/investment'
 import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
@@ -10,9 +9,9 @@ import { useCommonDataStore } from '@/stores/common-data'
 import { useUserStore } from '@/stores/user'
 import { formatNumberNoRound, toBigNumer } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
-import { getTradeContract, listenerCreateSellEvent, createBuyOrder as toCreateBuyOrder } from '@/utils/web/tradeContract'
+import { getTradeContract, createBuyOrder as toCreateBuyOrder } from '@/utils/web/tradeContract'
 import { getContactInfo, getUsdcContract } from '@/utils/web/usdcAddress'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { createFileRoute, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button, InputNumber, Select, Spin } from 'antd'
 import { ethers } from 'ethers'
@@ -112,23 +111,6 @@ function RouteComponent() {
     setKeyword('')
   }
 
-  const { mutateAsync, isPending } = useMutation({
-    mutationFn: async (data: {
-      sell_order_id: number
-      token_price: number
-      hash: string
-    }) => {
-      const res = await createBuyOrderApi({
-        id: `${item.id}`,
-        token_number: `${tokens}`,
-        token_price: data.token_price.toString(),
-        sell_order_id: `${data.sell_order_id}`,
-        hash: data.hash
-      })
-      return res.data
-    }
-  })
-
   const [payDialogOpen, setPayDialogOpen] = useState(false)
   const userData = useUserStore(state => state.userData)
   async function createBuyOrder() {
@@ -202,24 +184,14 @@ function RouteComponent() {
 
       // 创建买单
       toast.info(t('payment.messages.creating_buy_order'))
-      const [orderId, createData] = await Promise.all([
-        listenerCreateSellEvent(wallet.address, item.contract_address, false),
-        toCreateBuyOrder(tradingManagerContract, ethProvider, {
-          token: item.contract_address,
-          amount: tokenAmount,
-          price: buyPrice
-        })
-      ])
-
-      toast.info(t('payment.messages.waiting_for_confirmation'))
-      await createData.tx.wait()
-
-      // 调用后端API记录购买信息
-      await mutateAsync({
-        sell_order_id: orderId,
-        hash: createData.tx.hash,
-        token_price: createData.price
+      const createData = await toCreateBuyOrder(tradingManagerContract, ethProvider, {
+        token: item.contract_address,
+        amount: tokenAmount,
+        price: buyPrice
       })
+
+      // toast.info(t('payment.messages.waiting_for_confirmation'))
+      await createData.tx.wait()
 
       toast.success(t('payment.messages.buy_order_created'))
       navigate({ to: '/investment' })
@@ -338,7 +310,6 @@ function RouteComponent() {
                           value={tokens}
                           onChange={setTokens}
                           min={minTokenAmount}
-                          disabled={isPending}
                           max={maxPrice}
                         />
                       </div>
@@ -419,8 +390,8 @@ function RouteComponent() {
                       size="large"
                       className="w-48 disabled:bg-gray-2 text-black!"
                       onClick={createBuyOrder}
-                      loading={isPending || isProcessing}
-                      disabled={isPending || isProcessing || tokens < minTokenAmount}
+                      loading={isProcessing}
+                      disabled={isProcessing || tokens < minTokenAmount}
                     >
                       {t('properties.payment.confirm_payment')}
                     </Button>

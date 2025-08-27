@@ -1,5 +1,4 @@
 import type { ConnectedWallet } from '@privy-io/react-auth'
-import { buyAsset } from '@/api/investment'
 import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
@@ -12,7 +11,6 @@ import { joinImagesPath } from '@/utils/url'
 import { getTradeContract, tradeContractBuyOrder } from '@/utils/web/tradeContract'
 import { getUsdcContract } from '@/utils/web/usdcAddress'
 import { toPlainString18 } from '@/utils/web/utils'
-import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
 import { ethers } from 'ethers'
@@ -38,17 +36,6 @@ function RouteComponent() {
 
   const [tokens, setTokens] = useState(1)
   const [buyLoading, setBuyLoading] = useState(false) // 新增loading状态
-
-  const { mutateAsync, isPending } = useMutation({
-    mutationFn: async (data: {
-      order_market_id: string
-      token_number: string
-      hash: string
-    }) => {
-      const res = await buyAsset(data)
-      return res.data
-    }
-  })
 
   const [payDialogOpen, setPayDialogOpen] = useState(false)
   const userData = useUserStore(state => state.userData)
@@ -101,12 +88,6 @@ function RouteComponent() {
       console.log(`买单交易已发送，等待确认...`)
       const receipt = await tx.wait()
       console.log(`买单执行成功，交易哈希: ${receipt?.hash}`)
-      // 调用后端API记录购买信息
-      await mutateAsync({
-        order_market_id: item.id.toString(),
-        token_number: payAmount.toString(),
-        hash: tx.hash
-      })
       toast.success(t('payment.success.tx_sent')) // 成功提示
       navigate({
         to: '/investment'
@@ -258,8 +239,8 @@ function RouteComponent() {
               size="large"
               className="w-48 disabled:bg-gray-2 text-black!"
               onClick={buy}
-              loading={isPending || buyLoading}
-              disabled={isPending || buyLoading}
+              loading={buyLoading}
+              disabled={buyLoading}
             >
               {t('properties.payment.confirm_payment')}
             </Button>

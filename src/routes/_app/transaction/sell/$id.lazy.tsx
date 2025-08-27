@@ -1,5 +1,4 @@
 import type { ConnectedWallet } from '@privy-io/react-auth'
-import { sellOrder } from '@/api/investment'
 import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
@@ -10,7 +9,6 @@ import { formatNumberNoRound, toBigNumer } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
 import { getPropertyTokenAmount } from '@/utils/web/propertyToken'
 import { getTradeContract, tradeContractSellOrder } from '@/utils/web/tradeContract'
-import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
 import { PayDialog } from '../../properties/-components/payDialog'
@@ -37,17 +35,6 @@ function RouteComponent() {
   const [tokens, setTokens] = useState(1)
   const [sellLoading, setSellLoading] = useState(false) // 新增loading状态
   const [payDialogOpen, setPayDialogOpen] = useState(false)
-
-  const { mutateAsync, isPending } = useMutation({
-    mutationFn: async (hash: string) => {
-      const res = await sellOrder({
-        order_market_id: `${item.id}`,
-        token_number: `${tokens}`,
-        hash
-      })
-      return res.data
-    }
-  })
 
   useEffect(() => {
     if (item) {
@@ -120,12 +107,9 @@ function RouteComponent() {
         toast.success(t('payment.success.tx_sent')) // 成功提示
 
         // 调用后端API记录交易
-        mutateAsync(sellOrderTx.hash)
-          .then(() => {
-            navigate({
-              to: '/investment'
-            })
-          })
+        navigate({
+          to: '/investment'
+        })
       }
       catch (contractError: any) {
         console.error('合约交易错误:', contractError)
@@ -301,8 +285,8 @@ function RouteComponent() {
               size="large"
               className="w-48 disabled:bg-gray-2 text-black!"
               onClick={sell}
-              loading={isPending || sellLoading}
-              disabled={isPending || sellLoading}
+              loading={sellLoading}
+              disabled={sellLoading}
             >
               {t('action.confirm_sell')}
             </Button>

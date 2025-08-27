@@ -1,5 +1,4 @@
 import type { ConnectedWallet } from '@privy-io/react-auth'
-import apiBasic from '@/api/basicApi'
 import { IImage } from '@/components/common/i-image'
 import { IInfoField } from '@/components/common/i-info-field'
 import ISeparator from '@/components/common/i-separator'
@@ -12,7 +11,6 @@ import { envConfig } from '@/utils/envConfig'
 import { formatNumberNoRound, toBigNumer } from '@/utils/number'
 import { joinImagesPath } from '@/utils/url'
 import { generatePermitSignature } from '@/utils/web/utils'
-import { useMutation } from '@tanstack/react-query'
 import { createLazyFileRoute, useMatch, useNavigate, useRouter } from '@tanstack/react-router'
 import { Button } from 'antd'
 import { ethers } from 'ethers'
@@ -49,17 +47,6 @@ function RouteComponent() {
   const [tokens, setTokens] = useState(MIN_TOKEN_PURCHASE)
   const [btnLoading, setBtnLoading] = useState(false) // 新增loading状态
   const [payDialogOpen, setPayDialogOpen] = useState(false)
-
-  const { mutateAsync, isPending } = useMutation({
-    mutationFn: async (hash: string) => {
-      const res = await apiBasic.initialBuyAsset({
-        id: item.id,
-        number: tokens,
-        hash
-      })
-      return res.data
-    }
-  })
 
   async function payment() {
     // 判断当前用户是否是绑定的钱包/已经审核通过链
@@ -178,14 +165,10 @@ function RouteComponent() {
         toast.success(t('payment.success.tx_sent'))
         const hash = receipt.hash as string
 
-        // 后端同步
-        mutateAsync(hash)
-          .then(() => {
-            navigate({
-              to: '/transaction/$hash',
-              params: { hash }
-            })
-          })
+        navigate({
+          to: '/transaction/$hash',
+          params: { hash }
+        })
       }
       catch (error: any) {
         // console.error('initialBuyPropertyToken error:', err)
@@ -291,7 +274,6 @@ function RouteComponent() {
                   value={tokens}
                   onChange={setTokens}
                   min={1}
-                  disabled={isPending}
                 />
               </div>
             </div>
@@ -363,8 +345,8 @@ function RouteComponent() {
               size="large"
               className="w-48 disabled:bg-gray-2 text-black!"
               onClick={payment}
-              loading={btnLoading || isPending}
-              disabled={btnLoading || isPending || tokens <= 0}
+              loading={btnLoading}
+              disabled={btnLoading || tokens <= 0}
             >
               {t('properties.payment.confirm_payment')}
             </Button>

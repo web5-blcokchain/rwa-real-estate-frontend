@@ -1,6 +1,6 @@
 import type { AssetsWarningList } from '@/api/assets'
 import type { Dispatch, SetStateAction } from 'react'
-import { getRedemptionInfo, redemptionWarningAssets } from '@/api/assets'
+import { getRedemptionInfo } from '@/api/assets'
 import { useCommonDataStore } from '@/stores/common-data'
 import { useUserStore } from '@/stores/user'
 import { envConfig } from '@/utils/envConfig'
@@ -9,7 +9,7 @@ import { joinImagesPath } from '@/utils/url'
 import { getRedemptionManagerContract, getTokenPriceAndRedemption, redemptionWarningAsset } from '@/utils/web/redemptionManager'
 import { toBlockchainByHash } from '@/utils/web/utils'
 import { useWallets } from '@privy-io/react-auth'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { Button, Divider, Modal } from 'antd'
 import dayjs from 'dayjs'
 import { ethers } from 'ethers'
@@ -97,16 +97,6 @@ export default function WarningRedemptionInfo({ secondaryMenuProps }:
   const [redemptionType, setRedemptionType] = useState(0)
   const { userData } = useUserStore()
 
-  const { mutateAsync } = useMutation({
-    mutationKey: ['redemptionWarning'],
-    mutationFn: async (data: {
-      id: string
-      price: string
-      tx_hash: string
-    }) => {
-      return await redemptionWarningAssets(data)
-    }
-  })
   const [modelValue, setModelValue] = useState({
     message: '',
     hash: ''
@@ -151,25 +141,15 @@ export default function WarningRedemptionInfo({ secondaryMenuProps }:
       const ethProvider = await wallet.getEthereumProvider()
       const contact = redemptionContract
       // 操作合约赎回资产
-      const { tx, balance } = await redemptionWarningAsset(ethProvider, contact as ethers.Contract, wallet.address, secondaryMenuProps.contract_address)
+      const { tx } = await redemptionWarningAsset(ethProvider, contact as ethers.Contract, wallet.address, secondaryMenuProps.contract_address)
       if (tx) {
-        const res = await mutateAsync({
-          id: secondaryMenuProps.properties_id.toString(),
-          price: `${balance}`,
-          tx_hash: tx.hash
+        setIsRedemption(true)
+        setRedemptionType(0)
+        setModelValue({
+          message: '',
+          hash: tx.hash
         })
-        if (res.code === 1) {
-          setIsRedemption(true)
-          setRedemptionType(0)
-          setModelValue({
-            message: '',
-            hash: tx.hash
-          })
-          setVisible(true)
-        }
-        else {
-          throw new Error(res.msg)
-        }
+        setVisible(true)
       }
       else {
         throw new Error('400002') // 钱包操作失败
