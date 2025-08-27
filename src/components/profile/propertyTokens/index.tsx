@@ -15,29 +15,31 @@ function PropertyTokens() {
   const { t } = useTranslation()
   const [refetchCount, setRefetchCount] = useState(0)
   const [tokenData, setTokenData] = useState<PropertyInvestment[]>([])
-  const pageSize = 20
+  const pageSize = 12
+  const isFristLoad = useRef(true)
+  const isLoadMore = useRef(false)
 
   const getTokenData = async () => {
     const res = await apiMyInfo.getMeInfoSummary({ page, pageSize, keyword })
     if (page === 1)
       setTokenData(res.data?.list || [])
     else setTokenData([...tokenData, ...(res.data?.list || [] as any[])])
+    isFristLoad.current = false
+    isLoadMore.current = false
     return res
   }
 
-  const { isLoading, isFetching, refetch } = useQuery({
-    queryKey: ['overviewSummary'],
+  const { isLoading, isFetching } = useQuery({
+    queryKey: ['overviewSummary', page, refetchCount],
     queryFn: async () => {
       const res = await getTokenData()
+      // await new Promise((resolve) => setTimeout(resolve, 10000))
       setTotal(res.data?.count || 0)
       return res.data?.list || []
     }
   })
 
-  useEffect(() => {
-    refetch()
-  }, [page, refetchCount])
-  if (isLoading) {
+  if (isLoading && isFristLoad.current) {
     return (
       <div className="w-full fcc p-8 h-dvh">
         <Spin />
@@ -74,9 +76,9 @@ function PropertyTokens() {
             </div>
           </div>
         </div>
-        <div className={isFetching && page <= 1 ? 'fcc h-300px' : ''}>
-          <Spin spinning={isFetching && page <= 1}>
-            { tokenData && tokenData.length > 0
+        <div className="">
+          <Spin spinning={isFetching && page <= 1} className={isFetching && page <= 1 ? 'fcc h-300px' : ''}>
+            {tokenData && tokenData.length > 0
               ? (
                   <div className="grid grid-cols-1 mt-8 gap-8 max-lg:grid-cols-1 xl:grid-cols-2">
                     {
@@ -116,18 +118,21 @@ function PropertyTokens() {
           </div>
         )} */}
         {
-          (total > page * pageSize) && (
+          ((total > page * pageSize || isFetching) && tokenData.length > 0) && (
             <div
               className="mt-4 fcc cursor-pointer text-center text-white"
               onClick={() => {
-                setPage(page + 1)
+                if (!isFetching) {
+                  setPage(page + 1)
+                  isLoadMore.current = true
+                }
               }}
             >
               <span>
                 {' '}
                 {t('common.load_more')}
               </span>
-              {!isFetching ? <span>...</span> : <div className="i-line-md-loading-loop ml-2 bg-white"></div>}
+              {!(isFetching && isLoadMore.current) ? <span>...</span> : <div className="i-line-md-loading-loop ml-2 bg-white"></div>}
             </div>
           )
         }

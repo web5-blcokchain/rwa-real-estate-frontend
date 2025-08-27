@@ -859,6 +859,7 @@
       "last7Days": "Last 7 Days",
       "last30Days": "Last 30 Days",
       "clearAll": "Clear All",
+      "clearSelected": "Clear the selection",
       "type": "Message Type",
       "status": "Status",
       "all": "All",

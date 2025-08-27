@@ -869,6 +869,7 @@
       "last7Days": "最近7天",
       "last30Days": "最近30天",
       "clearAll": "全部清除",
+      "clearSelected": "清除选中",
       "type": "消息类型",
       "status": "状态",
       "all": "全部",

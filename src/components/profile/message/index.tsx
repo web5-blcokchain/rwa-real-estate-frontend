@@ -1,8 +1,8 @@
 import type { CheckboxProps } from 'antd/lib'
-import { readUserMessage } from '@/api/profile'
+import { getMessageList, readUserMessage } from '@/api/profile'
 import EmptyContent from '@/components/common/empty-content'
 import { useUserStore } from '@/stores/user'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { Checkbox, ConfigProvider, Pagination, Select, Spin } from 'antd'
 import enUS from 'antd/locale/en_US'
 import jaJP from 'antd/locale/ja_JP'
@@ -27,63 +27,45 @@ export default function Message() {
     { label: <div>{t('profile.message.read')}</div>, value: 1 }
   ]
   const [messageStatus, setMessageStatus] = useState()
-  const { refreshUserMessage, userMessage, refreshUserMessageData } = useUserStore()
-  const mockMessageList = [
-    {
-      id: 1,
-      title: '分红发放',
-      content: '分红发放',
-      time: '2025-07-23 10:00:00',
-      status: 0
-    },
-    {
-      id: 2,
-      title: '申诉结果',
-      content: '申诉结果',
-      time: '2025-07-23 10:00:00',
-      status: 1
-    },
-    {
-      id: 3,
-      title: '系统公告',
-      content: '系统公告',
-      time: '2025-07-23 10:00:00',
-      status: 0
-    },
-    {
-      id: 4,
-      title: '系统公告',
-      content: '系统公告',
-      time: '2025-07-23 10:00:00',
-      status: 0
-    }
-  ]
-  const [selectedMessage, setSelectedMessage] = useState([] as number[])
-  // 选中全部消息
-  const checkAll = mockMessageList.length === selectedMessage.length
-  const indeterminate = selectedMessage.length > 0 && selectedMessage.length < mockMessageList.length
-  const onCheckAllChange: CheckboxProps['onChange'] = (e) => {
-    setSelectedMessage(e.target.checked ? mockMessageList.map(item => item.id) : [])
-  }
+  const { setUserNoReadMessage } = useUserStore()
   const [current, setCurrent] = useState(1)
   const [pageSize, setPageSize] = useState(12)
-  const [total, setTotal] = useState(0)
   const [selectTime, setSelectTime] = useState({
     date_start: '',
     date_end: '',
     type: 0
   })
-
-  function getUserMessage() {
-    refreshUserMessage({
-      page: current,
-      pageSize,
-      status: typeof messageStatus === 'number' && messageStatus >= 0 ? messageStatus : undefined,
-      type: !messageType ? undefined : messageType,
-      data_start: selectTime.date_start,
-      date_end: selectTime.date_end
-    })
+  // 获取消息列表
+  const { data: userMessage, refetch: refetchMessageList, isFetching: userMessageLoading } = useQuery({
+    queryKey: ['getMessageList', messageStatus, pageSize, current, selectTime, messageType],
+    queryFn: async () => {
+      const res = await getMessageList({
+        page: current,
+        pageSize,
+        status: typeof messageStatus === 'number' && messageStatus >= 0 ? messageStatus : undefined,
+        type: !messageType ? undefined : messageType,
+        data_start: selectTime.date_start,
+        date_end: selectTime.date_end
+      })
+      const data = res.data
+      // 获取消息总量
+      if (data?.unread)
+        setUserNoReadMessage(data?.unread)
+      return data
+    }
+  })
+  const [selectedMessage, setSelectedMessage] = useState([] as number[])
+  // 选中全部消息
+  const checkAll = useMemo(() => {
+    return userMessage?.list.length === selectedMessage.length
+  }, [userMessage, selectedMessage])
+  const indeterminate = useMemo(() => {
+    return selectedMessage.length > 0 && selectedMessage.length < (userMessage?.list.length || 0)
+  }, [userMessage])
+  const onCheckAllChange: CheckboxProps['onChange'] = (e) => {
+    setSelectedMessage(e.target.checked ? (userMessage?.list || []).map(item => item.id) : [])
   }
+
   // 清空未读消息
   const { mutateAsync: readMessage, isPending: readLadoing } = useMutation({
     mutationKey: ['readUserMessage'],
@@ -95,13 +77,15 @@ export default function Message() {
   })
   async function clearUnread(ids?: number[]) {
     const nowIds = userMessage?.list ? userMessage.list.filter(item => item.status === 0).map(item => item.id) : []
-    ids = ids || nowIds
+    ids = ids && ids.length > 0 ? ids : nowIds
     await readMessage({ ids }).then((res) => {
       if (res.code === 1) {
-        getUserMessage()
+        refetchMessageList()
       }
     })
   }
+
+  // 设置获取消息列表时间区间
   function getMessageByDate(type: number) {
     if (type === selectTime.type)
       type = 0
@@ -116,16 +100,7 @@ export default function Message() {
         setSelectTime({ date_start: dayjs().subtract(30, 'days').format('YYYY-MM-DD'), date_end: dayjs().format('YYYY-MM-DD'), type })
     }
   }
-  // 刷新未读消息条数
-  useEffect(() => {
-    getUserMessage()
-  }, [messageStatus, pageSize, current, selectTime, messageType])
-  // 获取消息总量
-  useEffect(() => {
-    if (userMessage?.count) {
-      setTotal(userMessage.count)
-    }
-  }, [userMessage])
+
   return (
     <div>
       <div className="text-2xl text-white">{t('profile.message.center')}</div>
@@ -150,7 +125,7 @@ export default function Message() {
             value={messageStatus}
             onChange={setMessageStatus}
           />
-          <div className="cursor-pointer" onClick={() => clearUnread()}>{t('profile.message.clearAll')}</div>
+          <div className="cursor-pointer" onClick={() => clearUnread(selectedMessage)}>{t(`profile.message.${selectedMessage.length > 0 ? 'clearSelected' : 'clearAll'}`)}</div>
         </div>
       </div>
       <div className="mb-10">
@@ -159,7 +134,7 @@ export default function Message() {
           onChange={setSelectedMessage}
           className="mt-5 w-full pr-20 [&>div]:w-full max-lg:px-0"
         >
-          <Spin spinning={refreshUserMessageData.loading || readLadoing}>
+          <Spin spinning={userMessageLoading || readLadoing}>
             {userMessage?.list && userMessage.list.length > 0
               ? (
                   <div className="w-full flex flex-col gap-4">
@@ -193,7 +168,7 @@ export default function Message() {
             showQuickJumper
             showSizeChanger={false}
             align="center"
-            total={total}
+            total={userMessage?.count || 0}
             pageSize={pageSize}
             current={current}
             onChange={(page, pageSize) => {

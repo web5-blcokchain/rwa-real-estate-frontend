@@ -163,7 +163,7 @@ function RightMenu() {
   const [, setUserObj] = useState<Record<string, any>>()
   const setUserData = useUserStore(state => state.setUserData)
   // const { open } = useGlobalDialogStore()
-  const { userData, refreshUserMessage, refreshUserMessageData, setUserMessage, refreshUserMessageSuccess, userMessage } = useUserStore()
+  const { userData, userNoReadMessage, setUserNoReadMessage } = useUserStore()
   const { refreshUser } = useUser()
   const { setCode, refreshUserInfo } = useUserStore()
 
@@ -171,18 +171,14 @@ function RightMenu() {
 
   const { ready, authenticated, user, getAccessToken } = usePrivy()
 
-  const toGetMessageList = async () => {
-    return await getMessageList(refreshUserMessageData.params)
-  }
   // 获取消息列表
   const { refetch: refetchMessageList } = useQuery({
-    queryKey: ['getMessageList'],
+    queryKey: ['getMessageList-home'],
     queryFn: async () => {
-      const res = await toGetMessageList()
+      const res = await getMessageList({ page: 1, pageSize: 10 })
       const data = res.data
       if (data)
-        setUserMessage(data)
-      refreshUserMessageSuccess()
+        setUserNoReadMessage(data.unread)
       return data
     },
     enabled: false
@@ -205,11 +201,7 @@ function RightMenu() {
       setUserData(data)
       setUserObj(data)
       isFirst.current = false
-      const params = !refreshUserMessageData.params || Object.keys(refreshUserMessageData.params).length === 0
-        ? { page: 1, pageSize: 10 }
-        : refreshUserMessageData.params
-      // 获取消息列表
-      refreshUserMessage(params)
+      refetchMessageList()
       const hasLogin = !localStorage.getItem(USER_INFO_KEY) ? false : JSON.parse(localStorage.getItem(USER_INFO_KEY) || '')
       if (hasLogin) { //  查看是否是用户在点击登陆之后获取的用户信息，是=》记录登陆日志
         localStorage.setItem(USER_INFO_KEY, 'false')
@@ -232,11 +224,20 @@ function RightMenu() {
     }
   }, [refreshUserInfo])
 
-  useEffect(() => { // 监听是否需要重新获取系统信息，首次加载时候不获取信息，等用户获取用户信息之后获取
-    if (refreshUserMessageData.count > 0 && !isFirst.current) {
-      refetchMessageList()
+  const [userMssageTimer, setUserMssageTimer] = useState<NodeJS.Timeout | null>(null)
+  // 定时请求用户消息, 30s 一次
+  useEffect(() => {
+    if (!authenticated)
+      return
+    userMssageTimer && clearInterval(userMssageTimer)
+    setUserMssageTimer(setInterval(() => {
+      if (authenticated)
+        refetchMessageList()
+    }, 1000 * 30))
+    return () => {
+      userMssageTimer && clearInterval(userMssageTimer)
     }
-  }, [refreshUserMessageData.count, userData])
+  }, [authenticated])
 
   function isTokenExpired(token: string) {
     if (!token)
@@ -335,7 +336,7 @@ function RightMenu() {
               </div>
               <div className="relative">
                 <div onClick={() => navigate({ to: '/profile', search: { type: 3 } })} className="i-material-symbols-notifications-outline size-5 bg-white clickable"></div>
-                <div className={cn('absolute top-0 right-0 transform-translate-x-25% size-2 rounded-full bg-#ea3924 z-99)', !userMessage?.unread && 'hidden')}></div>
+                <div className={cn('absolute top-0 right-0 transform-translate-x-25% size-2 rounded-full bg-#ea3924 z-99)', userNoReadMessage <= 0 && 'hidden')}></div>
               </div>
 
               {/*
