@@ -547,7 +547,8 @@
     "view": "查看",
     "copy": "复制",
     "day": "天",
-    "email_format_error": "邮箱格式不正确"
+    "email_format_error": "邮箱格式不正确",
+    "cancel_order": "取消订单"
   },
   "action": {
     "sell": "卖出",
