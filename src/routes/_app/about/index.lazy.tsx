@@ -51,8 +51,8 @@ function RouteComponent() {
       icon: 'email',
       title: `${t('help.email')}`,
       desc: [
-        'contact@USD able.com',
-        'support@USD able.com'
+        'contact@USDable.com',
+        'support@USDable.com'
       ]
     },
     {
