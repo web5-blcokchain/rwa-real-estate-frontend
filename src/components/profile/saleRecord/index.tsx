@@ -1,12 +1,12 @@
 import type { PropertyInfo } from '@/api/investment'
 import type { TableProps } from 'antd/lib'
 import { getAssetType } from '@/api/apiMyInfoApi'
-import { cancelOrder, getInvestmentList } from '@/api/investment'
+import { getInvestmentList } from '@/api/investment'
 import group272Icon from '@/assets/icons/group272.png'
 import { formatNumberNoRound } from '@/utils/number'
 import { cancelSellOrder, getTradeContract } from '@/utils/web/tradeContract'
 import { useWallets } from '@privy-io/react-auth'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
 import { Button, ConfigProvider, Empty, Input, Select, Table } from 'antd'
 import enUS from 'antd/locale/en_US'
@@ -92,13 +92,6 @@ export default function SaleRecord() {
     ])
   }, [assetType])
 
-  const { mutateAsync } = useMutation({
-    mutationKey: ['cancelOrder'],
-    mutationFn: async (orderId: number) => {
-      const data = cancelOrder(orderId)
-      return data
-    }
-  })
   const [loading, setLoading] = useState<string>()
   /**
    *
@@ -120,11 +113,10 @@ export default function SaleRecord() {
       const tradeContact = await getTradeContract(ethProvider)
       const tx = await cancelSellOrder(tradeContact, Number(orderSellId))
       console.log('hash:', tx.hash)
-      const data = await mutateAsync(Number(orderId))
-      if (data.code === 1) {
-        refetch()
-        toast.success(t('cancelOrder.success'))
-      }
+      // const data = await mutateAsync(Number(orderId))
+      await new Promise(res => setTimeout(() => res(true), 500))
+      refetch()
+      toast.success(t('cancelOrder.success'))
     }
     catch (e: any) {
       console.error(e)
