@@ -51,8 +51,8 @@ function RouteComponent() {
       icon: 'email',
       title: `${t('help.email')}`,
       desc: [
-        'contact@realtoken.com',
-        'support@realtoken.com'
+        'contact@USD able.com',
+        'support@USD able.com'
       ]
     },
     {
