@@ -550,7 +550,8 @@
     "view": "表示",
     "copy": "複製します",
     "day": "天",
-    "email_format_error": "メールのフォーマットが正しくありません"
+    "email_format_error": "メールのフォーマットが正しくありません",
+    "cancel_order": "註文をキャンセルします。"
   },
   "profile": {
     "overview": {

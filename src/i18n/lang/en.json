@@ -550,7 +550,8 @@
     "view": "View",
     "copy": "Copy",
     "day": "Day",
-    "email_format_error": "The email address format is incorrect"
+    "email_format_error": "The email address format is incorrect",
+    "cancel_order": "Cancel order"
   },
   "profile": {
     "overview": {
