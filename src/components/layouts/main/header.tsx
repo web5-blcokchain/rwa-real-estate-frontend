@@ -201,7 +201,8 @@ function RightMenu() {
       setUserData(data)
       setUserObj(data)
       isFirst.current = false
-      refetchMessageList()
+      if (res?.data && res?.data?.audit_status >= 1)
+        refetchMessageList()
       const hasLogin = !localStorage.getItem(USER_INFO_KEY) ? false : JSON.parse(localStorage.getItem(USER_INFO_KEY) || '')
       if (hasLogin) { //  查看是否是用户在点击登陆之后获取的用户信息，是=》记录登陆日志
         localStorage.setItem(USER_INFO_KEY, 'false')
@@ -230,10 +231,12 @@ function RightMenu() {
     userMssageTimer && clearInterval(userMssageTimer)
     if (!authenticated)
       return
-    setUserMssageTimer(setInterval(() => {
-      if (authenticated)
-        refetchMessageList()
-    }, 1000 * 30))
+    if (userData.audit_status && userData.audit_status >= 1) {
+      setUserMssageTimer(setInterval(() => {
+        if (authenticated)
+          refetchMessageList()
+      }, 1000 * 30))
+    }
     return () => {
       userMssageTimer && clearInterval(userMssageTimer)
     }

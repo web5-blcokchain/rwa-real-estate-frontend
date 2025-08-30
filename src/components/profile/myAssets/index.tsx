@@ -48,11 +48,11 @@ export function MyAssets() {
                 <div>{record.address}</div>
               </Link>
               <div className="text-[#8d909a]">{record.property_type}</div>
-              <div className="main-hover cursor-pointer" onClick={() => toBlockchain(record.contract_address)}>
+              {/* <div className="main-hover cursor-pointer" onClick={() => toBlockchain(record.contract_address)}>
                 {t('profile.data_count.token_name')}
                 :
                 {record.code}
-              </div>
+              </div> */}
             </div>
           </div>
         </>
